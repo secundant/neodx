@@ -1,0 +1,38 @@
+{
+  "name": "@my-org/library-toolkit-example-strategy-transpile",
+  "packageManager": "yarn@3.2.0",
+  "version": "0.0.1",
+  "description": "Build optimized SVG sprites without pain",
+  "source": [
+    "src/index.ts",
+    "src/public/*.ts"
+  ],
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/mjs/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/mjs/index.mjs",
+      "import": "./dist/types/index.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "library": {
+    "minify": false,
+    "strategy": "transpile"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "version": "yarn version",
+    "clean": "yarn dlx rimraf dist",
+    "build": "library build",
+    "lint": "eslint src",
+    "dev": "library watch"
+  },
+  "devDependencies": {
+    "@my-org/library-toolkit": "workspace:*"
+  }
+}

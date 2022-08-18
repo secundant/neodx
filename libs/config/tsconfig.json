@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "jsx": "preserve",
+    "lib": ["ESNext"],
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+
+    // Force strict
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "suppressExcessPropertyErrors": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowUnreachableCode": false,
+
+    // Performance
+
+    // Prevent emitting by default
+    "noEmit": true,
+    "allowJs": false,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    // Errors without truncation sometimes can be very dirty
+    "noErrorTruncation": false,
+    "importsNotUsedAsValues": "error",
+    "importHelpers": true,
+    "sourceMap": false,
+    // "incremental": true,
+
+    // Other
+
+    "pretty": true
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "name": "product-template",
+  "license": "MIT",
+  "private": true,
+  "homepage": "https://github.com/secundant/product-template",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secundant/product-template"
+  },
+  "author": {
+    "name": "Dmitry Remezov",
+    "url": "https://github.com/secundant"
+  },
+  "keywords": [
+    "monorepo",
+    "workspace",
+    "nextjs",
+    "nx"
+  ],
+  "workspaces": [
+    "apps/*",
+    "libs/*",
+    "tools/*"
+  ],
+  "scripts": {
+    "clean-node_modules": "yarn dlx rimraf '**/node_modules'",
+    "check-install": "yarn dlx @yarnpkg/doctor .",
+    "postinstall": "is-ci || yarn husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "17.0.3",
+    "@commitlint/config-conventional": "17.0.3",
+    "@nrwl/workspace": "14.5.2",
+    "husky": "8.0.1",
+    "is-ci": "3.0.1",
+    "lint-staged": "13.0.3",
+    "nx": "14.5.2",
+    "prettier": "2.7.1",
+    "typescript": "4.7.4"
+  },
+  "engines": {
+    "node": "^14.13.1 || >=16.0.0 || >=18.0.0",
+    "yarn": ">=3.2.0",
+    "npm": "please-use-yarn"
+  },
+  "packageManager": "yarn@3.2.0"
+}

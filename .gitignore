@@ -1,0 +1,68 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# and https://github.com/github/gitignore for examples
+
+# local env files (followinf dotenv-flow / nextjs convention)
+
+.env.local
+.env.*.local
+
+# security: atlassian/changeset
+
+**/.netrc
+
+# testing
+/coverage
+.out/
+
+# Build directories (next.js...)
+**/.next/
+**/build/
+**/dist/
+**/out/
+
+# Cache
+**/tsconfig.tsbuildinfo
+**/.eslintcache
+.cache/*
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+# IDE
+.vscode/
+.idea/
+.project
+.classpath
+*.launch
+*.sublime-workspace
+
+# Deployment platforms
+
+.vercel
+
+# ========== Yarn ==========
+
+# dependencies
+node_modules
+
+# https://yarnpkg.com/advanced/qa#which-files-should-be-gitignored but nested for e2e directories
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+# Uncommeth these lines if you're using Zero-Installs
+# !.yarn/cache
+
+# Uncommeth these lines if you're NOT using Zero-Installs
+.pnp.*
+
+# ========== Yarn ==========

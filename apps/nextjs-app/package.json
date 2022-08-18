@@ -1,0 +1,4 @@
+{
+  "name": "@my-org/nextjs-app",
+  "packageManager": "yarn@3.2.0"
+}

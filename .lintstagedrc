@@ -1,0 +1,3 @@
+{
+  "*": ["nx affected:lint --fix --base=main --head=HEAD", "nx format:write"]
+}

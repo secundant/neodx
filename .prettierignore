@@ -1,0 +1,7 @@
+**/.next/**
+**/dist/**
+**/build/**
+**/tmp/**
+.pnp.js
+.yarn/
+node_modules/
