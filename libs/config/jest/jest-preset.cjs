@@ -18,6 +18,7 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/'],
   transformIgnorePatterns: ['/node_modules/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html', 'json', 'mjs'],
+  passWithNoTests: true,
   displayName: 'jest',
   testEnvironment: 'node',
   testRunner: 'jest-circus/runner',
