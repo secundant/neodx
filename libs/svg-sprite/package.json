@@ -18,18 +18,15 @@
     "dist",
     "README.md"
   ],
-  "library": {
-    "minify": false
-  },
   "sideEffects": false,
   "scripts": {
     "typecheck": "tsc --noEmit",
     "version": "yarn version",
     "clean": "yarn dlx rimraf dist",
-    "build": "library build",
+    "build": "libmake",
     "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
     "lint": "eslint src",
-    "dev": "library watch"
+    "dev": "libmake watch"
   },
   "dependencies": {
     "cosmiconfig": "7.0.1",
@@ -43,6 +40,7 @@
   },
   "devDependencies": {
     "@neodx/config": "workspace:*",
+    "@neodx/libmake": "workspace:*",
     "@swc/helpers": "0.4.7",
     "@types/eslint": "^8.4.6",
     "@types/jest": "28.1.7",

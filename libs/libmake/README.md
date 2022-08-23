@@ -1,16 +1,35 @@
-# @my-org/library-toolkit
+# @neodx/libmake
 
-Complex toolkit for libraries development.
-Designed as simplest way for building your libraries without any extra configuration.
-Under the hooks uses rollup with swc.
+Next generation libraries toolkit.
+Build upon
 
-## Installation
+## Features
+
+- [ ] **MW** Zero configuration with auto detection
+  - [ ] SWC additional configuration (`.swcrc`)
+  - [ ] Babel (`.babelrc` or other formats) - we should replace swc with babel when we
+  - [ ] CSS
+    - [ ] PostCSS (by default if we found `postcss.config.js` or any other pre-processor)
+    - [ ] SCSS (detect `node-sass`/`sass`)
+- [ ] Beautiful TypeScript support
+  - [ ] Builds clean TypeScript definitions
+  - [ ] Support configuration: `baseUrl, paths, externalHelpers, target, sourceMap, experimentalDecorators`
+- [ ] Multiple entries and outputs
+  - [ ] Different outputs: `CJS`, `ESM` (.mjs), `UMD`
+  - [ ] Single or multiple inputs: file, array, globs and all together
+
+## Installation and fast setup
+
+### Yarn
 
 ```shell
-# We recommend adding "@swc/helpers" to support the { compilerOptions: { importHelpers: true } } option
-yarn add -D @swc/helpers @my-org/library-toolkit
-# If you don't need this optimization - just install toolkit only
-yarn add -D @my-org/library-toolkit
+yarn add -D @neodx/libmake
+```
+
+### Npm
+
+```shell
+npm i -D @neodx/libmake
 ```
 
 ## Usage
@@ -32,8 +51,21 @@ yarn add -D @my-org/library-toolkit
   },
   files: ['dist', 'README.md'],
   scripts: {
-    dev: 'library watch',
-    build: 'library build'
+    dev: 'libmake watch',
+    build: 'libmake'
+  }
+}
+```
+
+### Example of package.json minimal setup
+
+```json5
+{
+  main: 'dist/index.cjs',
+  module: 'dist/index.mjs',
+  scripts: {
+    dev: 'libmake watch',
+    build: 'libmake'
   }
 }
 ```

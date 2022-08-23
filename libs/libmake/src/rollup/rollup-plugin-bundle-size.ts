@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import maxmin from 'maxmin';
 import { basename } from 'node:path';
 import type { Plugin } from 'rollup';
-import { logger } from '../core/logger';
+import { logger } from '../utils/logger';
 
 export function rollupPluginBundleSize(): Plugin {
   let time = Date.now();

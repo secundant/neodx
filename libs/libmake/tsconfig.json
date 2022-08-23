@@ -1,17 +1,15 @@
 {
   "extends": "@neodx/config/tsconfig.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
+    "outDir": "dist",
     "importHelpers": true,
-    "sourceMap": true,
-    "types": ["node", "jest"],
     "target": "ES2022",
+    "module": "ESNext",
+    "types": ["node"],
     "baseUrl": "src",
     "rootDir": ".",
-    "paths": {
-      "@/*": ["./*"]
-    }
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["src", "tests"],
+  "include": ["src"],
   "exclude": ["dist", "node_modules"]
 }
