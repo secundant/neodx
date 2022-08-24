@@ -12,5 +12,5 @@
 
 ## Our tools
 
-- [🛠@neodx/libmake](./libs/libmake) - Zero configuration libraries builder
-- [🗃@neodx/svg-sprite](./libs/svg-sprite) - SVG sprites generator
+- [🛠 @neodx/libmake](./libs/libmake) - Zero configuration libraries builder
+- [🗃 @neodx/svg-sprite](./libs/svg-sprite) - SVG sprites generator

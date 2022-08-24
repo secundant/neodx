@@ -98,6 +98,8 @@ export async function createSwcConfig({
         syntax: 'ecmascript',
         jsx: Boolean(deps.prod.includes('react'))
       },
+      // TODO How should we choose it?
+      target: 'es2022',
       baseUrl: sourceDir,
       transform,
       experimental: {

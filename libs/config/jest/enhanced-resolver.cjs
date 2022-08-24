@@ -4,15 +4,35 @@ const path_1 = require('path');
 const ts = require('typescript');
 const fs = require('fs');
 const { builtinModules } = require('node:module');
+const enhancedResolve = require('enhanced-resolve');
 
 /**
  * Custom resolver which will respect package exports (until Jest supports it natively
  * by resolving https://github.com/facebook/jest/issues/9771)
  */
-const enhancedResolver = require('enhanced-resolve').create.sync({
-  conditionNames: ['require', 'node', 'default'],
-  extensions: ['.js', '.json', '.node', '.ts', '.tsx']
+const defaultResolver = enhancedResolve.create.sync({
+  conditionNames: ['require', 'import', 'node', 'default'],
+  extensions: ['mjs', 'cjs', '.js', '.json', '.node', '.ts', '.tsx']
 });
+const resolversMap = {};
+const getResolver = conditionNames => {
+  const key = conditionNames.join(';');
+  const extensions = [
+    conditionNames.includes('import') || (conditionNames.includes('default') && ['.mjs']),
+    conditionNames.includes('require') && ['.cjs'],
+    '.js',
+    '.json',
+    '.node',
+    '.ts',
+    '.tsx'
+  ].flat();
+
+  resolversMap[key] ||= enhancedResolve.create.sync({
+    conditionNames,
+    extensions
+  });
+  return resolversMap[key];
+};
 
 const toRegExpPart = ext => (ext instanceof RegExp ? ext.source : escapeString(ext));
 const escapeString = value => value.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&').replace(/-/g, '\\x2d');
@@ -58,25 +78,33 @@ if (
 }
 
 module.exports = function jestEnhancedResolver(path, options) {
-  if (path === 'jest-sequencer-@jest/test-sequencer') return;
+  if (/jest-sequencer-/.test(path)) return;
   const ext = path_1.extname(path);
+
   if (ext === '.css' || ext === '.scss' || ext === '.sass' || ext === '.less' || ext === '.styl') {
     return require.resolve('identity-obj-proxy');
   }
   // Try to use the defaultResolver
   try {
     // Global modules which must be resolved by defaultResolver
-    if (externalPredicate.test(path)) {
+    if (externalPredicate.test(path) || !options.conditions) {
       return options.defaultResolver(path, options);
     }
+    const resolver = ['require', 'default'].every(condition =>
+      options.conditions.includes(condition)
+    )
+      ? getResolver(options.conditions)
+      : defaultResolver;
 
-    return enhancedResolver(options.basedir, path);
+    return resolver(options.basedir, path);
   } catch (error) {
     // Fallback to using typescript
-    compilerSetup = compilerSetup || getCompilerSetup(options.rootDir);
+    compilerSetup ||= getCompilerSetup(options.rootDir);
     const { compilerOptions, host } = compilerSetup;
 
-    return ts.resolveModuleName(path, options.basedir, compilerOptions, host).resolvedModule
-      .resolvedFileName;
+    return (
+      ts.resolveModuleName(path, options.basedir, compilerOptions, host).resolvedModule
+        ?.resolvedFileName ?? null
+    );
   }
 };

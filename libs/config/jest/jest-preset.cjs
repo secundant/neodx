@@ -17,7 +17,7 @@ module.exports = {
   extensionsToTreatAsEsm: ['.ts'],
   testPathIgnorePatterns: ['/node_modules/'],
   transformIgnorePatterns: ['/node_modules/'],
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html', 'json', 'mjs'],
+  moduleFileExtensions: ['ts', 'tsx', 'mjs', 'cjs', 'js', 'jsx', 'html', 'json'],
   passWithNoTests: true,
   displayName: 'jest',
   testEnvironment: 'node',

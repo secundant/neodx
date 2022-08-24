@@ -1,6 +1,8 @@
 import type { CompilerOptions } from 'typescript';
 
 export interface Project extends ProjectBuildMap {
+  // TODO Separate logger
+  log: LogLevel;
   env: 'production' | 'development';
   deps: ProjectDependencies;
   tsConfig: CompilerOptions | null;
@@ -75,6 +77,7 @@ export type DetectFlag = 'react' | 'jsx' | '';
 export type SupportedConfigName = 'browserlist' | 'postcss' | 'babel' | 'swc';
 export type ModuleFormat = 'cjs' | 'esm' | 'umd';
 export type ExternalType = 'all';
+export type LogLevel = 'fatal' | 'info' | 'verbose';
 
 // TODO
 export interface ExportsMeta {

@@ -1,6 +1,6 @@
 {
   "extends": "nx/presets/npm.json",
-  "npmScope": "your-org",
+  "npmScope": "neodx",
   "workspaceLayout": {
     "libsDir": "libs",
     "appsDir": "apps"
@@ -22,7 +22,8 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "output": ["{projectRoot}/dist"]
     },
     "dev": {
       "dependsOn": ["^build", "dev"]

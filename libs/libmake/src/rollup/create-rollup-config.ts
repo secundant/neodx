@@ -18,6 +18,7 @@ export interface ExtendedRollupConfig extends RollupOptions {
 export async function createRollupConfig(project: Project) {
   const {
     env,
+    log,
     sourceMap,
     packageJson,
     sourceFiles,
@@ -38,7 +39,7 @@ export async function createRollupConfig(project: Project) {
       ? createPostCssPlugin(project)
       : null;
 
-  const mainInputPlugins = compact([postcssPlugin, swcPlugin, bundleSizePlugin]);
+  const mainInputPlugins = compact([postcssPlugin, swcPlugin, log !== 'fatal' && bundleSizePlugin]);
   const mainOutputPlugins = compact([env === 'production' && swcMinifyPlugin]);
   const mainOutputOptions: OutputOptions = {
     name: packageJson.name,
@@ -57,7 +58,8 @@ export async function createRollupConfig(project: Project) {
           dir: dirname(main)
         }
       : {
-          file: main
+          file: main,
+          inlineDynamicImports: true
         })
   });
 
@@ -83,14 +85,19 @@ export async function createRollupConfig(project: Project) {
           description: `TypeScript definitions`
         },
         input: sourceFiles,
-        external,
-        plugins: [
+        external: id => external(id) || DTS_EXTERNAL.test(id),
+        plugins: compact([
           dts({
-            compilerOptions: (tsConfigJson?.compilerOptions as any) ?? void 0,
+            compilerOptions: {
+              ...tsConfigJson?.compilerOptions,
+              rootDir: tsConfig.rootDir,
+              baseUrl: tsConfig.baseUrl,
+              paths: tsConfig.paths
+            },
             respectExternal: false
           }),
-          bundleSizePlugin
-        ],
+          log !== 'fatal' && bundleSizePlugin
+        ]),
         output: [
           {
             ...outputOptions(typesFile, 'd.ts'),
@@ -138,6 +145,7 @@ function onwarn(warning: RollupWarning, warn: WarningHandler) {
 
 const ANY_CSS_LIBRARY = ['postcss', 'tailwindcss', 'sass', 'node-sass', 'less', 'stylus'];
 
+const DTS_EXTERNAL = /\.(less|s[ac]ss|css|styl)$/;
 const BUILTIN_MODULES = [
   /node:.*/,
   // eslint-disable-next-line @typescript-eslint/require-array-sort-compare

@@ -1,0 +1,9 @@
+{
+  "name": "multiple-ts",
+  "source": [
+    "src/index.ts",
+    "src/second-entry.ts"
+  ],
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs"
+}

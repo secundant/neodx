@@ -5,9 +5,9 @@ import { logger } from '../utils/logger';
 
 export async function build(project: Project) {
   const startDate = Date.now();
-  const config = await createRollupConfig(project);
+  const rollupConfigs = await createRollupConfig(project);
 
-  for (const { output, info, ...input } of config) {
+  for (const { output, info, ...input } of rollupConfigs) {
     try {
       const build = await rollup(input);
 
@@ -17,15 +17,22 @@ export async function build(project: Project) {
         } catch (error) {
           console.error(error);
           logger.fatal(`[build] Unhandled exception`, `Phase: output. Issuer: ${info.description}`);
+          throw error;
         }
       }
       await build.close();
     } catch (error) {
       console.error(error);
-      logger.warn(`Failed configuration - input`, input);
-      logger.warn(`Failed configuration - output`, ...output);
+      logger.warn(`Failed project info`, project);
+      logger.warn(`Failed configuration`, input, ...output);
       logger.fatal(`[build] Unhandled exception`, `Phase: build. Issuer: ${info.description}`);
+      throw error;
     }
   }
-  logger.info(`Done at`, `${Date.now() - startDate}ms`);
+  if (project.log !== 'fatal') {
+    logger.info(`Done at`, `${Date.now() - startDate}ms`);
+  }
+  return {
+    rollupConfigs
+  };
 }

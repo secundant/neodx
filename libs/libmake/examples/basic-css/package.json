@@ -1,0 +1,6 @@
+{
+  "name": "basic-css",
+  "devDependencies": {
+    "postcss": "*"
+  }
+}

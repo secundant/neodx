@@ -12,16 +12,19 @@ Built upon rollup and swc
 
 - [ ] Zero configuration with auto detection
   - [x] SWC additional configuration (`.swcrc`)
-  - [ ] Babel (`.babelrc` or other formats) - we should replace swc with babel when we
+  - [ ] Babel (`.babelrc` or other formats) - we should replace (or add one more step?) swc with babel when we found `.babelrc`
   - [x] CSS
     - [x] PostCSS (by default if we found `postcss.config.js` or any other pre-processor)
     - [x] SCSS, LESS, Stylus
+    - [x] Modules (`???.module.css`) and global (any other) files
 - [x] Beautiful TypeScript support
   - [x] Builds clean TypeScript definitions
   - [x] Support configuration: `baseUrl, paths, externalHelpers, target, sourceMap, experimentalDecorators`
 - [x] Multiple entries and outputs
   - [x] Different outputs: `CJS`, `ESM` (.mjs), `UMD`
   - [x] Single or multiple inputs: file, array, globs and all together
+  - [ ] Out-of-box split output on multiple entries
+  - [ ] **wip** `package.json` update suggestion: `exports` and `typesVersions`
 
 ## Installation and fast setup
 

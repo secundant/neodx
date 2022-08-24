@@ -9,12 +9,14 @@
     "dist",
     "README.md"
   ],
+  "typesVersions": {},
   "sideEffects": false,
   "scripts": {
     "typecheck": "tsc --noEmit",
     "version": "yarn version",
     "clean": "yarn dlx rimraf dist",
     "build": "rollup -c",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
     "lint": "eslint"
   },
   "peerDependenciesMeta": {
