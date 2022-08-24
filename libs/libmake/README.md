@@ -67,3 +67,9 @@ Example of package.json minimal setup
   }
 }
 ```
+
+## Temporal milestones
+
+- [ ] Replace postcss plugin with https://www.npmjs.com/package/rollup-plugin-styles
+- [ ] Add support for CSS splitting
+- [ ] Research why swc remove `.scss` extension

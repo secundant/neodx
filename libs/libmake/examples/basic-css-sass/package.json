@@ -1,0 +1,7 @@
+{
+  "name": "basic-css-sass",
+  "devDependencies": {
+    "postcss": "*",
+    "sass": "*"
+  }
+}

@@ -1,10 +1,11 @@
 {
-  "name": "multiple-ts",
+  "name": "multiple-ts-glob",
   "source": [
     "src/index.ts",
     "src/modules/*.ts",
     "src/modules/*/index.ts"
   ],
+  "types": "dist/types/index.d.ts",
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.mjs"
 }

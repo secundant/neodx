@@ -70,7 +70,13 @@ export async function createSwcConfig({
 }: Project): Promise<Options> {
   const { ScriptTarget } = await import('typescript').then(m => m.default);
   const transform: TransformConfig = {
-    decoratorMetadata: Boolean(tsConfig?.emitDecoratorMetadata)
+    decoratorMetadata: Boolean(tsConfig?.emitDecoratorMetadata),
+    react: {
+      development: env === 'development',
+      // TODO What about local libs (ex. in monorepo)?
+      // refresh: env === 'development',
+      runtime: 'classic'
+    }
   };
   const tsTargetToJSCTarget: Record<import('typescript').ScriptTarget, JscTarget> = {
     [ScriptTarget.ES3]: 'es3',
@@ -125,13 +131,9 @@ export async function createSwcConfig({
           ...transform,
           react: {
             ...transform.react,
-            development: env === 'development',
             pragma: tsConfig.jsxFactory,
             importSource: tsConfig.jsxImportSource,
-            pragmaFrag: tsConfig.jsxFragmentFactory,
-            // TODO What about local libs (ex. in monorepo)?
-            // refresh: env === 'development',
-            runtime: 'automatic'
+            pragmaFrag: tsConfig.jsxFragmentFactory
           },
           treatConstEnumAsEnum: true
         }

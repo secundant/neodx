@@ -1,3 +1,4 @@
+import { rm } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { build, scanProject } from '../../src';
 
@@ -16,6 +17,11 @@ export async function buildExample(name: string) {
     log: 'fatal'
   });
 
+  await rm(resolve(cwd, project.outDir), {
+    maxRetries: 0,
+    recursive: true,
+    force: true
+  });
   await build(project);
   process.chdir(prevCwd);
 }

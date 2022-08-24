@@ -1,5 +1,5 @@
 import { builtinModules } from 'node:module';
-import { dirname } from 'node:path';
+import { dirname, relative, resolve } from 'node:path';
 import type { OutputOptions, RollupOptions, RollupWarning, WarningHandler } from 'rollup';
 import dts from 'rollup-plugin-dts';
 import postcss from 'rollup-plugin-postcss';
@@ -19,6 +19,8 @@ export async function createRollupConfig(project: Project) {
   const {
     env,
     log,
+    cwd,
+    sourceDir,
     sourceMap,
     packageJson,
     sourceFiles,
@@ -49,12 +51,20 @@ export async function createRollupConfig(project: Project) {
     sourcemap: sourceMap
   };
 
-  const outputOptions = (main: string, extname: string): OutputOptions => ({
+  const sourceDirAbs = resolve(cwd, sourceDir);
+
+  const outputOptions = (main: string, ext: string): OutputOptions => ({
     ...(sourceFiles.length > 1
       ? {
           hoistTransitiveImports: false,
-          chunkFileNames: `_internal/[name]-[hash].${extname}`,
-          entryFileNames: `[name].${extname}`,
+          chunkFileNames: `_internal/[name]-[hash].${ext}`,
+          entryFileNames: ({ name, facadeModuleId }) => {
+            const relativeId =
+              facadeModuleId && relative(sourceDirAbs, resolve(cwd, facadeModuleId));
+            const relativeIdName = relativeId?.replace(/\.[^/.]+$/, '');
+
+            return relativeIdName ? `${relativeIdName}.${ext}` : `${name}.${ext}`;
+          },
           dir: dirname(main)
         }
       : {

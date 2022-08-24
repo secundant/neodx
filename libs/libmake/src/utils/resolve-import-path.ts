@@ -1,7 +1,20 @@
 import { access, stat } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-export const DEFAULT_RESOLVED_EXTENSION = ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs'];
+export const DEFAULT_RESOLVED_EXTENSION = [
+  '.js',
+  '.jsx',
+  '.ts',
+  '.tsx',
+  '.mjs',
+  '.cjs',
+  '.css',
+  '.scss',
+  '.sass',
+  '.less',
+  '.styl',
+  '.json'
+];
 
 /**
  * Factory for customizing resolving. Probably will be changed/extended

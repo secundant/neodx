@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "baseUrl": "src",
+    "module": "ES2022",
+    "target": "ES2022",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["src"]
+}

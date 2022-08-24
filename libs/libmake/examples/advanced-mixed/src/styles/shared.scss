@@ -1,0 +1,8 @@
+@mixin reset {
+  padding: 0;
+  margin: 0;
+}
+
+@function spacing($value) {
+  @return #{4 * $value}px;
+}

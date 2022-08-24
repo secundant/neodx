@@ -22,10 +22,12 @@ export async function build(project: Project) {
       }
       await build.close();
     } catch (error) {
-      console.error(error);
-      logger.warn(`Failed project info`, project);
-      logger.warn(`Failed configuration`, input, ...output);
       logger.fatal(`[build] Unhandled exception`, `Phase: build. Issuer: ${info.description}`);
+      console.error(error);
+      if (project.log === 'verbose') {
+        logger.warn(`Failed project info`, project);
+        logger.warn(`Failed configuration`, input, ...output);
+      }
       throw error;
     }
   }

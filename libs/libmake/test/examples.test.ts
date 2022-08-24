@@ -2,8 +2,12 @@ import { readdirSync } from 'node:fs';
 import { buildExample, EXAMPLES_BASE_URL, getExampleDistPath } from './lib/build-example';
 
 describe('examples', () => {
+  const runAll = true;
+  const includes = ['advanced-mixed'];
   const examplesNames = readdirSync(EXAMPLES_BASE_URL);
-  const testRunner = test.each(examplesNames);
+  const testRunner = test.each(
+    runAll ? examplesNames : examplesNames.filter(name => includes.includes(name))
+  );
 
   testRunner('Build example "%s"', async name => {
     await buildExample(name);
