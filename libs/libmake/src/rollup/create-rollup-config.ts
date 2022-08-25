@@ -25,7 +25,6 @@ export async function createRollupConfig(project: Project) {
     packageJson,
     sourceFiles,
     tsConfig,
-    tsConfigJson,
     outputFormats,
     deps,
     typesFile,
@@ -58,6 +57,7 @@ export async function createRollupConfig(project: Project) {
       ? {
           hoistTransitiveImports: false,
           chunkFileNames: `_internal/[name]-[hash].${ext}`,
+          assetFileNames: '[name][extname]',
           entryFileNames: ({ name, facadeModuleId }) => {
             const relativeId =
               facadeModuleId && relative(sourceDirAbs, resolve(cwd, facadeModuleId));
@@ -98,12 +98,7 @@ export async function createRollupConfig(project: Project) {
         external: id => external(id) || DTS_EXTERNAL.test(id),
         plugins: compact([
           dts({
-            compilerOptions: {
-              ...tsConfigJson?.compilerOptions,
-              rootDir: tsConfig.rootDir,
-              baseUrl: tsConfig.baseUrl,
-              paths: tsConfig.paths
-            },
+            compilerOptions: tsConfig,
             respectExternal: false
           }),
           log !== 'fatal' && bundleSizePlugin

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "moduleResolution": "Node",
     "jsx": "react-jsx",
     "baseUrl": "src",
     "module": "ES2022",

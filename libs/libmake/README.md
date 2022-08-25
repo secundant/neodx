@@ -6,7 +6,9 @@
 
 > In early development
 
-Built upon rollup and swc
+One command, one dependency and zero configuration to build your libraries.
+
+Built upon [Rollup](https://github.com/rollup/rollup) and [SWC](https://swc.rs/).
 
 ## Features
 
@@ -16,7 +18,7 @@ Built upon rollup and swc
   - [x] CSS
     - [x] PostCSS (by default if we found `postcss.config.js` or any other pre-processor)
     - [x] SCSS, LESS, Stylus
-    - [x] Modules (`???.module.css`) and global (any other) files
+    - [x] Modules (`my-file.module.css`) and global (any other) files
 - [x] Beautiful TypeScript support
   - [x] Builds clean TypeScript definitions
   - [x] Support configuration: `baseUrl, paths, externalHelpers, target, sourceMap, experimentalDecorators`
@@ -68,8 +70,34 @@ Example of package.json minimal setup
 }
 ```
 
+## Known issues and limitations
+
+### Slow TypeScript definitions and CSS build time
+
+We use `rollup-plugin-dts` and `rollup-plugin-postcss`,
+both of them significant slow down the build time.
+
+Probably, we will change our setup with other solutions or even with self-made plugins in future.
+
+### Limited CSS support - single file only, no imports in generated code
+
+Unfortunately, currently we can't provide great CSS output :(
+
+Supported features:
+
+- CSS modules (`my-file.module.css`), global styles
+- Scss, less, stylus
+- PostCSS configuration
+- Minification
+
+Unsupported:
+
+- Multiple entries - [see our "advanced-mixed" example](./examples/advanced-mixed)
+- Import statements in built code, which is required for DX with multiple entries
+
 ## Temporal milestones
 
-- [ ] Replace postcss plugin with https://www.npmjs.com/package/rollup-plugin-styles
+- [x] `[rejected]` Replace postcss plugin with https://www.npmjs.com/package/rollup-plugin-styles
 - [ ] Add support for CSS splitting
 - [ ] Research why swc remove `.scss` extension
+- [ ] Fork `rollup-plugin-styles`
