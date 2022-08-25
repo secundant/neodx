@@ -1,5 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn nx run-many --all typeheck
-yarn nx run-main --all test
+yarn nx run-many --all --target typeheck
+yarn nx run-main --all --target test
