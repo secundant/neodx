@@ -1,22 +1,40 @@
+import { resolve } from 'path';
+import { dirSync } from 'tmp';
+import { FsTree } from '@/fs/tree/impl/fs-tree';
+import { ReadonlyVirtualFsTree } from '@/fs/tree/impl/readonly-virtual-fs-tree';
+import { forceRecursiveRemove, forceWriteFile } from '@/utils/node-api';
+import { VirtualTree } from './impl/virtual-tree';
 import { ContentLike, FileChangeType, Tree } from './types';
-import { VirtualTree } from './virtual-tree';
 
 describe('Tree', () => {
-  describe('VirtualTree', () => {
+  describe.each([
+    {
+      name: 'Simple VirtualTree',
+      factory: createSimpleVirtualTree
+    },
+    {
+      name: 'Simple FsTree',
+      factory: () =>
+        applyVirtualTreeOnFsLikeTree(new FsTree(dirSync().name), createSimpleVirtualTree()),
+      cleanup: (tree: Tree) => forceRecursiveRemove(tree.root)
+    },
+    {
+      name: 'Simple ReadonlyFsTree',
+      factory: () =>
+        applyVirtualTreeOnFsLikeTree(
+          new ReadonlyVirtualFsTree(dirSync().name),
+          createSimpleVirtualTree()
+        ),
+      cleanup: (tree: Tree) => forceRecursiveRemove(tree.root)
+    }
+  ])(`$name`, ({ factory, cleanup }) => {
     let fs!: Tree;
 
-    beforeEach(() => {
-      fs = new VirtualTree('/', [
-        [
-          'parent',
-          [
-            ['parent-file.ts', 'parent content'],
-            ['child', [['child-file.ts', 'child content']]]
-          ]
-        ],
-        ['root-file.ts', 'root content']
-      ]);
+    beforeEach(async () => {
+      fs = await factory();
     });
+
+    afterEach(() => cleanup?.(fs));
 
     test('should have initial state', async () => {
       expect(await fs.getChanges()).toEqual([]);
@@ -77,6 +95,28 @@ describe('Tree', () => {
     });
   });
 });
+
+async function applyVirtualTreeOnFsLikeTree(fs: Tree, source: VirtualTree) {
+  for (const [file, content] of source.toMap()) {
+    const path = resolve(fs.root, file);
+
+    await forceWriteFile(path, content);
+  }
+  return fs;
+}
+
+function createSimpleVirtualTree() {
+  return new VirtualTree('/', [
+    [
+      'parent',
+      [
+        ['parent-file.ts', 'parent content'],
+        ['child', [['child-file.ts', 'child content']]]
+      ]
+    ],
+    ['root-file.ts', 'root content']
+  ]);
+}
 
 // eslint-disable-next-line @typescript-eslint/require-array-sort-compare
 const expectArrayEq = <T>(left: T[], right: T[]) => expect(left.sort()).toEqual(right.sort());

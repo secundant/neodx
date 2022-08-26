@@ -1,13 +1,13 @@
 import { dirname } from 'path';
 import { join, relative, sep } from 'node:path';
-import { isNotEmpty, uniq } from '../../utils/core';
-import type { ContentLike, FileChange, Tree } from './types';
-import { FileChangeType } from './types';
+import { isNotEmpty, uniq } from '../../../utils/core';
+import type { ContentLike, FileChange, Tree } from '../types';
+import { FileChangeType } from '../types';
 
 export abstract class BaseTree implements Tree {
   protected changes = new Map<string, InternalChange>();
 
-  protected constructor(readonly root: string) {}
+  public constructor(readonly root: string) {}
 
   async applyChanges(): Promise<void> {
     for (const change of await this.getChanges()) {

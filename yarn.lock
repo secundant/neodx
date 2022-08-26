@@ -1293,8 +1293,10 @@ __metadata:
     "@neodx/libmake": "workspace:*"
     "@types/jest": 28.1.8
     "@types/node": 18.7.13
+    "@types/tmp": ^0
     eslint: 8.22.0
     eslint-kit: 6.5.0
+    tmp: 0.2.1
     typescript: 4.8.2
   languageName: unknown
   linkType: soft
@@ -2119,6 +2121,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 8af0a5e1896c4d9c6725a7ba41e4d220c1b2cd25a0252872ce12c4c1d939b91ae7d03e074b8afd61bebd363facde89ab3e55123245f7ad273b2837945c6ceeef
+  languageName: node
+  linkType: hard
+
+"@types/tmp@npm:^0":
+  version: 0.2.3
+  resolution: "@types/tmp@npm:0.2.3"
+  checksum: 0ca45e99b3b3c6959d5c4f4555f73c8007db540cfb0fbbb9373217f9ab85e67eef75193f51a1d6564b0ee6c6f5ffa259d1034d7f7530a5b7ce80acb94cfc4daa
   languageName: node
   linkType: hard
 
@@ -9902,7 +9911,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tmp@npm:~0.2.1":
+"tmp@npm:0.2.1, tmp@npm:~0.2.1":
   version: 0.2.1
   resolution: "tmp@npm:0.2.1"
   dependencies:

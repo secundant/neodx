@@ -12,17 +12,20 @@
   "scripts": {
     "version": "yarn version",
     "clean": "yarn dlx rimraf dist",
-    "build": "microbundle",
+    "build": "libmake",
     "test": "jest",
-    "lint": "eslint"
+    "lint": "eslint",
+    "dev": "libmake -w"
   },
   "devDependencies": {
     "@neodx/config": "workspace:*",
     "@neodx/libmake": "workspace:*",
     "@types/jest": "28.1.8",
     "@types/node": "18.7.13",
+    "@types/tmp": "^0",
     "eslint": "8.22.0",
     "eslint-kit": "6.5.0",
+    "tmp": "0.2.1",
     "typescript": "4.8.2"
   }
 }

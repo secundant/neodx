@@ -1,8 +1,11 @@
 import { join } from 'node:path';
+import type { FileChange } from '../types';
+import { FileChangeType } from '../types';
 import { BaseTree } from './base-tree';
-import type { FileChange } from './types';
-import { FileChangeType } from './types';
 
+/**
+ * In-memory files tree, useful for tests or dry runs
+ */
 export class VirtualTree extends BaseTree {
   private virtualFs: Map<string, Buffer>;
 
@@ -11,9 +14,18 @@ export class VirtualTree extends BaseTree {
     this.virtualFs = new Map(initial.flatMap(node => toEntry(node)));
   }
 
+  toMap() {
+    return new Map(this.virtualFs);
+  }
+
   applyChange({ name, type, content }: FileChange): Promise<void> {
     if (type === FileChangeType.DELETE) {
       this.virtualFs.delete(name);
+      for (const name of this.virtualFs.keys()) {
+        if (name.startsWith(`${name}/`)) {
+          this.virtualFs.delete(name);
+        }
+      }
     } else {
       this.virtualFs.set(name, content!);
     }
