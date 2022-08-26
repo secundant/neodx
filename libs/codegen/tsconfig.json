@@ -1,7 +1,7 @@
 {
-  "extends": "@my-org/config/tsconfig.json",
+  "extends": "@neodx/config/tsconfig.json",
   "compilerOptions": {
-    "types": ["node"],
+    "types": ["node", "jest"],
     "baseUrl": "src",
     "rootDir": ".",
     "allowSyntheticDefaultImports": true
