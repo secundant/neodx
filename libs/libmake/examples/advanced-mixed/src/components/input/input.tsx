@@ -1,7 +1,6 @@
-// eslint-disable-next-line import/no-unresolved
 import { AriaAttributes, ChangeEvent } from 'react';
+// eslint-disable-next-line import/no-unresolved
 import { clsx } from '@/utils/clsx';
-// @ts-expect-error ignoring modules
 import styles from './input.module.scss';
 
 export interface InputProps extends AriaAttributes {

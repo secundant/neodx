@@ -90,7 +90,8 @@ export async function createRollupConfig(project: Project) {
       }))
     },
     tsConfig &&
-      typesFile && {
+      typesFile &&
+      tsConfig.declaration !== false && {
         info: {
           description: `TypeScript definitions`
         },

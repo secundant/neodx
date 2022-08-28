@@ -1,6 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
 import { clsx } from '@/utils/clsx';
-// @ts-expect-error ignoring modules
 import styles from './button.module.scss';
 
 export interface ButtonProps {
