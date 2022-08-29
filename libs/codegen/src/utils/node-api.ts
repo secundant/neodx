@@ -1,4 +1,4 @@
-import { access, mkdir, open, rm, stat, writeFile } from 'fs/promises';
+import { access, mkdir, rm, stat, writeFile } from 'fs/promises';
 import { dirname } from 'path';
 import type { Stats } from 'fs';
 
@@ -19,7 +19,8 @@ export const forceWriteFile = (path: string, content: Buffer) =>
  * Ensures
  */
 
-export const ensureFile = (path: string) => ensureDir(dirname(path)).then(() => open(path, 'w'));
+export const ensureFile = (path: string) =>
+  ensureDir(dirname(path)).then(() => writeFile(path, ''));
 
 export async function ensureDir(path: string) {
   if (!(await exists(path))) {

@@ -1296,6 +1296,7 @@ __metadata:
     "@types/tmp": ^0
     eslint: 8.22.0
     eslint-kit: 6.5.0
+    jsonc-parser: 3.1.0
     tmp: 0.2.1
     typescript: 4.8.2
   languageName: unknown
@@ -6948,6 +6949,13 @@ __metadata:
   version: 3.0.0
   resolution: "jsonc-parser@npm:3.0.0"
   checksum: 1df2326f1f9688de30c70ff19c5b2a83ba3b89a1036160da79821d1361090775e9db502dc57a67c11b56e1186fc1ed70b887f25c5febf9a3ec4f91435836c99d
+  languageName: node
+  linkType: hard
+
+"jsonc-parser@npm:3.1.0":
+  version: 3.1.0
+  resolution: "jsonc-parser@npm:3.1.0"
+  checksum: 81b00c565c60cb1b400523a918d42ad9c7bb3d9cf34c708bf78d37c8c496ecd670c3ff8828f2f60aa6e6627ef4287982794ddf92261ea71e320973c54b29fb22
   languageName: node
   linkType: hard
 

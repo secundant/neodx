@@ -1,4 +1,3 @@
-import { join } from 'node:path';
 import type { FileChange } from '../types';
 import { FileChangeType } from '../types';
 import { BaseTree } from './base-tree';
@@ -7,11 +6,13 @@ import { BaseTree } from './base-tree';
  * In-memory files tree, useful for tests or dry runs
  */
 export class VirtualTree extends BaseTree {
-  private virtualFs: Map<string, Buffer>;
+  private readonly virtualFs: Map<string, Buffer>;
 
-  constructor(readonly root: string, initial: VirtualNodesList = []) {
+  constructor(readonly root: string, initial: Record<string, string> = {}) {
     super(root);
-    this.virtualFs = new Map(initial.flatMap(node => toEntry(node)));
+    this.virtualFs = new Map(
+      Object.entries(initial).map(([path, content]) => [path, Buffer.from(content)])
+    );
   }
 
   toMap() {
@@ -61,14 +62,3 @@ export class VirtualTree extends BaseTree {
       .map(name => name.split(`${path}/`)[1].split('/')[0]);
   }
 }
-
-type VirtualNodesList = VirtualNode[];
-type VirtualNode = [string, string | VirtualNodesList];
-
-const toEntry = ([name, value]: VirtualNode, base = ''): [string, Buffer][] => {
-  const path = join(base, name);
-
-  return Array.isArray(value)
-    ? value.flatMap(node => toEntry(node, path))
-    : [[path, Buffer.from(value)]];
-};

@@ -1,6 +1,6 @@
 import { dirname } from 'path';
 import { join, relative, sep } from 'node:path';
-import { isNotEmpty, uniq } from '../../../utils/core';
+import { isNotEmpty, uniq } from '@/utils/core';
 import type { ContentLike, FileChange, Tree } from '../types';
 import { FileChangeType } from '../types';
 
@@ -22,7 +22,7 @@ export abstract class BaseTree implements Tree {
     if (this.isDeleted(normalized)) {
       return false;
     }
-    if (this.getNotDeletedChangesStartsFrom(normalized).length > 0) {
+    if (this.changes.has(path) || this.getNotDeletedChangesStartsFrom(normalized).length > 0) {
       return true;
     }
     return this.existsImpl(normalized);
@@ -31,6 +31,10 @@ export abstract class BaseTree implements Tree {
   async isFile(path: string): Promise<boolean> {
     const normalized = this.normalizePath(path);
 
+    // Is created or updated file
+    if (this.changes.has(path) && !this.isDeleted(normalized)) {
+      return true;
+    }
     return !this.isDeleted(normalized) && this.isFileImpl(normalized);
   }
 

@@ -1,5 +1,5 @@
-import { FsTree } from '@/fs/tree/impl/fs-tree';
-import { VirtualTree } from '@/fs/tree/impl/virtual-tree';
+import { FsTree } from '@/tree/impl/fs-tree';
+import { VirtualTree } from '@/tree/impl/virtual-tree';
 import type { FileChange } from '../types';
 import { BaseTree } from './base-tree';
 

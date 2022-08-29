@@ -1,5 +1,5 @@
-export type { FileChange, Tree } from './fs/tree';
-export { FileChangeType, FsTree, ReadonlyVirtualFsTree, VirtualTree } from './fs/tree';
+export type { FileChange, Tree } from './tree';
+export { FileChangeType, FsTree, ReadonlyVirtualFsTree, VirtualTree } from './tree';
 export {
   assertDir,
   assertFile,
