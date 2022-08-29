@@ -99,7 +99,23 @@ export async function createRollupConfig(project: Project) {
         external: id => external(id) || DTS_EXTERNAL.test(id),
         plugins: compact([
           dts({
-            compilerOptions: tsConfig,
+            /**
+             * We extend user tsconfig for prevent errors and decrease build time
+             */
+            compilerOptions: {
+              ...tsConfig,
+              // prevent errors
+              noEmit: false,
+              noEmitHelpers: false,
+              skipLibCheck: true,
+              skipDefaultLibCheck: true,
+              emitDeclarationOnly: true,
+              checkJs: false,
+              // decrease build time
+              isolatedModules: true,
+              incremental: true,
+              tsBuildInfoFile: resolve(cwd, 'node_modules/.cache/libmake')
+            },
             respectExternal: false
           }),
           log !== 'fatal' && bundleSizePlugin
@@ -141,7 +157,8 @@ function onwarn(warning: RollupWarning, warn: WarningHandler) {
     console.log(
       `Failed to resolve the module ${warning.source} imported by ${warning.importer}` +
         `\nIs the module installed? Note:` +
-        `\n ↳ to inline a module into your bundle, install it to "devDependencies".` +
+        // TODO Implement flexible externals configuration
+        // `\n ↳ to inline a module into your bundle, install it to "devDependencies".` +
         `\n ↳ to depend on a module via import/require, install it to "dependencies".`
     );
   } else {
