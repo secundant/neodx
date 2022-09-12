@@ -21,6 +21,9 @@
     }
   },
   "targetDefaults": {
+    "prepublish": {
+      "dependsOn": ["^build"]
+    },
     "build": {
       "dependsOn": ["^build"],
       "output": ["{projectRoot}/dist"]

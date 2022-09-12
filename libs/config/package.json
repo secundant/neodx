@@ -1,15 +1,14 @@
 {
   "name": "@neodx/config",
   "packageManager": "yarn@3.2.0",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "files": [
     "tsconfig.json",
     "README.md"
   ],
   "sideEffects": false,
   "scripts": {
-    "lint": "eslint",
-    "version": "yarn version"
+    "lint": "eslint"
   },
   "devDependencies": {
     "@types/eslint": "^8.4.6",

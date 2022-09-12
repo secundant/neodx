@@ -34,8 +34,8 @@ export function serializeJson<T extends BaseJsonObject>(
   return JSON.stringify(input, replacer, spaces) + '\n';
 }
 
-const parseJsonAsJSON = <T = any>(input: string) => JSON.parse(input) as T;
-const parseJsonAsJSONC = <T = any>(input: string, options?: ParseJsonParams) => {
+const parseJsonAsJSON = <T = unknown>(input: string) => JSON.parse(input) as T;
+const parseJsonAsJSONC = <T = unknown>(input: string, options?: ParseJsonParams) => {
   const errors: ParseError[] = [];
   const result: T = parse(input, errors, options);
 

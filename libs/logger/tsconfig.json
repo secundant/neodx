@@ -1,0 +1,14 @@
+{
+  "extends": "@neodx/config/tsconfig.json",
+  "compilerOptions": {
+    "types": ["node", "jest"],
+    "baseUrl": "src",
+    "rootDir": ".",
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["dist", "node_modules"]
+}

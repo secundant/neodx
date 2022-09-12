@@ -1,7 +1,7 @@
 {
   "name": "@neodx/svg-sprite",
   "packageManager": "yarn@3.2.0",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Build optimized SVG sprites without pain",
   "source": "src/index.ts",
   "main": "dist/cjs/index.cjs",
@@ -21,7 +21,6 @@
   "sideEffects": false,
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "version": "yarn version",
     "clean": "yarn dlx rimraf dist",
     "build": "libmake",
     "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
