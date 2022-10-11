@@ -1,0 +1,39 @@
+name: Validate changes in PR
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  nx:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: nrwl/nx-set-shas@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Run NX checks
+        run: |
+          yarn nx format:check
+          yarn nx workspace-lint
+          yarn nx affected --target lint --parallel 3
+          yarn nx affected --target test --parallel 3 --ci --code-coverage
+          yarn nx affected --target build --parallel 3
+          yarn nx affected --target typecheck --parallel 3
