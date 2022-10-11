@@ -28,9 +28,9 @@ jobs:
 
       - name: Run NX checks
         run: |
-          yarn nx format:check
-          yarn nx workspace-lint
-          yarn nx affected --target lint --parallel 3
-          yarn nx affected --target test --parallel 3 --ci --code-coverage
-          yarn nx affected --target build --parallel 3
-          yarn nx affected --target typecheck --parallel 3
+          yarn nx --base origin/main format:check
+          yarn nx --base origin/main workspace-lint
+          yarn nx affected --base origin/main --target lint --parallel 3
+          yarn nx affected --base origin/main --target test --parallel 3 --ci --code-coverage
+          yarn nx affected --base origin/main --target build --parallel 3
+          yarn nx affected --base origin/main --target typecheck --parallel 3
