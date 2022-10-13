@@ -2,12 +2,16 @@
   "name": "@neodx/logger",
   "packageManager": "yarn@3.2.0",
   "version": "0.0.0",
+  "private": true,
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "files": [
     "dist",
     "README.md"
   ],
+  "publishConfig": {
+    "access": "restricted"
+  },
   "sideEffects": false,
   "scripts": {
     "typecheck": "tsc --noEmit",

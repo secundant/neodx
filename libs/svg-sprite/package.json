@@ -61,15 +61,5 @@
     "prettier": {
       "optional": true
     }
-  },
-  "nx": {
-    "targets": {
-      "dev": {
-        "dependsOn": [
-          "^build",
-          "dev"
-        ]
-      }
-    }
   }
 }
