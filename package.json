@@ -20,18 +20,21 @@
   "scripts": {
     "clean-node_modules": "yarn dlx rimraf '**/node_modules'",
     "check-install": "yarn dlx @yarnpkg/doctor .",
-    "postinstall": "is-ci || yarn husky install"
+    "postinstall": "is-ci || yarn husky install",
+    "release-version": "yarn changeset version && yarn nx format:write",
+    "release-publish": "yarn nx affected:build && yarn changeset publish"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.0.3",
-    "@commitlint/config-conventional": "17.0.3",
-    "@nrwl/workspace": "14.6.0",
+    "@changesets/cli": "2.25.0",
+    "@commitlint/cli": "17.1.2",
+    "@commitlint/config-conventional": "17.1.0",
+    "@nrwl/workspace": "14.8.4",
     "husky": "8.0.1",
     "is-ci": "3.0.1",
     "lint-staged": "13.0.3",
-    "nx": "14.6.0",
+    "nx": "14.8.4",
     "prettier": "2.7.1",
-    "typescript": "4.8.2"
+    "typescript": "4.8.4"
   },
   "dependenciesMeta": {
     "core-js": {

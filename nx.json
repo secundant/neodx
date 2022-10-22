@@ -21,11 +21,8 @@
     }
   },
   "targetDefaults": {
-    "prepublish": {
-      "dependsOn": ["^build"]
-    },
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "^test", "^lint", "^typecheck"],
       "output": ["{projectRoot}/dist"]
     },
     "dev": {

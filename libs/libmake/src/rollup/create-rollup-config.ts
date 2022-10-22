@@ -152,6 +152,7 @@ const createExternal = ({ deps }: Project) => {
 };
 
 function onwarn(warning: RollupWarning, warn: WarningHandler) {
+  // TODO Describe that message
   // https://github.com/rollup/rollup/blob/0fa9758cb7b1976537ae0875d085669e3a21e918/src/utils/error.ts#L324
   if (warning.code === 'UNRESOLVED_IMPORT') {
     console.log(

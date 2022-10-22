@@ -14,11 +14,8 @@
 
 ## Installation
 
-```shell
-yarn add -D @neodx/svg-sprite
-# or
-npm i -D @neodx/svg-sprite
-```
+- Yarn: `yarn add -D @neodx/svg-sprite`
+- NPM: `npm i -D @neodx/svg-sprite`
 
 ## Getting started
 
