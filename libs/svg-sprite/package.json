@@ -1,7 +1,7 @@
 {
   "name": "@neodx/svg-sprite",
   "packageManager": "yarn@3.2.0",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Build optimized SVG sprites without pain",
   "source": "src/index.ts",
   "main": "dist/cjs/index.cjs",

@@ -1,7 +1,7 @@
 {
   "name": "@neodx/codegen",
   "packageManager": "yarn@3.2.0",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "files": [
