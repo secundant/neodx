@@ -1,10 +1,10 @@
 import { join } from 'node:path';
-import { createPackageTree } from '@/testing-utils/create-package-tree';
 import {
   createTmpTree,
   createTmpTreeContext,
   writeFilesFromVirtualTreeSource
 } from '@/testing-utils/create-tmp-tree-context';
+import { addPackageToTree } from '@/testing-utils/package';
 import { FsTree } from '@/tree/impl/fs-tree';
 import { ReadonlyVirtualFsTree } from '@/tree/impl/readonly-virtual-fs-tree';
 import { readTreeJson, writeTreeJson } from '@/tree/utils/json';
@@ -183,7 +183,7 @@ describe('Tree', () => {
     const tree = createTmpTreeContext(() =>
       writeFilesFromVirtualTreeSource(createTmpTree(FsTree), createSimpleVirtualTree())
     );
-    const packageTree = createTmpTreeContext(createPackageTree);
+    const packageTree = createTmpTreeContext(() => addPackageToTree(createTmpTree()));
 
     test('should read and write json', async () => {
       const fs = tree.get();
