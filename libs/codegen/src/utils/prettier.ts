@@ -14,6 +14,7 @@ export async function tryFormatPrettier(path: string, content: string) {
     ...resolvedOptions
   };
 
+  // TODO Move to arguments as something like "transformOptions"
   if (path.endsWith('.swcrc')) {
     prettierOptions.parser = 'json';
   }
