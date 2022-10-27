@@ -1,107 +1,31 @@
 import type { Tree } from '@/tree';
 import { readTreeJson, writeTreeJson } from '@/tree/utils/json';
+import type { DependencyTypeName, PackageJsonDependencies } from '@/utils/package-json';
+import { addPackageJsonDependencies, removePackageJsonDependencies } from '@/utils/package-json';
 
-/**
- * Add any missing dependency to package.json
- * @example
- * // before: { dependencies: { 'react': '*' } }
- * addPackageJsonDependencies(
- *    tree,
- *    'package.json',
- *    { dependencies: { 'react-dom': '*' }, devDependencies: { 'eslint': '*' } }
- * )
- * // after: { dependencies: { 'react': '*', 'react-dom': '*' }, devDependencies: { 'eslint': '*' } }
- */
-export async function addPackageJsonDependencies(
+export async function addTreePackageJsonDependencies(
   tree: Tree,
-  dependencies: PackageJsonDependencies,
-  path = 'package.json'
+  deps: PackageJsonDependencies,
+  name = 'package.json'
 ) {
-  const current = await readTreeJson<PackageJsonDependencies>(tree, path);
-  const dependenciesEntriesToAppend = Object.entries(dependencies)
-    .map(([type, dependencies]) => [
-      type,
-      dependenciesFilters[type as DependencyTypeName](dependencies, current)
-    ])
-    .filter((entry): entry is [DependencyTypeName, DependenciesRecord] => entry[1] !== null);
+  const current = await readTreeJson(tree, name);
 
-  if (dependenciesEntriesToAppend.length > 0) {
-    await writeTreeJson(tree, path, {
-      ...current,
-      ...sortObjectByKeys(
-        Object.fromEntries(
-          dependenciesEntriesToAppend.map(([type, appendedDependencies]) => [
-            type,
-            {
-              ...current[type]!,
-              ...appendedDependencies
-            }
-          ])
-        )
-      )
-    });
-    return true;
-  }
-  return false;
+  return tryWrite(tree, name, addPackageJsonDependencies(current, deps));
 }
 
 export async function removeTreePackageJsonDependencies(
   tree: Tree,
-  dependencies: Partial<Record<DependencyTypeName, string[]>>,
-  path = 'package.json'
+  deps: Partial<Record<DependencyTypeName, string[]>>,
+  name = 'package.json'
 ) {
-  const packageJson = await readTreeJson<PackageJsonDependencies>(tree, path);
-  const dependenciesEntriesToRemove = Object.entries(dependencies).map(([type, list]) => [
-    type,
-    [packageJson] // list.filter(name => !packageJson[type] || !packageJson)
-  ]);
+  const current = await readTreeJson(tree, name);
 
-  return dependenciesEntriesToRemove;
+  return tryWrite(tree, name, removePackageJsonDependencies(current, deps));
 }
 
-const sortObjectByKeys = <T extends object>(obj: T) =>
-  // eslint-disable-next-line @typescript-eslint/require-array-sort-compare
-  Object.keys(obj)
-    .sort()
-    .reduce(
-      (result, key) => ({
-        ...result,
-        [key]: obj[key as keyof T]
-      }),
-      {}
-    ) as T;
-
-const isDependencyExists = (
-  packageJson: PackageJsonDependencies,
-  type: DependencyTypeName,
-  name: string
-) => Object.hasOwn(packageJson, type) && Object.hasOwn(packageJson[type]!, name);
-
-const createNotFoundDependenciesFilter =
-  (excluded: DependencyTypeName[]) =>
-  (target: DependenciesRecord, packageJson: PackageJsonDependencies) =>
-    Object.fromEntries(
-      Object.entries(target).filter(([name]) =>
-        excluded.every(type => !isDependencyExists(packageJson, type, name))
-      )
-    );
-
-const dependenciesFilters = {
-  dependencies: createNotFoundDependenciesFilter(['dependencies', 'devDependencies']),
-  devDependencies: createNotFoundDependenciesFilter(['dependencies', 'devDependencies']),
-  peerDependencies: createNotFoundDependenciesFilter(['dependencies', 'peerDependencies']),
-  optionalDependencies: createNotFoundDependenciesFilter([
-    'dependencies',
-    'peerDependencies',
-    'optionalDependencies'
-  ])
+const tryWrite = async <T>(tree: Tree, name: string, value: T | null) => {
+  if (value) {
+    await writeTreeJson(tree, name, value);
+  }
+  return Boolean(value);
 };
-
-type PackageJsonDependencies = Partial<Record<DependencyTypeName, Record<string, string>>>;
-type DependenciesRecord = Record<string, string>;
-
-type DependencyTypeName =
-  | 'dependencies'
-  | 'devDependencies'
-  | 'peerDependencies'
-  | 'optionalDependencies';

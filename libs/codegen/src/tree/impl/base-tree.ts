@@ -1,6 +1,6 @@
 import { dirname } from 'path';
 import { join, relative, sep } from 'node:path';
-import { isNotEmpty, uniq } from '@/utils/core';
+import { isNotFalsy, uniq } from '@/utils/core';
 import type { ContentLike, FileChange, Tree } from '../types';
 import { FileChangeType } from '../types';
 
@@ -140,7 +140,7 @@ export abstract class BaseTree implements Tree {
       })
     );
 
-    return changes.filter(isNotEmpty);
+    return changes.filter(isNotFalsy);
   }
 
   abstract applyChange(changes: FileChange): Promise<void>;
@@ -179,7 +179,7 @@ export abstract class BaseTree implements Tree {
       ? this.getAllChangesNames().map(getRootDirName)
       : this.getChangesStartsFrom(path)
           .map(name => name.split(`${path}/`).at(1))
-          .filter(isNotEmpty)
+          .filter(isNotFalsy)
           .map(getRootDirName);
   }
 
