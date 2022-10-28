@@ -1,7 +1,15 @@
 import type { Options } from 'prettier';
 import prettier from 'prettier';
 
-export async function tryFormatPrettier(path: string, content: string) {
+export interface TransformPrettierOptions {
+  (path: string, options: Options): Partial<Options> | void;
+}
+
+export async function tryFormatPrettier(
+  path: string,
+  content: string,
+  transform: TransformPrettierOptions = markSwcRcAsJson
+) {
   const resolvedOptions = await prettier.resolveConfig(path, {
     editorconfig: true
   });
@@ -14,10 +22,7 @@ export async function tryFormatPrettier(path: string, content: string) {
     ...resolvedOptions
   };
 
-  // TODO Move to arguments as something like "transformOptions"
-  if (path.endsWith('.swcrc')) {
-    prettierOptions.parser = 'json';
-  }
+  Object.assign(prettierOptions, transform(path, prettierOptions));
   const support = await prettier.getFileInfo(path);
 
   if (support.ignored || !support.inferredParser) {
@@ -29,7 +34,9 @@ export async function tryFormatPrettier(path: string, content: string) {
     if (!(error instanceof Error)) {
       throw error;
     }
-    console.warn(`Could not format ${prettierOptions} with prettier. Error: "${error.message}"`);
+    console.warn(`Could not format ${path} with prettier. Error: "${error.message}"`);
     return null;
   }
 }
+
+const markSwcRcAsJson = (path: string) => (path.endsWith('.swcrc') ? { parser: 'json' } : {});
