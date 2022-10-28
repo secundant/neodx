@@ -20,11 +20,7 @@ export async function formatAllChangedFilesInTree(tree: Tree) {
  * Writes single file to tree with formatted content
  * @example await tryWriteTreeFileFormattedWithPrettier(myTree, 'foo/bar.js', 'const a= '1')
  */
-export async function tryWriteTreeFileFormattedWithPrettier(
-  tree: Tree,
-  path: string,
-  content: string
-) {
+async function tryWriteTreeFileFormattedWithPrettier(tree: Tree, path: string, content: string) {
   const absPath = join(tree.root, path);
   const formattedContent = await tryFormatPrettier(absPath, content);
 
