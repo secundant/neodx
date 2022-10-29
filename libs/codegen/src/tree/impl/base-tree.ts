@@ -1,4 +1,5 @@
 import { dirname } from 'path';
+import chalk from 'chalk';
 import { join, relative, sep } from 'node:path';
 import { isNotFalsy, uniq } from '@/utils/core';
 import type { ContentLike, FileChange, Tree } from '../types';
@@ -12,6 +13,9 @@ export abstract class BaseTree implements Tree {
   async applyChanges(): Promise<void> {
     for (const change of await this.getChanges()) {
       await this.applyChange(change);
+      if (process.env.NODE_ENV !== 'test') {
+        console.log(`${printLabelsMap[change.type]} ${change.name}`);
+      }
     }
     this.changes.clear();
   }
@@ -193,6 +197,12 @@ export abstract class BaseTree implements Tree {
 }
 
 const getRootDirName = (path: string) => path.split('/')[0];
+
+const printLabelsMap = {
+  [FileChangeType.CREATE]: chalk.bgGreen(' CREATE '),
+  [FileChangeType.UPDATE]: chalk.bgYellow(' UPDATE '),
+  [FileChangeType.DELETE]: chalk.bgRedBright(' DELETE ')
+};
 
 export interface InternalChange {
   content: Buffer | null;

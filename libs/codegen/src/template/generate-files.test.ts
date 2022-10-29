@@ -4,6 +4,8 @@ import { createTmpTreeContext } from '@/testing-utils/create-tmp-tree-context';
 import { VirtualTree } from '@/tree';
 import { readTreeJson } from '@/tree/utils/json';
 
+const __dirname = new URL('.', import.meta.url).pathname;
+
 describe('generate-files', () => {
   const treeContext = createTmpTreeContext(async () => {
     const tree = new VirtualTree('/');
@@ -31,7 +33,14 @@ describe('generate-files', () => {
     const tree = treeContext.get();
 
     expect(await tree.readDir()).toEqual(
-      expect.arrayContaining(['.gitignore', 'raw.txt', 'template.json', 'foo'])
+      expect.arrayContaining([
+        '.gitignore',
+        'raw.txt',
+        '[name].[value].untouched.ts.tmpl',
+        '[name].prefixed-untouched.ts.ejs',
+        'template.json',
+        'foo'
+      ])
     );
   });
 

@@ -2,6 +2,7 @@ import { render } from 'ejs';
 import { readFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
 import type { Tree } from '@/tree';
+import { casex } from '@/utils/casex';
 import { has, uniq } from '@/utils/core';
 import { deepReadDir } from '@/utils/node-api';
 
@@ -20,13 +21,16 @@ export async function generateFiles(
   }
   await Promise.all(
     files.map(async filePath => {
+      const keepUntouched = keepFileUntouchedRe.test(filePath);
+      const relativePath = relative(sourcePath, filePath).replace(keepFileUntouchedRe, '');
       const outputFilePath = join(
         outputPath,
-        injectTemplateVariables(relative(sourcePath, filePath), variables)
+        keepUntouched ? relativePath : injectTemplateVariables(relativePath, variables)
       );
-      const content = binaryExtensions.has(extname(outputFilePath))
-        ? await readFile(filePath)
-        : await renderTemplateFromFile(filePath, variables);
+      const content =
+        keepUntouched || binaryExtensions.has(extname(outputFilePath))
+          ? await readFile(filePath)
+          : await renderTemplateFromFile(filePath, variables);
 
       await tree.write(outputFilePath, content);
     })
@@ -53,9 +57,19 @@ export function injectTemplateVariables(template: string, variables: Record<stri
 const renderTemplateFromFile = async (path: string, variables: Record<string, unknown>) => {
   const content = await readFile(path, 'utf-8');
 
-  return render(content, variables, { async: true });
+  return render(
+    content,
+    {
+      ...variables,
+      $: {
+        casex
+      }
+    },
+    { async: true }
+  );
 };
 
+const keepFileUntouchedRe = /(\._keep_$)|(_keep_\.)/i;
 const templateExtensionRe = /\.(ejs|tmpl|template)$/i;
 const binaryExtensions = new Set([
   // // Image types originally from https://github.com/sindresorhus/image-type/blob/5541b6a/index.js
