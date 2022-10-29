@@ -1,5 +1,5 @@
-import { access, mkdir, rm, stat, writeFile } from 'fs/promises';
-import { dirname } from 'path';
+import { access, mkdir, readdir, rm, stat, writeFile } from 'fs/promises';
+import { dirname, join } from 'path';
 import type { Stats } from 'fs';
 
 /**
@@ -59,4 +59,21 @@ export async function assertDir(path: string) {
   if (!(await isDirectory(path))) {
     throw new Error(`Path "${path}" expected to be a directory, but it's not`);
   }
+}
+
+/**
+ * Readers
+ */
+
+export async function deepReadDir(path: string): Promise<string[]> {
+  const childrenNames = await readdir(path);
+  const result = await Promise.all(
+    childrenNames.map(async childName => {
+      const childPath = join(path, childName);
+
+      return (await isDirectory(childPath)) ? deepReadDir(childPath) : [childPath];
+    })
+  );
+
+  return result.flat();
 }

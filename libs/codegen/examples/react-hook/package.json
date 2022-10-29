@@ -1,0 +1,7 @@
+{
+  "name": "codegen-example-react-hook",
+  "version": "0.0.1",
+  "dependencies": {
+    "@neodx/codegen": "*"
+  }
+}

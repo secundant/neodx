@@ -1,0 +1,7 @@
+{
+  "name": "codegen-example-<%= name %>",
+  "version": "0.0.1",
+  "dependencies": {
+    "@neodx/codegen": "*"
+  }
+}

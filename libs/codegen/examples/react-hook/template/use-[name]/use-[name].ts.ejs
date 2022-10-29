@@ -1,0 +1,11 @@
+import { useState } from 'react';
+
+export interface Use<%= $.casex(name, 'CaSe') %>Params {
+  initialValue: string;
+}
+
+export function use<%= $.casex(name, 'CaSe') %>({ initialValue }: Use<%= $.casex(name, 'CaSe') %>Params) {
+    const [value, setValue] = useState(initialValue);
+
+    return [value, setValue];
+}
