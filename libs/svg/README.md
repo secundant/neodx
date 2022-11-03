@@ -24,13 +24,13 @@
 yarn sprite build
 ```
 
-We use [cosmiconfig](https://github.com/davidtheclark/cosmiconfig) under the hood,
+We use [lilconfig](https://github.com/davidtheclark/lilconfig) under the hood,
 you need create `.spriterc.js`:
 
 ```javascript
 /**
  * Example of minimal configuration
- * @type {import('@neodx/svg-sprite').Configuration}
+ * @type {import('libs/svg').Configuration}
  */
 module.exports = {
   input: 'assets/svg/*.svg',
@@ -41,10 +41,10 @@ module.exports = {
 ## Advanced configuration
 
 ```javascript
-const { plugins } = require('@neodx/svg-sprite');
+const { plugins } = require('libs/svg');
 
 /**
- * @type {import('@neodx/svg-sprite').Configuration}
+ * @type {import('libs/svg').Configuration}
  */
 module.exports = {
   /**

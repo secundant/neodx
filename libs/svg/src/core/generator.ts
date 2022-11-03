@@ -1,13 +1,14 @@
-import { writeFile } from 'fs/promises';
-import { resolve } from 'path';
+import { join } from 'path';
+import { FsTree } from '@neodx/codegen';
 import ora from 'ora';
 import { createElement, ReactElement, ReactNode } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import type { Context, CwdPath, SvgNode, SvgOutputEntry } from '@/types';
+import type { Context, SvgNode, SvgOutputEntry } from '@/types';
 
 export class Generator {
   private entries = new Map<string, SvgOutputEntry[]>();
   private progress = ora();
+  private tree = new FsTree(this.context.cwd);
 
   constructor(readonly context: Context) {}
 
@@ -26,21 +27,17 @@ export class Generator {
       );
 
       for (const output of this.context.outputRoot) {
-        await this.write(name, output, content);
+        await this.tree.write(
+          join(output.relativeToCwd, this.context.fileName.replace('{name}', name)),
+          content
+        );
         await this.context.hooks.afterWriteEntry(name, items, this.context);
       }
       this.progress.text = `[${++generated}/${entries.size}] generating...`;
     }
+    await this.tree.applyChanges();
     await this.context.hooks.afterWrite(entries, this.context);
     this.progress.succeed(`[${entries.size}/${entries.size}] generated`);
-  }
-
-  protected async write(name: string, output: CwdPath, content: string) {
-    await writeFile(
-      resolve(output.absolute, this.context.fileName.replace('{name}', name)),
-      content,
-      'utf-8'
-    );
   }
 }
 

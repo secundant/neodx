@@ -6,10 +6,10 @@
     "sourceMap": true,
     "types": ["node", "jest"],
     "target": "ES2022",
-    "baseUrl": "src",
+    "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src", "tests"],

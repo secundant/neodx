@@ -1,15 +1,17 @@
 {
-  "name": "@neodx/svg-sprite",
+  "name": "@neodx/svg",
   "packageManager": "yarn@3.2.0",
   "version": "0.0.1",
   "description": "Build optimized SVG sprites without pain",
   "source": "src/index.ts",
+  "type": "module",
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.mjs",
-  "types": "dist/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "exports": {
-    "require": "./dist/cjs/index.cjs",
-    "import": "./dist/esm/index.mjs"
+    "types": "./dist/types/index.d.ts",
+    "import": "./dist/esm/index.mjs",
+    "require": "./dist/cjs/index.cjs"
   },
   "bin": {
     "sprite": "bin.mjs"
@@ -28,7 +30,8 @@
     "dev": "libmake watch"
   },
   "dependencies": {
-    "cosmiconfig": "7.0.1",
+    "@neodx/codegen": "workspace:*",
+    "lilconfig": "2.0.6",
     "ora": "6.1.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",

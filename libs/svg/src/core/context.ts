@@ -1,4 +1,4 @@
-import { cosmiconfig } from 'cosmiconfig';
+import { lilconfig } from 'lilconfig';
 import { resolve } from 'node:path';
 import { resetColors, setId, svgo } from '@/plugins';
 import type { Configuration, Context } from '@/types';
@@ -10,10 +10,7 @@ export const resolveContext = async (cwd: string) =>
 export async function resolveConfiguration(cwd: string) {
   const found = await explorer.search(cwd);
 
-  if (!found || found.isEmpty) {
-    throw new Error(`Not found configuration file`);
-  }
-  return found.config as Partial<Configuration>;
+  return (found?.config ?? {}) as Partial<Configuration>;
 }
 
 export function createContext(cwd: string, overrides: Partial<Configuration> = {}): Context {
@@ -36,11 +33,11 @@ export function createContext(cwd: string, overrides: Partial<Configuration> = {
   };
 }
 
-const explorer = cosmiconfig('sprite');
+const explorer = lilconfig('sprite');
 const defaultConfiguration: Configuration = {
   outputRoot: 'public/sprite',
   fileName: '{name}.svg',
   plugins: [setId(), svgo(), resetColors()],
   input: '**/*.svg',
-  inputRoot: 'assets'
+  inputRoot: ''
 };

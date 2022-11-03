@@ -1,4 +1,4 @@
-import { cosmiconfig } from 'cosmiconfig';
+import { lilconfig } from 'lilconfig';
 import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import type { LogLevel, ModuleFormat, Project, SupportedConfigName } from '../types';
@@ -105,7 +105,7 @@ async function findTsConfig(path: string) {
 }
 
 async function findConfig<T extends SupportedConfigName>(name: T, cwd: string) {
-  const result = await cosmiconfig(name).search(cwd);
+  const result = await lilconfig(name).search(cwd);
 
   return !result || result.isEmpty
     ? null
