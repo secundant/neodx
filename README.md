@@ -12,5 +12,20 @@
 
 ## Our tools
 
-- [🛠 @neodx/libmake](./libs/libmake) - Zero configuration libraries builder
-- [🗃 @neodx/svg-sprite](./libs/svg) - SVG sprites generator
+### [@neodx/libmake](./libs/libmake)
+
+Zero configuration libraries builder
+
+### [@neodx/svg](./libs/svg)
+
+SVG sprites generator
+
+## Development
+
+### Internal scripts
+
+#### Create new library
+
+```shell
+yarn neodx lib my-lib-name
+```

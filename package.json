@@ -1,5 +1,5 @@
 {
-  "name": "neodx",
+  "name": "neodx-root",
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
@@ -29,6 +29,7 @@
     "@changesets/cli": "2.25.0",
     "@commitlint/cli": "17.1.2",
     "@commitlint/config-conventional": "17.1.0",
+    "@neodx/scripts": "workspace:*",
     "@nrwl/workspace": "14.8.4",
     "husky": "8.0.1",
     "is-ci": "3.0.1",
