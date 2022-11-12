@@ -1,21 +1,13 @@
-import chalk from 'chalk';
+import { bgRed, blue, bold, red, yellow } from 'kleur/colors';
 
 export const logger = {
   fatal(name: string, ...messages: unknown[]) {
-    console.error(chalk.bgRed(chalk.bold(' FATAL ')), chalk.red(chalk.bold(name)), ...messages);
+    console.error(bgRed(bold(' FATAL ')), red(bold(name)), ...messages);
   },
   info(name: string, ...messages: unknown[]) {
-    console.info(
-      chalk.blue('info'),
-      chalk.bold(`${name}${messages.length > 0 ? ': ' : ''}`),
-      ...messages
-    );
+    console.info(blue('info'), bold(`${name}${messages.length > 0 ? ': ' : ''}`), ...messages);
   },
   warn(name: string, ...messages: unknown[]) {
-    console.debug(
-      chalk.yellow('warn'),
-      chalk.bold(`${name}${messages.length > 0 ? ': ' : ''}`),
-      ...messages
-    );
+    console.debug(yellow('warn'), bold(`${name}${messages.length > 0 ? ': ' : ''}`), ...messages);
   }
 };

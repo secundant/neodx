@@ -10,17 +10,31 @@
 
 > **Extremely** early development phase
 
-## Our tools
+## Explore our instruments
 
 ### [@neodx/libmake](./libs/libmake)
 
-Zero configuration libraries builder
+> Will be reworked
+
+Build your library with zero config.
 
 ### [@neodx/svg](./libs/svg)
 
-SVG sprites generator
+> Will be reworked
 
-## Development
+Powerful svg sprites generator. Forget about svg in js and start live.
+
+### [@neodx/gen](./libs/gen)
+
+> Not ready
+
+Code generation toolkit - templates engine, updates utils, frontend-specific top-level APIs, etc.
+
+### [@neodx/log](./libs/log)
+
+> Not ready
+
+## Development and contribution
 
 ### Internal scripts
 

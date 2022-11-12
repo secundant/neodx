@@ -1,10 +1,10 @@
+import { deepReadDir } from '@neodx/fs';
+import { hasOwn, uniq } from '@neodx/std';
 import { render } from 'ejs';
 import { readFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
 import type { Tree } from '@/tree';
 import { casex } from '@/utils/casex';
-import { has, uniq } from '@/utils/core';
-import { deepReadDir } from '@/utils/node-api';
 
 export async function generateFiles(
   tree: Tree,
@@ -39,7 +39,7 @@ export async function generateFiles(
 
 export function injectTemplateVariables(template: string, variables: Record<string, unknown>) {
   const names = uniq(Array.from(template.matchAll(/\[(\w+)]/gi)).map(([_, name]) => name));
-  const missed = names.filter(name => !has(variables, name));
+  const missed = names.filter(name => !hasOwn(variables, name));
 
   if (missed.length > 0) {
     throw new Error(

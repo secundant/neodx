@@ -1,3 +1,3 @@
 export { fromLength } from './create';
-export { groupBy } from './group';
+export { groupBy, groupReduceBy } from './group';
 export { uniq, uniqBy } from './uniq';

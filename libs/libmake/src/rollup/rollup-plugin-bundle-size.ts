@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import { cyan } from 'kleur/colors';
 // @ts-expect-error no types
 import maxmin from 'maxmin';
 import { basename } from 'node:path';
@@ -18,7 +18,7 @@ export function rollupPluginBundleSize(): Plugin {
       if (info.type !== 'chunk') return;
       const size = maxmin(info.code, info.code, true);
 
-      logger.info(`Compiled ${chalk.cyan(file)}`, `${size.slice(size.indexOf(' → ') + 3)}`);
+      logger.info(`Compiled ${cyan(file)}`, `${size.slice(size.indexOf(' → ') + 3)}`);
     },
     buildStart() {
       time = Date.now();

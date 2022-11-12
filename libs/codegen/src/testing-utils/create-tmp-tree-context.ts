@@ -1,8 +1,9 @@
+import { rm, writeFile } from 'fs/promises';
 import { resolve } from 'path';
+import { ensureFile } from '@neodx/fs';
 import { dirSync } from 'tmp';
 import type { Tree } from '@/tree';
 import { FsTree, ReadonlyVirtualFsTree, VirtualTree } from '@/tree';
-import { forceRecursiveRemove, forceWriteFile } from '@/utils/node-api';
 
 /**
  * Wrapper for beforeEach/afterEach hooks
@@ -29,14 +30,18 @@ export async function writeFilesFromVirtualTreeSource(fs: Tree, source: VirtualT
   for (const [file, content] of source.toMap()) {
     const path = resolve(fs.root, file);
 
-    await forceWriteFile(path, content);
+    await ensureFile(path);
+    await writeFile(path, content);
   }
   return fs;
 }
 
 export async function cleanupTree(tree: Tree) {
   if (tree instanceof FsTree || tree instanceof ReadonlyVirtualFsTree) {
-    await forceRecursiveRemove(tree.root);
+    await rm(tree.root, {
+      force: true,
+      recursive: true
+    });
   }
 }
 

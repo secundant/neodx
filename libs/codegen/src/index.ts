@@ -20,17 +20,3 @@ export { generateFiles } from './template/generate-files';
 
 export type { ParseJsonParams, SerializeJsonParams } from './utils/json';
 export { parseJson, serializeJson } from './utils/json';
-
-// Utils - NodeJS
-
-export {
-  assertDir,
-  assertFile,
-  ensureDir,
-  ensureFile,
-  exists,
-  forceRecursiveRemove,
-  forceWriteFile,
-  isDirectory,
-  isFile
-} from './utils/node-api';
