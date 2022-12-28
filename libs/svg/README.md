@@ -1,106 +1,92 @@
-<h1 align="center">
-  <a aria-label="SVG sprite" href="https://github.com/secundant/neodx/libs/svg-sprite">
-    🗃@neodx/svg-sprite - SVG sprites generator
-  </a>
-</h1>
-<p align="center">
-  Flexible SVG sprites generator
-</p>
+# @neodx/svg
 
-- Optimizes output with svgo
-- Creates TypeScript`s interface with generated sprites info
-- Creates meta information about sprites
-- Provides plugins system for specific extensions
+Try better way to build your icons 👈
 
-## Installation
+Sprite is mostly effective way how to work with your svg icons,
+but for some reason developers (vision from react world) prefer
+mostly bloated and ineffective - "compile" svg to react component with inlined svg content.
 
-- Yarn: `yarn add -D @neodx/svg-sprite`
-- NPM: `npm i -D @neodx/svg-sprite`
+Of course, we can use some external tools like https://svgsprit.es/ or some npm libraries,
+but it's worst (if you know some alternatives - let me know, I'll add links), developers needs DX.
 
-## Getting started
+It's ridiculous, but incredibly popular way, but we haven't any other solutions withs same DX.
 
-```shell
-# Run our CLI when configuration is ready
-yarn sprite build
+Just think about it a bit, you need to "compile" svg, to inline your secondary static content into JSX,
+to give additional source code, extra bundle time, extra bundle size, user's browser will parse and evaluate your
+**static svg** as JS code, you never will be able to cache it, WOOF, etc., etc.
+
+And yes, developers continue to use this insanity because even an incredibly inefficient setup with good DX
+better than super-efficient, but unusable setup with half-manual generators.
+
+That's why we're here! 🥳
+
+- TypeScript - definitions with names and groups
+- Grouping by folders (I have plans to make it hyper-flexible)
+- Filtering
+- Optimization
+- Auto colors reset
+
+> WIP
+
+## Example
+
+### Build icons
+
+```bash
+yarn sprite -g -i public/my-icons-source-folder/**/*.svg -o public/sprite --ts src/shared/ui/icon/sprite-definitions.ts
 ```
 
-We use [lilconfig](https://github.com/davidtheclark/lilconfig) under the hood,
-you need create `.spriterc.js`:
-
-```javascript
-/**
- * Example of minimal configuration
- * @type {import('libs/svg').Configuration}
- */
-module.exports = {
-  input: 'assets/svg/*.svg',
-  outputRoot: 'public'
-};
+```diff
+...
+shared/
+  ui/
+    icon/
++      sprite-definitions.ts
+public/
++  sprite/
++    common.svg
++    other.svg
+  my-icons-source-folder/
+    common/
+      add.svg
+      close.svg
+    other/
+      cut.svg
+      search.svg
 ```
 
-## Advanced configuration
+### Create your Icon component
 
-```javascript
-const { plugins } = require('libs/svg');
+```tsx
+// shared/ui/icon/icon.tsx
+import { Groups } from './sprite-definitions';
 
-/**
- * @type {import('libs/svg').Configuration}
- */
-module.exports = {
-  /**
-   * Input can also be an array and take base url in "inputRoot" option.
-   * In this example we will scan all files in [assets/static/..., assets/tmp/...]
-   */
-  input: ['static/**/*.svg', 'tmp/*.svg'],
-  inputRoot: 'assets',
-  /**
-   * You can set multiple outputs
-   */
-  outputRoot: ['public/sprites', '.build/assets/sprites'],
-  /**
-   * {name} will be replaced with sprite name ("sprite" by default)
-   */
-  fileName: '{name}.svg',
-  /**
-   * Override plugins. By default enabled svgo, setId and resetColors
-   */
-  plugins: [
-    // Enable default plugins
-    plugins.svgo(),
-    plugins.setId(),
-    plugins.resetColors(),
-    /**
-     * Plugin for grouping inputs to multiple sprites, will be useful for large icon sets.
-     * Group inputs by relative directory name by default
-     * @example Look at files structure below:
-     * - actions/
-     * - - add.svg
-     * - - close.svg
-     * - - subfolder/
-     * - - - submit.svg
-     * - alerts/
-     * - - info.svg
-     * - hello.svg
-     * This will group sprites as {
-     *   actions: ['add', 'close'],
-     *   'actions/subfolder': ['submit'],
-     *   alerts: ['info'],
-     *   __root: ['hello']
-     * }
-     */
-    plugins.group({
-      defaultName: '__root'
-    }),
-    /**
-     * This plugin will generate "shared/types/sprite.ts" with:
-     * - export interface SpriteMap { modals: 'add' | 'close'; ... }
-     * - export const spriteMap = { modals: ['add', 'close'] }
-     */
-    plugins.typescript({
-      output: 'shared/types/sprite.ts',
-      metaName: 'spriteMap',
-      typeName: 'SpriteMap'
-    })
-  ]
-};
+export interface IconProps<Group extends keyof Groups> {
+  name: Groups[Group];
+  type?: Group;
+}
+
+export function Icon<Group extends keyof Groups = 'common'>({ type, name }: IconProps<Group>) {
+  return (
+    <svg>
+      <use xmlnsXlink={`/public/sprite/${type}.svg#${name}`}></use>
+    </svg>
+  );
+}
+```
+
+### Enjoy :)
+
+```tsx
+import { Icon, TextField } from '@/shared/ui';
+
+export function SomeFeature() {
+  return (
+    <div className="space-y-4">
+      <TextField name="a" startNode={<Icon name="add" />} />
+      <TextField name="b" startNode={<Icon name="close" />} />
+      <TextField name="c" startNode={<Icon type="other" name="search" />} />
+    </div>
+  );
+}
 ```
