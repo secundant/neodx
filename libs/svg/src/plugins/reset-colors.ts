@@ -1,5 +1,5 @@
-import type { SvgNode } from '@/types';
-import { createPlugin } from '@/utils';
+import { createPlugin } from '../plugin-utils';
+import type { SvgNode } from '../types';
 
 export interface ResetColorsPluginOptions {
   includeProperties: string[];

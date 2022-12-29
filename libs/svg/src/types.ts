@@ -1,18 +1,7 @@
-export interface Context {
-  cwd: string;
-  input: string[];
-  inputRoot: CwdPath;
-  outputRoot: CwdPath[];
-  fileName: string;
-  hooks: SvgSpritePluginHooks;
-}
+import type { Tree } from '@neodx/codegen';
 
-export interface Configuration {
-  input: string | string[];
-  inputRoot: string;
-  outputRoot: string | string[];
-  fileName: string;
-  plugins: SvgSpritePlugin[];
+export interface Context {
+  tree: Tree;
 }
 
 export interface SvgSpritePlugin extends Partial<SvgSpritePluginHooks> {
@@ -20,23 +9,25 @@ export interface SvgSpritePlugin extends Partial<SvgSpritePluginHooks> {
 }
 
 export interface SvgSpritePluginHooks {
-  afterWrite(entries: SvgOutputEntriesMap, context: Context): unknown | Promise<unknown>;
-  afterWriteEntry(
-    name: string,
-    nodes: SvgOutputEntry[],
-    context: Context
-  ): unknown | Promise<unknown>;
-  resolveEntriesMap(entries: SvgOutputEntriesMap, context: Context): SvgOutputEntriesMap;
-  transformNode(node: SvgOutputEntry): SvgNode;
-  transformSourceContent(source: SvgSourceInfo, content: string): string | Promise<string>;
+  afterWrite(groups: SpriteGroupsMap, context: Context): unknown | Promise<unknown>;
+  afterWriteGroup(group: SpriteGroup, context: Context): unknown | Promise<unknown>;
+  resolveEntriesMap(groups: SpriteGroupsMap, context: Context): SpriteGroupsMap;
+  transformNode(node: SvgFile): SvgNode;
+  transformSourceContent(path: string, content: string): string | Promise<string>;
   transformOutputEntryContent(content: string): string | Promise<string>;
 }
 
-export type SvgOutputEntriesMap = Map<string, SvgOutputEntry[]>;
+export type SpriteGroupsMap = Map<string, SpriteGroup>;
 
-export interface SvgOutputEntry {
-  info: SvgSourceInfo;
+export interface SpriteGroup {
+  name: string;
+  files: SvgFile[];
+}
+
+export interface SvgFile {
   node: SvgNode;
+  path: string;
+  name: string;
 }
 
 export interface SvgNode {
@@ -45,22 +36,4 @@ export interface SvgNode {
   value: string;
   children: SvgNode[];
   attributes: Record<string, string>;
-}
-
-export interface SvgSource extends SvgSourceInfo {
-  content: string;
-}
-
-export interface SvgSourceInfo extends InputPath {
-  // File name without extension
-  name: string;
-}
-
-export interface InputPath extends CwdPath {
-  relativeToInputRoot: string;
-}
-
-export interface CwdPath {
-  absolute: string;
-  relativeToCwd: string;
 }

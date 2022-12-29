@@ -2,21 +2,22 @@
 
 Try better way to build your icons 👈
 
-Sprite is mostly effective way how to work with your svg icons,
+Sprite is mostly effective way to work with your svg icons,
 but for some reason developers (vision from react world) prefer
 mostly bloated and ineffective - "compile" svg to react component with inlined svg content.
 
 Of course, we can use some external tools like https://svgsprit.es/ or some npm libraries,
-but it's worst (if you know some alternatives - let me know, I'll add links), developers needs DX.
+but that's not serious (if you know any alternatives - let me know, I'll add links), developers need DX.
 
-It's ridiculous, but incredibly popular way, but we haven't any other solutions withs same DX.
+A ridiculous, but incredibly popular way, we don't have other solutions withs the same DX.
 
-Just think about it a bit, you need to "compile" svg, to inline your secondary static content into JSX,
-to give additional source code, extra bundle time, extra bundle size, user's browser will parse and evaluate your
-**static svg** as JS code, you never will be able to cache it, WOOF, etc., etc.
+Just think about it a little, you need to "compile" svg, to embed your secondary static content in JSX
+and get a lot of unwanted issues: additional source code, extra build time, extra bundle size,
+the user's browser will parse and evaluate your **static svg** as JS code,
+you can never cache it, WOOF, etc., etc.
 
-And yes, developers continue to use this insanity because even an incredibly inefficient setup with good DX
-better than super-efficient, but unusable setup with half-manual generators.
+And yes, developers keep using this insanity because even an incredibly inefficient solution with a good DX
+is better than super efficient but unusable setup with semi-manual generators.
 
 That's why we're here! 🥳
 
@@ -27,6 +28,24 @@ That's why we're here! 🥳
 - Auto colors reset
 
 > WIP
+
+## Installation and usage
+
+```
+yarn add @neodx/svg
+yarn sprite --help
+yarn sprite -o public -d shared/icon/meta.ts
+```
+
+## Options
+
+| option           | default          | description                                                                                 |
+| ---------------- | ---------------- | ------------------------------------------------------------------------------------------- |
+| `-r`, `--root`   | `.`              | Base path to your assets, useful for correct groups names                                   |
+| `-i`, `--input`  | `**/*.svg`       | Paths to icons files. You can pass multiple and negative (`!**/*.excluded.svg`) expressions |
+| `-o`, `--output` | `public/sprites` | Base path to generated sprite/sprites folder                                                |
+| `-g`, `--group`  | `false`          | Should we group icons?                                                                      |
+| `-d`, `--ts`     | `false`          | Path to generated TS file with sprite meta                                                  |
 
 ## Example
 

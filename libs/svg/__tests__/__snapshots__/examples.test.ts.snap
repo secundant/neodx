@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`examples "groups-with-root" example should generate files 1`] = `
+[
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/assets/common/close.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/assets/common/favourite.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/assets/format/align-left.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/assets/format/tag.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/generated/assets/common.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/generated/assets/format.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/generated/common.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/generated/format.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/generated/sprite-info.ts",
+]
+`;
+
+exports[`examples "groups-with-root" example should replay same output 1`] = `[]`;
+
+exports[`examples "groups-without-root" example should generate files 1`] = `
+[
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-without-root/assets/common/close.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-without-root/assets/common/favourite.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-without-root/assets/format/align-left.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-without-root/assets/format/tag.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-without-root/generated/assets/common.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-without-root/generated/assets/format.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-without-root/generated/sprite-info.ts",
+]
+`;
+
+exports[`examples "groups-without-root" example should replay same output 1`] = `[]`;
+
+exports[`examples "simple" example should generate files 1`] = `
+[
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/simple/assets/arrow-drop-down.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/simple/assets/arrow-drop-up.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/simple/generated/sprite-info.ts",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/simple/generated/sprite.svg",
+]
+`;
+
+exports[`examples "simple" example should replay same output 1`] = `[]`;

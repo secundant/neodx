@@ -1,7 +1,5 @@
-import { writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
-import type { SvgOutputEntriesMap, SvgOutputEntry } from '@/types';
-import { createPlugin, ensureUpward, prettify } from '@/utils';
+import { createPlugin } from '../plugin-utils';
+import type { SpriteGroup, SpriteGroupsMap } from '../types';
 
 export interface TypescriptPluginOptions {
   output?: string;
@@ -16,20 +14,11 @@ export function typescript({
 }: TypescriptPluginOptions = {}) {
   return createPlugin('typescript', {
     async afterWrite(entries, context) {
-      const fileName = resolve(context.cwd, output);
-
-      await ensureUpward(fileName);
-      await writeFile(
-        fileName,
-        await prettify(fileName, renderEntries(typeName, metaName, entries), {
-          parser: 'typescript'
-        }),
-        'utf-8'
-      );
+      await context.tree.write(output, renderEntries(typeName, metaName, entries));
     }
   });
 }
-const renderEntries = (typeName: string, metaName: string, entries: SvgOutputEntriesMap) =>
+const renderEntries = (typeName: string, metaName: string, entries: SpriteGroupsMap) =>
   `
   export interface ${typeName} {
     ${Array.from(entries).map(renderEntryToType).join('\n')}
@@ -40,8 +29,8 @@ const renderEntries = (typeName: string, metaName: string, entries: SvgOutputEnt
   };
   `;
 
-const renderEntryToArray = ([name, items]: [string, SvgOutputEntry[]]) =>
-  `'${name}': [${items.map(({ node }) => `"${node.attributes.id}"`).join(',')}]`;
+const renderEntryToArray = ([name, { files }]: [string, SpriteGroup]) =>
+  `'${name}': [${files.map(({ node }) => `"${node.attributes.id}"`).join(',')}]`;
 
-const renderEntryToType = ([name, items]: [string, SvgOutputEntry[]]) =>
-  `'${name}': ${items.map(({ node }) => `"${node.attributes.id}"`).join('|')};`;
+const renderEntryToType = ([name, { files }]: [string, SpriteGroup]) =>
+  `'${name}': ${files.map(({ node }) => `"${node.attributes.id}"`).join('|')};`;
