@@ -32,7 +32,7 @@ describe('scan files', () => {
     ],
     'should exclude simple patterns': [['*.ts', '!*.test.ts'], ['root-file.ts']],
     'should support multiple patterns': [
-      ['*.ts', '!*.test.ts', '**/*.tsx', '!**/*.test.tsx'],
+      ['*.ts', '!*.test.ts', '**/*.tsx', '!**/*.test.tsx', '!**/ignore/**/*'],
       ['root-file.ts', 'very/deep/nested/file.tsx']
     ]
   };
