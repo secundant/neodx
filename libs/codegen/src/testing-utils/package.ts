@@ -1,6 +1,6 @@
 import type { Options } from 'prettier';
-import type { Tree } from '@/tree';
-import { writeTreeJson } from '@/tree/utils/json';
+import type { Tree } from '../tree';
+import { writeTreeJson } from '../tree/utils/json';
 
 export async function addPackageToTree(tree: Tree, name = 'my-pkg') {
   await writeTreeJson<Options>(tree, '.prettierrc', { singleQuote: true, printWidth: 80 });

@@ -1,8 +1,8 @@
 import { join } from 'node:path';
-import { generateFiles, injectTemplateVariables } from '@/template/generate-files';
-import { createTmpTreeContext } from '@/testing-utils/create-tmp-tree-context';
-import { VirtualTree } from '@/tree';
-import { readTreeJson } from '@/tree/utils/json';
+import { createTmpTreeContext } from '../testing-utils/create-tmp-tree-context';
+import { VirtualTree } from '../tree';
+import { readTreeJson } from '../tree/utils/json';
+import { generateFiles, injectTemplateVariables } from './generate-files';
 
 const __dirname = new URL('.', import.meta.url).pathname;
 

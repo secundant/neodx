@@ -1,5 +1,5 @@
+import { entries, hasOwn } from '@neodx/std';
 import { coerce, gt } from 'semver';
-import { entries, has } from '@/utils/core';
 
 const NON_SEMVER_PRIORITY = {
   '*': 2,
@@ -10,8 +10,8 @@ const NON_SEMVER_PRIORITY = {
 };
 
 export function isGreaterVersion(incoming: string, existing: string) {
-  const incomingIsNotSemver = has(NON_SEMVER_PRIORITY, incoming);
-  const existingIsNotSemver = has(NON_SEMVER_PRIORITY, existing);
+  const incomingIsNotSemver = hasOwn(NON_SEMVER_PRIORITY, incoming);
+  const existingIsNotSemver = hasOwn(NON_SEMVER_PRIORITY, existing);
 
   if (incomingIsNotSemver && existingIsNotSemver) {
     return NON_SEMVER_PRIORITY[incoming] > NON_SEMVER_PRIORITY[existing];
@@ -29,7 +29,7 @@ export function getUpgradedDependenciesVersions(
   current: Record<string, string>
 ) {
   const applied = entries(changes).filter(
-    ([name, version]) => has(current, name) && isGreaterVersion(version, current[name])
+    ([name, version]) => hasOwn(current, name) && isGreaterVersion(version, current[name])
   );
 
   return applied.length > 0 ? Object.fromEntries(applied) : null;

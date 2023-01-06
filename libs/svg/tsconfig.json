@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
+    "sourceMap": true,
+    "types": ["node", "jest"],
+    "target": "ES2022"
+  },
+  "include": ["src"],
+  "exclude": ["dist", "node_modules"]
+}

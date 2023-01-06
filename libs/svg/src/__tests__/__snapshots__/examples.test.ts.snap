@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`examples "groups-with-root" example should generate files 1`] = `
+[
+  "assets/common/close.svg",
+  "assets/common/favourite.svg",
+  "assets/format/align-left.svg",
+  "assets/format/tag.svg",
+  "generated/common.svg",
+  "generated/format.svg",
+  "generated/sprite-info.ts",
+]
+`;
+
+exports[`examples "groups-with-root" example should replay same output 1`] = `[]`;
+
+exports[`examples "groups-without-root" example should generate files 1`] = `
+[
+  "assets/common/close.svg",
+  "assets/common/favourite.svg",
+  "assets/format/align-left.svg",
+  "assets/format/tag.svg",
+  "generated/assets/common.svg",
+  "generated/assets/format.svg",
+  "generated/sprite-info.ts",
+]
+`;
+
+exports[`examples "groups-without-root" example should replay same output 1`] = `[]`;
+
+exports[`examples "react" example should generate files 1`] = `
+[
+  "assets/common/close.svg",
+  "assets/common/favourite.svg",
+  "assets/format/align-left.svg",
+  "assets/format/tag.svg",
+  "example.tsx",
+  "generated/common.svg",
+  "generated/format.svg",
+  "generated/sprite-info.ts",
+  "icon.tsx",
+]
+`;
+
+exports[`examples "react" example should replay same output 1`] = `[]`;
+
+exports[`examples "simple" example should generate files 1`] = `
+[
+  "assets/arrow-drop-down.svg",
+  "assets/arrow-drop-up.svg",
+  "generated/sprite-info.ts",
+  "generated/sprite.svg",
+]
+`;
+
+exports[`examples "simple" example should replay same output 1`] = `[]`;

@@ -1,0 +1,37 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "jsx": "preserve",
+    "lib": ["ESNext"],
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@neodx/codegen": ["libs/codegen/src/index.ts"],
+      "@neodx/fs": ["libs/fs/src/index.ts"],
+      "@neodx/std": ["libs/std/src/index.ts"],
+      "@neodx/svg": ["libs/svg/src/index.ts"]
+    },
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "suppressExcessPropertyErrors": false,
+    "suppressImplicitAnyIndexErrors": false,
+    "forceConsistentCasingInFileNames": true,
+    "allowUnreachableCode": false,
+    "noEmit": true,
+    "allowJs": false,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "importsNotUsedAsValues": "error",
+    "importHelpers": true,
+    "sourceMap": false,
+    "noErrorTruncation": false,
+    "pretty": true
+  },
+  "exclude": ["node_modules", "**/dist"]
+}

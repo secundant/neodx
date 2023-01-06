@@ -1,5 +1,5 @@
-import { entries, filterRecord, has, isNotFalsy, keys } from '@/utils/core';
-import { getUpgradedDependenciesVersions } from '@/utils/semver';
+import { entries, filterEntries, hasOwn, isTruthy, keys } from '@neodx/std';
+import { getUpgradedDependenciesVersions } from './semver';
 
 /**
  * Add any missing dependency to package.json content.
@@ -24,7 +24,7 @@ export function addPackageJsonDependencies(
       if (missed.length > 0 || outdated) {
         return [
           type,
-          filterRecord(
+          filterEntries(
             dependencies,
             (_, name) => missed.includes(name) || Boolean(outdated?.[name])
           )
@@ -32,7 +32,7 @@ export function addPackageJsonDependencies(
       }
       return null;
     })
-    .filter(isNotFalsy);
+    .filter(isTruthy);
 
   if (affected.length > 0) {
     return sortPackageJson({
@@ -57,11 +57,11 @@ export function removePackageJsonDependencies(
 ) {
   const affected = entries(updates)
     .map(([type, names]) => {
-      const removing = names.filter(name => has(current[type] ?? {}, name));
+      const removing = names.filter(name => hasOwn(current[type] ?? {}, name));
 
       return removing.length > 0 ? ([type, removing] as const) : null;
     })
-    .filter(isNotFalsy);
+    .filter(isTruthy);
 
   if (affected.length > 0) {
     return sortPackageJson({
@@ -69,7 +69,7 @@ export function removePackageJsonDependencies(
       ...Object.fromEntries(
         affected.map(([type, removing]) => [
           type,
-          filterRecord(current[type]!, (_, name) => !removing.includes(name))
+          filterEntries(current[type]!, (_, name) => !removing.includes(name))
         ])
       )
     });
@@ -83,7 +83,7 @@ const sortPackageJson = <T extends PackageJsonDependencies>(value: T) => {
   };
 
   for (const type of dependenciesTypes) {
-    if (!has(next, type)) continue;
+    if (!hasOwn(next, type)) continue;
     if (keys(next[type]).length === 0) {
       delete next[type];
     } else {
@@ -119,7 +119,7 @@ function lookupMissedDependencies(
   const lookupPriority = dependenciesLookupPriority[dependenciesType];
 
   return dependenciesNames.filter(name =>
-    lookupPriority.every(type => !has(currentPackageJsonDeps[type] ?? {}, name))
+    lookupPriority.every(type => !hasOwn(currentPackageJsonDeps[type] ?? {}, name))
   );
 }
 

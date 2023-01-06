@@ -1,13 +1,11 @@
 {
-  "extends": "@neodx/config/tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
     "importHelpers": true,
     "target": "ES2022",
     "module": "ESNext",
     "types": ["node", "jest"],
-    "baseUrl": "src",
-    "rootDir": ".",
     "allowSyntheticDefaultImports": true
   },
   "include": ["src", "test"],

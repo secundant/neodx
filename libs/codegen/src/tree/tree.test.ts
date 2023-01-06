@@ -1,17 +1,17 @@
+import { fromLength, sum } from '@neodx/std';
 import { join } from 'node:path';
 import {
   createTmpTree,
   createTmpTreeContext,
   writeFilesFromVirtualTreeSource
-} from '@/testing-utils/create-tmp-tree-context';
-import { addPackageToTree } from '@/testing-utils/package';
-import { FsTree } from '@/tree/impl/fs-tree';
-import { ReadonlyVirtualFsTree } from '@/tree/impl/readonly-virtual-fs-tree';
-import { readTreeJson, writeTreeJson } from '@/tree/utils/json';
-import { formatAllChangedFilesInTree } from '@/tree/utils/prettier';
-import { range, sum } from '@/utils/core';
+} from '../testing-utils/create-tmp-tree-context';
+import { addPackageToTree } from '../testing-utils/package';
+import { FsTree } from './impl/fs-tree';
+import { ReadonlyVirtualFsTree } from './impl/readonly-virtual-fs-tree';
 import { VirtualTree } from './impl/virtual-tree';
 import { ContentLike, FileChangeType, Tree } from './types';
+import { readTreeJson, writeTreeJson } from './utils/json';
+import { formatAllChangedFilesInTree } from './utils/prettier';
 
 describe('Tree', () => {
   describe.each([
@@ -157,9 +157,9 @@ describe('Tree', () => {
        * TODO Create nested files tree
        */
       for (const [index, { files }] of nestedDirsFilesCount.entries()) {
-        const baseDirName = range(index, i => `dir-${i}`).join('/');
+        const baseDirName = fromLength(index, i => `dir-${i}`).join('/');
 
-        for (const fileIndex of range(files)) {
+        for (const fileIndex of fromLength(files)) {
           await fs.write(
             join(baseDirName, `file-${fileIndex}.txt`),
             `content of file #${fileIndex}`
@@ -168,8 +168,8 @@ describe('Tree', () => {
       }
       await fs.applyChanges();
       for (const [index, { files }] of nestedDirsFilesCount.entries()) {
-        const baseDirName = range(index, i => `dir-${i}`).join('/');
-        const expectedMembers = [...range(files, fileIndex => `file-${fileIndex}.txt`)].concat(
+        const baseDirName = fromLength(index, i => `dir-${i}`).join('/');
+        const expectedMembers = [...fromLength(files, fileIndex => `file-${fileIndex}.txt`)].concat(
           index < nestedDirsFilesCount.length - 1 ? `dir-${index}` : []
         );
         const actualMembers = await fs.readDir(baseDirName);

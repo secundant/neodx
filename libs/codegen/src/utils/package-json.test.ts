@@ -1,4 +1,4 @@
-import { addPackageJsonDependencies, removePackageJsonDependencies } from '@/utils/package-json';
+import { addPackageJsonDependencies, removePackageJsonDependencies } from './package-json';
 
 describe('addPackageJsonDependencies', () => {
   test('should add missed dependencies', async () => {

@@ -22,14 +22,11 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build", "^test", "^lint"],
+      "dependsOn": ["lint", "typecheck", "^build"],
       "output": ["{projectRoot}/dist"]
     },
     "dev": {
       "dependsOn": ["^build", "dev"]
-    },
-    "test": {
-      "dependsOn": ["typecheck", "^test"]
     }
   },
   "affected": {

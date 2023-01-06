@@ -1,6 +1,5 @@
 import { join } from 'node:path';
-import { ReadonlyVirtualFsTree } from '@/tree';
-import { formatAllChangedFilesInTree } from '@/tree/utils/prettier';
+import { formatAllChangedFilesInTree, ReadonlyVirtualFsTree } from '../src';
 
 describe('examples', () => {
   test('react-hook', async () => {

@@ -1,7 +1,6 @@
-import { dirname } from 'path';
-import chalk from 'chalk';
-import { join, relative, sep } from 'node:path';
-import { isNotFalsy, uniq } from '@/utils/core';
+import { compact, uniq } from '@neodx/std';
+import { bgGreen, bgRed, bgYellow } from 'kleur/colors';
+import { dirname, join, relative, sep } from 'node:path';
 import type { ContentLike, FileChange, Tree } from '../types';
 import { FileChangeType } from '../types';
 
@@ -144,7 +143,7 @@ export abstract class BaseTree implements Tree {
       })
     );
 
-    return changes.filter(isNotFalsy);
+    return compact(changes);
   }
 
   abstract applyChange(changes: FileChange): Promise<void>;
@@ -181,10 +180,9 @@ export abstract class BaseTree implements Tree {
   protected getDirectChildren(path: string) {
     return path === ''
       ? this.getAllChangesNames().map(getRootDirName)
-      : this.getChangesStartsFrom(path)
-          .map(name => name.split(`${path}/`).at(1))
-          .filter(isNotFalsy)
-          .map(getRootDirName);
+      : compact(this.getChangesStartsFrom(path).map(name => name.split(`${path}/`).at(1))).map(
+          getRootDirName
+        );
   }
 
   protected getAllChangesNames() {
@@ -199,9 +197,9 @@ export abstract class BaseTree implements Tree {
 const getRootDirName = (path: string) => path.split('/')[0];
 
 const printLabelsMap = {
-  [FileChangeType.CREATE]: chalk.bgGreen(' CREATE '),
-  [FileChangeType.UPDATE]: chalk.bgYellow(' UPDATE '),
-  [FileChangeType.DELETE]: chalk.bgRedBright(' DELETE ')
+  [FileChangeType.CREATE]: bgGreen(' CREATE '),
+  [FileChangeType.UPDATE]: bgYellow(' UPDATE '),
+  [FileChangeType.DELETE]: bgRed(' DELETE ')
 };
 
 export interface InternalChange {

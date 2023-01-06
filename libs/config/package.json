@@ -5,6 +5,7 @@
   "private": true,
   "files": [
     "tsconfig.json",
+    "jest",
     "README.md"
   ],
   "sideEffects": false,

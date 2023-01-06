@@ -1,6 +1,6 @@
 import { readdir, readFile, rm, writeFile } from 'fs/promises';
 import { resolve } from 'path';
-import { ensureFile, exists, isFile } from '@/utils/node-api';
+import { ensureFile, exists, isFile } from '@neodx/fs';
 import type { FileChange } from '../types';
 import { FileChangeType } from '../types';
 import { BaseTree } from './base-tree';
