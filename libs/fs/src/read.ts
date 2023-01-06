@@ -1,16 +1,24 @@
 import { readdir } from 'fs/promises';
-import { join } from 'path';
+import { join, relative } from 'path';
 import { isDirectory } from './checks';
 
-export async function deepReadDir(path: string): Promise<string[]> {
+interface Params {
+  absolute?: boolean;
+}
+
+export async function deepReadDir(
+  path: string,
+  { absolute = true }: Params = {}
+): Promise<string[]> {
   const childrenNames = await readdir(path);
-  const result = await Promise.all(
+  const groupedPaths = await Promise.all(
     childrenNames.map(async childName => {
       const childPath = join(path, childName);
 
       return (await isDirectory(childPath)) ? deepReadDir(childPath) : [childPath];
     })
   );
+  const absolutePathsList = groupedPaths.flat();
 
-  return result.flat();
+  return absolute ? absolutePathsList.map(name => relative(path, name)) : absolutePathsList;
 }

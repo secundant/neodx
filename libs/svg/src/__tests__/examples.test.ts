@@ -34,6 +34,6 @@ describe('examples', () => {
   test.each(examples)(`"%s" example should generate files`, async name => {
     const { tree } = await generateExample(name, true, optionsMap[name]);
 
-    expect(await deepReadDir(tree.root)).toMatchSnapshot();
+    expect(await deepReadDir(tree.root, { absolute: false })).toMatchSnapshot();
   });
 });
