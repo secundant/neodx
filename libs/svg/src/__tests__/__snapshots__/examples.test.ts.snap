@@ -6,8 +6,6 @@ exports[`examples "groups-with-root" example should generate files 1`] = `
   "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/assets/common/favourite.svg",
   "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/assets/format/align-left.svg",
   "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/assets/format/tag.svg",
-  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/generated/assets/common.svg",
-  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/generated/assets/format.svg",
   "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/generated/common.svg",
   "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/generated/format.svg",
   "/Users/primary/WebstormProjects/neodx/libs/svg/examples/groups-with-root/generated/sprite-info.ts",
@@ -29,6 +27,22 @@ exports[`examples "groups-without-root" example should generate files 1`] = `
 `;
 
 exports[`examples "groups-without-root" example should replay same output 1`] = `[]`;
+
+exports[`examples "react" example should generate files 1`] = `
+[
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/react/assets/common/close.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/react/assets/common/favourite.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/react/assets/format/align-left.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/react/assets/format/tag.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/react/example.tsx",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/react/generated/common.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/react/generated/format.svg",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/react/generated/sprite-info.ts",
+  "/Users/primary/WebstormProjects/neodx/libs/svg/examples/react/icon.tsx",
+]
+`;
+
+exports[`examples "react" example should replay same output 1`] = `[]`;
 
 exports[`examples "simple" example should generate files 1`] = `
 [

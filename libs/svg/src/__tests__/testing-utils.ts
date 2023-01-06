@@ -1,7 +1,7 @@
 import { readdirSync } from 'fs';
 import { FsTree, ReadonlyVirtualFsTree } from '@neodx/codegen';
 import { join } from 'node:path';
-import { generate, GenerateParams } from '../src';
+import { generate, GenerateParams } from '../index';
 
 export async function generateExample(
   name: string,
@@ -28,4 +28,4 @@ export const getExamplesNames = () => readdirSync(examplesRoot);
 
 export const getExampleRoot = (name: string) => join(examplesRoot, name);
 
-const examplesRoot = new URL('../examples', import.meta.url).pathname;
+const examplesRoot = new URL('../../examples', import.meta.url).pathname;

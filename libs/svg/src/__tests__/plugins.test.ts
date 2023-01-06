@@ -1,8 +1,8 @@
 import { VirtualTree } from '@neodx/codegen';
 import { toArray } from '@neodx/std';
-import type { SvgNode } from '../src';
-import { combinePlugins } from '../src/plugin-utils';
-import { groupSprites } from '../src/plugins';
+import type { SvgNode } from '../index';
+import { combinePlugins } from '../plugin-utils';
+import { groupSprites } from '../plugins';
 
 describe('plugins system', () => {
   const emptyContext = { tree: new VirtualTree('.') };

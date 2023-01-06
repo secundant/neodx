@@ -1,5 +1,5 @@
 import { deepReadDir } from '@neodx/fs';
-import type { GenerateParams } from '../src';
+import type { GenerateParams } from '../index';
 import { generateExample, getExamplesNames } from './testing-utils';
 
 describe('examples', () => {
@@ -9,6 +9,11 @@ describe('examples', () => {
       group: true
     },
     'groups-with-root': {
+      group: true,
+      input: ['**/*.svg'],
+      inputRoot: 'assets'
+    },
+    react: {
       group: true,
       input: ['**/*.svg'],
       inputRoot: 'assets'
