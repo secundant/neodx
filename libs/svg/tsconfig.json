@@ -1,5 +1,5 @@
 {
-  "extends": "@neodx/config/tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,

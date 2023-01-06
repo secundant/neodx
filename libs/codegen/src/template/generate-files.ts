@@ -3,8 +3,8 @@ import { hasOwn, uniq } from '@neodx/std';
 import { render } from 'ejs';
 import { readFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
-import type { Tree } from '@/tree';
-import { casex } from '@/utils/casex';
+import type { Tree } from '../tree';
+import { casex } from '../utils/casex';
 
 export async function generateFiles(
   tree: Tree,

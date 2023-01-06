@@ -1,6 +1,6 @@
-import type { Tree } from '@/tree';
-import type { BaseJsonObject, ParseJsonParams, SerializeJsonParams } from '@/utils/json';
-import { parseJson, serializeJson } from '@/utils/json';
+import type { BaseJsonObject, ParseJsonParams, SerializeJsonParams } from '../../utils/json';
+import { parseJson, serializeJson } from '../../utils/json';
+import type { Tree } from '../types';
 
 export async function readTreeJson<T extends BaseJsonObject>(
   tree: Tree,

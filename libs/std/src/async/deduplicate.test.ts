@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { deduplicateAsync } from '@/async/deduplicate';
+import { deduplicateAsync } from './deduplicate';
 
 describe('deduplicateAsync', () => {
   test('should prevent parallel execution', async () => {

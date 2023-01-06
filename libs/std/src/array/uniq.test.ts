@@ -1,5 +1,5 @@
-import { uniq, uniqBy } from '@/array/uniq';
-import { identity } from '@/shared';
+import { identity } from '../shared';
+import { uniq, uniqBy } from './uniq';
 
 describe('array > uniq utils', () => {
   describe('uniq', () => {

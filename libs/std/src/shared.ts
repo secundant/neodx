@@ -5,6 +5,9 @@ export const identity = <T>(value: T): T => value;
 export const entries = Object.entries as TypedObjectEntriesFn;
 export const hasOwn = Object.hasOwn as TypedObjectHasOwnFn;
 export const keys = Object.keys as TypedObjectKeysFn;
+export const isTruthy = Boolean as unknown as <T>(
+  value: T | false | null | undefined | void
+) => value is T;
 
 export type ObjectEntry<T> = {
   [Key in Extract<keyof T, string>]: [Key, Exclude<T[Key], undefined>];

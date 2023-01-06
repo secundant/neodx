@@ -27,9 +27,6 @@
     },
     "dev": {
       "dependsOn": ["^build", "dev"]
-    },
-    "test": {
-      "dependsOn": ["build", "^test"]
     }
   },
   "affected": {

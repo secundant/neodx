@@ -12,10 +12,7 @@ yarn add -D @neodx/config@"workspace:*"
 
 ```json
 {
-  "extends": "@neodx/config/tsconfig.json",
-  "compilerOptions": {
-    "baseUrl": "src"
-  },
+  "extends": "../../tsconfig.base.json",
   "includes": ["src"]
 }
 ```

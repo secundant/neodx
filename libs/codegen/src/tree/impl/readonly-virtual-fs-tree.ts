@@ -1,7 +1,7 @@
-import { FsTree } from '@/tree/impl/fs-tree';
-import { VirtualTree } from '@/tree/impl/virtual-tree';
 import type { FileChange } from '../types';
 import { BaseTree } from './base-tree';
+import { FsTree } from './fs-tree';
+import { VirtualTree } from './virtual-tree';
 
 /**
  * Fallback read operations on real FS, but write operations will apply on virtual fs

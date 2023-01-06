@@ -1,7 +1,10 @@
-import type { Tree } from '@/tree';
-import { readTreeJson, writeTreeJson } from '@/tree/utils/json';
-import type { DependencyTypeName, PackageJsonDependencies } from '@/utils/package-json';
-import { addPackageJsonDependencies, removePackageJsonDependencies } from '@/utils/package-json';
+import type { DependencyTypeName, PackageJsonDependencies } from '../../utils/package-json';
+import {
+  addPackageJsonDependencies,
+  removePackageJsonDependencies
+} from '../../utils/package-json';
+import type { Tree } from '../types';
+import { readTreeJson, writeTreeJson } from './json';
 
 export async function addTreePackageJsonDependencies(
   tree: Tree,

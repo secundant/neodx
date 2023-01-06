@@ -1,6 +1,6 @@
 import { readdir } from 'fs/promises';
 import { join } from 'path';
-import { isDirectory } from '@/checks';
+import { isDirectory } from './checks';
 
 export async function deepReadDir(path: string): Promise<string[]> {
   const childrenNames = await readdir(path);

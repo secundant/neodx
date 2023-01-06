@@ -1,6 +1,6 @@
 import { join } from 'node:path';
-import type { Tree } from '@/tree';
-import { tryFormatPrettier } from '@/utils/prettier';
+import { tryFormatPrettier } from '../../utils/prettier';
+import type { Tree } from '../types';
 
 /**
  * Apply format to every added or updated file in tree

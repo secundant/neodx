@@ -1,8 +1,8 @@
 import { readdir } from 'fs/promises';
 import { resolve } from 'node:path';
 import { DirResult, dirSync } from 'tmp';
-import { isDirectory, isFile } from '@/checks';
-import { ensureDir, ensureFile } from '@/ensure';
+import { isDirectory, isFile } from './checks';
+import { ensureDir, ensureFile } from './ensure';
 
 describe('fs ensure utils', () => {
   let tmp: DirResult;

@@ -124,7 +124,9 @@ export async function createSwcConfig({
         baseUrl: tsConfig.baseUrl,
         paths: tsConfig.paths
           ? Object.fromEntries(
-              Object.entries(tsConfig.paths).map(([path, matches]) => [path, [matches[0]]])
+              Object.entries(tsConfig.paths)
+                .filter(([path]) => !deps.prod.some(depName => path.startsWith(depName)))
+                .map(([path, matches]) => [path, [matches[0]]])
             )
           : undefined,
         transform: {
