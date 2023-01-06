@@ -20,5 +20,5 @@ export async function deepReadDir(
   );
   const absolutePathsList = groupedPaths.flat();
 
-  return absolute ? absolutePathsList.map(name => relative(path, name)) : absolutePathsList;
+  return absolute ? absolutePathsList : absolutePathsList.map(name => relative(path, name));
 }
