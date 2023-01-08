@@ -2,6 +2,7 @@ import { rm, writeFile } from 'fs/promises';
 import { resolve } from 'path';
 import { ensureFile } from '@neodx/fs';
 import { dirSync } from 'tmp';
+import { afterEach, beforeEach } from 'vitest';
 import type { Tree } from '../tree';
 import { FsTree, ReadonlyVirtualFsTree, VirtualTree } from '../tree';
 

@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "module": "ESNext",
-    "types": ["node", "jest"],
+    "types": ["node"],
     "allowSyntheticDefaultImports": true
   },
   "include": ["src", "tests"]

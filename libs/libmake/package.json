@@ -20,7 +20,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "yarn dlx rimraf dist",
     "build": "rollup -c",
-    "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
+    "test": "vitest run --no-threads",
     "lint": "eslint"
   },
   "peerDependenciesMeta": {
@@ -50,16 +50,13 @@
     "stylus": "*"
   },
   "devDependencies": {
-    "@neodx/config": "workspace:*",
     "@swc/helpers": "0.4.14",
     "@types/babel__core": "^7.1.20",
-    "@types/jest": "29.2.5",
     "@types/node": "18.11.18",
     "@types/react": "^18.0.26",
     "eslint": "8.31.0",
     "eslint-kit": "6.10.0",
-    "jest": "29.3.1",
-    "postcss": "8.4.20",
+    "postcss": "8.4.21",
     "react": "18.2.0",
     "rollup-plugin-import-assertions": "0.4.0",
     "rollup-plugin-typescript2": "0.34.1",
@@ -74,7 +71,7 @@
     "lilconfig": "2.0.6",
     "maxmin": "4.0.0",
     "rollup": "3.9.1",
-    "rollup-plugin-dts": "5.1.0",
+    "rollup-plugin-dts": "5.1.1",
     "rollup-plugin-postcss": "4.0.2",
     "sade": "1.8.1",
     "tiny-glob": "0.2.9",

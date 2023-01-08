@@ -1,4 +1,5 @@
 import { deepReadDir } from '@neodx/fs';
+import { describe, expect, test } from 'vitest';
 import type { GenerateParams } from '../index';
 import { generateExample, getExamplesNames } from './testing-utils';
 

@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { identity } from '../shared';
 import { uniq, uniqBy } from './uniq';
 

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { describe, expect, test } from 'vitest';
 import { cycleRef, serializeJSON } from './serialize-json';
 
 describe('Logger > serializeJSON', () => {

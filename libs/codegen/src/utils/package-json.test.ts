@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { addPackageJsonDependencies, removePackageJsonDependencies } from './package-json';
 
 describe('addPackageJsonDependencies', () => {

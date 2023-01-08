@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`examples "groups-with-root" example should generate files 1`] = `
+exports[`examples > "groups-with-root" example should generate files 1`] = `
 [
   "assets/common/close.svg",
   "assets/common/favourite.svg",
@@ -12,9 +12,9 @@ exports[`examples "groups-with-root" example should generate files 1`] = `
 ]
 `;
 
-exports[`examples "groups-with-root" example should replay same output 1`] = `[]`;
+exports[`examples > "groups-with-root" example should replay same output 1`] = `[]`;
 
-exports[`examples "groups-without-root" example should generate files 1`] = `
+exports[`examples > "groups-without-root" example should generate files 1`] = `
 [
   "assets/common/close.svg",
   "assets/common/favourite.svg",
@@ -26,9 +26,9 @@ exports[`examples "groups-without-root" example should generate files 1`] = `
 ]
 `;
 
-exports[`examples "groups-without-root" example should replay same output 1`] = `[]`;
+exports[`examples > "groups-without-root" example should replay same output 1`] = `[]`;
 
-exports[`examples "react" example should generate files 1`] = `
+exports[`examples > "react" example should generate files 1`] = `
 [
   "assets/common/close.svg",
   "assets/common/favourite.svg",
@@ -42,9 +42,9 @@ exports[`examples "react" example should generate files 1`] = `
 ]
 `;
 
-exports[`examples "react" example should replay same output 1`] = `[]`;
+exports[`examples > "react" example should replay same output 1`] = `[]`;
 
-exports[`examples "simple" example should generate files 1`] = `
+exports[`examples > "simple" example should generate files 1`] = `
 [
   "assets/arrow-drop-down.svg",
   "assets/arrow-drop-up.svg",
@@ -53,4 +53,4 @@ exports[`examples "simple" example should generate files 1`] = `
 ]
 `;
 
-exports[`examples "simple" example should replay same output 1`] = `[]`;
+exports[`examples > "simple" example should replay same output 1`] = `[]`;

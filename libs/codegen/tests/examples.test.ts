@@ -1,4 +1,5 @@
 import { join } from 'node:path';
+import { describe, expect, test } from 'vitest';
 import { formatAllChangedFilesInTree, ReadonlyVirtualFsTree } from '../src';
 
 describe('examples', () => {
