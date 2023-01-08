@@ -1,5 +1,11 @@
 # @neodx/svg-sprite
 
+## 0.0.2
+
+### Patch Changes
+
+- [#23](https://github.com/secundant/neodx/pull/23) [`cc295cb`](https://github.com/secundant/neodx/commit/cc295cb2030ffc7fbe5173a680be2bc665de0c20) Thanks [@secundant](https://github.com/secundant)! - Introduced CLI with almost zero configuration
+
 ## 0.0.1
 
 ### Patch Changes
