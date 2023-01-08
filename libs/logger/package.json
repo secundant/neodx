@@ -5,6 +5,7 @@
   "private": true,
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
+  "source": "src/index.ts",
   "files": [
     "dist",
     "README.md"
