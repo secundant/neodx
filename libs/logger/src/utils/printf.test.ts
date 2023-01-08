@@ -1,4 +1,5 @@
-import { printf } from '@/utils/printf';
+import { describe, expect, test } from 'vitest';
+import { printf } from './printf';
 
 describe('printf', () => {
   test('should return string without arguments', () => {

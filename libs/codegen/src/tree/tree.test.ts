@@ -1,5 +1,6 @@
 import { fromLength, sum } from '@neodx/std';
 import { join } from 'node:path';
+import { describe, expect, test } from 'vitest';
 import {
   createTmpTree,
   createTmpTreeContext,

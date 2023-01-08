@@ -1,4 +1,4 @@
-import { optimize, OptimizedError, OptimizedSvg, OptimizeOptions } from 'svgo';
+import { Config, optimize } from 'svgo';
 import { createPlugin } from '../plugin-utils';
 
 export interface SvgoPluginOptions {
@@ -6,17 +6,32 @@ export interface SvgoPluginOptions {
 }
 
 export const svgo = ({ removeAttrs = [] }: Partial<SvgoPluginOptions> = {}) => {
-  const svgoOptions: OptimizeOptions = {
+  const svgoOptions: Config = {
     plugins: [
-      { name: 'removeStyleElement', active: true },
-      { name: 'removeUselessStrokeAndFill', active: true },
-      { name: 'removeScriptElement', active: true },
-      { name: 'removeEmptyAttrs', active: true },
-      { name: 'mergePaths', active: true },
-      { name: 'collapseGroups', active: true },
-      { name: 'removeTitle', active: true },
-      { name: 'removeViewBox', active: false },
-      { name: 'removeDimensions', active: true },
+      {
+        name: 'preset-default',
+        params: {
+          overrides: {
+            mergePaths: {},
+            removeUselessStrokeAndFill: {},
+            removeViewBox: false,
+            removeHiddenElems: false,
+            collapseGroups: false,
+            removeNonInheritableGroupAttrs: false,
+            cleanupIds: {
+              remove: false
+            },
+            cleanupAttrs: {},
+            convertPathData: {
+              removeUseless: true,
+              lineShorthands: true,
+              applyTransforms: true
+            }
+          }
+        }
+      },
+      { name: 'removeStyleElement' },
+      { name: 'removeScriptElement' },
       {
         name: 'removeAttrs',
         params: {
@@ -33,20 +48,10 @@ export const svgo = ({ removeAttrs = [] }: Partial<SvgoPluginOptions> = {}) => {
     ],
     multipass: true
   };
-  const applySvgo = (content: string) => {
-    const optimized = optimize(content, svgoOptions);
-
-    if (isError(optimized)) {
-      throw optimized.error;
-    }
-    return optimized.data;
-  };
+  const applySvgo = (content: string) => optimize(content, svgoOptions).data;
 
   return createPlugin('svgo', {
     transformSourceContent: (_, content) => applySvgo(content),
     transformOutputEntryContent: applySvgo
   });
 };
-
-const isError = (result: OptimizedError | OptimizedSvg): result is OptimizedError =>
-  Boolean(result.error);

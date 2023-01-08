@@ -1,9 +1,9 @@
-import { jest } from '@jest/globals';
+import { describe, expect, test, vi } from 'vitest';
 import { deduplicateAsync } from './deduplicate';
 
 describe('deduplicateAsync', () => {
   test('should prevent parallel execution', async () => {
-    const spyFn = jest.fn(
+    const spyFn = vi.fn(
       (value: number) => new Promise(resolve => setTimeout(() => resolve(value * 2), 0))
     );
     const deduplicated = deduplicateAsync(spyFn);

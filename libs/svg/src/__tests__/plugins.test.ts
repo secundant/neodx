@@ -1,5 +1,6 @@
 import { VirtualTree } from '@neodx/codegen';
 import { toArray } from '@neodx/std';
+import { describe, expect, test } from 'vitest';
 import type { SvgNode } from '../index';
 import { combinePlugins } from '../plugin-utils';
 import { groupSprites } from '../plugins';

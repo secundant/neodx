@@ -5,7 +5,7 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ESNext",
-    "types": ["node", "jest"],
+    "types": ["node"],
     "allowSyntheticDefaultImports": true
   },
   "include": ["src", "test"],

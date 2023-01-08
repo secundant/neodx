@@ -1,4 +1,5 @@
 import { join } from 'node:path';
+import { describe, expect, test } from 'vitest';
 import { createTmpTreeContext } from '../testing-utils/create-tmp-tree-context';
 import { VirtualTree } from '../tree';
 import { readTreeJson } from '../tree/utils/json';

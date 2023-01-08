@@ -1,4 +1,4 @@
-import { serializeJSON } from '@/utils/serialize-json';
+import { serializeJSON } from './serialize-json';
 
 /**
  * Tiny implementation of printf function.

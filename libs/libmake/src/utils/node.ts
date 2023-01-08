@@ -1,6 +1,6 @@
 import type { Stats } from 'node:fs';
 import { access, stat } from 'node:fs/promises';
-import { dirname } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import glob from 'tiny-glob';
 
 export const isFile = (path: string) => assertPath(path, stats => stats.isFile());
@@ -31,7 +31,7 @@ export const findFiles = (patterns: string[], cwd: string) =>
         ? glob(pattern, { cwd, absolute: false, filesOnly: true })
         : Promise.resolve(pattern)
     )
-  ).then(results => results.flat());
+  ).then(results => results.flat().map(path => resolve(cwd, path)));
 
 const isGlobPattern = (pattern: string) => pattern.includes('*');
 const emptyDirname = dirname('');

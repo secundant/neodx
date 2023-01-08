@@ -3,20 +3,12 @@
   "type": "module",
   "private": true,
   "packageManager": "yarn@3.2.0",
-  "devDependencies": {
-    "@neodx/config": "workspace:*",
-    "eslint": "8.25.0",
-    "eslint-kit": "6.8.0"
-  },
   "bin": {
     "neodx": "bin.mjs"
   },
-  "scripts": {
-    "lint": "eslint ."
-  },
   "dependencies": {
     "@neodx/codegen": "workspace:*",
-    "@nrwl/devkit": "15.0.8",
+    "@nrwl/devkit": "15.4.5",
     "sade": "1.8.1"
   }
 }

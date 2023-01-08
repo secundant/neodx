@@ -56,7 +56,7 @@ export async function generate({
       const content = await tree.read(join(inputRoot, path), 'utf-8');
       const nodeToFile = (node: SvgNode) => ({ name, node, path });
 
-      const node = await parse(content, {
+      const node = await parse(await hooks.transformSourceContent(path, content), {
         camelcase: true,
         transformNode: node => hooks.transformNode(nodeToFile(node))
       });
