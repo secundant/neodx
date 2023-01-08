@@ -1240,8 +1240,6 @@ __metadata:
   dependencies:
     "@neodx/codegen": "workspace:*"
     "@nrwl/devkit": 15.4.5
-    eslint: 8.31.0
-    eslint-kit: 6.10.0
     sade: 1.8.1
   bin:
     neodx: bin.mjs
