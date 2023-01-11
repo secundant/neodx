@@ -3,6 +3,7 @@ import { dirname, relative, resolve } from 'node:path';
 import type { OutputOptions, RollupOptions, RollupWarning, WarningHandler } from 'rollup';
 import dts from 'rollup-plugin-dts';
 import postcss from 'rollup-plugin-postcss';
+import type { ExportsGenerator } from '../core/exports';
 import type { ModuleFormat, Project } from '../types';
 import { compact, toRegExpPart } from '../utils/core-api';
 import { rollupPluginBundleSize } from './rollup-plugin-bundle-size';
@@ -15,7 +16,7 @@ export interface ExtendedRollupConfig extends RollupOptions {
   };
 }
 
-export async function createRollupConfig(project: Project) {
+export async function createRollupConfig(project: Project, exportsGenerator?: ExportsGenerator) {
   const {
     env,
     log,
@@ -86,7 +87,15 @@ export async function createRollupConfig(project: Project) {
         ...mainOutputOptions,
         ...outputOptions(format.main, formatToExtension[format.type]),
         format: format.type,
-        plugins: mainOutputPlugins
+        plugins: [
+          ...mainOutputPlugins,
+          {
+            name: 'libmake:generate-exports',
+            generateBundle(_, bundle) {
+              exportsGenerator?.addBundle(format.type, bundle);
+            }
+          }
+        ]
       }))
     },
     tsConfig &&

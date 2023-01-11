@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import sade from 'sade';
-import { build, scanProject, watch as runWatch } from './dist/index.mjs';
+import { build, scanProject, watch as runWatch } from './dist/index.js';
 
 sade('libmake', true)
   .describe(

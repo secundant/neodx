@@ -1,11 +1,17 @@
 import { rollup } from 'rollup';
+import { createExportsGenerator } from '../core/exports';
 import { createRollupConfig } from '../rollup/create-rollup-config';
 import type { Project } from '../types';
 import { logger } from '../utils/logger';
 
 export async function build(project: Project) {
   const startDate = Date.now();
-  const rollupConfigs = await createRollupConfig(project);
+  const exportsGenerator = createExportsGenerator({
+    addTypes: Boolean(project.tsConfig),
+    outDir: project.outDir,
+    root: project.cwd
+  });
+  const rollupConfigs = await createRollupConfig(project, exportsGenerator);
 
   for (const { output, info, ...input } of rollupConfigs) {
     try {

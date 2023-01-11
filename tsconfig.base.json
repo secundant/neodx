@@ -13,7 +13,8 @@
       "@neodx/codegen": ["libs/codegen/src/index.ts"],
       "@neodx/fs": ["libs/fs/src/index.ts"],
       "@neodx/std": ["libs/std/src/index.ts"],
-      "@neodx/svg": ["libs/svg/src/index.ts"]
+      "@neodx/svg": ["libs/svg/src/index.ts"],
+      "@neodx/vite-plugin-library": ["libs/vite-plugin-library/src/index.ts"]
     },
     "strict": true,
     "noUnusedLocals": true,

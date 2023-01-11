@@ -1,1 +1,1 @@
-export { filterEntries } from './filterEntries';
+export { compactObject, filterEntries } from './filter';

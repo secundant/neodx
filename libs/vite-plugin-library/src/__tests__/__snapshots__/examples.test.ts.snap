@@ -1,0 +1,67 @@
+// Vitest Snapshot v1
+
+exports[`examples > build example "advanced-mixed" 1`] = `
+[
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/advanced-mixed/dist/index.cjs",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/advanced-mixed/dist/index.js",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/advanced-mixed/dist/style.css",
+]
+`;
+
+exports[`examples > build example "basic-css" 1`] = `
+[
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/basic-css/dist/dynamic-611e6833.js",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/basic-css/dist/dynamic-6ba6dc7f.mjs",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/basic-css/dist/index.js",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/basic-css/dist/index.mjs",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/basic-css/dist/style.css",
+]
+`;
+
+exports[`examples > build example "basic-css-sass" 1`] = `
+[
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/basic-css-sass/dist/index.js",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/basic-css-sass/dist/index.mjs",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/basic-css-sass/dist/style.css",
+]
+`;
+
+exports[`examples > build example "basic-ts" 1`] = `
+[
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/basic-ts/dist/index.js",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/basic-ts/dist/index.mjs",
+]
+`;
+
+exports[`examples > build example "feat-ts-without-definitions" 1`] = `
+[
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/feat-ts-without-definitions/dist/index.js",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/feat-ts-without-definitions/dist/index.mjs",
+]
+`;
+
+exports[`examples > build example "multiple-ts" 1`] = `
+[
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts/dist/index.js",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts/dist/index.mjs",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts/dist/second-entry.js",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts/dist/second-entry.mjs",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts/dist/shared-39372394.js",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts/dist/shared-f0141ee8.mjs",
+]
+`;
+
+exports[`examples > build example "multiple-ts-glob" 1`] = `
+[
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts-glob/dist/index-930f9e54.mjs",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts-glob/dist/index-9f0d2d81.js",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts-glob/dist/index.js",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts-glob/dist/index.mjs",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts-glob/dist/modules/bar/index.js",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts-glob/dist/modules/bar/index.mjs",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts-glob/dist/modules/baz.js",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts-glob/dist/modules/baz.mjs",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts-glob/dist/modules/foo/index.js",
+  "/Users/primary/WebstormProjects/neodx/libs/vite-plugin-library/examples/multiple-ts-glob/dist/modules/foo/index.mjs",
+]
+`;

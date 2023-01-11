@@ -16,13 +16,12 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "clean": "yarn dlx rimraf dist",
-    "build": "libmake",
+    "build": "vite build",
     "test": "vitest run",
     "lint": "eslint src",
     "dev": "libmake --watch"
   },
   "devDependencies": {
-    "@neodx/libmake": "workspace:*",
     "@types/node": "18.11.18",
     "eslint": "8.31.0",
     "eslint-kit": "6.10.0",

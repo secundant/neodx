@@ -1,0 +1,9 @@
+{
+  "name": "multiple-ts-glob",
+  "scripts": {
+    "build": "builder src/index.ts src/modules/*.ts src/modules/*/index.ts"
+  },
+  "devDependencies": {
+    "vite-plugin-dts": "*"
+  }
+}

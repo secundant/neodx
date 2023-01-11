@@ -3,7 +3,6 @@
   "packageManager": "yarn@3.2.0",
   "version": "0.0.3",
   "type": "module",
-  "main": "dist/index.mjs",
   "bin": "bin.mjs",
   "files": [
     "dist",
@@ -19,7 +18,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "clean": "yarn dlx rimraf dist",
-    "build": "rollup -c",
+    "build": "vite build",
     "test": "vitest run --no-threads",
     "lint": "eslint"
   },
@@ -60,7 +59,8 @@
     "react": "18.2.0",
     "rollup-plugin-import-assertions": "0.4.0",
     "rollup-plugin-typescript2": "0.34.1",
-    "sass": "1.57.1"
+    "sass": "1.57.1",
+    "vite": "4.0.4"
   },
   "dependencies": {
     "@babel/core": "7.20.12",
