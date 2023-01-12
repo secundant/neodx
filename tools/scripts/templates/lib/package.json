@@ -15,12 +15,12 @@
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "libmake",
+    "build": "autobuild",
     "test": "vitest run",
     "lint": "eslint src"
   },
   "devDependencies": {
-    "@neodx/libmake": "workspace:*",
+    "@neodx/autobuild": "workspace:*",
     "@types/node": "18.8.5",
     "eslint": "8.25.0",
     "eslint-kit": "6.8.0",

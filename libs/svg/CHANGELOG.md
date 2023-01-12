@@ -1,4 +1,4 @@
-# @neodx/svg-sprite
+# @neodx/svg
 
 ## 0.0.1
 

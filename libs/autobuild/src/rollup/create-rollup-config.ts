@@ -1,10 +1,12 @@
+import { compact } from '@neodx/std';
 import { builtinModules } from 'node:module';
-import { dirname, relative, resolve } from 'node:path';
+import { dirname } from 'node:path';
 import type { OutputOptions, RollupOptions, RollupWarning, WarningHandler } from 'rollup';
 import dts from 'rollup-plugin-dts';
 import postcss from 'rollup-plugin-postcss';
+import type { ExportsGenerator } from '../core/exports';
 import type { ModuleFormat, Project } from '../types';
-import { compact, toRegExpPart } from '../utils/core-api';
+import { toRegExpPart } from '../utils/shared';
 import { rollupPluginBundleSize } from './rollup-plugin-bundle-size';
 import { createSwcConfig, rollupPluginSwc, rollupPluginSwcMinify } from './rollup-plugin-swc';
 
@@ -15,12 +17,10 @@ export interface ExtendedRollupConfig extends RollupOptions {
   };
 }
 
-export async function createRollupConfig(project: Project) {
+export async function createRollupConfig(project: Project, exportsGenerator?: ExportsGenerator) {
   const {
     env,
     log,
-    cwd,
-    sourceDir,
     sourceMap,
     packageJson,
     sourceFiles,
@@ -41,7 +41,7 @@ export async function createRollupConfig(project: Project) {
       : null;
 
   const mainInputPlugins = compact([postcssPlugin, swcPlugin, log !== 'fatal' && bundleSizePlugin]);
-  const mainOutputPlugins = compact([env === 'production' && swcMinifyPlugin]);
+  const mainOutputPlugins = compact([false && env === 'production' && swcMinifyPlugin]);
   const mainOutputOptions: OutputOptions = {
     name: packageJson.name,
     freeze: false,
@@ -49,28 +49,16 @@ export async function createRollupConfig(project: Project) {
     esModule: false,
     sourcemap: sourceMap
   };
-
-  const sourceDirAbs = resolve(cwd, sourceDir);
+  const entry = Object.fromEntries(
+    sourceFiles.map(file => [file.replace('src/', '').replace(/\.[tj]sx?$/, ''), file])
+  );
 
   const outputOptions = (main: string, ext: string): OutputOptions => ({
-    ...(sourceFiles.length > 1
-      ? {
-          hoistTransitiveImports: false,
-          chunkFileNames: `_internal/[name]-[hash].${ext}`,
-          assetFileNames: '[name][extname]',
-          entryFileNames: ({ name, facadeModuleId }) => {
-            const relativeId =
-              facadeModuleId && relative(sourceDirAbs, resolve(cwd, facadeModuleId));
-            const relativeIdName = relativeId?.replace(/\.[^/.]+$/, '');
-
-            return relativeIdName ? `${relativeIdName}.${ext}` : `${name}.${ext}`;
-          },
-          dir: dirname(main)
-        }
-      : {
-          file: main,
-          inlineDynamicImports: true
-        })
+    hoistTransitiveImports: false,
+    chunkFileNames: `_internal/[name]-[hash].${ext}`,
+    assetFileNames: '[name][extname]',
+    entryFileNames: `[name].${ext}`,
+    dir: dirname(main)
   });
 
   return compact<ExtendedRollupConfig>([
@@ -79,14 +67,22 @@ export async function createRollupConfig(project: Project) {
         description: `Source (${outputFormats.map(format => format.type).join(', ')})`
       },
       ...COMMON_ROLLUP_OPTIONS,
-      input: sourceFiles,
+      input: entry,
       external,
       plugins: mainInputPlugins,
       output: outputFormats.map(format => ({
         ...mainOutputOptions,
         ...outputOptions(format.main, formatToExtension[format.type]),
         format: format.type,
-        plugins: mainOutputPlugins
+        plugins: [
+          ...mainOutputPlugins,
+          {
+            name: 'autobuild:generate-exports',
+            generateBundle(options, bundle) {
+              exportsGenerator?.addBundle(options, bundle);
+            }
+          }
+        ]
       }))
     },
     tsConfig &&
@@ -95,7 +91,7 @@ export async function createRollupConfig(project: Project) {
         info: {
           description: `TypeScript definitions`
         },
-        input: sourceFiles,
+        input: entry,
         external: id => external(id) || DTS_EXTERNAL.test(id),
         plugins: compact([
           dts({
@@ -108,13 +104,7 @@ export async function createRollupConfig(project: Project) {
               noEmit: false,
               noEmitHelpers: false,
               skipLibCheck: true,
-              skipDefaultLibCheck: true,
-              emitDeclarationOnly: true,
-              checkJs: false,
-              // decrease build time
-              isolatedModules: true,
-              incremental: true,
-              tsBuildInfoFile: resolve(cwd, 'node_modules/.cache/libmake')
+              skipDefaultLibCheck: true
             },
             respectExternal: false
           }),
@@ -123,7 +113,15 @@ export async function createRollupConfig(project: Project) {
         output: [
           {
             ...outputOptions(typesFile, 'd.ts'),
-            format: 'esm'
+            format: 'esm',
+            plugins: [
+              {
+                name: 'autobuild:generate-exports',
+                generateBundle(options, bundle) {
+                  exportsGenerator?.addBundle(options, bundle);
+                }
+              }
+            ]
           }
         ]
       }

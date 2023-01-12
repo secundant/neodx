@@ -4,13 +4,14 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   build: {
+    minify: true,
+    ssr: true,
     lib: {
-      name: '@neodx/std',
       entry: 'src/index.ts',
-      formats: ['cjs', 'es'],
+      formats: ['es'],
       fileName: 'index'
     }
   },
-  test: { typecheck: { ignoreSourceErrors: true }, passWithNoTests: true },
+  test: { typecheck: { ignoreSourceErrors: true }, passWithNoTests: true, threads: false },
   plugins: [tsconfigPaths()]
 });

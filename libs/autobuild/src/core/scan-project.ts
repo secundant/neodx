@@ -1,9 +1,10 @@
+import { scan } from '@neodx/fs';
 import { lilconfig } from 'lilconfig';
 import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
+import { parse } from 'tsconfck';
 import type { LogLevel, ModuleFormat, Project, SupportedConfigName } from '../types';
 import { logger } from '../utils/logger';
-import { findFiles } from '../utils/node';
 import { scanPackageJson } from './scan-package-json';
 
 export interface ScanProjectParams {
@@ -18,9 +19,9 @@ export async function scanProject({
   log = 'info'
 }: ScanProjectParams): Promise<Project> {
   const packageJson = JSON.parse(await readFile(resolve(cwd, 'package.json'), 'utf-8'));
-  const foundTsConfig = await findTsConfig(cwd);
-  const tsConfigPath = foundTsConfig?.path;
-  const tsConfig = foundTsConfig?.value ?? null;
+  const foundTsConfig = await parse(resolve(cwd, 'tsconfig.json')).catch(() => null);
+  const tsConfigPath = foundTsConfig?.tsconfigFile;
+  const tsConfig = foundTsConfig?.tsconfig ?? null;
 
   const packageScanResult = scanPackageJson(
     {
@@ -54,7 +55,7 @@ export async function scanProject({
     foundConfigs.filter(Boolean).map(config => [config!.name, config!])
   );
   const sourceMap = tsConfig?.sourceMap ?? (env === 'development' ? 'inline' : true);
-  const sourceFiles = await findFiles(sourcePatterns, cwd);
+  const sourceFiles = await scan(cwd, sourcePatterns);
 
   if (log === 'verbose') {
     logger.info('Library', `${packageJson.name}@${packageJson.version}`);
@@ -82,26 +83,6 @@ export async function scanProject({
     env,
     log
   };
-}
-
-async function findTsConfig(path: string) {
-  const ts = await import('typescript').then(m => m.default);
-
-  const tsConfigPath =
-    ts.findConfigFile(path, ts.sys.fileExists, 'tsconfig.lib.json') ||
-    ts.findConfigFile(path, ts.sys.fileExists, 'tsconfig.json');
-
-  // Ignore top level configs
-  return tsConfigPath && dirname(tsConfigPath) === path
-    ? {
-        path: tsConfigPath,
-        value: ts.parseJsonConfigFileContent(
-          ts.readConfigFile(tsConfigPath, ts.sys.readFile).config,
-          ts.sys,
-          dirname(tsConfigPath)
-        ).options
-      }
-    : null;
 }
 
 async function findConfig<T extends SupportedConfigName>(name: T, cwd: string) {

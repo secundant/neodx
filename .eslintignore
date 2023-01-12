@@ -1,5 +1,5 @@
-node_modules/**/*
-dist/**/*
+node_modules
+libs/*/dist
 es6/**/*
 es2015/**/*
 esnext/**/*

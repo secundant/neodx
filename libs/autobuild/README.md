@@ -1,6 +1,6 @@
 <h1 align="center">
   <a aria-label="SVG sprite" href="https://github.com/secundant/neodx/libs/svg-sprite">
-    🛠️ libmake - Zero configuration libraries builder
+    🛠️ autobuild - Zero configuration libraries builder
   </a>
 </h1>
 
@@ -30,7 +30,7 @@ Built upon [Rollup](https://github.com/rollup/rollup) and [SWC](https://swc.rs/)
 
 ## Installation and fast setup
 
-Install libmake with any package manager: `yarn add -D @neodx/libmake` / `npm i -D @neodx/libmake`.
+Install autobuild with any package manager: `yarn add -D @neodx/autobuild` / `npm i -D @neodx/autobuild`.
 
 Describe your package.json:
 
@@ -49,13 +49,13 @@ Describe your package.json:
   },
   files: ['dist', 'README.md'],
   scripts: {
-    dev: 'libmake -w',
-    build: 'libmake'
+    dev: 'autobuild -w',
+    build: 'autobuild'
   }
 }
 ```
 
-And try to run our CLI: `yarn libmake`
+And try to run our CLI: `yarn autobuild`
 
 Example of package.json minimal setup
 
@@ -64,8 +64,8 @@ Example of package.json minimal setup
   main: 'dist/index.cjs',
   module: 'dist/index.mjs',
   scripts: {
-    dev: 'libmake -w',
-    build: 'libmake'
+    dev: 'autobuild -w',
+    build: 'autobuild'
   }
 }
 ```
