@@ -3,8 +3,8 @@
   "packageManager": "yarn@3.2.0",
   "version": "0.0.0",
   "private": true,
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
   "source": "src/index.ts",
   "files": [
     "dist",
@@ -30,5 +30,13 @@
     "eslint-kit": "6.10.0",
     "tmp": "0.2.1",
     "typescript": "4.9.4"
+  },
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
   }
 }

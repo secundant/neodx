@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "File system helpers",
   "type": "module",
-  "main": "dist/cjs/index.cjs",
-  "types": "dist/types/index.d.ts",
-  "module": "dist/mjs/index.mjs",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
   "source": "src/index.ts",
   "sideEffects": false,
   "files": [
@@ -32,5 +32,12 @@
   "dependencies": {
     "@neodx/std": "workspace:*",
     "tiny-glob": "0.2.9"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
   }
 }

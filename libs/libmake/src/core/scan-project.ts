@@ -1,9 +1,9 @@
+import { scan } from '@neodx/fs';
 import { lilconfig } from 'lilconfig';
 import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import type { LogLevel, ModuleFormat, Project, SupportedConfigName } from '../types';
 import { logger } from '../utils/logger';
-import { findFiles } from '../utils/node';
 import { scanPackageJson } from './scan-package-json';
 
 export interface ScanProjectParams {
@@ -54,7 +54,7 @@ export async function scanProject({
     foundConfigs.filter(Boolean).map(config => [config!.name, config!])
   );
   const sourceMap = tsConfig?.sourceMap ?? (env === 'development' ? 'inline' : true);
-  const sourceFiles = await findFiles(sourcePatterns, cwd);
+  const sourceFiles = await scan(cwd, sourcePatterns);
 
   if (log === 'verbose') {
     logger.info('Library', `${packageJson.name}@${packageJson.version}`);

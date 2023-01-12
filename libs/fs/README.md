@@ -1,19 +1,45 @@
 # @neodx/fs
 
-File system enhancements
+File system enhancements.
+
+Inspired by fs-extra.
 
 ## API
 
-### scanFiles
+### scan
 
 Glob-based (via [tiny-glob](https://www.npmjs.com/package/tiny-glob)) multiple patterns scanner with exclusion support
 
 ```typescript
-import { scanFiles } from '@neodx/fs';
+import { scan } from '@neodx/fs';
 
-const sourceFiles = await scanFiles({
+await scan(process.cwd(), ['*.js', '!*.config.js']);
+await scan(process.cwd(), '**/*.ts', '**/*.js');
+```
+
+## Proposals
+
+### Glob
+
+```typescript
+import { glob } from '@neodx/fs';
+
+// patterns
+await glob('**/*.txt');
+await glob(['*.{ts,tsx}', '!ignored.tsx']);
+await glob(['*.ts', '*.tsx']);
+// cache
+await glob('...', {
+  cache: false
+});
+await glob('...', {
+  cache: new Map()
+});
+// options
+await glob('...', {
   cwd: process.cwd(),
-  include: ['src/**/*.{ts,tsx}', '*.config.*'],
-  exclude: 'src/**/*.test.{ts,tsx}'
-}); // ["my.config.js", "src/foo/bar.ts", ...]
+  absolute: false,
+  includeDirs: false,
+  includeDots: false
+});
 ```

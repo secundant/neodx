@@ -1,3 +1,4 @@
+import { hasOwn } from '@neodx/std';
 import { serializeJSON } from './serialize-json';
 
 /**
@@ -7,26 +8,18 @@ import { serializeJSON } from './serialize-json';
  * @example printf('%s in %ds.', ['Done', 12]) => "Done on 12s."
  */
 export function printf(template: string, replaces: unknown[]) {
+  const currentReplaces = Array.from(replaces);
   const [leading, ...parts] = template.split('%');
-  const { result } = parts.reduce(
-    (acc, currentValue) => {
-      const tokenName = currentValue[0] as keyof typeof tokenFormatters;
+  const result = parts.reduce(
+    (acc, part) => {
+      const tokenName = part[0];
+      const format = hasOwn(tokenFormatters, tokenName) ? tokenFormatters[tokenName] : null;
 
-      if (Object.hasOwn(tokenFormatters, tokenName)) {
-        acc.result.push(
-          tokenFormatters[tokenName](replaces[acc.index]),
-          currentValue.slice(tokenName.length)
-        );
-        acc.index++;
-      } else {
-        acc.result.push('%', currentValue);
-      }
+      acc.push(format ? format(currentReplaces.shift()) : '%');
+      acc.push(format ? part.slice(tokenName.length) : part);
       return acc;
     },
-    {
-      index: 0,
-      result: [leading] as unknown[]
-    }
+    [leading] as unknown[]
   );
 
   return result.join('');

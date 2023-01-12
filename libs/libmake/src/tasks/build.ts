@@ -1,3 +1,7 @@
+import { FsTree, updateTreeJson } from '@neodx/codegen';
+import { exists } from '@neodx/fs';
+import { rm } from 'node:fs/promises';
+import type { PackageJson } from 'pkg-types';
 import { rollup } from 'rollup';
 import { createExportsGenerator } from '../core/exports';
 import { createRollupConfig } from '../rollup/create-rollup-config';
@@ -5,6 +9,7 @@ import type { Project } from '../types';
 import { logger } from '../utils/logger';
 
 export async function build(project: Project) {
+  const tree = new FsTree(project.cwd);
   const startDate = Date.now();
   const exportsGenerator = createExportsGenerator({
     addTypes: Boolean(project.tsConfig),
@@ -13,6 +18,9 @@ export async function build(project: Project) {
   });
   const rollupConfigs = await createRollupConfig(project, exportsGenerator);
 
+  if (await exists(project.outDir)) {
+    await rm(project.outDir, { recursive: true });
+  }
   for (const { output, info, ...input } of rollupConfigs) {
     try {
       const build = await rollup(input);
@@ -37,6 +45,15 @@ export async function build(project: Project) {
       throw error;
     }
   }
+  await updateTreeJson<PackageJson>(tree, 'package.json', prev => ({
+    ...prev,
+    ...exportsGenerator.getFields(),
+    exports: {
+      ...(typeof prev.exports !== 'string' && prev.exports),
+      ...exportsGenerator.getExports()
+    }
+  }));
+  await tree.applyChanges();
   if (project.log !== 'fatal') {
     logger.info(`Done at`, `${Date.now() - startDate}ms`);
   }

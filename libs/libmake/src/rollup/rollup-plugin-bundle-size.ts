@@ -1,8 +1,8 @@
-import { cyan } from 'kleur/colors';
 // @ts-expect-error no types
 import maxmin from 'maxmin';
-import { basename } from 'node:path';
+import colors from 'picocolors';
 import type { Plugin } from 'rollup';
+import { isChunk } from '../core/exports';
 import { logger } from '../utils/logger';
 
 export function rollupPluginBundleSize(): Plugin {
@@ -10,15 +10,17 @@ export function rollupPluginBundleSize(): Plugin {
 
   return {
     name: 'rollup-plugin-bundle-size',
-    generateBundle({ file }, bundle) {
-      if (!file) return;
-      const asset = basename(file);
-      const info = bundle[asset];
+    generateBundle(_, bundle) {
+      Object.values(bundle)
+        .filter(isChunk)
+        .forEach(info => {
+          const size = maxmin(info.code, info.code, true);
 
-      if (info.type !== 'chunk') return;
-      const size = maxmin(info.code, info.code, true);
-
-      logger.info(`Compiled ${cyan(file)}`, `${size.slice(size.indexOf(' → ') + 3)}`);
+          logger.info(
+            `Compiled ${colors.cyan(info.fileName)}`,
+            `${size.slice(size.indexOf(' → ') + 3)}`
+          );
+        });
     },
     buildStart() {
       time = Date.now();

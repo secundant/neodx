@@ -1,6 +1,6 @@
 import { compact, uniq } from '@neodx/std';
-import { bgGreen, bgRed, bgYellow } from 'kleur/colors';
 import { dirname, join, relative, sep } from 'node:path';
+import colors from 'picocolors';
 import type { ContentLike, FileChange, Tree } from '../types';
 import { FileChangeType } from '../types';
 
@@ -197,9 +197,9 @@ export abstract class BaseTree implements Tree {
 const getRootDirName = (path: string) => path.split('/')[0];
 
 const printLabelsMap = {
-  [FileChangeType.CREATE]: bgGreen(' CREATE '),
-  [FileChangeType.UPDATE]: bgYellow(' UPDATE '),
-  [FileChangeType.DELETE]: bgRed(' DELETE ')
+  [FileChangeType.CREATE]: colors.bgGreen(' CREATE '),
+  [FileChangeType.UPDATE]: colors.bgBlack(colors.yellow(' UPDATE ')),
+  [FileChangeType.DELETE]: colors.bgRed(' DELETE ')
 };
 
 export interface InternalChange {

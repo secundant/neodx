@@ -4,9 +4,9 @@
   "description": "No description",
   "type": "module",
   "source": "src/index.ts",
-  "main": "./dist/index.js",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "sideEffects": false,
   "files": [
     "dist",
@@ -15,9 +15,7 @@
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "vite build",
-    "build-alt": "libmake",
-    "build-ts": "tsup src/index.ts --dts",
+    "build": "libmake",
     "test": "vitest",
     "lint": "eslint src"
   },
@@ -29,6 +27,7 @@
     "pkg-types": "1.0.1"
   },
   "devDependencies": {
+    "@neodx/libmake": "worskace:*",
     "@types/node": "18.11.18",
     "eslint": "8.31.0",
     "eslint-kit": "6.10.0",
@@ -39,5 +38,11 @@
   },
   "peerDependencies": {
     "vite": "4"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
   }
 }

@@ -2,17 +2,12 @@
   "name": "@neodx/svg",
   "packageManager": "yarn@3.2.0",
   "version": "0.0.1",
-  "description": "Try better way to build your icons",
+  "description": "Supercharge your icons ⚡️",
   "source": "src/index.ts",
   "type": "module",
-  "main": "dist/cjs/index.cjs",
-  "module": "dist/esm/index.mjs",
-  "types": "dist/types/index.d.ts",
-  "exports": {
-    "types": "./dist/types/index.d.ts",
-    "import": "./dist/esm/index.mjs",
-    "require": "./dist/cjs/index.cjs"
-  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "bin": {
     "sprite": "bin.mjs"
   },
@@ -23,23 +18,19 @@
   "sideEffects": false,
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "clean": "yarn dlx rimraf dist",
     "build": "libmake",
     "test": "vitest run",
-    "lint": "eslint src",
-    "dev": "libmake watch"
+    "lint": "eslint src"
   },
   "dependencies": {
     "@neodx/codegen": "workspace:*",
     "@neodx/fs": "workspace:*",
     "@neodx/std": "workspace:*",
-    "ora": "6.1.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sade": "1.8.1",
     "svgo": "3.0.2",
     "svgson": "5.2.1",
-    "tiny-glob": "0.2.9",
     "zod": "3.20.2"
   },
   "devDependencies": {
@@ -54,5 +45,12 @@
     "eslint-kit": "6.10.0",
     "prettier": "2.8.2",
     "typescript": "4.9.4"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
   }
 }

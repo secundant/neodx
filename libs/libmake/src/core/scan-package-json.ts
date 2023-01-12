@@ -1,3 +1,4 @@
+import { toArray } from '@neodx/std';
 import type {
   ModuleFormat,
   ProjectBuildMap,
@@ -5,9 +6,7 @@ import type {
   ProjectOutputFormatEntry,
   ProjectPackageJSON
 } from '../types';
-import { getModuleFormat } from '../utils/asserts';
-import { toArray } from '../utils/core-api';
-import { rootDirname } from '../utils/node';
+import { getModuleFormat, rootDirname } from '../utils/shared';
 
 export interface ScanPackageJsonParams {
   cwd: string;

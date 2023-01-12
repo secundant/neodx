@@ -1,4 +1,6 @@
-import { bgRed, blue, bold, red, yellow } from 'kleur/colors';
+import colors from 'picocolors';
+
+const { bgRed, blue, bold, red, yellow } = colors;
 
 export const logger = {
   fatal(name: string, ...messages: unknown[]) {
