@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "libmake",
+    "build": "autobuild",
     "test": "vitest",
     "lint": "eslint src"
   },
@@ -27,7 +27,7 @@
     "pkg-types": "1.0.1"
   },
   "devDependencies": {
-    "@neodx/libmake": "worskace:*",
+    "@neodx/autobuild": "worskace:*",
     "@types/node": "18.11.18",
     "eslint": "8.31.0",
     "eslint-kit": "6.10.0",

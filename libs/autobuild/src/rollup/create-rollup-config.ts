@@ -77,7 +77,7 @@ export async function createRollupConfig(project: Project, exportsGenerator?: Ex
         plugins: [
           ...mainOutputPlugins,
           {
-            name: 'libmake:generate-exports',
+            name: 'autobuild:generate-exports',
             generateBundle(options, bundle) {
               exportsGenerator?.addBundle(options, bundle);
             }
@@ -116,7 +116,7 @@ export async function createRollupConfig(project: Project, exportsGenerator?: Ex
             format: 'esm',
             plugins: [
               {
-                name: 'libmake:generate-exports',
+                name: 'autobuild:generate-exports',
                 generateBundle(options, bundle) {
                   exportsGenerator?.addBundle(options, bundle);
                 }

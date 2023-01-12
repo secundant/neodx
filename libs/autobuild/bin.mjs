@@ -3,7 +3,7 @@
 import sade from 'sade';
 import { build, scanProject, watch as runWatch } from './dist/index.js';
 
-sade('libmake', true)
+sade('autobuild', true)
   .describe(
     'Single command for library building. See our readme for more details about project setup'
   )

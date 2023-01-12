@@ -1,4 +1,4 @@
-# @neodx/libmake
+# @neodx/autobuild
 
 ## 0.0.3
 

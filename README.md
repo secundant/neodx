@@ -12,7 +12,7 @@
 
 ## Explore our instruments
 
-### [@neodx/libmake](./libs/libmake)
+### [@neodx/autobuild](./libs/autobuild)
 
 > Will be reworked
 

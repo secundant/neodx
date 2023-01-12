@@ -46,13 +46,13 @@
     "add-example": "node scripts/add-example.mjs",
     "typecheck": "tsc --noEmit",
     "clean": "yarn dlx rimraf dist",
-    "build": "libmake",
+    "build": "autobuild",
     "test": "vitest run",
     "lint": "eslint",
-    "dev": "libmake -w"
+    "dev": "autobuild -w"
   },
   "devDependencies": {
-    "@neodx/libmake": "workspace:*",
+    "@neodx/autobuild": "workspace:*",
     "@types/ejs": "^3.1.1",
     "@types/node": "18.11.18",
     "@types/prettier": "^2.7.2",

@@ -18,7 +18,7 @@
   "sideEffects": false,
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "libmake",
+    "build": "autobuild",
     "test": "vitest run",
     "lint": "eslint src"
   },
@@ -34,7 +34,7 @@
     "zod": "3.20.2"
   },
   "devDependencies": {
-    "@neodx/libmake": "workspace:*",
+    "@neodx/autobuild": "workspace:*",
     "@swc/helpers": "0.4.14",
     "@types/node": "18.11.18",
     "@types/react": "^18.0.26",

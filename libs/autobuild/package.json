@@ -1,5 +1,5 @@
 {
-  "name": "@neodx/libmake",
+  "name": "@neodx/autobuild",
   "packageManager": "yarn@3.2.0",
   "version": "0.0.3",
   "type": "module",

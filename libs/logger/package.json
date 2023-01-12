@@ -17,13 +17,13 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "clean": "yarn dlx rimraf dist",
-    "build": "libmake",
+    "build": "autobuild",
     "test": "vitest run",
     "lint": "eslint",
-    "dev": "libmake -w"
+    "dev": "autobuild -w"
   },
   "devDependencies": {
-    "@neodx/libmake": "workspace:*",
+    "@neodx/autobuild": "workspace:*",
     "@types/node": "18.11.18",
     "@types/tmp": "^0.2.3",
     "eslint": "8.31.0",

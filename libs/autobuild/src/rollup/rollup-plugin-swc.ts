@@ -109,7 +109,7 @@ export async function createSwcConfig({
       baseUrl: sourceDir,
       transform,
       experimental: {
-        cacheRoot: resolve(cwd, 'node_modules/.cache/libmake/swc'),
+        cacheRoot: resolve(cwd, 'node_modules/.cache/autobuild/swc'),
         keepImportAssertions: Boolean(tsConfig?.target === ScriptTarget.ESNext)
       },
       ...(tsConfig && {
