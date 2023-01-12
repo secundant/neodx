@@ -1,7 +1,0 @@
-{
-  "compilerOptions": {
-    "baseUrl": "src",
-    "declaration": false
-  },
-  "files": ["src/index.ts"]
-}

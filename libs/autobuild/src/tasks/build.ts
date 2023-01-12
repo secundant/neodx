@@ -8,11 +8,14 @@ import { createRollupConfig } from '../rollup/create-rollup-config';
 import type { Project } from '../types';
 import { logger } from '../utils/logger';
 
-export async function build(project: Project) {
+export interface BuildParams {
+  startedAt?: number;
+}
+
+export async function build(project: Project, { startedAt }: BuildParams = {}) {
   const tree = new FsTree(project.cwd);
-  const startDate = Date.now();
+  const buildStartedAt = Date.now();
   const exportsGenerator = createExportsGenerator({
-    addTypes: Boolean(project.tsConfig),
     outDir: project.outDir,
     root: project.cwd
   });
@@ -55,7 +58,10 @@ export async function build(project: Project) {
   }));
   await tree.applyChanges();
   if (project.log !== 'fatal') {
-    logger.info(`Done at`, `${Date.now() - startDate}ms`);
+    logger.info(`Done at`, `${Date.now() - buildStartedAt}ms`);
+  }
+  if (startedAt) {
+    logger.info(`Total`, `${Date.now() - startedAt}ms`);
   }
   return {
     rollupConfigs

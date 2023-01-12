@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 import sade from 'sade';
-import { build, scanProject, watch as runWatch } from './dist/index.js';
+
+const startedAt = Date.now();
 
 sade('autobuild', true)
   .describe(
@@ -12,6 +13,7 @@ sade('autobuild', true)
   .option('-v, --verbose', 'Show additional information')
   .action(async ({ watch, dev, verbose }) => {
     const env = dev || watch ? 'development' : 'production';
+    const { build, scanProject, watch: runWatch } = await import('./dist/index.js');
     const project = await scanProject({
       cwd: process.cwd(),
       env,
@@ -21,7 +23,7 @@ sade('autobuild', true)
     if (watch) {
       await runWatch(project);
     } else {
-      await build(project);
+      await build(project, { startedAt });
     }
   })
   .parse(process.argv);
