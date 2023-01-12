@@ -1142,7 +1142,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@neodx/autobuild@workspace:*, @neodx/autobuild@workspace:libs/autobuild, @neodx/autobuild@worskace:*":
+"@neodx/autobuild@workspace:*, @neodx/autobuild@workspace:libs/autobuild":
   version: 0.0.0-use.local
   resolution: "@neodx/autobuild@workspace:libs/autobuild"
   dependencies:
@@ -1194,7 +1194,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/codegen@workspace:*, @neodx/codegen@workspace:libs/codegen, @neodx/codegen@worskace:*":
+"@neodx/codegen@workspace:*, @neodx/codegen@workspace:libs/codegen":
   version: 0.0.0-use.local
   resolution: "@neodx/codegen@workspace:libs/codegen"
   dependencies:
@@ -1218,7 +1218,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/fs@workspace:*, @neodx/fs@workspace:libs/fs, @neodx/fs@worskace:*":
+"@neodx/fs@workspace:*, @neodx/fs@workspace:libs/fs":
   version: 0.0.0-use.local
   resolution: "@neodx/fs@workspace:libs/fs"
   dependencies:
@@ -1260,11 +1260,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/std@workspace:*, @neodx/std@workspace:libs/std, @neodx/std@worskace:*":
+"@neodx/std@workspace:*, @neodx/std@workspace:libs/std":
   version: 0.0.0-use.local
   resolution: "@neodx/std@workspace:libs/std"
   dependencies:
-    "@neodx/autobuild": "worskace:*"
+    "@neodx/autobuild": "workspace:*"
     "@types/node": 18.11.18
     eslint: 8.31.0
     eslint-kit: 6.10.0
@@ -1305,10 +1305,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@neodx/vite-plugin-library@workspace:libs/vite-plugin-library"
   dependencies:
-    "@neodx/autobuild": "worskace:*"
-    "@neodx/codegen": "worskace:*"
-    "@neodx/fs": "worskace:*"
-    "@neodx/std": "worskace:*"
+    "@neodx/autobuild": "workspace:*"
+    "@neodx/codegen": "workspace:*"
+    "@neodx/fs": "workspace:*"
+    "@neodx/std": "workspace:*"
     "@types/node": 18.11.18
     eslint: 8.31.0
     eslint-kit: 6.10.0
