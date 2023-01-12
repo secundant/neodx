@@ -20,14 +20,14 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@neodx/codegen": "worskace:*",
-    "@neodx/fs": "worskace:*",
-    "@neodx/std": "worskace:*",
+    "@neodx/codegen": "workspace:*",
+    "@neodx/fs": "workspace:*",
+    "@neodx/std": "workspace:*",
     "picocolors": "1.0.0",
     "pkg-types": "1.0.1"
   },
   "devDependencies": {
-    "@neodx/autobuild": "worskace:*",
+    "@neodx/autobuild": "workspace:*",
     "@types/node": "18.11.18",
     "eslint": "8.31.0",
     "eslint-kit": "6.10.0",
