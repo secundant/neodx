@@ -10,6 +10,11 @@ export default defineConfig({
       entry: 'src/index.ts',
       formats: ['es'],
       fileName: 'index'
+    },
+    rollupOptions: {
+      treeshake: {
+        moduleSideEffects: false
+      }
     }
   },
   test: { typecheck: { ignoreSourceErrors: true }, passWithNoTests: true, threads: false },

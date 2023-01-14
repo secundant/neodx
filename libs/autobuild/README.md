@@ -1,5 +1,5 @@
 <h1 align="center">
-  <a aria-label="SVG sprite" href="https://github.com/secundant/neodx/libs/svg-sprite">
+  <a aria-label="Autobuild" href="https://github.com/secundant/neodx/libs/autobuild">
     🛠️ autobuild - Zero configuration libraries builder
   </a>
 </h1>
@@ -36,39 +36,14 @@ Describe your package.json:
 
 ```json5
 {
-  main: 'dist/index.cjs',
-  types: 'dist/index.d.ts',
-  source: 'src/index.ts',
-  module: 'dist/index.mjs',
-  exports: {
-    '.': {
-      default: './dist/index.mjs',
-      require: './dist/index.cjs',
-      import: './dist/index.mjs'
-    }
-  },
   files: ['dist', 'README.md'],
   scripts: {
-    dev: 'autobuild -w',
-    build: 'autobuild'
+    build: 'autobuild src/index.ts'
   }
 }
 ```
 
 And try to run our CLI: `yarn autobuild`
-
-Example of package.json minimal setup
-
-```json5
-{
-  main: 'dist/index.cjs',
-  module: 'dist/index.mjs',
-  scripts: {
-    dev: 'autobuild -w',
-    build: 'autobuild'
-  }
-}
-```
 
 ## Known issues and limitations
 
