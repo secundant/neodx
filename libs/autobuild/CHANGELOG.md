@@ -1,5 +1,11 @@
 # @neodx/autobuild
 
+## 0.0.5
+
+### Patch Changes
+
+- [#29](https://github.com/secundant/neodx/pull/29) [`add109f`](https://github.com/secundant/neodx/commit/add109ff169c00cbddbfaff4b65f61d3d0c125ed) Thanks [@secundant](https://github.com/secundant)! - Fixed unused external imports in production bundle
+
 ## 0.0.4
 
 ### Patch Changes
