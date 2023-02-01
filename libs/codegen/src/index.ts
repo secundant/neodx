@@ -1,7 +1,7 @@
 // Tree
 
-export type { FileChange, Tree } from './tree';
-export { FileChangeType, FsTree, ReadonlyVirtualFsTree, VirtualTree } from './tree';
+export type { CreateTreeParams, FileChange, Tree } from './tree';
+export { createTree, FileChangeType, FsTree, ReadonlyVirtualFsTree, VirtualTree } from './tree';
 
 // Tree - helpers
 
