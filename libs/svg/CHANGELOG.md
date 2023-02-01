@@ -1,5 +1,11 @@
 # @neodx/svg
 
+## 0.0.4
+
+### Patch Changes
+
+- [#36](https://github.com/secundant/neodx/pull/36) [`7a91e17`](https://github.com/secundant/neodx/commit/7a91e171dc028633a6c3ab229dc0a61769619cb6) Thanks [@secundant](https://github.com/secundant)! - Fix bundle size and CLI
+
 ## 0.0.3
 
 ### Patch Changes
