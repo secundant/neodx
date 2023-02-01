@@ -11,12 +11,14 @@ export interface ScanProjectParams {
   cwd: string;
   env?: Project['env'];
   log?: LogLevel;
+  minify?: boolean;
 }
 
 export async function scanProject({
   cwd,
   env = 'production',
-  log = 'info'
+  log = 'info',
+  minify: minifyParam
 }: ScanProjectParams): Promise<Project> {
   const packageJson = JSON.parse(await readFile(resolve(cwd, 'package.json'), 'utf-8'));
   const foundTsConfig = await parse(resolve(cwd, 'tsconfig.json')).catch(() => null);
@@ -56,11 +58,13 @@ export async function scanProject({
   );
   const sourceMap = tsConfig?.sourceMap ?? (env === 'development' ? 'inline' : true);
   const sourceFiles = await scan(cwd, sourcePatterns);
+  const minify = minifyParam ?? env === 'production';
 
   if (log === 'verbose') {
     logger.info('Library', `${packageJson.name}@${packageJson.version}`);
     logger.info('Environment (build mode)', env);
     logger.info('Generate source maps', sourceMap);
+    logger.info('Minify', minify);
     logger.info('Source folder', packageScanResult.sourceDir);
     logger.info('Output folder', packageScanResult.outDir);
     logger.info(
@@ -78,6 +82,7 @@ export async function scanProject({
     packageJson,
     sourceFiles,
     sourceMap,
+    minify,
     tsConfigJson: tsConfigPath ? JSON.parse(await readFile(tsConfigPath, 'utf-8')) : null,
     tsConfig,
     env,

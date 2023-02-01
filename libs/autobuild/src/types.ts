@@ -7,6 +7,7 @@ export interface Project extends ProjectBuildMap {
   deps: ProjectDependencies;
   tsConfig: CompilerOptions | null;
   tsConfigJson?: Record<string, any> | null;
+  minify: boolean;
   sourceMap: boolean | 'inline';
   sourceFiles: string[];
   packageJson: ProjectPackageJSON;

@@ -11,13 +11,15 @@ sade('autobuild', true)
   .option('-w, --watch', 'Run in watch mode')
   .option('-d, --dev, --no-prod', 'Emulate development output in production build')
   .option('-v, --verbose', 'Show additional information')
-  .action(async ({ watch, dev, verbose }) => {
+  .option('-m, --minify', 'Minify bundle (pass --no-minify to disable it)')
+  .action(async ({ watch, dev, verbose, minify }) => {
     const env = dev || watch ? 'development' : 'production';
     const { build, scanProject, watch: runWatch } = await import('./dist/index.js');
     const project = await scanProject({
       cwd: process.cwd(),
       env,
-      log: verbose ? 'verbose' : 'info'
+      log: verbose ? 'verbose' : 'info',
+      minify
     });
 
     if (watch) {

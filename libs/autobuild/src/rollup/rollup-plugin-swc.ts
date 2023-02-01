@@ -120,7 +120,7 @@ export async function createSwcConfig({
           dynamicImport: true
         },
         externalHelpers: tsConfig.importHelpers,
-        target: tsConfig.target ? tsTargetToJSCTarget[tsConfig.target] : 'es2018',
+        target: tsConfig.target ? tsTargetToJSCTarget[tsConfig.target] : 'es2020',
         baseUrl: tsConfig.baseUrl,
         paths: tsConfig.paths
           ? Object.fromEntries(
