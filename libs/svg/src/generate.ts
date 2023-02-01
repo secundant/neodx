@@ -13,7 +13,7 @@ export interface GenerateParams {
   tree: Tree;
   input: string[];
   output: string;
-  inputRoot?: string;
+  root?: string;
   group?: boolean;
   /**
    * Template of sprite file name
@@ -30,14 +30,14 @@ export async function generate({
   input,
   tree,
   group: enableGroup,
-  inputRoot = '.',
+  root = '.',
   optimize,
   definitions,
   output,
   fileName = '{name}.svg',
   keepTreeChanges
 }: GenerateParams) {
-  const filePaths = await scan(join(tree.root, inputRoot), input);
+  const filePaths = await scan(join(tree.root, root), input);
   const hooks = combinePlugins(
     compact([
       enableGroup && groupSprites(),
@@ -53,7 +53,7 @@ export async function generate({
   const files = await Promise.all(
     filePaths.map(async path => {
       const name = basename(path, '.svg');
-      const content = await tree.read(join(inputRoot, path), 'utf-8');
+      const content = await tree.read(join(root, path), 'utf-8');
       const nodeToFile = (node: SvgNode) => ({ name, node, path });
 
       const node = await parse(await hooks.transformSourceContent(path, content), {

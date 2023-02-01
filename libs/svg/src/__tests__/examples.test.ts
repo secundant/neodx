@@ -12,12 +12,12 @@ describe('examples', () => {
     'groups-with-root': {
       group: true,
       input: ['**/*.svg'],
-      inputRoot: 'assets'
+      root: 'assets'
     },
     react: {
       group: true,
       input: ['**/*.svg'],
-      inputRoot: 'assets'
+      root: 'assets'
     }
   };
 
