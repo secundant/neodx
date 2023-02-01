@@ -21,16 +21,16 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "@neodx/autobuild": "workspace:*",
+    "@neodx/autobuild": "*",
     "@types/node": "18.11.18",
     "@types/tmp": "^0.2.3",
-    "eslint": "8.31.0",
-    "eslint-kit": "6.10.0",
+    "eslint": "8.33.0",
+    "eslint-kit": "6.11.0",
     "tmp": "0.2.1",
-    "typescript": "4.9.4"
+    "typescript": "4.9.5"
   },
   "dependencies": {
-    "@neodx/std": "workspace:*",
+    "@neodx/std": "*",
     "tiny-glob": "0.2.9"
   },
   "exports": {
