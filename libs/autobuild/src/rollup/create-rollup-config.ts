@@ -19,7 +19,6 @@ export interface ExtendedRollupConfig extends RollupOptions {
 
 export async function createRollupConfig(project: Project, exportsGenerator?: ExportsGenerator) {
   const {
-    env,
     log,
     sourceMap,
     packageJson,
@@ -27,6 +26,7 @@ export async function createRollupConfig(project: Project, exportsGenerator?: Ex
     tsConfig,
     outputFormats,
     deps,
+    minify,
     typesFile,
     detectedConfigFiles
   } = project;
@@ -41,7 +41,7 @@ export async function createRollupConfig(project: Project, exportsGenerator?: Ex
       : null;
 
   const mainInputPlugins = compact([postcssPlugin, swcPlugin, log !== 'fatal' && bundleSizePlugin]);
-  const mainOutputPlugins = compact([false && env === 'production' && swcMinifyPlugin]);
+  const mainOutputPlugins = compact([minify && swcMinifyPlugin]);
   const mainOutputOptions: OutputOptions = {
     name: packageJson.name,
     freeze: false,
