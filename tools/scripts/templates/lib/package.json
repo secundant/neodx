@@ -20,7 +20,7 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "@neodx/autobuild": "workspace:*",
+    "@neodx/autobuild": "*",
     "@types/node": "18.8.5",
     "eslint": "8.25.0",
     "eslint-kit": "6.8.0",
