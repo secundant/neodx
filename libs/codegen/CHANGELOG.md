@@ -1,5 +1,11 @@
 # @neodx/codegen
 
+## 0.0.5
+
+### Patch Changes
+
+- [#38](https://github.com/secundant/neodx/pull/38) [`35de3a5`](https://github.com/secundant/neodx/commit/35de3a50be2d782e546f804361b2bef373ae9511) Thanks [@secundant](https://github.com/secundant)! - add top-level `createTree` factory
+
 ## 0.0.4
 
 ### Patch Changes

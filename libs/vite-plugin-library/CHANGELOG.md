@@ -1,5 +1,12 @@
 # @neodx/vite-plugin-library
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies [[`35de3a5`](https://github.com/secundant/neodx/commit/35de3a50be2d782e546f804361b2bef373ae9511)]:
+  - @neodx/codegen@0.0.5
+
 ## 0.0.3
 
 ### Patch Changes
