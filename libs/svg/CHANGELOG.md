@@ -1,5 +1,16 @@
 # @neodx/svg
 
+## 0.0.5
+
+### Patch Changes
+
+- [#38](https://github.com/secundant/neodx/pull/38) [`35de3a5`](https://github.com/secundant/neodx/commit/35de3a50be2d782e546f804361b2bef373ae9511) Thanks [@secundant](https://github.com/secundant)! - improve CLI configuration, fix incorrect options providing
+
+- [#38](https://github.com/secundant/neodx/pull/38) [`b5bc38c`](https://github.com/secundant/neodx/commit/b5bc38ca61705bd810b58b29d15eb819aff7050a) Thanks [@secundant](https://github.com/secundant)! - Fix bundle size and CLI
+
+- Updated dependencies [[`35de3a5`](https://github.com/secundant/neodx/commit/35de3a50be2d782e546f804361b2bef373ae9511)]:
+  - @neodx/codegen@0.0.5
+
 ## 0.0.4
 
 ### Patch Changes

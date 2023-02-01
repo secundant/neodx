@@ -1,5 +1,11 @@
 # @neodx/autobuild
 
+## 0.0.8
+
+### Patch Changes
+
+- [#38](https://github.com/secundant/neodx/pull/38) [`b5bc38c`](https://github.com/secundant/neodx/commit/b5bc38ca61705bd810b58b29d15eb819aff7050a) Thanks [@secundant](https://github.com/secundant)! - Add --minify option
+
 ## 0.0.7
 
 ### Patch Changes
