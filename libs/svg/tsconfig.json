@@ -3,7 +3,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "types": ["node"],
     "target": "ES2018"
   },
