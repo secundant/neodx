@@ -1,5 +1,11 @@
 # @neodx/autobuild
 
+## 0.0.6
+
+### Patch Changes
+
+- [#33](https://github.com/secundant/neodx/pull/33) [`246f4f2`](https://github.com/secundant/neodx/commit/246f4f292a005be440d78e7528cc40aefa5c6ad8) Thanks [@secundant](https://github.com/secundant)! - Fix incorrect versions in dependencies (workspace:\*)
+
 ## 0.0.5
 
 ### Patch Changes
