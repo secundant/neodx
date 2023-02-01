@@ -17,7 +17,7 @@ the user's browser will parse and evaluate your **static SVG** as JS code,
 you can never cache it, WOOF, etc., etc.
 
 And yes, developers keep using this insanity because even an incredibly inefficient solution with a good DX
-is better than a super-efficient, but the unusable setup with semi-manual generators.
+is better than a super-efficient, but unusable setup with semi-manual generators.
 
 That's why we're here! 🥳
 
@@ -39,20 +39,22 @@ yarn sprite -o public -d shared/icon/meta.ts
 
 ## Options
 
-| option           | default          | description                                                                                 |
-| ---------------- | ---------------- | ------------------------------------------------------------------------------------------- |
-| `-r`, `--root`   | `.`              | Base path to your assets, useful for correct groups names                                   |
-| `-i`, `--input`  | `**/*.svg`       | Paths to icons files. You can pass multiple and negative (`!**/*.excluded.svg`) expressions |
-| `-o`, `--output` | `public/sprites` | Base path to generated sprite/sprites folder                                                |
-| `-g`, `--group`  | `false`          | Should we group icons?                                                                      |
-| `-d`, `--ts`     | `-`              | Path to generated TS file with sprite meta                                                  |
+| option                | default                         | description                                                                                                         |
+| --------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `-i`, `--input`       | `"**/*.svg"`                    | Glob paths to icons files                                                                                           |
+| `-o`, `--output`      | `"public/sprites"`              | Base path to generated sprite/sprites folder                                                                        |
+| `-d`, `--definitions` | Not provided                    | Path to generated TS file with sprite meta                                                                          |
+| `--root`              | `"."` (same as the current dir) | Base path to your assets, useful for correct groups names<br/>**careful:** `--input` should be relative to `--root` |
+| `--group`             | `false`                         | Should we group icons by folders?                                                                                   |
+| `--dry-run`           | `false`                         | Print proposal of generated file paths without actually generating it                                               |
+| `--optimize`          | `true`                          | Should we optimize SVG with [svgo](https://github.com/svg/svgo)?                                                    |
 
 ## Step-by-step example
 
 ### Build icons
 
 ```bash
-yarn sprite --group --root assets -o public/sprite --ts src/shared/ui/icon/sprite-definitions.ts
+yarn sprite --group --root assets -o public/sprite -d src/shared/ui/icon/sprite.h.ts
 ```
 
 ```diff
@@ -60,18 +62,18 @@ yarn sprite --group --root assets -o public/sprite --ts src/shared/ui/icon/sprit
 shared/
   ui/
     icon/
-+      sprite-definitions.ts
++      sprite.h.ts
 public/
 +  sprite/
 +    common.svg
 +    other.svg
-  my-icons-source-folder/
-    common/
-      add.svg
-      close.svg
-    other/
-      cut.svg
-      search.svg
+assets/
+  common/
+    add.svg
+    close.svg
+  other/
+    cut.svg
+    search.svg
 ```
 
 ### Create your Icon component
