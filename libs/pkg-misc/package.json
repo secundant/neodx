@@ -1,0 +1,56 @@
+{
+  "name": "@neodx/pkg-misc",
+  "version": "0.0.1",
+  "description": "Collection of utilities for common cases in package development - smart dependencies updates, simple formatting with auto-detection of prettier config, etc.",
+  "type": "module",
+  "main": "./dist/cjs/index.cjs",
+  "types": "./dist/types/index.d.ts",
+  "module": "./dist/mjs/index.mjs",
+  "source": "src/index.ts",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "autobuild",
+    "test": "vitest run",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "@neodx/fs": "*",
+    "@neodx/std": "*",
+    "pathe": "1.1.0",
+    "semver": "7.3.8"
+  },
+  "devDependencies": {
+    "@neodx/autobuild": "*",
+    "@types/node": "18.15.11",
+    "@types/semver": "^7.3.13",
+    "eslint": "8.38.0",
+    "eslint-kit": "7.0.0",
+    "prettier": "2.8.7",
+    "typescript": "5.0.4"
+  },
+  "peerDependencies": {
+    "@types/semver": "*",
+    "prettier": "*"
+  },
+  "peerDependenciesMeta": {
+    "@types/semver": {
+      "optional": true
+    },
+    "prettier": {
+      "optional": true
+    }
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/mjs/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "types": "./dist/types/index.d.ts"
+    }
+  }
+}

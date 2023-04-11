@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { addPackageJsonDependencies, removePackageJsonDependencies } from './package-json';
+import { addPackageJsonDependencies, removePackageJsonDependencies } from '../package-json';
 
 describe('addPackageJsonDependencies', () => {
   test('should add missed dependencies', async () => {
@@ -60,6 +60,19 @@ describe('addPackageJsonDependencies', () => {
       ...pkg,
       devDependencies: { c: '^3.0.0' }
     });
+  });
+
+  test('should ignore devDependency if same dependency is already present', async () => {
+    const pkg = {
+      dependencies: {
+        a: '^1.2.3'
+      },
+      devDependencies: {
+        b: '^2.1.3'
+      }
+    };
+
+    expect(addPackageJsonDependencies(pkg, { devDependencies: { a: '^2.0.0' } })).toEqual(null);
   });
 
   test('should handle not-semver', () => {
