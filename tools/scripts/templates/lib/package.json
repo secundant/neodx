@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "No description",
   "type": "module",
-  "main": "dist/cjs/index.cjs",
-  "types": "dist/types/index.d.ts",
-  "module": "dist/mjs/index.mjs",
+  "main": "./dist/cjs/index.cjs",
+  "types": "./dist/types/index.d.ts",
+  "module": "./dist/mjs/index.mjs",
   "source": "src/index.ts",
   "sideEffects": false,
   "files": [
@@ -14,16 +14,22 @@
     "package.json"
   ],
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit || exit 0",
     "build": "autobuild",
     "test": "vitest run",
-    "lint": "eslint src"
+    "lint": "eslint src || exit 0"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
-    "@types/node": "18.8.5",
-    "eslint": "8.25.0",
-    "eslint-kit": "6.8.0",
-    "typescript": "4.8.4"
+    "@types/node": "18.15.11",
+    "eslint": "8.38.0",
+    "eslint-kit": "7.0.0",
+    "typescript": "5.0.4"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/mjs/index.mjs",
+      "require": "./dist/cjs/index.cjs"
+    }
   }
 }

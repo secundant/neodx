@@ -1,12 +1,12 @@
-import type { Tree } from '@neodx/codegen';
-import { ReadonlyVirtualFsTree, readTreeJson, updateTreeJson } from '@neodx/codegen';
 import { scan } from '@neodx/fs';
 import { compact, toArray } from '@neodx/std';
+import { createVfs, type VFS } from '@neodx/vfs';
 import { builtinModules } from 'node:module';
+// @ts-expect-error Outdated types
 import type { PackageJson } from 'pkg-types';
 import type { Plugin } from 'vite';
 import { analyzeProject } from './analyze-project';
-import { createExportsGenerator, ExportsGenerator } from './exports';
+import { createExportsGenerator, type ExportsGenerator } from './exports';
 
 export interface VitePluginLibraryParams {
   entry?: string | string[];
@@ -21,14 +21,14 @@ export function vitePluginLibrary({
   updatePackageExports,
   updatePackageMainFields = updatePackageExports
 }: VitePluginLibraryParams = {}): Plugin {
-  let tree: Tree;
+  let vfs: VFS;
   let exportsGenerator: ExportsGenerator | null = null;
 
   return {
     name: 'vite-plugin-library',
     async closeBundle() {
       if (exportsGenerator) {
-        await updateTreeJson<PackageJson>(tree, 'package.json', prev => ({
+        await vfs.updateJson<PackageJson>('package.json', prev => ({
           ...prev,
           ...exportsGenerator?.getFields(),
           exports: {
@@ -36,7 +36,7 @@ export function vitePluginLibrary({
             ...exportsGenerator?.getExports()
           }
         }));
-        console.log(await readTreeJson(tree, 'package.json'));
+        console.log(await vfs.readJson('package.json'));
       }
     },
     generateBundle(options, files) {
@@ -53,7 +53,7 @@ export function vitePluginLibrary({
       if (entryFiles.length === 0) {
         throw new Error(`Not found any entry file`);
       }
-      tree = new ReadonlyVirtualFsTree(root);
+      vfs = createVfs(root, { dryRun: true });
       if (updatePackageExports || updatePackageMainFields) {
         exportsGenerator = createExportsGenerator({
           addTypes: addTypes ?? Boolean(tsConfig),

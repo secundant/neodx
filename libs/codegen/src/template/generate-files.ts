@@ -1,13 +1,12 @@
 import { deepReadDir } from '@neodx/fs';
-import { hasOwn, uniq } from '@neodx/std';
+import { cases, hasOwn, toCase, uniq } from '@neodx/std';
+import type { VFS } from '@neodx/vfs';
 import { render } from 'ejs';
 import { readFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
-import type { Tree } from '../tree';
-import { casex } from '../utils/casex';
 
 export async function generateFiles(
-  tree: Tree,
+  vfs: VFS,
   sourcePath: string,
   outputPath: string,
   variables: Record<string, unknown>
@@ -32,7 +31,7 @@ export async function generateFiles(
           ? await readFile(filePath)
           : await renderTemplateFromFile(filePath, variables);
 
-      await tree.write(outputFilePath, content);
+      await vfs.write(outputFilePath, content);
     })
   );
 }
@@ -62,7 +61,8 @@ const renderTemplateFromFile = async (path: string, variables: Record<string, un
     {
       ...variables,
       $: {
-        casex
+        toCase,
+        cases
       }
     },
     { async: true }

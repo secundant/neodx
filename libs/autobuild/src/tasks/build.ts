@@ -1,6 +1,7 @@
-import { FsTree, updateTreeJson } from '@neodx/codegen';
 import { exists } from '@neodx/fs';
+import { createVfs } from '@neodx/vfs';
 import { rm } from 'node:fs/promises';
+// @ts-expect-error Outdated types
 import type { PackageJson } from 'pkg-types';
 import { rollup } from 'rollup';
 import { createExportsGenerator } from '../core/exports';
@@ -13,7 +14,7 @@ export interface BuildParams {
 }
 
 export async function build(project: Project, { startedAt }: BuildParams = {}) {
-  const tree = new FsTree(project.cwd);
+  const vfs = createVfs(project.cwd);
   const buildStartedAt = Date.now();
   const exportsGenerator = createExportsGenerator({
     outDir: project.outDir,
@@ -48,7 +49,7 @@ export async function build(project: Project, { startedAt }: BuildParams = {}) {
       throw error;
     }
   }
-  await updateTreeJson<PackageJson>(tree, 'package.json', prev => ({
+  await vfs.updateJson<PackageJson>('package.json', prev => ({
     ...prev,
     ...exportsGenerator.getFields(),
     exports: {
@@ -56,7 +57,7 @@ export async function build(project: Project, { startedAt }: BuildParams = {}) {
       ...exportsGenerator.getExports()
     }
   }));
-  await tree.applyChanges();
+  await vfs.applyChanges();
   if (project.log !== 'fatal') {
     logger.info(`Done at`, `${Date.now() - buildStartedAt}ms`);
   }

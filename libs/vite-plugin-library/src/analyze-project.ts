@@ -1,6 +1,7 @@
 import { exists } from '@neodx/fs';
 import { asyncReduce, keys } from '@neodx/std';
 import { relative, resolve } from 'node:path';
+// @ts-expect-error Outdated types
 import { readPackageJSON, readTSConfig } from 'pkg-types';
 import { logger } from './logger';
 
@@ -37,7 +38,7 @@ pnpm i -D vite-plugin-dts`
 
 async function loadTsConfig(cwd: string) {
   try {
-    return await readTSConfig(resolve(cwd, 'tsconfig.json'));
+    return readTSConfig(resolve(cwd, 'tsconfig.json'));
   } catch {
     logger.fatal(`tsconfig.json not found`);
     return null;
