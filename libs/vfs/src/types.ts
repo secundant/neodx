@@ -1,7 +1,7 @@
 /**
  * Reading actions is async, writing sync because updates will apply directly
  */
-export interface Tree {
+export interface BaseVFS {
   readonly root: string;
 
   tryRead(path: string): Promise<Buffer | null>;
@@ -28,15 +28,15 @@ export interface Tree {
   applyChanges(): Promise<void>;
 }
 
-export type FileChange = FileChangeWrite | FileChangeDelete;
+export type FileChange = FileWrite | FileDelete;
 
-export interface FileChangeWrite {
+export interface FileWrite {
   type: FileChangeType.UPDATE | FileChangeType.CREATE;
   name: string;
   content: Buffer;
 }
 
-export interface FileChangeDelete {
+export interface FileDelete {
   type: FileChangeType.DELETE;
   name: string;
   content?: Buffer | null;

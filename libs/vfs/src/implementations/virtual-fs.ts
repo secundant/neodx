@@ -1,13 +1,19 @@
 import type { FileChange } from '../types';
 import { FileChangeType } from '../types';
-import { BaseTree } from './base-tree';
+import { AbstractVfs } from './abstract-vfs';
 
 /**
  * In-memory files tree, useful for tests or dry runs
  */
-export class VirtualTree extends BaseTree {
+export class VirtualFs extends AbstractVfs {
   private readonly virtualFs: Map<string, Buffer>;
 
+  /**
+   * @param root Root folder path
+   * @param initial Initial virtual FS state
+   * @example
+   * new VirtualFs(myRootPath, { "package.json": "{...}", "src/foo/bar.ts": "export const a = 1" })
+   */
   constructor(readonly root: string, initial: Record<string, string> = {}) {
     super(root);
     this.virtualFs = new Map(

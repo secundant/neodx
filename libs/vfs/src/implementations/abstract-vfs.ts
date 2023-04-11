@@ -1,20 +1,21 @@
 import { compact, uniq } from '@neodx/std';
-import { dirname, join, relative, sep } from 'node:path';
-import colors from 'picocolors';
-import type { ContentLike, FileChange, Tree } from '../types';
+import { dirname, join, relative, sep } from 'pathe';
+import type { BaseVFS, ContentLike, FileChange } from '../types';
 import { FileChangeType } from '../types';
 
-export abstract class BaseTree implements Tree {
-  protected changes = new Map<string, InternalChange>();
+interface InternalFileChange {
+  content: ContentLike | null;
+  deleted: boolean;
+}
+
+export abstract class AbstractVfs implements BaseVFS {
+  protected changes = new Map<string, InternalFileChange>();
 
   public constructor(readonly root: string) {}
 
   async applyChanges(): Promise<void> {
     for (const change of await this.getChanges()) {
       await this.applyChange(change);
-      if (process.env.NODE_ENV !== 'test') {
-        console.log(`${printLabelsMap[change.type]} ${change.name}`);
-      }
     }
     this.changes.clear();
   }
@@ -34,23 +35,16 @@ export abstract class BaseTree implements Tree {
   async isFile(path: string): Promise<boolean> {
     const normalized = this.normalizePath(path);
 
-    // Is created or updated file
-    if (this.changes.has(path) && !this.isDeleted(normalized)) {
-      return true;
-    }
-    return !this.isDeleted(normalized) && this.isFileImpl(normalized);
+    return this.isWrote(normalized) || this.isFileImpl(normalized);
   }
 
   tryRead(path: string): Promise<Buffer | null>;
   tryRead(path: string, encoding: BufferEncoding): Promise<string | null>;
   async tryRead(path: string, encoding?: BufferEncoding): Promise<Buffer | string | null> {
     const normalized = this.normalizePath(path);
-    const change =
-      !this.changes.has(normalized) || this.isDeleted(normalized)
-        ? null
-        : this.changes.get(normalized)!;
+    const change = this.changes.get(normalized);
 
-    if (!change && !(await this.isFile(normalized))) {
+    if (this.isDeleted(normalized) || (!change && !(await this.isFile(normalized)))) {
       return null;
     }
     const content = change?.content ?? (await this.readImpl(path));
@@ -161,6 +155,10 @@ export abstract class BaseTree implements Tree {
     }
   }
 
+  protected isWrote(path: string) {
+    return !this.isDeleted(path) && this.changes.has(path);
+  }
+
   protected isDeleted(path: string) {
     return this.changes.get(path)?.deleted;
   }
@@ -195,14 +193,3 @@ export abstract class BaseTree implements Tree {
 }
 
 const getRootDirName = (path: string) => path.split('/')[0];
-
-const printLabelsMap = {
-  [FileChangeType.CREATE]: colors.bgGreen(' CREATE '),
-  [FileChangeType.UPDATE]: colors.bgBlack(colors.yellow(' UPDATE ')),
-  [FileChangeType.DELETE]: colors.bgRed(' DELETE ')
-};
-
-export interface InternalChange {
-  content: Buffer | null;
-  deleted: boolean;
-}

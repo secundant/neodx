@@ -1,0 +1,45 @@
+{
+  "name": "@neodx/vfs",
+  "version": "0.0.1",
+  "description": "Simple virtual file system - working dir context, lazy changes, different modes, integrations and moreover",
+  "type": "module",
+  "main": "./dist/cjs/index.cjs",
+  "types": "./dist/types/index.d.ts",
+  "module": "./dist/mjs/index.mjs",
+  "source": "src/index.ts",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "autobuild",
+    "test": "vitest run",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@neodx/autobuild": "*",
+    "@types/node": "18.15.11",
+    "@types/tmp": "^0.2.3",
+    "eslint": "8.38.0",
+    "eslint-kit": "7.0.0",
+    "tmp": "0.2.1",
+    "typescript": "5.0.4"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/mjs/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "dependencies": {
+    "@neodx/fs": "*",
+    "@neodx/pkg-misc": "*",
+    "@neodx/std": "*",
+    "pathe": "1.1.0",
+    "picocolors": "1.0.0"
+  }
+}

@@ -1,14 +1,14 @@
 import type { FileChange } from '../types';
-import { BaseTree } from './base-tree';
-import { FsTree } from './fs-tree';
-import { VirtualTree } from './virtual-tree';
+import { AbstractVfs } from './abstract-vfs';
+import { RealFs } from './real-fs';
+import { VirtualFs } from './virtual-fs';
 
 /**
  * Fallback read operations on real FS, but write operations will apply on virtual fs
  */
-export class ReadonlyVirtualFsTree extends BaseTree {
-  private fs = new FsTree(this.root);
-  private virtual = new VirtualTree(this.root);
+export class DryRunFs extends AbstractVfs {
+  private fs = new RealFs(this.root);
+  private virtual = new VirtualFs(this.root);
 
   applyChange(change: FileChange): Promise<void> {
     return this.virtual.applyChange(change);
