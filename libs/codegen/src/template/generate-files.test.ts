@@ -1,24 +1,24 @@
+import { createVfs } from '@neodx/vfs';
 import { join } from 'node:path';
 import { describe, expect, test } from 'vitest';
-import { createTmpTreeContext } from '../testing-utils/create-tmp-tree-context';
-import { VirtualTree } from '../tree';
-import { readTreeJson } from '../tree/utils/json';
 import { generateFiles, injectTemplateVariables } from './generate-files';
 
 const __dirname = new URL('.', import.meta.url).pathname;
 
 describe('generate-files', () => {
-  const treeContext = createTmpTreeContext(async () => {
-    const tree = new VirtualTree('/');
+  const getTestFs = async () => {
+    const vfs = createVfs('/root', {
+      virtual: true
+    });
 
-    await generateFiles(tree, join(__dirname, 'fixture'), '.', {
+    await generateFiles(vfs, join(__dirname, 'fixture'), '.', {
       dot: '.',
       name: 'foo',
       value: 'bar',
       items: [1, 5, 1020]
     });
-    return tree;
-  });
+    return vfs;
+  };
 
   test('should inject variables to file name', () => {
     expect(injectTemplateVariables('foo.txt', {})).toBe('foo.txt');
@@ -31,9 +31,9 @@ describe('generate-files', () => {
   });
 
   test('should add .gitignore and root files', async () => {
-    const tree = treeContext.get();
+    const vfs = await getTestFs();
 
-    expect(await tree.readDir()).toEqual(
+    expect(await vfs.readDir()).toEqual(
       expect.arrayContaining([
         '.gitignore',
         'raw.txt',
@@ -46,12 +46,12 @@ describe('generate-files', () => {
   });
 
   test('should add nested file and render content template', async () => {
-    const tree = treeContext.get();
+    const vfs = await getTestFs();
 
-    expect(await readTreeJson(tree, 'template.json')).toEqual({
+    expect(await vfs.readJson('template.json')).toEqual({
       foo: 'bar',
       versions: ['@1', '@5', '@1020']
     });
-    expect(await tree.read('foo/foo.bar.foo.ts', 'utf-8')).toContain('export const foo = {};');
+    expect(await vfs.read('foo/foo.bar.foo.ts', 'utf-8')).toContain('export const foo = {};');
   });
 });

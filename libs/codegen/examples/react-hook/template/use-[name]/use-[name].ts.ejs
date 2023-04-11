@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
-export interface Use<%= $.casex(name, 'CaSe') %>Params {
+export interface Use<%= $.toCase(name, 'CaSe') %>Params {
   initialValue: string;
 }
 
-export function use<%= $.casex(name, 'CaSe') %>({ initialValue }: Use<%= $.casex(name, 'CaSe') %>Params) {
+export function use<%= $.toCase(name, 'CaSe') %>({ initialValue }: Use<%= $.toCase(name, 'CaSe') %>Params) {
     const [value, setValue] = useState(initialValue);
 
     return [value, setValue];

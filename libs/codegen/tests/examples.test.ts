@@ -1,22 +1,24 @@
+import { createVfs } from '@neodx/vfs';
 import { join } from 'node:path';
 import { describe, expect, test } from 'vitest';
-import { formatAllChangedFilesInTree, ReadonlyVirtualFsTree } from '../src';
 
 describe('examples', () => {
   test('react-hook', async () => {
     const { default: generate } = await import('../examples/react-hook/generate');
-    const tree = new ReadonlyVirtualFsTree(join(process.cwd(), 'examples/react-hook'));
+    const vfs = createVfs(join(process.cwd(), 'examples/react-hook'), {
+      dryRun: true
+    });
 
-    await generate(tree, {
+    await generate(vfs, {
       name: 'item-id'
     });
-    expect(await tree.readDir('generated')).toEqual(
+    expect(await vfs.readDir('generated')).toEqual(
       expect.arrayContaining(['use-item-id', 'index.ts'])
     );
-    await generate(tree, {
+    await generate(vfs, {
       name: 'item-description'
     });
-    await formatAllChangedFilesInTree(tree);
-    await tree.applyChanges();
+    await vfs.formatChangedFiles();
+    await vfs.applyChanges();
   });
 });

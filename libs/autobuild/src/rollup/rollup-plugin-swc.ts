@@ -1,5 +1,6 @@
 import { createFilter } from '@rollup/pluginutils';
-import { JscTarget, Options, transform, TransformConfig } from '@swc/core';
+import type { JscTarget, Options, TransformConfig } from '@swc/core';
+import { transform } from '@swc/core';
 import { dirname, extname, resolve } from 'node:path';
 import type { OutputPlugin, Plugin } from 'rollup';
 import type { Project } from '../types';

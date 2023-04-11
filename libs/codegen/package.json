@@ -53,23 +53,25 @@
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
-    "@types/ejs": "^3.1.1",
-    "@types/node": "18.11.18",
+    "@types/ejs": "^3.1.2",
+    "@types/node": "18.15.11",
     "@types/prettier": "^2.7.2",
     "@types/semver": "^7.3.13",
     "@types/tmp": "^0.2.3",
-    "eslint": "8.33.0",
-    "eslint-kit": "6.11.0",
+    "eslint": "8.38.0",
+    "eslint-kit": "7.0.0",
     "tmp": "0.2.1",
-    "typescript": "4.9.5"
+    "typescript": "5.0.4"
   },
   "dependencies": {
     "@neodx/fs": "*",
+    "@neodx/pkg-misc": "*",
     "@neodx/std": "*",
-    "ejs": "3.1.8",
+    "@neodx/vfs": "*",
+    "ejs": "3.1.9",
     "jsonc-parser": "3.2.0",
     "picocolors": "1.0.0",
-    "prettier": "2.8.3",
+    "prettier": "2.8.7",
     "semver": "7.3.8"
   },
   "nx": {
