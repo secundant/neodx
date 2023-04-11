@@ -1,4 +1,5 @@
 {
+  "$schema": "node_modules/nx/schemas/nx-schema.json",
   "extends": "nx/presets/npm.json",
   "npmScope": "neodx",
   "workspaceLayout": {
@@ -20,10 +21,28 @@
       }
     }
   },
+  "namedInputs": {
+    "shared": ["{workspaceRoot}/tsconfig.base.json", "{workspaceRoot}/package.json"],
+    "src": [
+      "{projectRoot}/src/**/*",
+      "!{projectRoot}/src/*.test.ts",
+      "!{projectRoot}/src/*.test.ts"
+    ],
+    "test": ["{projectRoot}/**/*.test.ts", "{projectRoot}/**/*.test.tsx"],
+    "config": [
+      "{projectRoot}/package.json",
+      "{projectRoot}/tsconfig.json",
+      "{projectRoot}/vite.config.ts"
+    ]
+  },
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
-      "output": ["{projectRoot}/dist"]
+      "outputs": ["{projectRoot}/dist"],
+      "inputs": ["shared", "config", "src", "^src"]
+    },
+    "test": {
+      "inputs": ["shared", "config", "test", "src", "^src"]
     },
     "dev": {
       "dependsOn": ["^build", "dev"]
