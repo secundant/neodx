@@ -1,5 +1,4 @@
 import { asyncReduce, groupReduceBy, toArray, uniq } from '@neodx/std';
-import glob from 'tiny-glob';
 
 export interface ScanParams {
   include: PatternLike;
@@ -45,9 +44,12 @@ const getParams = (paramsOrPatterns: ScanParams | PatternLike, ...patterns: Patt
   }
   return paramsOrPatterns;
 };
-const readGlob = (cwd: string, pattern: string) =>
-  glob(pattern, {
+const readGlob = async (cwd: string, pattern: string) => {
+  const { default: glob } = await import('tiny-glob');
+
+  return glob(pattern, {
     cwd,
     absolute: false,
     filesOnly: true
   });
+};

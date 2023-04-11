@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/require-array-sort-compare */
 import { resolve } from 'node:path';
-import { DirResult, dirSync } from 'tmp';
+import { type DirResult, dirSync } from 'tmp';
 import { beforeEach, describe, expect, test } from 'vitest';
-import { ensureFile } from './ensure';
-import { scan } from './scan';
+import { ensureFile } from '../ensure';
+import { scan } from '../scan';
 
 describe('scan files', () => {
   let tmpDir: DirResult;
