@@ -1,8 +1,8 @@
 import { resolve } from 'node:path';
-import { DirResult, dirSync } from 'tmp';
+import { type DirResult, dirSync } from 'tmp';
 import { beforeEach, describe, expect, test } from 'vitest';
-import { ensureFile } from './ensure';
-import { deepReadDir } from './read';
+import { ensureFile } from '../ensure';
+import { deepReadDir } from '../read';
 
 const TMP_FILES = ['a.ts', 'a/b.ts'];
 

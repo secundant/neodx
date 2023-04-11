@@ -1,7 +1,6 @@
 import type { ParseError, ParseOptions } from 'jsonc-parser';
 import { parse, printParseErrorCode } from 'jsonc-parser';
 
-export type BaseJsonObject = Record<string, unknown>;
 export type ParseJsonParams = ParseOptions;
 
 export interface SerializeJsonParams {
@@ -14,9 +13,10 @@ export interface SerializeJsonParams {
 }
 
 /**
+ * TODO Think about real requirements for using JSONC
  * Alias for JSON.parse, parses JSON as regular JSON or as JSONC (like a tsconfig)
  */
-export function parseJson<T extends BaseJsonObject>(input: string, options?: ParseJsonParams): T {
+export function parseJson<T = unknown>(input: string, options?: ParseJsonParams): T {
   try {
     return parseJsonAsJSON(input);
   } catch {
@@ -25,15 +25,17 @@ export function parseJson<T extends BaseJsonObject>(input: string, options?: Par
 }
 
 /**
+ * @todo Replace with safe version of JSON.stringify, prevents circular refs
  * Alias for JSON.stringify, serializes the given data to a JSON string
  */
-export function serializeJson<T extends BaseJsonObject>(
+export function serializeJson<T = unknown>(
   input: T,
   { spaces = 2, replacer = null }: SerializeJsonParams = {}
 ) {
   return JSON.stringify(input, replacer, spaces) + '\n';
 }
 
+// TODO: Replace with safe JSON parser with circular references support
 const parseJsonAsJSON = <T = unknown>(input: string) => JSON.parse(input) as T;
 const parseJsonAsJSONC = <T = unknown>(input: string, options?: ParseJsonParams) => {
   const errors: ParseError[] = [];

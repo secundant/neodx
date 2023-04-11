@@ -1,9 +1,9 @@
 import { readdir } from 'fs/promises';
 import { resolve } from 'node:path';
-import { DirResult, dirSync } from 'tmp';
+import { type DirResult, dirSync } from 'tmp';
 import { beforeEach, describe, expect, test } from 'vitest';
-import { isDirectory, isFile } from './checks';
-import { ensureDir, ensureFile } from './ensure';
+import { isDirectory, isFile } from '../checks';
+import { ensureDir, ensureFile } from '../ensure';
 
 describe('fs ensure utils', () => {
   let tmp: DirResult;
