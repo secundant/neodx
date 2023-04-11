@@ -3,14 +3,18 @@ import { getUpgradedDependenciesVersions } from './semver';
 
 /**
  * Add any missing dependency to package.json content.
+ * @param current Current package.json content
+ * @param updates Updates to apply
  * @return Object with new content if changed and null otherwise
  * @example
- * // before: { dependencies: { 'react': '*' } }
- * addPackageJsonDependencies(
- *    await readJsonFile('./package.json'), // { ..., dependencies: { 'react': '*' } }
- *    { dependencies: { 'react-dom': '*' }, devDependencies: { 'eslint': '*' } }
- * )
- * // after: { dependencies: { 'react': '*', 'react-dom': '*' }, devDependencies: { 'eslint': '*' } }
+ * addPackageJsonDependencies({}, { dependencies: { a: '^1.2.3' } });
+ * // { dependencies: { a: '^1.2.3' } }
+ * addPackageJsonDependencies({ dependencies: { a: '^1.2.3' } }, { dependencies: { a: '^1.2.0' } });
+ * // null
+ * addPackageJsonDependencies({ dependencies: { a: '^1.2.3' } }, { dependencies: { a: '^1.3.0', b: '^2.0.0' } });
+ * // { dependencies: { a: '^1.3.0', b: '^2.0.0' } }
+ * addPackageJsonDependencies({ dependencies: { a: '^1.2.3' } }, { devDependencies: { a: '^1.3.0', b: '^2.0.0' } });
+ * // null
  */
 export function addPackageJsonDependencies(
   current: PackageJsonDependencies,
@@ -51,6 +55,20 @@ export function addPackageJsonDependencies(
   return null;
 }
 
+/**
+ * Removes provided dependencies from package.json.
+ * @param current Current package.json content
+ * @param updates Specific dependencies to remove
+ * @return Object with new content if changed and null otherwise
+ * @example
+ * removePackageJsonDependencies({}, { dependencies: ['a'] });
+ * // null
+ * removePackageJsonDependencies({ dependencies: { a: '^1.2.3' } }, { dependencies: ['a'] });
+ * // { dependencies: {} }
+ * removePackageJsonDependencies({ dependencies: { a: '^1.2.3' } }, { dependencies: ['b'] });
+ * // null
+ * removePackageJsonDependencies({ dependencies: { a: '^1.2.3' } }, { dependencies: ['a', 'b'] });
+ */
 export function removePackageJsonDependencies(
   current: PackageJsonDependencies,
   updates: Partial<Record<DependencyTypeName, string[]>>
@@ -77,7 +95,7 @@ export function removePackageJsonDependencies(
   return null;
 }
 
-const sortPackageJson = <T extends PackageJsonDependencies>(value: T) => {
+export function sortPackageJson<T extends PackageJsonDependencies>(value: T) {
   const next = {
     ...value
   };
@@ -92,7 +110,7 @@ const sortPackageJson = <T extends PackageJsonDependencies>(value: T) => {
   }
 
   return sortObjectByKeys(next);
-};
+}
 
 const sortObjectByKeys = <T extends Record<keyof any, unknown>>(obj: T) =>
   Object.fromEntries(
