@@ -3,12 +3,12 @@ import { resolve } from 'path';
 import { ensureFile, exists, isFile } from '@neodx/fs';
 import type { FileChange } from '../types';
 import { FileChangeType } from '../types';
-import { BaseTree } from './base-tree';
+import { AbstractVfs } from './abstract-vfs';
 
 /**
  * File system based tree
  */
-export class FsTree extends BaseTree {
+export class RealFs extends AbstractVfs {
   async applyChange({ type, name, content }: FileChange): Promise<void> {
     const path = resolve(this.root, name);
 
