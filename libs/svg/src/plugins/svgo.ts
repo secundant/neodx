@@ -1,4 +1,4 @@
-import { Config, optimize } from 'svgo';
+import { type Config, optimize } from 'svgo';
 import { createPlugin } from '../plugin-utils';
 
 export interface SvgoPluginOptions {

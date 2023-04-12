@@ -1,4 +1,5 @@
-import { createElement, ReactElement, ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
+import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import type { SvgNode } from './types';
 

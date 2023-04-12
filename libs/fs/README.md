@@ -9,6 +9,7 @@ API`s overview:
 - `exists(path)`, `isFile(path)`, `isDirectory(path)` - Safe path checks
 - `deepReadDir(path)` - Deep version of `readdir`
 - `parseJson(input)`, `serializeJson(input)` - Safe JSON parser and serializer with [JSONC](https://www.npmjs.com/package/jsonc-parser) support
+- `getFileHash(path)`, `getHash(content)` - Returns file hash based on its content (HEX)
 
 ## API
 

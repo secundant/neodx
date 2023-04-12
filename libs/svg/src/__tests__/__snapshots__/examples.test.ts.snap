@@ -1,4 +1,17 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`examples > "colors" example should generate files 1`] = `
+[
+  "assets/custom.svg",
+  "assets/fill.svg",
+  "assets/mixed.svg",
+  "assets/stroke.svg",
+  "generated/sprite-info.ts",
+  "generated/sprite.svg",
+]
+`;
+
+exports[`examples > "colors" example should replay same output 1`] = `[]`;
 
 exports[`examples > "groups-with-root" example should generate files 1`] = `
 [

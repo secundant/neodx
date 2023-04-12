@@ -1,3 +1,4 @@
+import { compactObject } from '@neodx/std';
 import { createPlugin } from '../plugin-utils';
 import type { SvgNode } from '../types';
 
@@ -8,7 +9,7 @@ export interface ResetColorsPluginOptions {
 }
 
 export const resetColors = (options: Partial<ResetColorsPluginOptions> = {}) => {
-  const mergedOptions = { ...defaults, ...options };
+  const mergedOptions = { ...defaults, ...compactObject(options) };
 
   return createPlugin('reset-colors', {
     transformNode({ node }) {
@@ -45,7 +46,7 @@ const getResetColorAttributes = (
   );
 
 const defaults: ResetColorsPluginOptions = {
-  includeProperties: [],
-  includeValues: [],
+  includeProperties: ['fill', 'stroke'],
+  includeValues: ['#000', '#000000'],
   replaceTo: 'currentColor'
 };

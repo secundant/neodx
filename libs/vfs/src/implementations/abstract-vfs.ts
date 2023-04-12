@@ -1,5 +1,6 @@
 import { compact, uniq } from '@neodx/std';
 import { dirname, join, relative, sep } from 'pathe';
+import colors from 'picocolors';
 import type { BaseVFS, ContentLike, FileChange } from '../types';
 import { FileChangeType } from '../types';
 
@@ -15,6 +16,8 @@ export abstract class AbstractVfs implements BaseVFS {
 
   async applyChanges(): Promise<void> {
     for (const change of await this.getChanges()) {
+      // TODO Refactor after https://github.com/secundant/neodx/issues/42
+      console.log(labels[change.type], change.name);
       await this.applyChange(change);
     }
     this.changes.clear();
@@ -193,3 +196,8 @@ export abstract class AbstractVfs implements BaseVFS {
 }
 
 const getRootDirName = (path: string) => path.split('/')[0];
+const labels = {
+  [FileChangeType.CREATE]: colors.bgGreen('[CREATE]'),
+  [FileChangeType.UPDATE]: colors.bgYellow('[UPDATE]'),
+  [FileChangeType.DELETE]: colors.bgRed('[DELETE]')
+};

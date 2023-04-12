@@ -1,5 +1,5 @@
 import { writeFile } from 'fs/promises';
-import { ensureFile } from '@neodx/fs';
+import { ensureFile, getHash } from '@neodx/fs';
 import { resolve } from 'pathe';
 import type { Options } from 'prettier';
 import { dirSync } from 'tmp';
@@ -8,6 +8,12 @@ import { VirtualFs } from './implementations/virtual-fs';
 
 export function createTmpVfs(options?: CreateVfsParams) {
   return createVfs(dirSync().name, options);
+}
+
+export async function getChangesHash(vfs: VFS) {
+  const changes = await vfs.getChanges();
+
+  return changes.map(({ name, content }) => [name, content && getHash(content)]);
 }
 
 /**
