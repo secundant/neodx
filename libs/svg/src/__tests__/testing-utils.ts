@@ -1,19 +1,18 @@
 import { readdirSync } from 'fs';
-import { FsTree, ReadonlyVirtualFsTree } from '@neodx/codegen';
+import { createVfs } from '@neodx/vfs';
 import { join } from 'node:path';
-import { generate, GenerateParams } from '../index';
+import { type GenerateParams, generateSvgSprites } from '../index';
 
 export async function generateExample(
   name: string,
   write: boolean,
   options?: Partial<GenerateParams>
 ) {
-  const TreeType = write ? FsTree : ReadonlyVirtualFsTree;
-  const tree = new TreeType(getExampleRoot(name));
+  const vfs = createVfs(getExampleRoot(name), { dryRun: !write });
 
-  await generate({
-    tree,
-    input: ['assets/**/*.svg'],
+  await generateSvgSprites({
+    vfs,
+    input: ['**/*.svg'],
     output: 'generated',
     optimize: true,
     definitions: 'generated/sprite-info.ts',
@@ -21,7 +20,7 @@ export async function generateExample(
     ...options
   });
 
-  return { tree };
+  return { vfs };
 }
 
 export const getExamplesNames = () => readdirSync(examplesRoot);

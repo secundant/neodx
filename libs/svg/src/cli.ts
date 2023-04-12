@@ -1,8 +1,8 @@
-import { createTree } from '@neodx/codegen';
 import { toArray } from '@neodx/std';
+import { createVfs } from '@neodx/vfs';
 import sade from 'sade';
 import { z } from 'zod';
-import { generate } from './generate';
+import { generateSvgSprites } from './generate';
 
 export function createCli(cwd = process.cwd()) {
   return sade('sprite', true)
@@ -13,10 +13,12 @@ export function createCli(cwd = process.cwd()) {
     .option('-i, --input', 'Glob/globs to icons files', '**/*.svg')
     .option('-o, --output', 'Path to generated sprite/sprites folder', 'public/sprites')
     .option('-d, --definitions', 'Path to generated TS file with sprite meta')
+    .option('--reset-color-values', 'An array of colors to replace as `currentColor`')
+    .option('--reset-color-properties', 'An array of SVG properties to replace with `currentColor`')
     .action(({ 'dry-run': dryRun, ...rawOptions }) =>
-      generate({
+      generateSvgSprites({
         ...Options.parse(rawOptions),
-        tree: createTree(cwd, { dryRun })
+        vfs: createVfs(cwd, { dryRun })
       })
     );
 }
@@ -32,5 +34,7 @@ export const Options = z.object({
   group: z.boolean(),
   output: z.string(),
   optimize: z.boolean(),
-  definitions: z.string().optional()
+  definitions: z.string().optional(),
+  resetColorValues: z.string().array().optional(),
+  resetColorProperties: z.string().array().optional()
 });

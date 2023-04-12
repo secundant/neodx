@@ -1,5 +1,6 @@
 export { assertDir, assertFile, exists, isDirectory, isFile, isValidStats } from './checks';
 export { ensureDir, ensureFile } from './ensure';
+export { getFileHash, getHash } from './hash';
 export type { ParseJsonParams, SerializeJsonParams } from './json';
 export { parseJson, serializeJson } from './json';
 export { deepReadDir } from './read';

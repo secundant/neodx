@@ -1,12 +1,12 @@
-import { VirtualTree } from '@neodx/codegen';
 import { toArray } from '@neodx/std';
+import { createTmpVfs } from '@neodx/vfs/testing-utils';
 import { describe, expect, test } from 'vitest';
 import type { SvgNode } from '../index';
 import { combinePlugins } from '../plugin-utils';
 import { groupSprites } from '../plugins';
 
 describe('plugins system', () => {
-  const emptyContext = { tree: new VirtualTree('.') };
+  const emptyContext = { vfs: createTmpVfs() };
   const file = (path: string) => ({ name: path, path: `${path}.svg`, node: {} as SvgNode });
   const files = (...paths: Array<string | string[]>) => paths.flatMap(toArray).map(file);
 

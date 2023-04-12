@@ -1,7 +1,7 @@
-import type { Tree } from '@neodx/codegen';
+import type { VFS } from '@neodx/vfs';
 
 export interface Context {
-  tree: Tree;
+  vfs: VFS;
 }
 
 export interface SvgSpritePlugin extends Partial<SvgSpritePluginHooks> {

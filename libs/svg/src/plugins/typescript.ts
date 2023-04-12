@@ -14,7 +14,7 @@ export function typescript({
 }: TypescriptPluginOptions = {}) {
   return createPlugin('typescript', {
     async afterWrite(entries, context) {
-      await context.tree.write(output, renderEntries(typeName, metaName, entries));
+      await context.vfs.write(output, renderEntries(typeName, metaName, entries));
     }
   });
 }

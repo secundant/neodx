@@ -29,7 +29,7 @@ export async function tryFormatPrettier(
   content: string,
   transform: TransformPrettierOptions = markSwcRcAsJson
 ) {
-  const prettier = await import('prettier');
+  const { default: prettier } = await import('prettier');
   const configPath = await prettier.resolveConfigFile(path);
   // TODO: Cache .prettierignore lookup
   const possibleIgnorePath = configPath && resolve(configPath, '../.prettierignore');
