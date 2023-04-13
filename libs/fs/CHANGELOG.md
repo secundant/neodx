@@ -1,5 +1,14 @@
 # @neodx/fs
 
+## 0.0.4
+
+### Patch Changes
+
+- [#45](https://github.com/secundant/neodx/pull/45) [`2dcfb56`](https://github.com/secundant/neodx/commit/2dcfb5612245be2d4f7fee5a2ba9bdbbf01bb3f8) Thanks [@secundant](https://github.com/secundant)! - add json utils (not stable API)
+
+- Updated dependencies [[`2dcfb56`](https://github.com/secundant/neodx/commit/2dcfb5612245be2d4f7fee5a2ba9bdbbf01bb3f8)]:
+  - @neodx/std@0.0.4
+
 ## 0.0.3
 
 ### Patch Changes
