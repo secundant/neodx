@@ -1,6 +1,6 @@
 {
   "name": "@neodx/pkg-misc",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "Collection of utilities for common cases in package development - smart dependencies updates, simple formatting with auto-detection of prettier config, etc.",
   "type": "module",
   "main": "./dist/cjs/index.cjs",
