@@ -1,4 +1,4 @@
-import { entries, filterEntries, hasOwn, isTruthy, keys } from '@neodx/std';
+import { entries, filterObject, hasOwn, isTruthy, keys, sortObjectByKeys } from '@neodx/std';
 import { getUpgradedDependenciesVersions } from './semver';
 
 /**
@@ -28,7 +28,7 @@ export function addPackageJsonDependencies(
       if (missed.length > 0 || outdated) {
         return [
           type,
-          filterEntries(
+          filterObject(
             dependencies,
             (_, name) => missed.includes(name) || Boolean(outdated?.[name])
           )
@@ -87,7 +87,7 @@ export function removePackageJsonDependencies(
       ...Object.fromEntries(
         affected.map(([type, removing]) => [
           type,
-          filterEntries(current[type]!, (_, name) => !removing.includes(name))
+          filterObject(current[type]!, (_, name) => !removing.includes(name))
         ])
       )
     });
@@ -111,14 +111,6 @@ export function sortPackageJson<T extends PackageJsonDependencies>(value: T) {
 
   return sortObjectByKeys(next);
 }
-
-const sortObjectByKeys = <T extends Record<keyof any, unknown>>(obj: T) =>
-  Object.fromEntries(
-    // eslint-disable-next-line @typescript-eslint/require-array-sort-compare
-    keys(obj)
-      .sort()
-      .map(key => [key, obj[key]])
-  ) as T;
 
 function lookupOutdatedDependencies(
   incomingDependencies: Record<string, string>,
