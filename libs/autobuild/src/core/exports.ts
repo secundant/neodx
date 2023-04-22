@@ -1,4 +1,4 @@
-import { compactObject } from '@neodx/std';
+import { compactObject, sortObjectByOrder } from '@neodx/std';
 import { dirname, join, relative } from 'node:path';
 import type { NormalizedOutputOptions, OutputAsset, OutputBundle, OutputChunk } from 'rollup';
 
@@ -29,15 +29,21 @@ export function createExportsGenerator({ root = '', outDir = 'dist' }: ExportsGe
         const haveNamedExports = chunk.exports.some(name => name !== 'default');
         const dts = exportFile.endsWith('.d.ts');
 
-        exportsMap.set(exportName, {
-          ...exportsMap.get(exportName),
-          ...compactObject({
-            require: !dts && format === 'cjs' && exportFile,
-            default: !dts && format === 'es' && haveDefaultExport && exportFile,
-            import: !dts && format === 'es' && haveNamedExports && exportFile,
-            types: dts && exportFile
-          })
-        });
+        exportsMap.set(
+          exportName,
+          sortObjectByOrder(
+            {
+              ...exportsMap.get(exportName),
+              ...compactObject({
+                types: dts && exportFile,
+                import: !dts && format === 'es' && haveNamedExports && exportFile,
+                default: !dts && format === 'es' && haveDefaultExport && exportFile,
+                require: !dts && format === 'cjs' && exportFile
+              })
+            },
+            ['types', 'import', 'default', 'require']
+          )
+        );
       }
     },
     getExports() {

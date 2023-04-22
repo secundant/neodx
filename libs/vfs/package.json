@@ -21,18 +21,14 @@
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
-    "@types/node": "18.15.11",
     "@types/tmp": "^0.2.3",
-    "eslint": "8.38.0",
-    "eslint-kit": "7.0.0",
-    "tmp": "0.2.1",
-    "typescript": "5.0.4"
+    "tmp": "0.2.1"
   },
   "exports": {
     ".": {
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/mjs/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "types": "./dist/types/index.d.ts"
+      "require": "./dist/cjs/index.cjs"
     }
   },
   "dependencies": {

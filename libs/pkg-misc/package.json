@@ -23,16 +23,12 @@
     "@neodx/fs": "*",
     "@neodx/std": "*",
     "pathe": "1.1.0",
-    "semver": "7.3.8"
+    "semver": "7.5.0"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
-    "@types/node": "18.15.11",
     "@types/semver": "^7.3.13",
-    "eslint": "8.38.0",
-    "eslint-kit": "7.0.0",
-    "prettier": "2.8.7",
-    "typescript": "5.0.4"
+    "prettier": "2.8.7"
   },
   "peerDependencies": {
     "@types/semver": "*",
@@ -48,9 +44,9 @@
   },
   "exports": {
     ".": {
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/mjs/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "types": "./dist/types/index.d.ts"
+      "require": "./dist/cjs/index.cjs"
     }
   }
 }

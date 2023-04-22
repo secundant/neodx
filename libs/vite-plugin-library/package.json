@@ -27,21 +27,15 @@
     "pkg-types": "1.0.2"
   },
   "devDependencies": {
-    "@neodx/autobuild": "*",
-    "@types/node": "18.15.11",
-    "eslint": "8.38.0",
-    "eslint-kit": "7.0.0",
-    "typescript": "5.0.4",
-    "vite": "4.2.1",
-    "vite-tsconfig-paths": "4.0.9"
+    "@neodx/autobuild": "*"
   },
   "peerDependencies": {
     "vite": "4"
   },
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
     }
   }
 }

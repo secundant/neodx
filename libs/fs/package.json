@@ -22,12 +22,8 @@
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
-    "@types/node": "18.15.11",
     "@types/tmp": "^0.2.3",
-    "eslint": "8.38.0",
-    "eslint-kit": "7.0.0",
-    "tmp": "0.2.1",
-    "typescript": "5.0.4"
+    "tmp": "0.2.1"
   },
   "dependencies": {
     "@neodx/std": "*",
@@ -36,9 +32,9 @@
   },
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     }
   }
 }
