@@ -41,6 +41,7 @@ export interface CreateVfsParams {
  * const vfs = createVfs(myRootPath, { dryRun: true, virtual: true });
  */
 export function createVfs(root: string, { dryRun, virtual }: CreateVfsParams = {}) {
+  // TODO Probably, add support for URL (for any path-like) in root
   const vfs = createVfsImpl(root, { dryRun, virtual });
 
   return Object.assign(vfs, {
