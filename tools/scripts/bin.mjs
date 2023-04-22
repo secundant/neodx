@@ -20,10 +20,21 @@ sade('neodx')
     await generateFiles(vfs, join(rootDir, 'templates/lib'), `libs/${name}`, { name });
     await vfs.updateJson(`libs/${name}/package.json`, prev => ({
       ...prev,
-      scripts: {
-        ...prev.scripts,
-        lint: 'eslint .',
-        typecheck: 'tsc --noEmit'
+      scripts: Object.fromEntries(
+        Object.entries(prev.scripts).map(([key, value]) => [
+          key,
+          value.replace(/exit 0 \|\|/g, '').trim()
+        ])
+      )
+    }));
+    await vfs.updateJson('tsconfig.base.json', prev => ({
+      ...prev,
+      compilerOptions: {
+        ...prev.compilerOptions,
+        paths: {
+          ...prev.compilerOptions.paths,
+          [`@neodx/${name}`]: [`libs/${name}/src/index.ts`]
+        }
       }
     }));
     await vfs.applyChanges();
