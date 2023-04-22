@@ -2,6 +2,7 @@
 export const toArray = <T>(value: T | T[]) => (Array.isArray(value) ? value : [value]);
 export const identity = <T>(value: T): T => value;
 
+export const values = Object.values; // already typed
 export const entries = Object.entries as TypedObjectEntriesFn;
 export const hasOwn = Object.hasOwn as TypedObjectHasOwnFn;
 export const keys = Object.keys as TypedObjectKeysFn;

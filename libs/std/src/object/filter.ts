@@ -11,11 +11,11 @@ export type Compacted<T> = {
   [K in NotFalsyKeys<T>]: Exclude<T[K], Falsy>;
 };
 
-export function filterEntries<T>(
+export function filterObject<T>(
   record: T,
   fn: <K extends Extract<keyof T, string>>(value: T[K], key: K) => boolean
 ) {
   return Object.fromEntries(entries(record).filter(([key, value]) => fn(value, key))) as T;
 }
 
-export const compactObject = <T>(target: T) => filterEntries(target, isTruthy) as Compacted<T>;
+export const compactObject = <T>(target: T) => filterObject(target, isTruthy) as Compacted<T>;
