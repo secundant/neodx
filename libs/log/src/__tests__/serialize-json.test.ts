@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, test } from 'vitest';
-import { cycleRef, serializeJSON } from './serialize-json';
+import { cycleRef, serializeJSON } from '../utils/serialize-json';
 
-describe('Logger > serializeJSON', () => {
+describe('serializeJSON', () => {
   test('should work as regular serializer on regular cases', () => {
     const targets = [
       1,

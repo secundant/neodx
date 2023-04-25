@@ -3,4 +3,4 @@
 '@neodx/vfs': patch
 ---
 
-introduce "vfs" library - the powerful abstraction over FS API
+Introducing the "vfs" library - a powerful abstraction layer over the FS API

@@ -2,4 +2,4 @@
 '@neodx/svg': minor
 ---
 
-Reworked to fix some found critical issues and support new architecture of neodx
+The codebase has been reworked to address critical issues and support the new architecture of Neodx

@@ -2,4 +2,4 @@
 '@neodx/std': patch
 ---
 
-Add "toCase" case formatter
+Added "toCase" case formatter

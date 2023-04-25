@@ -1,8 +1,8 @@
-# @neodx/logger
+# @neodx/log
 
-Next generation of logging experience - build your own
+Lightweight logging framework.
 
-> **Frozen**
+> **In early development stage.**
 
 ## TODO
 

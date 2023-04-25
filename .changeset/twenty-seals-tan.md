@@ -2,4 +2,4 @@
 '@neodx/pkg-misc': patch
 ---
 
-introduce package.json deps management API, safe high-level prettier integration and low-level semver utils
+Introducing an API for managing dependencies in package.json, as well as safe and high-level integration with Prettier

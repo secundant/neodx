@@ -2,4 +2,4 @@
 '@neodx/fs': patch
 ---
 
-add json utils (not stable API)
+Added JSON utilities, though the API is not yet stable

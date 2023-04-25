@@ -2,4 +2,4 @@
 '@neodx/std': patch
 ---
 
-Add `difference` (for arrays) and `mapObject` utils
+Added the `difference` utility for arrays and `mapObject` for objects
