@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
+import { sortObjectByKeys, sortObjectByOrder } from '../object';
 import { keys } from '../shared';
-import { sortObjectByKeys, sortObjectByOrder } from './sort';
 
 describe('sort object', () => {
   test('should sort by keys', async () => {

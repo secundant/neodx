@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { toCase } from './to-case';
+import { toCase } from '../to-case';
 
 describe('toCase', () => {
   test('converts a string to a specified case pattern', () => {
