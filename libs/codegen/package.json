@@ -67,7 +67,7 @@
     "ejs": "3.1.9",
     "jsonc-parser": "3.2.0",
     "picocolors": "1.0.0",
-    "prettier": "2.8.7",
+    "prettier": "2.8.8",
     "semver": "7.5.0"
   },
   "nx": {

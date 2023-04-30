@@ -9,6 +9,9 @@
   "module": "./dist/index.mjs",
   "source": "src/index.ts",
   "sideEffects": false,
+  "publishConfig": {
+    "access": "restricted"
+  },
   "files": [
     "dist",
     "README.md",
