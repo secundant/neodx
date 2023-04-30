@@ -3,10 +3,10 @@ import { ensureFile, getHash } from '@neodx/fs';
 import { resolve } from 'pathe';
 import type { Options } from 'prettier';
 import { dirSync } from 'tmp';
-import { createVfs, type CreateVfsParams, type VFS } from './create-vfs';
+import { type CreateVfsParams, type VFS, createVfs } from './create-vfs';
 import { VirtualFs } from './implementations/virtual-fs';
 
-export function createTmpVfs(options?: CreateVfsParams) {
+export function createTmpVfs(options?: Omit<CreateVfsParams, 'root'>) {
   return createVfs(dirSync().name, options);
 }
 

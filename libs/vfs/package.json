@@ -32,7 +32,9 @@
     }
   },
   "dependencies": {
+    "@neodx/colors": "*",
     "@neodx/fs": "*",
+    "@neodx/log": "*",
     "@neodx/pkg-misc": "*",
     "@neodx/std": "*",
     "pathe": "1.1.0",

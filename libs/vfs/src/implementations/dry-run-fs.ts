@@ -7,8 +7,8 @@ import { VirtualFs } from './virtual-fs';
  * Fallback read operations on real FS, but write operations will apply on virtual fs
  */
 export class DryRunFs extends AbstractVfs {
-  private fs = new RealFs(this.root);
-  private virtual = new VirtualFs(this.root);
+  private fs = new RealFs({ root: this.root, log: false });
+  private virtual = new VirtualFs({ root: this.root, log: false });
 
   applyChange(change: FileChange): Promise<void> {
     return this.virtual.applyChange(change);

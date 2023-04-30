@@ -1,6 +1,9 @@
+import { colors } from '@neodx/colors';
+import type { Logger } from '@neodx/log';
+import { createLogger } from '@neodx/log';
+import { createPrettyTarget } from '@neodx/log/node';
 import { compact, uniq } from '@neodx/std';
 import { dirname, join, relative, sep } from 'pathe';
-import colors from 'picocolors';
 import type { BaseVFS, ContentLike, FileChange } from '../types';
 import { FileChangeType } from '../types';
 
@@ -9,15 +12,31 @@ interface InternalFileChange {
   deleted: boolean;
 }
 
+export interface AbstractVfsParams {
+  root: string;
+  log?: Logger<'info' | 'debug'> | false | null;
+}
+
+const defaultLog = createLogger<'info' | 'debug' | 'silent'>({
+  level: 'info',
+  target: createPrettyTarget({
+    displayLevel: false
+  })
+});
+
 export abstract class AbstractVfs implements BaseVFS {
   protected changes = new Map<string, InternalFileChange>();
+  public readonly log: Logger<'info' | 'debug'>;
+  public readonly root: string;
 
-  public constructor(readonly root: string) {}
+  public constructor({ root, log = defaultLog }: AbstractVfsParams) {
+    this.root = root;
+    this.log = log || defaultLog.fork<'info' | 'debug' | 'silent'>({ level: 'silent' });
+  }
 
   async applyChanges(): Promise<void> {
     for (const change of await this.getChanges()) {
-      // TODO Refactor after https://github.com/secundant/neodx/issues/42
-      console.log(labels[change.type], change.name);
+      this.log.info('%s %s', labels[change.type], change.name);
       await this.applyChange(change);
     }
     this.changes.clear();
@@ -197,7 +216,7 @@ export abstract class AbstractVfs implements BaseVFS {
 
 const getRootDirName = (path: string) => path.split('/')[0];
 const labels = {
-  [FileChangeType.CREATE]: colors.bgGreen('[CREATE]'),
-  [FileChangeType.UPDATE]: colors.bgYellow('[UPDATE]'),
-  [FileChangeType.DELETE]: colors.bgRed('[DELETE]')
+  [FileChangeType.CREATE]: colors.green('create'),
+  [FileChangeType.UPDATE]: colors.yellow('update'),
+  [FileChangeType.DELETE]: colors.red('delete')
 };
