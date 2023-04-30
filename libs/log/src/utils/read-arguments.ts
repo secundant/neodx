@@ -35,7 +35,7 @@ export function readArguments(args: unknown[]): LogArguments {
   }
 
   if (firstArgIsObject) {
-    if (hasErr(firstArg)) {
+    if ('err' in firstArg && firstArg.err instanceof Error) {
       const { err, ...fields } = firstArg;
 
       return [otherArgs.length > 0 ? otherArgs : [err.message], fields, err];
@@ -46,6 +46,3 @@ export function readArguments(args: unknown[]): LogArguments {
 
   return [args, {}];
 }
-
-const hasErr = (target: object): target is { err: Error } =>
-  'err' in target && target.err instanceof Error;

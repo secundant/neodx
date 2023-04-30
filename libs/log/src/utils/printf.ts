@@ -28,6 +28,8 @@ export function printf(template: string, replaces: unknown[]) {
 const tokenFormatters = {
   s: (value: unknown) => String(value),
   d: (value: unknown) => Math.floor(Number(value)),
+  i: (value: unknown) => Number.parseInt(String(value), 10),
+  f: (value: unknown) => Number.parseFloat(String(value)),
   o: serializeJSON,
   O: serializeJSON,
   j: serializeJSON
