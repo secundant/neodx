@@ -1,19 +1,21 @@
 import { difference, keys, mapObject } from '@neodx/std';
 import { describe, expect, test, vi } from 'vitest';
-import { createLogger, defaultLevels, type StandardLogLevel } from '../create-logger';
+import {
+  createLogger,
+  DEFAULT_LOGGER_LEVELS,
+  type DefaultLoggerLevel,
+  type LoggerParams
+} from '..';
 import type { LogChunk } from '../types';
 
 describe('logger', () => {
   const createTestLogger = () => {
     const messagesFn = vi.fn();
-    const handler = vi.fn(chunk => messagesFn(chunk.message));
+    const handler = vi.fn(chunk => messagesFn(chunk.msg));
     const logger = createLogger({
-      target: [
-        {
-          level: 'info',
-          targets: [handler]
-        }
-      ]
+      level: 'info',
+      target: handler,
+      meta: {}
     });
 
     return {
@@ -30,7 +32,7 @@ describe('logger', () => {
     expect(handler).toHaveBeenLastCalledWith(
       expect.objectContaining({
         meta: { foo: 'bar' },
-        message: ''
+        msg: ''
       })
     );
   });
@@ -101,7 +103,7 @@ describe('logger', () => {
     (circular as any).circular = circular;
 
     logger.info('circular %j', circular);
-    expect(messagesFn).toHaveBeenLastCalledWith('circular {"foo":"bar","circular":"<ref ~>"}');
+    expect(messagesFn).toHaveBeenLastCalledWith('circular {"foo":"bar","circular":"[Circular]"}');
 
     const circular2 = { a: [{ b: [null, { c: [] }] }], d: [{ e: [] }] } as const;
 
@@ -110,7 +112,7 @@ describe('logger', () => {
 
     logger.info('circular %j', circular2);
     expect(messagesFn).toHaveBeenLastCalledWith(
-      'circular {"a":[{"b":[null,{"c":["<ref ~>"]}]}],"d":[{"e":[["<ref ~>"]]}]}'
+      'circular {"a":[{"b":[null,{"c":["[Circular]"]}]}],"d":[{"e":[["[Circular]"]]}]}'
     );
   });
 
@@ -123,33 +125,33 @@ describe('logger', () => {
       target: [
         {
           level: 'info',
-          targets: [info]
+          target: [info]
         },
         {
           level: 'error',
-          targets: [error]
+          target: [error]
         },
         {
           level: 'verbose',
-          targets: [verbose]
+          target: [verbose]
         }
       ]
     });
 
     logger.info('foo');
-    expect(info).toHaveBeenLastCalledWith(expect.objectContaining({ message: 'foo' }));
-    expect(error).toHaveBeenLastCalledWith(expect.objectContaining({ message: 'foo' }));
+    expect(info).toHaveBeenLastCalledWith(expect.objectContaining({ msg: 'foo' }));
+    expect(error).toHaveBeenLastCalledWith(expect.objectContaining({ msg: 'foo' }));
     expect(verbose).not.toHaveBeenCalled();
 
     logger.error('bar');
     expect(info).toBeCalledTimes(1);
-    expect(error).toHaveBeenLastCalledWith(expect.objectContaining({ message: 'bar' }));
+    expect(error).toHaveBeenLastCalledWith(expect.objectContaining({ msg: 'bar' }));
     expect(verbose).not.toHaveBeenCalled();
 
     logger.verbose('baz');
-    expect(info).toHaveBeenLastCalledWith(expect.objectContaining({ message: 'baz' }));
-    expect(error).toHaveBeenLastCalledWith(expect.objectContaining({ message: 'baz' }));
-    expect(verbose).toHaveBeenLastCalledWith(expect.objectContaining({ message: 'baz' }));
+    expect(info).toHaveBeenLastCalledWith(expect.objectContaining({ msg: 'baz' }));
+    expect(error).toHaveBeenLastCalledWith(expect.objectContaining({ msg: 'baz' }));
+    expect(verbose).toHaveBeenLastCalledWith(expect.objectContaining({ msg: 'baz' }));
 
     expect(info).toBeCalledTimes(2);
     expect(error).toBeCalledTimes(3);
@@ -157,25 +159,30 @@ describe('logger', () => {
   });
 
   describe('should support different levels combination', async () => {
-    const init = () => {
-      const levels = { ...defaultLevels };
-      const spies = mapObject(levels, (_, level) => vi.fn());
+    const init = (params?: Partial<LoggerParams<DefaultLoggerLevel>>) => {
+      const levels = { ...DEFAULT_LOGGER_LEVELS };
+      const spies = mapObject(levels, () => vi.fn());
       const target = keys(levels).map(level => ({
         level,
-        targets: [spies[level]]
+        target: [spies[level]]
       }));
       const logger = createLogger({
         level: 'verbose',
         levels,
-        target
+        target,
+        meta: {},
+        ...params
       });
-      const check = (levels: StandardLogLevel[], expected: Partial<LogChunk<StandardLogLevel>>) => {
-        for (const level of levels) {
+      const check = (
+        expectedTriggeredLevels: DefaultLoggerLevel[],
+        expectedChunkPartials: Partial<LogChunk<DefaultLoggerLevel>>
+      ) => {
+        for (const level of expectedTriggeredLevels) {
           expect(spies[level], `${level} should be called`).toHaveBeenLastCalledWith(
-            expect.objectContaining(expected)
+            expect.objectContaining(expectedChunkPartials)
           );
         }
-        for (const level of difference(keys(spies), levels)) {
+        for (const level of difference(keys(spies), expectedTriggeredLevels)) {
           expect(spies[level], `${level} shouldn't be called`).not.toHaveBeenCalled();
         }
       };
@@ -195,7 +202,7 @@ describe('logger', () => {
       check(['error', 'warn', 'info'], {
         level: 'info',
         meta: { foo: 'bar' },
-        message: ''
+        msg: ''
       });
     });
 
@@ -206,7 +213,7 @@ describe('logger', () => {
       check(['error'], {
         level: 'error',
         meta: { foo: 'bar' },
-        message: ''
+        msg: ''
       });
     });
 
@@ -217,8 +224,28 @@ describe('logger', () => {
       check([], {
         level: 'debug',
         meta: { foo: 'bar' },
-        message: ''
+        msg: ''
       });
+    });
+
+    test('should support silent level', () => {
+      const { logger, spies } = init({
+        level: 'silent'
+      });
+
+      logger.info('foo');
+      logger.error(new Error('...'));
+      logger.warn({ foo: 'bar' });
+      logger.debug({ foo: 'bar' });
+      logger.verbose({ foo: 'bar' });
+
+      // check([], {});
+      expect(spies.error).not.toHaveBeenCalled();
+      expect(spies.info).not.toHaveBeenCalled();
+      expect(spies.warn).not.toHaveBeenCalled();
+      expect(spies.verbose).not.toHaveBeenCalled();
+      expect(spies.debug).not.toHaveBeenCalled();
+      expect(spies.silent).not.toHaveBeenCalled();
     });
   });
 });
