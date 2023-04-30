@@ -3,7 +3,7 @@
   "compilerOptions": {
     "jsx": "preserve",
     "lib": ["ESNext"],
-    "target": "ESNext",
+    "target": "ES2020",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
@@ -11,7 +11,12 @@
     "baseUrl": ".",
     "paths": {
       "@neodx/codegen": ["libs/codegen/src/index.ts"],
+      "@neodx/colors": ["libs/colors/src/index.ts"],
       "@neodx/fs": ["libs/fs/src/index.ts"],
+      "@neodx/log": ["libs/log/src/index.ts"],
+      "@neodx/log/browser": ["libs/log/src/browser.ts"],
+      "@neodx/log/node": ["libs/log/src/node/index.ts"],
+      "@neodx/log/utils": ["libs/log/src/utils/index.ts"],
       "@neodx/pkg-misc": ["libs/pkg-misc/src/index.ts"],
       "@neodx/std": ["libs/std/src/index.ts"],
       "@neodx/svg": ["libs/svg/src/index.ts"],

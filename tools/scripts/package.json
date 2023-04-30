@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "@neodx/autobuild": "*",
-    "@nrwl/devkit": "15.9.2",
+    "@neodx/std": "*",
+    "@neodx/vfs": "*",
+    "@nrwl/devkit": "16.0.1",
     "execa": "7.1.1",
     "sade": "1.8.1"
   }
