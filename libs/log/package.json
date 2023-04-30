@@ -29,15 +29,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@neodx/colors": "*",
     "@neodx/std": "*"
-  },
-  "peerDependencies": {
-    "@neodx/colors": "*"
-  },
-  "peerDependenciesMeta": {
-    "@neodx/colors": {
-      "optional": true
-    }
   },
   "devDependencies": {
     "@neodx/autobuild": "*",

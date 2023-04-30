@@ -1,5 +1,5 @@
-import { createLoggerFactory } from '../create-logger-factory';
-import { DEFAULT_LOGGER_PARAMS, type DefaultLoggerLevel } from '../shared';
+import { createLoggerFactory, type CreateLoggerFactoryParams } from '../create-logger-factory';
+import { DEFAULT_LOGGER_LEVELS, DEFAULT_LOGGER_PARAMS, type DefaultLoggerLevel } from '../shared';
 import { printf, readArguments } from '../utils';
 import { createJsonTarget } from './create-json-target';
 import { createPrettyTarget } from './create-pretty-target';
@@ -8,7 +8,16 @@ import { NODE_LOGGER_SYSTEM_INFO } from './system-info';
 export type { JsonStreamOptions } from './create-json-target';
 export type { PrettyStreamOptions } from './create-pretty-target';
 
-export { createJsonTarget, createLoggerFactory, createPrettyTarget, NODE_LOGGER_SYSTEM_INFO };
+export {
+  createJsonTarget,
+  createLoggerFactory,
+  type CreateLoggerFactoryParams,
+  createPrettyTarget,
+  DEFAULT_LOGGER_LEVELS,
+  DEFAULT_LOGGER_PARAMS,
+  type DefaultLoggerLevel,
+  NODE_LOGGER_SYSTEM_INFO
+};
 
 export const createLogger = createLoggerFactory<DefaultLoggerLevel>({
   defaultParams: {
