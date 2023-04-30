@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { printf } from '../utils/printf';
+import { printf } from '../utils';
 
 describe('printf', () => {
   test('should return string without arguments', () => {
