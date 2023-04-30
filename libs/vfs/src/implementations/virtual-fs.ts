@@ -1,6 +1,10 @@
 import type { FileChange } from '../types';
 import { FileChangeType } from '../types';
-import { AbstractVfs } from './abstract-vfs';
+import { type AbstractVfsParams, AbstractVfs } from './abstract-vfs';
+
+export interface VirtualFsParams extends AbstractVfsParams {
+  initial?: Record<string, string>;
+}
 
 /**
  * In-memory files tree, useful for tests or dry runs
@@ -9,13 +13,16 @@ export class VirtualFs extends AbstractVfs {
   private readonly virtualFs: Map<string, Buffer>;
 
   /**
-   * @param root Root folder path
-   * @param initial Initial virtual FS state
-   * @example
-   * new VirtualFs(myRootPath, { "package.json": "{...}", "src/foo/bar.ts": "export const a = 1" })
+   * @example new VirtualFs(myRootPath, {
+   *   initial: {
+   *     "package.json": "{...}",
+   *     "src/foo/bar.ts": "export const a = 1"
+   *   },
+   *   log: logger,
+   * })
    */
-  constructor(readonly root: string, initial: Record<string, string> = {}) {
-    super(root);
+  constructor({ initial = {}, ...params }: VirtualFsParams) {
+    super(params);
     this.virtualFs = new Map(
       Object.entries(initial).map(([path, content]) => [path, Buffer.from(content)])
     );

@@ -1,3 +1,5 @@
+import { type DefaultLoggerLevel, createLogger } from '@neodx/log';
+import { createPrettyTarget } from '@neodx/log/node';
 import { fromLength, sum } from '@neodx/std';
 import { join } from 'pathe';
 import { describe, expect, test } from 'vitest';
@@ -5,16 +7,23 @@ import { VirtualFs } from '../implementations/virtual-fs';
 import { createTmpVfs, writeVfsPackageConfiguration, writeVirtualFs } from '../testing-utils';
 import { type ContentLike, FileChangeType } from '../types';
 
+const log = createLogger<DefaultLoggerLevel>({
+  level: 'silent',
+  target: createPrettyTarget({
+    displayLevel: false
+  })
+});
+
 describe('Tree', () => {
   describe.each([
     {
       name: 'VirtualFs',
-      factory: createTmpVirtualfs
+      factory: createTmpVirtualFs
     },
     {
       name: 'RealFs',
       async factory() {
-        const vfs = await createTmpVfs({ dryRun: false });
+        const vfs = await createTmpVfs({ dryRun: false, log });
 
         await writeVirtualFs(vfs.root, tmpVfs);
         return vfs;
@@ -23,7 +32,7 @@ describe('Tree', () => {
     {
       name: 'DtyRunFs',
       async factory() {
-        const vfs = await createTmpVfs({ dryRun: true });
+        const vfs = await createTmpVfs({ dryRun: true, log });
 
         await writeVirtualFs(vfs.root, tmpVfs);
         return vfs;
@@ -124,7 +133,7 @@ describe('Tree', () => {
   });
 
   describe('FsTree', async () => {
-    const vfs = createTmpVfs({});
+    const vfs = createTmpVfs({ log });
     const nestedDirsFilesCount = [
       {
         files: 100
@@ -179,7 +188,7 @@ describe('Tree', () => {
 
   describe(`Integrated utils`, async () => {
     test('should read and write json', async () => {
-      const vfs = createTmpVfs({});
+      const vfs = createTmpVfs({ log });
       const json = { a: 1, b: '2', c: null, d: { e: [3] } };
 
       await vfs.writeJson('foo.json', json);
@@ -190,7 +199,7 @@ describe('Tree', () => {
     });
 
     test('should apply prettier', async () => {
-      const vfs = createTmpVfs({});
+      const vfs = createTmpVfs({ log });
 
       await writeVfsPackageConfiguration(vfs);
       await vfs.write(
@@ -215,13 +224,17 @@ describe('Tree', () => {
   });
 });
 
-const createTmpVirtualfs = () =>
-  new VirtualFs('/root', {
-    'root-file.ts': 'root content',
-    'parent/parent-file.ts': 'parent content',
-    'parent/child/child-file.ts': 'child content'
+const createTmpVirtualFs = () =>
+  new VirtualFs({
+    root: '/root',
+    initial: {
+      'root-file.ts': 'root content',
+      'parent/parent-file.ts': 'parent content',
+      'parent/child/child-file.ts': 'child content'
+    },
+    log
   });
-const tmpVfs = createTmpVirtualfs();
+const tmpVfs = createTmpVirtualFs();
 
 // eslint-disable-next-line @typescript-eslint/require-array-sort-compare
 const expectArrayEq = <T>(left: T[], right: T[]) => expect(left.sort()).toEqual(right.sort());
