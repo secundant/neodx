@@ -1,5 +1,5 @@
 import { expectTypeOf, test } from 'vitest';
-import { compactObject } from './filter';
+import { compactObject } from '../object';
 
 test('should compact object', () => {
   expectTypeOf(compactObject({ foo: 1, bar: '' } as const)).toEqualTypeOf<{

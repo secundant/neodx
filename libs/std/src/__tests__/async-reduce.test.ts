@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
+import { asyncReduce } from '../async/reduce';
 import { identity } from '../shared';
-import { asyncReduce } from './reduce';
 
 describe('asyncReduce', () => {
   test('should skip empty', async () => {

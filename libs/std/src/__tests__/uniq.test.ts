@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
+import { uniq, uniqBy } from '../array';
 import { identity } from '../shared';
-import { uniq, uniqBy } from './uniq';
 
 describe('array > uniq utils', () => {
   describe('uniq', () => {

@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from 'vitest';
-import { deduplicateAsync } from './deduplicate';
+import { deduplicateAsync } from '../async';
 
 describe('deduplicateAsync', () => {
   test('should prevent parallel execution', async () => {
