@@ -5,6 +5,9 @@ import { DEFAULT_LOGGER_PARAMS } from './shared';
 import type { LogChunk } from './types';
 import { readArguments } from './utils';
 
+export { createLoggerFactory, type CreateLoggerFactoryParams } from './create-logger-factory';
+export { DEFAULT_LOGGER_LEVELS, DEFAULT_LOGGER_PARAMS, type DefaultLoggerLevel } from './shared';
+
 export const createLogger = createLoggerFactory<DefaultLoggerLevel>({
   defaultParams: DEFAULT_LOGGER_PARAMS,
   formatMessage: identity,
