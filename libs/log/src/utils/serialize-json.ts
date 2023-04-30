@@ -6,7 +6,7 @@ export const serializeJSON = (value: unknown, space?: string | number) =>
   JSON.stringify(value, createJSONReplacer(), space);
 
 export const cycleRef = (tokens: string[] = []) =>
-  `<ref ${tokens.length > 0 ? tokens.join('.') : '~'}>`;
+  `[Circular${tokens.length > 0 ? ' ' + tokens.join('.') : ''}]`;
 
 function createJSONReplacer() {
   const stack: unknown[] = [];
