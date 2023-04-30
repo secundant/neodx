@@ -27,6 +27,7 @@ const colorsMap = {
   bold: [1, 22],
   dim: [2, 22],
   italic: [3, 23],
+  overline: [53, 55],
   underline: [4, 24],
   inverse: [7, 27],
   hidden: [8, 28],
@@ -42,6 +43,16 @@ const colorsMap = {
   cyan: [36, 39],
   white: [37, 39],
   gray: [90, 39],
+
+  // bright colors
+
+  redBright: [91, 39],
+  greenBright: [92, 39],
+  yellowBright: [93, 39],
+  blueBright: [94, 39],
+  magentaBright: [95, 39],
+  cyanBright: [96, 39],
+  whiteBright: [97, 39],
 
   // background colors
   bgBlack: [40, 49],
