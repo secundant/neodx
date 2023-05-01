@@ -5,6 +5,7 @@ import loglevel from 'loglevel';
 import { createWriteStream } from 'node:fs';
 import pino from 'pino';
 import * as winston from 'winston';
+import deep from '../package.json' assert { type: 'json' };
 
 const voidFn = () => {};
 
@@ -23,20 +24,24 @@ export const neodxLoggerTargets = {
 export const devNullStream = createWriteStream('/dev/null');
 
 export const createExampleCircularJson = () => {
-  const jsonObject = { a: 1, b: { c: 2, d: null }, e: [{ f: 3 }] };
+  const jsonObject = { num: 1, obj: { nil: null }, arr: ['str'] };
 
-  (jsonObject as any).b.circular = jsonObject.b;
-  (jsonObject as any).g = jsonObject;
-  (jsonObject as any).h = [{ nested: jsonObject.e }];
+  (jsonObject as any).loop = jsonObject.obj;
+  (jsonObject as any).arr[1] = jsonObject;
 
   return jsonObject;
 };
 
+(deep as any).deep = Object.assign({}, JSON.parse(JSON.stringify(deep)));
+(deep as any).deep.deep = Object.assign({}, JSON.parse(JSON.stringify(deep)));
+(deep as any).deep.deep.deep = Object.assign({}, JSON.parse(JSON.stringify(deep)));
+
 export const exampleObjects = {
   simpleError: new Error('simple error'),
   circular: createExampleCircularJson(),
-  simple: { a: 1, b: 2, hello: 'world' },
-  simpleErrorWithMeta: { err: new Error('hello'), a: 1, b: 2, hello: 'world' }
+  simple: { num: 1, hello: 'world' },
+  simpleErrorWithMeta: { err: new Error('hello'), num: 10, hello: 'world' },
+  deep
 };
 export const exampleLogArgs = {
   printfMixedSimple: ['hello %s %d - %s done %s at %d', 'world', 42, 'foo', 'bar', 123] as const,

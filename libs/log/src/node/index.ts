@@ -1,5 +1,10 @@
 import { createLoggerFactory, type CreateLoggerFactoryParams } from '../create-logger-factory';
-import { DEFAULT_LOGGER_LEVELS, DEFAULT_LOGGER_PARAMS, type DefaultLoggerLevel } from '../shared';
+import {
+  DEFAULT_LOGGER_LEVELS,
+  DEFAULT_LOGGER_PARAMS,
+  type DefaultLoggerLevel,
+  LOGGER_SILENT_LEVEL
+} from '../shared';
 import { printf, readArguments } from '../utils';
 import { createJsonTarget } from './create-json-target';
 import { createPrettyTarget } from './create-pretty-target';
@@ -16,6 +21,7 @@ export {
   DEFAULT_LOGGER_LEVELS,
   DEFAULT_LOGGER_PARAMS,
   type DefaultLoggerLevel,
+  LOGGER_SILENT_LEVEL,
   NODE_LOGGER_SYSTEM_INFO
 };
 
