@@ -1,6 +1,6 @@
 {
   "name": "@neodx/vite-plugin-library",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "No description",
   "type": "module",
   "source": "src/index.ts",

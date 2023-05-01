@@ -2,7 +2,7 @@
   "name": "@neodx/log",
   "packageManager": "yarn@3.2.0",
   "description": "A lightweight universal logging framework without ",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
