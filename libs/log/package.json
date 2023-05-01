@@ -1,6 +1,7 @@
 {
   "name": "@neodx/log",
   "packageManager": "yarn@3.2.0",
+  "description": "A lightweight universal logging framework without ",
   "version": "0.0.1",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -12,10 +13,38 @@
     "src/node/index.ts",
     "src/utils/index.ts"
   ],
+  "keywords": [
+    "log",
+    "cli",
+    "logger",
+    "logging",
+    "hackable",
+    "colorful",
+    "console",
+    "json",
+    "tiny",
+    "isomorphic"
+  ],
   "files": [
     "dist",
-    "README.md"
+    "package.json"
   ],
+  "author": {
+    "name": "Dmitry Remezov",
+    "email": "mysecundant@gmail.com",
+    "url": "https://github.com/secundant"
+  },
+  "contributors": [
+    "secundant"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secundant/neodx.git",
+    "directory": "libs/log"
+  },
+  "homepage": "https://github.com/secundant/neodx/tree/main/libs/log",
+  "bugs": "https://github.com/secundant/neodx/issues?q=is%3Aopen+is%3Aissue+label%3Ascope%3Alog",
   "sideEffects": false,
   "scripts": {
     "compare-bundle": "tsx bench/compare-bundle.ts",
