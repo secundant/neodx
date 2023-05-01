@@ -1,5 +1,11 @@
 # @neodx/colors
 
+## 0.2.0
+
+### Minor Changes
+
+- [#52](https://github.com/secundant/neodx/pull/52) [`0078c0e`](https://github.com/secundant/neodx/commit/0078c0ea65dba33fa422b14a9cc51d6c70851856) Thanks [@secundant](https://github.com/secundant)! - Publish colors package
+
 ## 0.1.0
 
 ### Minor Changes

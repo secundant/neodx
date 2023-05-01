@@ -1,5 +1,12 @@
 # @neodx/svg
 
+## 0.1.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @neodx/vfs@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes
