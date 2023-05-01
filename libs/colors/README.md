@@ -31,6 +31,8 @@ The `colors` object contains all the available colors.
 ```ts
 import { colors } from '@neodx/colors';
 
+// colors
+
 colors.red; // red color
 colors.green; // green color
 colors.yellow; // yellow color
@@ -40,6 +42,18 @@ colors.cyan; // cyan color
 colors.white; // white color
 colors.gray; // gray color
 
+// bright colors
+
+colors.redBright; // bright red color
+colors.greenBright; // bright green color
+colors.yellowBright; // bright yellow color
+colors.blueBright; // bright blue color
+colors.magentaBright; // bright magenta color
+colors.cyanBright; // bright cyan color
+colors.whiteBright; // bright white color
+
+// background colors
+
 colors.bgRed; // red background color
 colors.bgGreen; // green background color
 colors.bgYellow; // yellow background color
@@ -47,6 +61,8 @@ colors.bgBlue; // blue background color
 colors.bgMagenta; // magenta background color
 colors.bgCyan; // cyan background color
 colors.bgWhite; // white background color
+
+// modifiers
 
 colors.bold; // bold text
 colors.dim; // dim text

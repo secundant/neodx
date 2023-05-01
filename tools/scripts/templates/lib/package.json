@@ -2,6 +2,7 @@
   "name": "@neodx/<%=name%>",
   "version": "0.0.1",
   "private": true,
+  "packageManager": "yarn@3.2.0",
   "description": "No description",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -9,6 +10,22 @@
   "module": "./dist/index.mjs",
   "source": "src/index.ts",
   "sideEffects": false,
+  "author": {
+    "name": "Dmitry Remezov",
+    "email": "mysecundant@gmail.com",
+    "url": "https://github.com/secundant"
+  },
+  "contributors": [
+    "secundant"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secundant/neodx.git",
+    "directory": "libs/<%=name%>"
+  },
+  "homepage": "https://github.com/secundant/neodx/tree/main/libs/<%=name%>",
+  "bugs": "https://github.com/secundant/neodx/issues?q=is%3Aopen+is%3Aissue+label%3Ascope%3A<%=name%>",
   "publishConfig": {
     "access": "restricted"
   },
