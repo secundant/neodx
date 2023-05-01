@@ -9,6 +9,30 @@
   "module": "./dist/index.mjs",
   "source": "src/index.ts",
   "sideEffects": false,
+  "author": {
+    "name": "Dmitry Remezov",
+    "email": "mysecundant@gmail.com",
+    "url": "https://github.com/secundant"
+  },
+  "contributors": [
+    "secundant"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secundant/neodx.git",
+    "directory": "libs/colors"
+  },
+  "homepage": "https://github.com/secundant/neodx/tree/main/libs/colors",
+  "bugs": "https://github.com/secundant/neodx/issues?q=is%3Aopen+is%3Aissue+label%3Ascope%3Acolors",
+  "keywords": [
+    "colors",
+    "formatting",
+    "terminal",
+    "console",
+    "cli",
+    "utils"
+  ],
   "files": [
     "dist",
     "README.md",

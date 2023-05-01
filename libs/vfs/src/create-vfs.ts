@@ -1,5 +1,6 @@
 import type { ParseJsonParams, SerializeJsonParams } from '@neodx/fs';
 import type { DependencyTypeName, PackageJsonDependencies } from '@neodx/pkg-misc';
+import { sortPackageJson } from '@neodx/pkg-misc';
 import type { AbstractVfsParams } from './implementations/abstract-vfs';
 import { DryRunFs } from './implementations/dry-run-fs';
 import { RealFs } from './implementations/real-fs';
@@ -44,7 +45,10 @@ export function createVfs(root: string, params?: Omit<CreateVfsParams, 'root'>) 
   // TODO Probably, add support for URL (for any path-like) in root
   const vfs = createVfsImpl({ ...params, root });
 
+  // TODO Replace hard-coded methods with pre-configured extensions
   return Object.assign(vfs, {
+    // TODO Introduce VFS extension protocol: function extension(vfs: VFS, ...args: unknown[]) { ... }
+    // TODO Introduce VFS path scoped extensions: function extension(vfs: VFS, path: string, ...args: unknown[]) { ... }
     readJson<T>(path: string, options?: ParseJsonParams) {
       return readVfsJson<T>(vfs, path, options);
     },
@@ -63,6 +67,9 @@ export function createVfs(root: string, params?: Omit<CreateVfsParams, 'root'>) 
     },
     packageJson(name = 'package.json') {
       return {
+        sort() {
+          return updateVfsJson<any>(vfs, name, pkg => sortPackageJson(pkg));
+        },
         addDependencies(dependencies: PackageJsonDependencies) {
           return addVfsPackageJsonDependencies(vfs, dependencies, name);
         },

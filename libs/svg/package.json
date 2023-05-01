@@ -6,14 +6,19 @@
   "author": {
     "name": "Dmitry Remezov",
     "email": "mysecundant@gmail.com",
-    "url": "https://github.com/secundant/neodx"
-  },
-  "bugs": {
-    "url": "https://github.com/secundant/neodx/issues"
+    "url": "https://github.com/secundant"
   },
   "contributors": [
     "secundant"
   ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secundant/neodx.git",
+    "directory": "libs/svg"
+  },
+  "homepage": "https://github.com/secundant/neodx/tree/main/libs/svg",
+  "bugs": "https://github.com/secundant/neodx/issues?q=is%3Aopen+is%3Aissue+label%3Ascope%3Asvg",
   "keywords": [
     "svg",
     "icons",
