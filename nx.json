@@ -26,9 +26,14 @@
     "src": [
       "{projectRoot}/src/**/*",
       "!{projectRoot}/src/*.test.ts",
-      "!{projectRoot}/src/*.test.ts"
+      "!{projectRoot}/src/*.test.tsx",
+      "!{projectRoot}/src/*.test-d.ts"
     ],
-    "test": ["{projectRoot}/**/*.test.ts", "{projectRoot}/**/*.test.tsx"],
+    "test": [
+      "{projectRoot}/**/*.test.ts",
+      "{projectRoot}/**/*.test.tsx",
+      "{projectRoot}/**/*.test-d.ts"
+    ],
     "config": [
       "{projectRoot}/package.json",
       "{projectRoot}/tsconfig.json",
@@ -43,6 +48,12 @@
     },
     "test": {
       "inputs": ["shared", "config", "test", "src", "^src"]
+    },
+    "typecheck": {
+      "inputs": ["shared", "config", "test", "src", "^src"]
+    },
+    "lint": {
+      "inputs": ["shared", "config", "test", "src"]
     },
     "dev": {
       "dependsOn": ["^build", "dev"]
