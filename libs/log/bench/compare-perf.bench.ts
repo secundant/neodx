@@ -9,8 +9,14 @@ function createBench(fn: (log: any) => void) {
   }
 }
 
-describe('compare - strings', () => {
-  createBench(log => log.info('hello'));
+describe(`log.info('hello world')`, () => {
+  createBench(log => log.info('hello world'));
+});
+describe(`log.info({ hello: 'world' })`, () => {
+  createBench(log => log.info({ hello: 'world' }));
+});
+describe(`log.info(deep)`, () => {
+  createBench(log => log.info(exampleObjects.deep));
 });
 describe('compare - printf - mixed simple', () => {
   createBench(log => log.info(...exampleLogArgs.printfMixedSimple));

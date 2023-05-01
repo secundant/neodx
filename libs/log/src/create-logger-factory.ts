@@ -1,4 +1,4 @@
-import { keys, toArray } from '@neodx/std';
+import { isEmpty, keys, toArray } from '@neodx/std';
 import type { LogChunk, Logger, LoggerMethods, LoggerParams } from './types';
 import type { LogArguments } from './utils';
 
@@ -46,7 +46,7 @@ export function createLoggerFactory<DefaultLevels extends string>({
         date: new Date(),
         msgArgs,
         msgTemplate,
-        msg: msgArgs.length > 0 ? formatMessage(msgTemplate, msgArgs) : msgTemplate,
+        msg: isEmpty(msgArgs) ? msgTemplate : formatMessage(msgTemplate, msgArgs),
         __: {
           levelsConfig: levels
         }

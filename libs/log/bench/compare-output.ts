@@ -36,7 +36,7 @@ const cases = [
 ] satisfies Array<[string, (log: any) => void]>;
 
 for (const [name, run] of cases) {
-  console.log(`${colors.bold(colors.bgCyan(name))}`);
+  console.log(`${colors.bold(colors.cyanBright(name))}\n`);
   for (const [logName, logger] of Object.entries(loggers.nodeJson)) {
     process.stdout.write(`${colors.bold(colors.magenta(logName.padEnd(12)))}`);
     run(logger);

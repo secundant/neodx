@@ -1,8 +1,6 @@
-export type LogArguments = [
-  messageFragments: unknown[],
-  fields: Record<keyof any, unknown>,
-  error?: Error
-];
+import { type AnyObj, isEmpty, isError, isObjectLike } from '@neodx/std';
+
+export type LogArguments = [messageFragments: unknown[], fields: AnyObj, error?: Error];
 
 /**
  * Reads arguments array and extract fields, error and message arguments.
@@ -27,18 +25,16 @@ export type LogArguments = [
  */
 export function readArguments(args: unknown[]): LogArguments {
   const [firstArg, ...otherArgs] = args;
-  const firstArgIsError = firstArg instanceof Error;
-  const firstArgIsObject = typeof firstArg === 'object' && firstArg !== null;
 
-  if (firstArgIsError) {
-    return [otherArgs.length > 0 ? otherArgs : [firstArg.message], {}, firstArg];
+  if (isError(firstArg)) {
+    return [isEmpty(otherArgs) ? [firstArg.message] : otherArgs, {}, firstArg];
   }
 
-  if (firstArgIsObject) {
-    if ('err' in firstArg && firstArg.err instanceof Error) {
+  if (isObjectLike(firstArg)) {
+    if ('err' in firstArg && isError(firstArg.err)) {
       const { err, ...fields } = firstArg;
 
-      return [otherArgs.length > 0 ? otherArgs : [err.message], fields, err];
+      return [isEmpty(otherArgs) ? [err.message] : otherArgs, fields, err];
     }
 
     return [otherArgs, firstArg as any];

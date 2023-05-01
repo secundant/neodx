@@ -9,7 +9,7 @@ import type { LoggerParams } from '../types';
 describe('node pretty stream', () => {
   const createTestLogger = (
     params?: Partial<LoggerParams<DefaultLoggerLevel>>,
-    prettyParams?: Partial<PrettyStreamOptions>
+    prettyParams?: Partial<PrettyStreamOptions<DefaultLoggerLevel>>
   ) => {
     const log = vi.fn();
     const logError = vi.fn();
@@ -43,7 +43,7 @@ describe('node pretty stream', () => {
     logger.info('foo');
 
     expect(log.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ℹ info: foo/)
+      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ℹ info\s+foo/)
     ]);
   });
 
@@ -54,7 +54,7 @@ describe('node pretty stream', () => {
 
     logger.info('foo');
     expect(log.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ℹ info test: foo/)
+      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} \[test] ℹ info\s+foo/)
     ]);
   });
 
@@ -63,14 +63,14 @@ describe('node pretty stream', () => {
 
     logger.error('foo');
     expect(log.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} error: foo/)
+      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ✘ error\s+foo/)
     ]);
     expect(logError).not.toBeCalled();
 
     logger.error(new Error('as error'));
     expect(logError.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} Error: as error/),
-      expect.stringContaining('Error: as error')
+      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ✘ Error\s+as error/),
+      expect.stringContaining('at')
     ]);
     expect(log).toBeCalledTimes(1);
   });
@@ -92,8 +92,8 @@ describe('node pretty stream', () => {
 
     logger.error(getError());
     expect(logError.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} TypeError: final/),
-      expect.stringContaining('TypeError: final')
+      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ✘ TypeError\s+final/),
+      expect.stringContaining('at')
     ]);
   });
 
@@ -102,7 +102,7 @@ describe('node pretty stream', () => {
 
     logger.info({ foo: 'bar' });
     expect(log.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ℹ info: \{\n {2}"foo": "bar"\n}/)
+      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ℹ info\s+\{\n {2}"foo": "bar"\n}/)
     ]);
   });
 
@@ -112,9 +112,9 @@ describe('node pretty stream', () => {
     logger.error({ foo: 'bar', err: new Error('example'), bar: 'bar' }, 'additional message');
     expect(logError.mock.lastCall).toEqual([
       expect.stringMatching(
-        /\d{2}:\d{2}:\d{2}.\d{3} Error: additional message \{\n {2}"foo": "bar",\n {2}"bar": "bar"\n}/
+        /\d{2}:\d{2}:\d{2}.\d{3} ✘ Error\s+additional message \{\n {2}"foo": "bar",\n {2}"bar": "bar"\n}/
       ),
-      expect.stringContaining('Error: example')
+      expect.stringContaining('at')
     ]);
   });
 
@@ -127,7 +127,7 @@ describe('node pretty stream', () => {
     );
 
     logger.info('foo');
-    expect(log.mock.lastCall).toEqual([`ℹ info: foo`]);
+    expect(log.mock.lastCall).toEqual([expect.stringMatching(/ℹ info\s+foo/)]);
   });
 
   test('should display log without level', () => {
@@ -144,6 +144,19 @@ describe('node pretty stream', () => {
     ]);
   });
 
+  test('should display children with parent', () => {
+    const { log, logger } = createTestLogger({
+      name: 'parent'
+    });
+
+    logger.child('child').info({ a: 1 }, 'foo');
+    expect(log.mock.lastCall).toEqual([
+      expect.stringMatching(
+        /\d{2}:\d{2}:\d{2}.\d{3} \[parent › child] ℹ info\s+foo \{\n {2}"a": 1\n}/
+      )
+    ]);
+  });
+
   test('should display log without time and level', () => {
     const { log, logError, logger } = createTestLogger(
       {},
@@ -156,6 +169,6 @@ describe('node pretty stream', () => {
     logger.info('foo');
     expect(log.mock.lastCall).toEqual([`foo`]);
     logger.error(new Error('abc'));
-    expect(logError.mock.lastCall).toEqual(['abc', expect.stringContaining('Error: abc')]);
+    expect(logError.mock.lastCall).toEqual(['abc', expect.stringContaining('at')]);
   });
 });

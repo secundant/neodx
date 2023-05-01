@@ -128,6 +128,9 @@ export interface LoggerParams<Level extends string> {
    * @example { level: 'info', target: [console.log] }
    * @example { level: 'info', target: [{ write: console.log }] }
    */
-  target: LoggerHandler<Level> | Array<LoggerHandler<Level> | LoggerHandleConfig<Level>>;
+  target:
+    | LoggerHandler<Level>
+    | LoggerHandleConfig<Level>
+    | Array<LoggerHandler<Level> | LoggerHandleConfig<Level>>;
   transform?: LoggerTransformer<Level> | LoggerTransformer<Level>[];
 }
