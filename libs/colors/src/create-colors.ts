@@ -1,16 +1,18 @@
 import { entries, identity } from '@neodx/std';
 
-export function createColors(isTTY = false, disabled = false) {
+// TODO Rework options
+export function createColors(isTTY = false, disabled = false, force = false) {
   const enabled =
-    !disabled &&
-    typeof process !== 'undefined' &&
-    !('NO_COLOR' in process.env || process.argv.includes('--no-color')) &&
-    !('GITHUB_ACTIONS' in process.env) &&
-    ('FORCE_COLOR' in process.env ||
-      process.argv.includes('--color') ||
-      process.platform === 'win32' ||
-      (isTTY && process.env.TERM !== 'dumb') ||
-      'CI' in process.env);
+    force ||
+    (!disabled &&
+      typeof process !== 'undefined' &&
+      !('NO_COLOR' in process.env || process.argv.includes('--no-color')) &&
+      !('GITHUB_ACTIONS' in process.env) &&
+      ('FORCE_COLOR' in process.env ||
+        process.argv.includes('--color') ||
+        process.platform === 'win32' ||
+        (isTTY && process.env.TERM !== 'dumb') ||
+        'CI' in process.env));
 
   return Object.fromEntries(
     colorsEntries.map(([color]) => [color, enabled ? formatters[color] : identity])
