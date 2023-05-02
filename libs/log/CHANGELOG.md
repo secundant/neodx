@@ -1,5 +1,11 @@
 # @neodx/log
 
+## 0.1.3
+
+### Patch Changes
+
+- [`6d5ba39`](https://github.com/secundant/neodx/commit/6d5ba397c63c64f2501536449ce7cc98ebe417c3) Thanks [@secundant](https://github.com/secundant)! - Make the main export browser, remove a separate browser export
+
 ## 0.1.2
 
 ### Patch Changes
