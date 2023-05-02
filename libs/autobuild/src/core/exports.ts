@@ -47,7 +47,7 @@ export async function createExportsGenerator({
                 require: !dts && format === 'cjs' && exportFile
               })
             },
-            ['node', 'browser', 'types', 'import', 'default', 'require']
+            ['types', 'node', 'browser', 'import', 'default', 'require']
           )
         );
       }
@@ -59,9 +59,9 @@ export async function createExportsGenerator({
       const main = exportsMap.get('.') ?? {};
 
       return compactObject({
-        main: main.require,
-        types: main.types,
-        module: main.import ?? main.default
+        // main: main.require,
+        types: main.types
+        // module: main.import ?? main.default
       });
     }
   };

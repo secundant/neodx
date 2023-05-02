@@ -10,6 +10,12 @@
   <img alt="Header" src="docs/preview-intro.png" width="1458">
 </div>
 
+<div align="center">
+  <a href="https://bundlejs.com/?q=%40neodx%2Flog&treeshake=%5B%7B+createLogger+%7D%5D&config=%7B%22analysis%22%3Aundefined%7D">
+    <img alt="npm" src="https://deno.bundlejs.com/?q=@neodx/log&treeshake=[{+createLogger+}]&config={%22analysis%22:undefined}&badge=">
+  </a>
+</div>
+
 > **Warning**
 > This project is still in the development stage, under 0.x.x version breaking changes can be introduced in any release, but I'll try to make them loud.
 

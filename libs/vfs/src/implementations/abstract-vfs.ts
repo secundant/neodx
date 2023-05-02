@@ -1,7 +1,6 @@
 import { colors } from '@neodx/colors';
 import type { Logger } from '@neodx/log';
-import { createLogger } from '@neodx/log';
-import { createPrettyTarget } from '@neodx/log/node';
+import { createLogger, createPrettyTarget } from '@neodx/log/node';
 import { compact, uniq } from '@neodx/std';
 import { dirname, join, relative, sep } from 'pathe';
 import type { BaseVFS, ContentLike, FileChange } from '../types';
