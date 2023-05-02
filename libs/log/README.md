@@ -14,6 +14,10 @@
   <a href="https://bundlejs.com/?q=%40neodx%2Flog&treeshake=%5B%7B+createLogger+%7D%5D&config=%7B%22analysis%22%3Aundefined%7D">
     <img alt="npm" src="https://deno.bundlejs.com/?q=@neodx/log&treeshake=[{+createLogger+}]&config={%22analysis%22:undefined}&badge=">
   </a>
+  <a href="https://www.npmjs.com/package/@neodx/log">
+    <img src="https://img.shields.io/npm/v/@neodx/log.svg" alt="npm" />
+  </a>
+  <img src="https://img.shields.io/npm/l/@neodx/log.svg" alt="license"/>
 </div>
 
 > **Warning**

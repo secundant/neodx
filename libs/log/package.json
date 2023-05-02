@@ -1,11 +1,12 @@
 {
   "name": "@neodx/log",
   "packageManager": "yarn@3.2.0",
-  "description": "A lightweight universal logging framework without ",
+  "description": "A lightweight universal logging framework",
   "version": "0.1.3",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
+  "browser": "./dist/index.mjs",
   "source": [
     "src/index.ts",
     "src/node/index.ts",
@@ -86,6 +87,10 @@
     },
     "./node": {
       "types": "./dist/node/index.d.ts",
+      "browser": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.cjs"
+      },
       "import": "./dist/node/index.mjs",
       "require": "./dist/node/index.cjs"
     },
