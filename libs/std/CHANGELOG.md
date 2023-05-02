@@ -1,5 +1,11 @@
 # @neodx/std
 
+## 0.1.1
+
+### Patch Changes
+
+- [#54](https://github.com/secundant/neodx/pull/54) [`3d2caaa`](https://github.com/secundant/neodx/commit/3d2caaa792bcf392765c08d11c6a82c3a19295e4) Thanks [@secundant](https://github.com/secundant)! - Add invariant
+
 ## 0.1.0
 
 ### Minor Changes

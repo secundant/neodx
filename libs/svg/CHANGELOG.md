@@ -1,5 +1,14 @@
 # @neodx/svg
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [[`3d2caaa`](https://github.com/secundant/neodx/commit/3d2caaa792bcf392765c08d11c6a82c3a19295e4)]:
+  - @neodx/std@0.1.1
+  - @neodx/vfs@0.1.2
+  - @neodx/fs@0.0.5
+
 ## 0.1.1
 
 ### Patch Changes
