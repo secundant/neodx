@@ -7,7 +7,7 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@neodx/scripts"],
+  "ignore": ["@neodx/scripts", "@neodx/vite-plugin-library", "@neodx/codegen", "example-*"],
   "privatePackages": false,
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "updateInternalDependents": "always"
