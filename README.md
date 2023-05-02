@@ -8,7 +8,8 @@
 This project designed to tackle common web development challenges with ease.
 
 > **Warning**
-> Most of the packages are not ready yet. Use them at your own risk.
+> Most of the packages are still under development, so API may change.
+> I'll try to keep it stable, but updates still can bring breaking changes.
 
 ### [@neodx/svg](./libs/svg)
 
@@ -64,6 +65,72 @@ assets/
   other/
     cut.svg
     search.svg
+```
+
+### [@neodx/log](./libs/log)
+
+A lightweight, flexible, and isomorphic logger and logging framework designed for modern development needs.
+
+Tired of dealing with `console.log`?
+Having trouble finding a suitable logging library because they're too heavy, platform-specific, or not flexible enough?
+
+I faced the same issues, which led me to create `@neodx/log`.
+It's simple, efficient, and avoids most critical drawbacks.
+Furthermore, it's easily replaceable and extensible, making it the great fit for your development needs.
+
+<div align="center">
+  <img alt="Header" src="libs/log/docs/preview-intro.png" width="1458">
+</div>
+
+- ~ 1KB gzipped in browser
+- Configurable log levels and log targets
+- Built-in JSON logs in production and pretty logs in development for Node.js
+
+```typescript
+import { createLogger } from '@neodx/log';
+import { createWriteStream } from 'node:fs';
+
+// Simple setup
+
+const logger = createLogger({
+  name: 'my-app',
+  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug'
+});
+
+logger.debug({ login, password }, 'User logged in, session id: %s', sessionId); // Will be ignored in production
+logger.warn('Retries: %i', retriesCount); // Our default levels: error, warn, info, verbose, debug
+
+// Nested loggers
+
+const child = logger.child('child'); // Child logger will inherit parent logger settings
+
+child.info('Hello, world!'); // [my-app > child] Hello, world!
+
+// Clone and extend
+
+const forked = child.fork({ meta: { requestId } }); // Forked logger will inherit parent logger settings and extend config
+
+forked.info({ path, method }, 'Request received'); // [my-app > child] Request received { path: '/api', method: 'GET', requestId: '...' }
+
+// Custom log targets
+
+const targeted = createLogger({
+  name: 'my-app',
+  level: 'debug',
+  target: createPrettyTarget()
+});
+// Or you can use array notation to define multiple targets:
+const withMultipleOutput = createLogger({
+  target: [
+    createPrettyTarget(), // Will log all levels to console
+    {
+      level: 'info',
+      target: createJsonTarget({
+        target: createWriteStream('logs/info.log')
+      })
+    }
+  ]
+});
 ```
 
 ### [@neodx/vfs](./libs/vfs)
