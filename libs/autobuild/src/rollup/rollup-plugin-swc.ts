@@ -14,6 +14,10 @@ export interface RollupPluginSwcOptions extends Omit<Options, 'filename'> {
   };
 }
 
+export interface SwcConfigEnvironment {
+  platform?: 'node' | 'browser';
+}
+
 export function rollupPluginSwc({
   settings: { exclude, include, extensions = DEFAULT_RESOLVED_EXTENSION } = {},
   ...options
@@ -60,15 +64,10 @@ export function rollupPluginSwcMinify(options: Options): OutputPlugin {
   };
 }
 
-export async function createSwcConfig({
-  detectedConfigFiles,
-  deps,
-  tsConfig,
-  cwd,
-  env,
-  sourceMap,
-  sourceDir
-}: Project): Promise<Options> {
+export async function createSwcConfig(
+  { detectedConfigFiles, deps, tsConfig, cwd, env, sourceMap, sourceDir }: Project,
+  { platform }: SwcConfigEnvironment = {}
+): Promise<Options> {
   const { ScriptTarget } = await import('typescript').then(m => m.default);
   const transform: TransformConfig = {
     decoratorMetadata: Boolean(tsConfig?.emitDecoratorMetadata),
@@ -132,6 +131,18 @@ export async function createSwcConfig({
           : undefined,
         transform: {
           ...transform,
+          optimizer: {
+            globals: platform
+              ? {
+                  typeofs: {
+                    window: platform === 'browser' ? 'object' : 'undefined'
+                  },
+                  vars: {
+                    'import.meta.env.SSR': platform === 'node' ? 'true' : 'false'
+                  }
+                }
+              : {}
+          },
           react: {
             ...transform.react,
             pragma: tsConfig.jsxFactory,

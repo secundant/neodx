@@ -19,6 +19,7 @@ export interface ScanPackageJsonParams {
 
 export interface ScanPackageJsonResult extends ProjectBuildMap {
   deps: ProjectDependencies;
+  addBrowserMain: boolean;
 }
 
 export function scanPackageJson(
@@ -29,6 +30,8 @@ export function scanPackageJson(
     main = `${outBase ?? defaultOutBase}/index.js`,
     module = `${outBase ?? defaultOutBase}/index.mjs`,
     typings,
+    browser,
+    exports,
     types = typings || main.replace(/\.[cm]?js/, '.d.ts'),
     optionalDependencies,
     peerDependencies,
@@ -60,6 +63,13 @@ export function scanPackageJson(
     sourceDir: srcBase ?? rootDirname(source[0]),
     typesFile: types,
     outputFormats: output,
+    addBrowserMain: Boolean(
+      browser ||
+        exports?.['.']?.node ||
+        exports?.['.']?.browser ||
+        exports?.node ||
+        exports?.browser
+    ),
     sourcePatterns: source
   };
 }

@@ -1,5 +1,6 @@
 {
   "name": "@neodx/codegen",
+  "private": true,
   "description": "Code generation API",
   "packageManager": "yarn@3.2.0",
   "version": "0.0.7",
@@ -39,7 +40,7 @@
     }
   },
   "publishConfig": {
-    "access": "public"
+    "access": "restricted"
   },
   "sideEffects": false,
   "scripts": {
@@ -57,18 +58,18 @@
     "@types/prettier": "^2.7.2",
     "@types/semver": "^7.3.13",
     "@types/tmp": "^0.2.3",
-    "tmp": "0.2.1"
+    "tmp": "^0.2.1"
   },
   "dependencies": {
     "@neodx/fs": "*",
     "@neodx/pkg-misc": "*",
     "@neodx/std": "*",
     "@neodx/vfs": "*",
-    "ejs": "3.1.9",
-    "jsonc-parser": "3.2.0",
-    "picocolors": "1.0.0",
-    "prettier": "2.8.8",
-    "semver": "7.5.0"
+    "ejs": "^3.1.9",
+    "jsonc-parser": "^3.2.0",
+    "picocolors": "^1.0.0",
+    "prettier": "^2.8.8",
+    "semver": "^7.5.0"
   },
   "nx": {
     "targets": {

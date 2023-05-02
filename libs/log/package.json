@@ -65,16 +65,23 @@
     "@neodx/autobuild": "*",
     "@types/bunyan": "^1.8.8",
     "@types/tmp": "^0.2.3",
-    "bunyan": "1.8.15",
-    "loglevel": "1.8.1",
-    "pino": "8.11.0",
-    "tmp": "0.2.1",
-    "tsx": "3.12.7",
-    "winston": "3.8.2"
+    "bunyan": "^1.8.15",
+    "loglevel": "^1.8.1",
+    "pino": "^8.12.0",
+    "tmp": "^0.2.1",
+    "winston": "^3.8.2"
   },
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "node": {
+        "import": "./dist/node/index.mjs",
+        "require": "./dist/node/index.cjs"
+      },
+      "browser": {
+        "import": "./dist/browser.mjs",
+        "require": "./dist/browser.cjs"
+      },
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"

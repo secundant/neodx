@@ -16,7 +16,7 @@ export interface BuildParams {
 export async function build(project: Project, { startedAt }: BuildParams = {}) {
   const vfs = createVfs(project.cwd);
   const buildStartedAt = Date.now();
-  const exportsGenerator = createExportsGenerator({
+  const exportsGenerator = await createExportsGenerator({
     outDir: project.outDir,
     root: project.cwd
   });

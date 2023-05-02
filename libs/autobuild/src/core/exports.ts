@@ -1,18 +1,23 @@
 import { compactObject, sortObjectByOrder } from '@neodx/std';
+import { readFile } from 'node:fs/promises';
 import { dirname, join, relative } from 'node:path';
 import type { NormalizedOutputOptions, OutputAsset, OutputBundle, OutputChunk } from 'rollup';
 
 export type ExportsKey = 'types' | 'require' | 'default' | 'import' | 'browser' | 'node';
 export type ExportsRecord = Partial<Record<ExportsKey, string>>;
-export type ExportsGenerator = ReturnType<typeof createExportsGenerator>;
+export type ExportsGenerator = Awaited<ReturnType<typeof createExportsGenerator>>;
 export interface ExportsGeneratorParams {
   outDir?: string;
   root?: string;
 }
 
-export function createExportsGenerator({ root = '', outDir = 'dist' }: ExportsGeneratorParams) {
+export async function createExportsGenerator({
+  root = '',
+  outDir = 'dist'
+}: ExportsGeneratorParams) {
   const exportsMap = new Map<string, ExportsRecord>();
   const relativeOutDir = outDir.startsWith(root) ? relative(root, outDir) : outDir;
+  const pkg = await JSON.parse(await readFile(join(root, 'package.json'), 'utf-8'));
 
   return {
     addBundle({ format, dir, file }: NormalizedOutputOptions, bundle: OutputBundle) {
@@ -33,6 +38,7 @@ export function createExportsGenerator({ root = '', outDir = 'dist' }: ExportsGe
           exportName,
           sortObjectByOrder(
             {
+              ...pkg.exports?.[exportName],
               ...exportsMap.get(exportName),
               ...compactObject({
                 types: dts && exportFile,
@@ -41,7 +47,7 @@ export function createExportsGenerator({ root = '', outDir = 'dist' }: ExportsGe
                 require: !dts && format === 'cjs' && exportFile
               })
             },
-            ['types', 'import', 'default', 'require']
+            ['node', 'browser', 'types', 'import', 'default', 'require']
           )
         );
       }

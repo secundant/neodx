@@ -23,12 +23,12 @@
   "devDependencies": {
     "@neodx/autobuild": "*",
     "@types/tmp": "^0.2.3",
-    "tmp": "0.2.1"
+    "tmp": "^0.2.1"
   },
   "dependencies": {
     "@neodx/std": "*",
-    "jsonc-parser": "3.2.0",
-    "tiny-glob": "0.2.9"
+    "jsonc-parser": "^3.2.0",
+    "tiny-glob": "^0.2.9"
   },
   "exports": {
     ".": {

@@ -11,6 +11,7 @@ export interface Project extends ProjectBuildMap {
   sourceMap: boolean | 'inline';
   sourceFiles: string[];
   packageJson: ProjectPackageJSON;
+  addBrowserMain: boolean;
   detectedConfigFiles: Partial<ProjectConfigsMap>;
 }
 
@@ -65,12 +66,14 @@ export interface ProjectPackageJSON extends Record<string, unknown> {
   types?: string;
   source?: string;
   module?: string;
+  browser?: string;
   typings?: string;
   'umd:main'?: string;
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
   optionalDependencies?: Record<string, string>;
+  exports?: any;
 }
 
 // todo

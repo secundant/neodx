@@ -2,6 +2,7 @@ import colors from 'picocolors';
 
 const { bgRed, blue, bold, red, yellow } = colors;
 
+// TODO Replace with a @neodx/log
 export const logger = {
   fatal(name: string, ...messages: unknown[]) {
     console.error(bgRed(bold(' FATAL ')), red(bold(name)), ...messages);

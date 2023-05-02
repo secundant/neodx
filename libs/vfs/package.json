@@ -29,6 +29,14 @@
     "README.md",
     "package.json"
   ],
+  "keywords": [
+    "vfs",
+    "virtual",
+    "file",
+    "fs",
+    "lazy",
+    "dry-run"
+  ],
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "autobuild",
@@ -38,7 +46,7 @@
   "devDependencies": {
     "@neodx/autobuild": "*",
     "@types/tmp": "^0.2.3",
-    "tmp": "0.2.1"
+    "tmp": "^0.2.1"
   },
   "exports": {
     ".": {
@@ -53,7 +61,7 @@
     "@neodx/log": "*",
     "@neodx/pkg-misc": "*",
     "@neodx/std": "*",
-    "pathe": "1.1.0",
-    "picocolors": "1.0.0"
+    "pathe": "^1.1.0",
+    "picocolors": "^1.0.0"
   }
 }
