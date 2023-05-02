@@ -4771,6 +4771,8 @@ __metadata:
 "example-simple-logs@workspace:examples/simple-logs":
   version: 0.0.0-use.local
   resolution: "example-simple-logs@workspace:examples/simple-logs"
+  dependencies:
+    "@neodx/log": "*"
   languageName: unknown
   linkType: soft
 

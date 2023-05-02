@@ -15,5 +15,8 @@
     "lint": "eslint src",
     "dev": "vite",
     "nuke": "rm -rf dist"
+  },
+  "dependencies": {
+    "@neodx/log": "*"
   }
 }
