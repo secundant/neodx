@@ -18,5 +18,21 @@
   },
   "dependencies": {
     "@neodx/log": "*"
+  },
+  "nx": {
+    "targets": {
+      "lint": {
+        "dependsOn": [
+          "^build",
+          "^lint"
+        ]
+      },
+      "typecheck": {
+        "dependsOn": [
+          "^build",
+          "^typecheck"
+        ]
+      }
+    }
   }
 }
