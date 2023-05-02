@@ -1,5 +1,11 @@
 # @neodx/log
 
+## 0.1.4
+
+### Patch Changes
+
+- [`9c55b0c`](https://github.com/secundant/neodx/commit/9c55b0cb42093c10e1b04baaf2dec86647737fc2) Thanks [@secundant](https://github.com/secundant)! - Fix description and package fields
+
 ## 0.1.3
 
 ### Patch Changes
