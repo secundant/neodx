@@ -1,12 +1,7 @@
 import { difference, keys, mapObject } from '@neodx/std';
 import { describe, expect, test, vi } from 'vitest';
-import {
-  createLogger,
-  DEFAULT_LOGGER_LEVELS,
-  type DefaultLoggerLevel,
-  type LoggerParams
-} from '..';
-import type { LogChunk } from '../types';
+import { type DefaultLoggerLevel, createLogger, DEFAULT_LOGGER_LEVELS } from '../node';
+import type { LogChunk, LoggerParams } from '../types';
 
 describe('logger', () => {
   const createTestLogger = () => {

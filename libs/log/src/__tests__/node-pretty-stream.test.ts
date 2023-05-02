@@ -1,8 +1,7 @@
 import { createColors } from '@neodx/colors';
 import { describe, expect, test, vi } from 'vitest';
-import { createLogger } from '../index';
 import type { PrettyStreamOptions } from '../node';
-import { createPrettyTarget } from '../node';
+import { createLogger, createPrettyTarget } from '../node';
 import type { DefaultLoggerLevel } from '../shared';
 import type { LoggerParams } from '../types';
 
