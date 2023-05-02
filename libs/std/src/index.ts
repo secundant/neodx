@@ -2,6 +2,7 @@ export { compact, difference, fromLength, groupBy, groupReduceBy, uniq, uniqBy }
 export { asyncReduce, deduplicateAsync } from './async';
 export type { AnyKey, AnyObj, Nil } from './guards';
 export { isEmpty, isError, isNil, isObject, isObjectLike } from './guards';
+export { invariant } from './invariant';
 export { sum } from './math';
 export { memoizeWeak } from './memoize';
 export {

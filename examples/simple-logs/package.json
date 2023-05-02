@@ -1,0 +1,19 @@
+{
+  "name": "example-simple-logs",
+  "version": "0.0.1",
+  "private": true,
+  "packageManager": "yarn@3.2.0",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "vite build",
+    "test": "vitest run",
+    "lint": "eslint src",
+    "dev": "vite",
+    "nuke": "rm -rf dist"
+  }
+}

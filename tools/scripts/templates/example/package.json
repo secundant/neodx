@@ -1,0 +1,19 @@
+{
+  "name": "example-<%=name%>",
+  "version": "0.0.1",
+  "private": true,
+  "packageManager": "yarn@3.2.0",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "scripts": {
+    "typecheck": "exit 0 || tsc --noEmit",
+    "build": "exit 0 || vite build",
+    "test": "exit 0 || vitest run",
+    "lint": "exit 0 || eslint src",
+    "dev": "exit 0 || vite",
+    "nuke": "rm -rf dist"
+  }
+}
