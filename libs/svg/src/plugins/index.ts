@@ -1,5 +1,5 @@
 export { type GroupPluginOptions, groupSprites } from './group';
-export { resetColors, type ResetColorsPluginOptions } from './reset-colors';
+export { type ResetColorsPluginOptions, resetColors } from './reset-colors';
 export { setId } from './set-id';
-export { svgo, type SvgoPluginOptions } from './svgo';
-export { typescript, type TypescriptPluginOptions } from './typescript';
+export { type SvgoPluginOptions, svgo } from './svgo';
+export { type TypescriptPluginOptions, typescript } from './typescript';
