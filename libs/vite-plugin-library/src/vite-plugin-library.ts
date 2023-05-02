@@ -1,12 +1,11 @@
 import { scan } from '@neodx/fs';
 import { compact, toArray } from '@neodx/std';
-import { createVfs, type VFS } from '@neodx/vfs';
+import { type VFS, createVfs } from '@neodx/vfs';
 import { builtinModules } from 'node:module';
-// @ts-expect-error Outdated types
 import type { PackageJson } from 'pkg-types';
 import type { Plugin } from 'vite';
 import { analyzeProject } from './analyze-project';
-import { createExportsGenerator, type ExportsGenerator } from './exports';
+import { type ExportsGenerator, createExportsGenerator } from './exports';
 
 export interface VitePluginLibraryParams {
   entry?: string | string[];

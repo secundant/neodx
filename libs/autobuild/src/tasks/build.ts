@@ -1,7 +1,6 @@
 import { exists } from '@neodx/fs';
 import { createVfs } from '@neodx/vfs';
 import { rm } from 'node:fs/promises';
-// @ts-expect-error Outdated types
 import type { PackageJson } from 'pkg-types';
 import { rollup } from 'rollup';
 import { createExportsGenerator } from '../core/exports';
