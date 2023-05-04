@@ -1,5 +1,11 @@
 # @neodx/svg
 
+## 0.1.5
+
+### Patch Changes
+
+- [#61](https://github.com/secundant/neodx/pull/61) [`7e93150`](https://github.com/secundant/neodx/commit/7e931500a6fe300a056420fc7f80053857b5aa5a) Thanks [@secundant](https://github.com/secundant)! - Fix incorrect CLI arguments parsing
+
 ## 0.1.4
 
 ### Patch Changes
