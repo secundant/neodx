@@ -1,32 +1,36 @@
 import { toArray } from '@neodx/std';
 import { createVfs } from '@neodx/vfs';
-import sade from 'sade';
+import { Command } from 'commander';
 import { z } from 'zod';
 import { generateSvgSprites } from './generate';
 
 export function createCli(cwd = process.cwd()) {
-  return sade('sprite', true)
+  const program = new Command('sprite');
+
+  program
     .option('--dry-run', 'Show generated files but dont generate it')
-    .option('--root', 'Root folder for inputs, useful for correct groups naming', '')
+    .option('--root <root>', 'Root folder for inputs, useful for correct groups naming', '')
     .option('--group', 'Should we group icons?', false)
     .option('--optimize', 'Should we group icons?', true)
-    .option('-i, --input', 'Glob/globs to icons files', '**/*.svg')
-    .option('-o, --output', 'Path to generated sprite/sprites folder', 'public/sprites')
-    .option('-d, --definitions', 'Path to generated TS file with sprite meta')
-    .option('--reset-color-values', 'An array of colors to replace as `currentColor`')
-    .option('--reset-color-properties', 'An array of SVG properties to replace with `currentColor`')
-    .action(
-      ({
-        'dry-run': dryRun,
-        'reset-color-values': resetColorValues,
-        'reset-color-properties': resetColorProperties,
-        ...rawOptions
-      }) =>
-        generateSvgSprites({
-          ...Options.parse({ ...rawOptions, resetColorValues, resetColorProperties }),
-          vfs: createVfs(cwd, { dryRun })
-        })
-    );
+    .option('-i, --input <input>', 'Glob/globs to icons files', '**/*.svg')
+    .option('-o, --output <output>', 'Path to generated sprite/sprites folder', 'public/sprites')
+    .option('-d, --definitions <definitions>', 'Path to generated TS file with sprite meta')
+    .option(
+      '--reset-color-values <resetColorValues>',
+      'An array of colors to replace as `currentColor`'
+    )
+    .option(
+      '--reset-color-properties <resetColorProperties>',
+      'An array of SVG properties to replace with `currentColor`'
+    )
+    .action(({ dryRun, ...options }) => {
+      return generateSvgSprites({
+        ...Options.parse(options),
+        vfs: createVfs(cwd, { dryRun })
+      });
+    });
+
+  return program;
 }
 
 const toArrayOrString = z

@@ -9,7 +9,7 @@
     "access": "restricted"
   },
   "dependencies": {
-    "@neodx/svg": "*"
+    "@neodx/svg": "workspace:*"
   },
   "scripts": {
     "build": "sprite --group --root assets -o public/sprites -d src/sprite.gen.ts --reset-color-values #000,#eee,#F1F2F3",
@@ -25,7 +25,9 @@
           "public/sprites"
         ],
         "inputs": [
-          "{projectRoot}/assets/**/*.svg"
+          "{projectRoot}/assets/**/*.svg",
+          "shared",
+          "config"
         ],
         "dependsOn": [
           "^build"
