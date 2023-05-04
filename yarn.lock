@@ -1418,7 +1418,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/svg@*, @neodx/svg@workspace:libs/svg":
+"@neodx/svg@workspace:*, @neodx/svg@workspace:libs/svg":
   version: 0.0.0-use.local
   resolution: "@neodx/svg@workspace:libs/svg"
   dependencies:
@@ -1431,10 +1431,10 @@ __metadata:
     "@types/react-dom": ^18.2.1
     "@types/svgo": ^3.0.0
     clsx: ^1.2.1
+    commander: 10.0.1
     prettier: ^2.8.8
     react: ^18.2.0
     react-dom: ^18.2.0
-    sade: ^1.8.1
     svgo: ^3.0.2
     svgson: ^5.2.1
     zod: ^3.21.4
@@ -3321,6 +3321,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:10.0.1":
+  version: 10.0.1
+  resolution: "commander@npm:10.0.1"
+  checksum: 436901d64a818295803c1996cd856621a74f30b9f9e28a588e726b2b1670665bccd7c1a77007ebf328729f0139838a88a19265858a0fa7a8728c4656796db948
+  languageName: node
+  linkType: hard
+
 "commander@npm:^10.0.0":
   version: 10.0.0
   resolution: "commander@npm:10.0.0"
@@ -4780,7 +4787,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "example-svg@workspace:examples/svg"
   dependencies:
-    "@neodx/svg": "*"
+    "@neodx/svg": "workspace:*"
   languageName: unknown
   linkType: soft
 
