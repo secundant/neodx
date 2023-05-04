@@ -12,7 +12,7 @@
     "@neodx/svg": "workspace:*"
   },
   "scripts": {
-    "build": "sprite --group --root assets -o public/sprites -d src/sprite.gen.ts --reset-color-values #000,#eee,#F1F2F3",
+    "build": "sprite --group --root assets -o public/sprites -d src/sprite.gen.ts --reset-color-values '#000,#eee,#F1F2F3'",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "lint": "eslint src",
