@@ -53,9 +53,9 @@
     "@neodx/fs": "*",
     "@neodx/std": "*",
     "@neodx/vfs": "*",
+    "commander": "10.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sade": "^1.8.1",
     "svgo": "^3.0.2",
     "svgson": "^5.2.1",
     "zod": "^3.21.4"
