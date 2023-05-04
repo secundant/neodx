@@ -1,5 +1,11 @@
 # @neodx/svg
 
+## 0.1.6
+
+### Patch Changes
+
+- [#64](https://github.com/secundant/neodx/pull/64) [`8ca222a`](https://github.com/secundant/neodx/commit/8ca222a022feb91bb03ec12dab089627cc4849ae) Thanks [@secundant](https://github.com/secundant)! - Replace sade with commander for better options parsing
+
 ## 0.1.5
 
 ### Patch Changes
