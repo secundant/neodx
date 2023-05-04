@@ -1,0 +1,41 @@
+{
+  "name": "example-svg",
+  "version": "0.0.1",
+  "private": true,
+  "packageManager": "yarn@3.2.0",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "dependencies": {
+    "@neodx/svg": "*"
+  },
+  "scripts": {
+    "build": "sprite --group --root assets -o public/sprites -d src/sprite.gen.ts --reset-color-values #000,#eee,#F1F2F3",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "eslint src",
+    "nuke": "rm -rf dist"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "public/sprites"
+        ],
+        "inputs": [
+          "{projectRoot}/assets/**/*.svg"
+        ],
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "test": {
+        "dependsOn": [
+          "build"
+        ]
+      }
+    }
+  }
+}
