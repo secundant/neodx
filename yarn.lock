@@ -1418,7 +1418,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/svg@workspace:libs/svg":
+"@neodx/svg@*, @neodx/svg@workspace:libs/svg":
   version: 0.0.0-use.local
   resolution: "@neodx/svg@workspace:libs/svg"
   dependencies:
@@ -4773,6 +4773,14 @@ __metadata:
   resolution: "example-simple-logs@workspace:examples/simple-logs"
   dependencies:
     "@neodx/log": "*"
+  languageName: unknown
+  linkType: soft
+
+"example-svg@workspace:examples/svg":
+  version: 0.0.0-use.local
+  resolution: "example-svg@workspace:examples/svg"
+  dependencies:
+    "@neodx/svg": "*"
   languageName: unknown
   linkType: soft
 

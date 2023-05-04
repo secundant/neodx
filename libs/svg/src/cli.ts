@@ -15,26 +15,32 @@ export function createCli(cwd = process.cwd()) {
     .option('-d, --definitions', 'Path to generated TS file with sprite meta')
     .option('--reset-color-values', 'An array of colors to replace as `currentColor`')
     .option('--reset-color-properties', 'An array of SVG properties to replace with `currentColor`')
-    .action(({ 'dry-run': dryRun, ...rawOptions }) =>
-      generateSvgSprites({
-        ...Options.parse(rawOptions),
-        vfs: createVfs(cwd, { dryRun })
-      })
+    .action(
+      ({
+        'dry-run': dryRun,
+        'reset-color-values': resetColorValues,
+        'reset-color-properties': resetColorProperties,
+        ...rawOptions
+      }) =>
+        generateSvgSprites({
+          ...Options.parse({ ...rawOptions, resetColorValues, resetColorProperties }),
+          vfs: createVfs(cwd, { dryRun })
+        })
     );
 }
 
+const toArrayOrString = z
+  .string()
+  .or(z.string().array())
+  .transform(input => toArray(input).flatMap(value => value.split(',').map(chunk => chunk.trim())));
+
 export const Options = z.object({
   root: z.string(),
-  input: z
-    .string()
-    .or(z.string().array())
-    .transform(input =>
-      toArray(input).flatMap(value => value.split(',').map(chunk => chunk.trim()))
-    ),
+  input: toArrayOrString,
   group: z.boolean(),
   output: z.string(),
   optimize: z.boolean(),
   definitions: z.string().optional(),
-  resetColorValues: z.string().array().optional(),
-  resetColorProperties: z.string().array().optional()
+  resetColorValues: toArrayOrString.optional(),
+  resetColorProperties: toArrayOrString.optional()
 });
