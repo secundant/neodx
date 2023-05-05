@@ -1,5 +1,16 @@
-export { compact, difference, fromLength, groupBy, groupReduceBy, uniq, uniqBy } from './array';
-export { asyncReduce, deduplicateAsync } from './async';
+export {
+  chunk,
+  compact,
+  difference,
+  fromLength,
+  groupBy,
+  groupReduceBy,
+  includesIn,
+  sliding,
+  uniq,
+  uniqBy
+} from './array';
+export { asyncReduce, concurrent, deduplicateAsync } from './async';
 export type { AnyKey, AnyObj, Nil } from './guards';
 export { isEmpty, isError, isNil, isObject, isObjectLike } from './guards';
 export { invariant } from './invariant';
@@ -18,3 +29,4 @@ export {
 export type { Falsy, ObjectEntry } from './shared';
 export { entries, hasOwn, identity, isTruthy, keys, toArray, values } from './shared';
 export { cases, toCase } from './to-case';
+export { addSearchParams, createRelativeUrl } from './url';
