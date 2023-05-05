@@ -25,7 +25,7 @@
     "directory": "libs/<%=name%>"
   },
   "homepage": "https://github.com/secundant/neodx/tree/main/libs/<%=name%>",
-  "bugs": "https://github.com/secundant/neodx/issues?q=is%3Aopen+is%3Aissue+label%3Ascope%3A<%=name%>",
+  "bugs": "https://github.com/secundant/neodx/issues",
   "publishConfig": {
     "access": "restricted"
   },

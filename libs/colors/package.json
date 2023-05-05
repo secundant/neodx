@@ -23,7 +23,7 @@
     "directory": "libs/colors"
   },
   "homepage": "https://github.com/secundant/neodx/tree/main/libs/colors",
-  "bugs": "https://github.com/secundant/neodx/issues?q=is%3Aopen+is%3Aissue+label%3Ascope%3Acolors",
+  "bugs": "https://github.com/secundant/neodx/issues",
   "keywords": [
     "colors",
     "formatting",
