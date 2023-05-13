@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const toArray = <T>(value: T | T[]) => (Array.isArray(value) ? value : [value]);
 export const identity = <T>(value: T): T => value;
+export const True = () => true;
+export const False = () => false;
 
 export const values = Object.values; // already typed
 export const entries = Object.entries as TypedObjectEntriesFn;

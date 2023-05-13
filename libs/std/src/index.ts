@@ -10,7 +10,7 @@ export {
   uniq,
   uniqBy
 } from './array';
-export { asyncReduce, concurrent, deduplicateAsync } from './async';
+export { asyncReduce, concurrent, concurrently, deduplicateAsync } from './async';
 export type { AnyKey, AnyObj, Nil } from './guards';
 export { isEmpty, isError, isNil, isObject, isObjectLike } from './guards';
 export { invariant } from './invariant';
@@ -27,6 +27,6 @@ export {
   sortObjectByOrder
 } from './object';
 export type { Falsy, ObjectEntry } from './shared';
-export { entries, hasOwn, identity, isTruthy, keys, toArray, values } from './shared';
+export { entries, False, hasOwn, identity, isTruthy, keys, toArray, True, values } from './shared';
 export { cases, toCase } from './to-case';
 export { addSearchParams, createRelativeUrl } from './url';
