@@ -5,7 +5,7 @@ export interface Project extends ProjectBuildMap {
   log: LogLevel;
   env: 'production' | 'development';
   deps: ProjectDependencies;
-  tsConfig: CompilerOptions | null;
+  tsConfig: { compilerOptions: CompilerOptions } | null;
   tsConfigJson?: Record<string, any> | null;
   minify: boolean;
   sourceMap: boolean | 'inline';

@@ -87,7 +87,7 @@ export async function createRollupConfig(project: Project, exportsGenerator?: Ex
     },
     tsConfig &&
       typesFile &&
-      tsConfig.declaration !== false && {
+      tsConfig.compilerOptions.declaration !== false && {
         info: {
           description: `TypeScript definitions`
         },
@@ -99,7 +99,6 @@ export async function createRollupConfig(project: Project, exportsGenerator?: Ex
              * We extend user tsconfig for prevent errors and decrease build time
              */
             compilerOptions: {
-              ...tsConfig,
               // prevent errors
               noEmit: false,
               noEmitHelpers: false,

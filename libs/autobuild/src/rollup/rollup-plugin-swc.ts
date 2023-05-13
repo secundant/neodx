@@ -70,7 +70,7 @@ export async function createSwcConfig(
 ): Promise<Options> {
   const { ScriptTarget } = await import('typescript').then(m => m.default);
   const transform: TransformConfig = {
-    decoratorMetadata: Boolean(tsConfig?.emitDecoratorMetadata),
+    decoratorMetadata: Boolean(tsConfig?.compilerOptions.emitDecoratorMetadata),
     react: {
       development: env === 'development',
       // TODO What about local libs (ex. in monorepo)?
@@ -89,7 +89,7 @@ export async function createSwcConfig(
     [ScriptTarget.ES2020]: 'es2020',
     [ScriptTarget.ES2021]: 'es2021',
     [ScriptTarget.ES2022]: 'es2022',
-    [ScriptTarget.ESNext]: 'es2022',
+    [ScriptTarget.ESNext]: 'esnext',
     [ScriptTarget.Latest]: 'es2022',
     // ???
     [ScriptTarget.JSON]: 'es2022'
@@ -110,21 +110,24 @@ export async function createSwcConfig(
       transform,
       experimental: {
         cacheRoot: resolve(cwd, 'node_modules/.cache/autobuild/swc'),
-        keepImportAssertions: Boolean(tsConfig?.target === ScriptTarget.ESNext)
+        keepImportAssertions: Boolean(tsConfig?.compilerOptions.target === ScriptTarget.ESNext)
       },
       ...(tsConfig && {
         parser: {
           syntax: 'typescript',
-          tsx: Boolean(tsConfig.jsx) || deps.prod.includes('react'),
-          decorators: tsConfig.experimentalDecorators,
+          tsx: Boolean(tsConfig.compilerOptions.jsx) || deps.prod.includes('react'),
+          decorators: tsConfig.compilerOptions.experimentalDecorators,
           dynamicImport: true
         },
-        externalHelpers: tsConfig.importHelpers,
-        target: tsConfig.target ? tsTargetToJSCTarget[tsConfig.target] : 'es2020',
-        baseUrl: tsConfig.baseUrl,
-        paths: tsConfig.paths
+        externalHelpers: tsConfig.compilerOptions.importHelpers,
+        target: tsConfig.compilerOptions.target
+          ? tsTargetToJSCTarget[tsConfig.compilerOptions.target] ??
+            tsConfig.compilerOptions.target.toString().toLowerCase()
+          : 'es2022',
+        baseUrl: tsConfig.compilerOptions.baseUrl,
+        paths: tsConfig.compilerOptions.paths
           ? Object.fromEntries(
-              Object.entries(tsConfig.paths)
+              Object.entries(tsConfig.compilerOptions.paths)
                 .filter(([path]) => !deps.prod.some(depName => path.startsWith(depName)))
                 .map(([path, matches]) => [path, [matches[0]]])
             )
@@ -145,9 +148,9 @@ export async function createSwcConfig(
           },
           react: {
             ...transform.react,
-            pragma: tsConfig.jsxFactory,
-            importSource: tsConfig.jsxImportSource,
-            pragmaFrag: tsConfig.jsxFragmentFactory
+            pragma: tsConfig.compilerOptions.jsxFactory,
+            importSource: tsConfig.compilerOptions.jsxImportSource,
+            pragmaFrag: tsConfig.compilerOptions.jsxFragmentFactory
           },
           treatConstEnumAsEnum: true
         }
