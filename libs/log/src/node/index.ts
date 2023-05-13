@@ -1,8 +1,8 @@
-import { createLoggerFactory, type CreateLoggerFactoryParams } from '../create-logger-factory';
+import { type CreateLoggerFactoryParams, createLoggerFactory } from '../create-logger-factory';
 import {
+  type DefaultLoggerLevel,
   DEFAULT_LOGGER_LEVELS,
   DEFAULT_LOGGER_PARAMS,
-  type DefaultLoggerLevel,
   LOGGER_SILENT_LEVEL
 } from '../shared';
 import { printf, readArguments } from '../utils';
@@ -14,13 +14,13 @@ export type { JsonStreamOptions } from './create-json-target';
 export type { PrettyStreamOptions } from './create-pretty-target';
 
 export {
+  type CreateLoggerFactoryParams,
+  type DefaultLoggerLevel,
   createJsonTarget,
   createLoggerFactory,
-  type CreateLoggerFactoryParams,
   createPrettyTarget,
   DEFAULT_LOGGER_LEVELS,
   DEFAULT_LOGGER_PARAMS,
-  type DefaultLoggerLevel,
   LOGGER_SILENT_LEVEL,
   NODE_LOGGER_SYSTEM_INFO
 };

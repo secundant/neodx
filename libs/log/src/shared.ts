@@ -1,4 +1,4 @@
-import type { LoggerLevelsConfig, LoggerParams } from './types';
+import type { LoggerLevelsConfig, LoggerParamsWithLevels } from './types';
 
 export type DefaultLoggerLevel = keyof typeof DEFAULT_LOGGER_LEVELS;
 
@@ -17,5 +17,6 @@ export const DEFAULT_LOGGER_PARAMS = {
   level: 'info',
   name: '',
   transform: [],
-  target: []
-} satisfies Readonly<LoggerParams<DefaultLoggerLevel>>;
+  target: [],
+  meta: {}
+} satisfies Readonly<LoggerParamsWithLevels<typeof DEFAULT_LOGGER_LEVELS>>;

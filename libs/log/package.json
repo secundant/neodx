@@ -57,8 +57,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@neodx/colors": "*",
-    "@neodx/std": "*"
+    "@neodx/colors": "*"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
@@ -66,7 +65,7 @@
     "@types/tmp": "^0.2.3",
     "bunyan": "^1.8.15",
     "loglevel": "^1.8.1",
-    "pino": "^8.12.0",
+    "pino": "^8.14.1",
     "tmp": "^0.2.1",
     "winston": "^3.8.2"
   },

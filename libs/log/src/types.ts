@@ -85,12 +85,34 @@ export type LoggerBaseMeta = Record<keyof any, unknown>;
 export type LoggerMethods<Levels extends string> = Record<Levels, LoggerMethod>;
 
 export type Logger<Levels extends string> = {
-  fork<T extends Levels>(options?: Partial<LoggerParams<T>>): Logger<T>;
-  child<T extends Levels>(
+  fork(options?: Partial<LoggerParams<Levels>>): Logger<Levels>;
+  fork<LevelsConfig extends BaseLevelsConfig>(
+    options: LoggerParamsWithLevels<LevelsConfig>
+  ): Logger<GetLevelNames<LevelsConfig>>;
+  child(name: string, options?: Partial<Omit<LoggerParams<Levels>, 'name'>>): Logger<Levels>;
+  child<LevelsConfig extends BaseLevelsConfig>(
     name: string,
-    options?: Partial<Omit<LoggerParams<T>, 'name'>>
-  ): Logger<T>;
+    options: Omit<LoggerParamsWithLevels<LevelsConfig>, 'name'>
+  ): Logger<GetLevelNames<LevelsConfig>>;
 } & LoggerMethods<Levels>;
+
+export interface CreateLogger<DefaultLevel extends string> {
+  <CustomLevels extends BaseLevelsConfig>(options: LoggerParamsWithLevels<CustomLevels>): Logger<
+    GetLevelNames<CustomLevels>
+  >;
+  (options?: Partial<LoggerParams<DefaultLevel>>): Logger<DefaultLevel>;
+}
+
+export interface LoggerParamsWithLevels<LevelsConfig extends BaseLevelsConfig>
+  extends Partial<LoggerParams<GetLevelNames<LevelsConfig>>> {
+  /**
+   * Dictionary of log levels with priority (lower is more prioritized).
+   * The higher the number, the less important the level and the more likely it will be ignored.
+   * @default { error: 10, warn: 20, info: 30, verbose: 40, debug: 50 }
+   * @example { foo: 10, bar: 20, baz: 30 } - custom levels, where 'foo' is the most important and 'baz' is the least important
+   */
+  levels: LevelsConfig;
+}
 
 export interface LoggerParams<Level extends string> {
   /**
@@ -104,18 +126,11 @@ export interface LoggerParams<Level extends string> {
    * @example 'info'
    * @example 'verbose'
    */
-  level?: Level;
-  /**
-   * Dictionary of log levels with priority (lower is more prioritized).
-   * The higher the number, the less important the level and the more likely it will be ignored.
-   * @default { error: 10, warn: 20, info: 30, verbose: 40, debug: 50 }
-   * @example { foo: 10, bar: 20, baz: 30 } - custom levels, where 'foo' is the most important and 'baz' is the least important
-   */
-  levels: LoggerLevelsConfig<Level>;
+  level: Level;
   /**
    * Additional fields that will be added to every log chunk.
    */
-  meta?: LoggerBaseMeta;
+  meta: LoggerBaseMeta;
   // TODO Add support for streams with multiple levels
   // TODO Add support for streams with min and max levels
   /**
@@ -132,5 +147,8 @@ export interface LoggerParams<Level extends string> {
     | LoggerHandler<Level>
     | LoggerHandleConfig<Level>
     | Array<LoggerHandler<Level> | LoggerHandleConfig<Level>>;
-  transform?: LoggerTransformer<Level> | LoggerTransformer<Level>[];
+  transform: LoggerTransformer<Level> | LoggerTransformer<Level>[];
 }
+
+type BaseLevelsConfig = LoggerLevelsConfig<string>;
+type GetLevelNames<Config extends BaseLevelsConfig> = Extract<keyof Config, string>;
