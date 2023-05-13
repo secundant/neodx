@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import type { LoggerMethods } from '@neodx/log';
 import { addSearchParams, createRelativeUrl, invariant } from '@neodx/std';
 import type { AnyNode } from './figma.h';
 import type {
@@ -41,6 +42,7 @@ import type {
   PostCommentResult,
   PostCommentsParams
 } from './figma-api.h';
+import { figmaLogger } from './shared';
 
 export interface CreateFigmaApiParams {
   /**
@@ -49,6 +51,7 @@ export interface CreateFigmaApiParams {
    */
   baseUrl?: string;
   fetch?: typeof fetch;
+  logger?: LoggerMethods<'info' | 'error' | 'debug'>;
   accessToken?: string;
   /**
    * The personal access token of the Figma API.
@@ -56,9 +59,12 @@ export interface CreateFigmaApiParams {
   personalAccessToken?: string;
 }
 
+export type FigmaApi = ReturnType<typeof createFigmaApi>;
+
 export function createFigmaApi({
   personalAccessToken,
   accessToken,
+  logger = figmaLogger,
   baseUrl = 'https://api.figma.com/v1/',
   fetch = globalThis.fetch
 }: CreateFigmaApiParams) {
@@ -67,6 +73,7 @@ export function createFigmaApi({
     path: string,
     options?: RequestInit & { params?: Record<string, unknown> }
   ) {
+    const startTime = Date.now();
     const url = createRelativeUrl(path, baseUrl);
 
     addSearchParams(url.searchParams, options?.params);
@@ -97,6 +104,15 @@ export function createFigmaApi({
 
     invariant(contentType?.includes('application/json'), 'Content-Type must be application/json');
 
+    logger.debug(
+      'Done in %s - %s %s',
+      ((Date.now() - startTime) / 1000).toLocaleString('en', {
+        style: 'short',
+        unit: 'second'
+      }),
+      options?.method ?? 'GET',
+      url
+    );
     return (await response.json()) as Promise<T>;
   }
 
@@ -109,7 +125,7 @@ export function createFigmaApi({
      * The `name`, `lastModified`, `thumbnailUrl`, and `version` attributes are all metadata of the specified file.
      * @api GET /v1/files/:key/nodes
      */
-    async getFileNodesApi<Node extends AnyNode>({ id, ...params }: GetFileNodesParams) {
+    async getFileNodes<Node extends AnyNode>({ id, ...params }: GetFileNodesParams) {
       return fetchJson<GetFileNodesResult<Node>>(`/files/${id}/nodes`, {
         params
       });
@@ -192,8 +208,8 @@ export function createFigmaApi({
       return fetchJson<GetTeamStylesResult>(`/teams/${team_id}/styles`);
     },
     /** @api GET/v1/files/:file_key/styles */
-    async getFileStyles({ file_key }: GetFileStylesParams) {
-      return fetchJson<GetFileStylesResult>(`/files/${file_key}/styles`);
+    async getFileStyles({ id }: GetFileStylesParams) {
+      return fetchJson<GetFileStylesResult>(`/files/${id}/styles`);
     },
     /** @api GET/v1/styles/:key */
     async getStyle({ key }: GetStyleParams) {

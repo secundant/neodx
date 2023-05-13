@@ -63,9 +63,9 @@ export interface GetFileNodesResult<Node extends AnyNode> extends CommonFigmaRes
 
 export interface GetImageParams extends FileKeyParams {
   /** A comma separated list of node IDs to render */
-  ids: string;
+  ids: string[];
   /** A number between 0.01 and 4, the image scaling factor */
-  scale: number;
+  scale?: number;
   /** A string enum for the image output format */
   format: 'jpg' | 'png' | 'svg' | 'pdf';
   /** Whether to include id attributes for all SVG elements. `Default: false` */
@@ -210,7 +210,7 @@ export interface GetTeamStylesResult extends CommonFigmaResponse {
 }
 
 export interface GetFileStylesParams {
-  file_key: string;
+  id: string;
 }
 export interface GetFileStylesResult extends CommonFigmaResponse {
   meta?: {
