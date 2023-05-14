@@ -1,6 +1,9 @@
 import { invariant } from '@neodx/std';
+import { colord } from 'colord';
+import type { GraphNode } from './create-nodes-graph';
 import type {
   AnyNode,
+  Color,
   Effect,
   EffectBlur,
   EffectShadow,
@@ -20,6 +23,16 @@ export const parseFileIdFromLink = (link: string) => {
 
   return id;
 };
+
+export const getGraphNodeName = (node: GraphNode<AnyNode>) => node.source.name;
+
+export const getColor = ({ r, g, b, a }: Color) =>
+  colord({
+    r: Math.round(r * 255),
+    g: Math.round(g * 255),
+    b: Math.round(b * 255),
+    a
+  });
 
 export const isEffectShadow = (effect: Effect): effect is EffectShadow =>
   effect.type === EffectType.DROP_SHADOW || effect.type === EffectType.INNER_SHADOW;

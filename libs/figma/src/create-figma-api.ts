@@ -42,7 +42,7 @@ import type {
   PostCommentResult,
   PostCommentsParams
 } from './figma-api.h';
-import { figmaLogger } from './shared';
+import { figmaLogger, logRequest } from './shared';
 
 export interface CreateFigmaApiParams {
   /**
@@ -103,16 +103,8 @@ export function createFigmaApi({
     const contentType = response.headers.get('content-type');
 
     invariant(contentType?.includes('application/json'), 'Content-Type must be application/json');
+    logRequest(logger, options?.method ?? 'GET', url, Date.now() - startTime);
 
-    logger.debug(
-      'Done in %s - %s %s',
-      ((Date.now() - startTime) / 1000).toLocaleString('en', {
-        style: 'short',
-        unit: 'second'
-      }),
-      options?.method ?? 'GET',
-      url
-    );
     return (await response.json()) as Promise<T>;
   }
 

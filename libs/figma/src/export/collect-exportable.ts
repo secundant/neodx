@@ -53,21 +53,15 @@ export function collectExportable(
     frame,
     component,
     componentSet,
-    getExportName = node => node.source.name,
     getExportNode = extractComponents
   }: CollectExportableParams = {}
-): ExportableItem[] {
+) {
   return collectByConditions(root, [
     ['CANVAS', page],
     ['FRAME', frame],
     ['COMPONENT_SET', componentSet],
     ['COMPONENT', component]
-  ])
-    .flatMap(getExportNode)
-    .map(node => ({
-      node,
-      name: getExportName(node)
-    }));
+  ]).flatMap(getExportNode);
 }
 
 const extractComponents = (node: GraphNode<AnyNode>) =>
