@@ -12,6 +12,8 @@
     "paths": {
       "@neodx/codegen": ["libs/codegen/src/index.ts"],
       "@neodx/colors": ["libs/colors/src/index.ts"],
+      "@neodx/fex": ["libs/fex/src/index.ts"],
+      "@neodx/figma": ["libs/figma/src/index.ts"],
       "@neodx/fs": ["libs/fs/src/index.ts"],
       "@neodx/log": ["libs/log/src/index.ts"],
       "@neodx/log/browser": ["libs/log/src/browser.ts"],
@@ -36,7 +38,7 @@
     "allowJs": false,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
-    "importHelpers": true,
+    "importHelpers": false,
     "sourceMap": false,
     "noErrorTruncation": false,
     "pretty": true

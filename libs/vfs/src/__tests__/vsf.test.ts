@@ -1,4 +1,4 @@
-import { type DefaultLoggerLevel, createLogger } from '@neodx/log';
+import { createLogger } from '@neodx/log';
 import { createPrettyTarget } from '@neodx/log/node';
 import { fromLength, sum } from '@neodx/std';
 import { join } from 'pathe';
@@ -7,7 +7,7 @@ import { VirtualFs } from '../implementations/virtual-fs';
 import { createTmpVfs, writeVfsPackageConfiguration, writeVirtualFs } from '../testing-utils';
 import { type ContentLike, FileChangeType } from '../types';
 
-const log = createLogger<DefaultLoggerLevel>({
+const log = createLogger({
   level: 'silent',
   target: createPrettyTarget({
     displayLevel: false

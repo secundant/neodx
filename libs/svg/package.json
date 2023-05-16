@@ -63,8 +63,8 @@
   "devDependencies": {
     "@neodx/autobuild": "*",
     "@swc/helpers": "^0.5.1",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.1",
+    "@types/react": "^18.2.6",
+    "@types/react-dom": "^18.2.4",
     "@types/svgo": "^3.0.0",
     "clsx": "^1.2.1",
     "prettier": "^2.8.8"

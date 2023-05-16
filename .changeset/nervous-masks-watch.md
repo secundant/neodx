@@ -2,4 +2,4 @@
 '@neodx/std': patch
 ---
 
-Add `concurrent` factory
+Add `truncateString` helper

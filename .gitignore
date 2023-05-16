@@ -11,7 +11,7 @@
 **/.netrc
 
 # testing
-/coverage
+coverage
 .out/
 
 # Build directories (next.js...)
