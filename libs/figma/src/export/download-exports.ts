@@ -1,7 +1,7 @@
 import { concurrently } from '@neodx/std';
 import type { FigmaLogger } from '../shared';
 import { figmaLogger, logRequest } from '../shared';
-import type { DownloadableItem } from './collect-downloadable';
+import type { DownloadableItem } from './receive-exports-download-info';
 
 export interface DownloadExportsParams {
   items: DownloadableItem[];
@@ -10,20 +10,30 @@ export interface DownloadExportsParams {
   concurrency?: number;
 }
 
+export interface DownloadedItem extends DownloadableItem {
+  content: string;
+}
+
 export function downloadExports({
   items,
   fetch = globalThis.fetch,
   logger = figmaLogger,
   concurrency = 3
-}: DownloadExportsParams) {
-  async function downloadItem({ url, node }: DownloadableItem) {
+}: DownloadExportsParams): Promise<DownloadedItem[]> {
+  async function downloadItem(item: DownloadableItem) {
+    const { url, format, scale, node } = item;
     const time = Date.now();
     const res = await fetch(url);
     const blob = await res.blob();
 
-    logRequest(logger, 'GET', `${node.source.name} (${url})`, Date.now() - time);
+    logRequest(
+      logger,
+      'GET',
+      `${node.source.name} - ${format} x${scale} (${url})`,
+      Date.now() - time
+    );
     return {
-      node,
+      ...item,
       content: await blob.text()
     };
   }

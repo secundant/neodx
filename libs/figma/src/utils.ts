@@ -1,6 +1,5 @@
 import { invariant } from '@neodx/std';
 import { colord } from 'colord';
-import type { GraphNode } from './create-nodes-graph';
 import type {
   AnyNode,
   Color,
@@ -13,9 +12,11 @@ import type {
   PaintGradient,
   PaintImage,
   PaintSolid
-} from './figma.h';
-import { EffectType, PaintType } from './figma.h';
+} from './core';
+import { EffectType, PaintType } from './core';
+import type { GraphNode } from './graph';
 
+export const isFigmaLink = (link: string) => /^https:\/\/www\.figma\.com\/file\/[^/]+/.test(link);
 export const parseFileIdFromLink = (link: string) => {
   const id = link.match(/https:\/\/www\.figma\.com\/file\/([^/]+)/)?.[1];
 

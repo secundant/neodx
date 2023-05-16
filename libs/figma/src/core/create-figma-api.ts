@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { LoggerMethods } from '@neodx/log';
 import { addSearchParams, createRelativeUrl, invariant } from '@neodx/std';
+import { figmaLogger, logRequest } from '../shared';
 import type { AnyNode } from './figma.h';
 import type {
   DeleteCommentsParams,
@@ -42,7 +43,6 @@ import type {
   PostCommentResult,
   PostCommentsParams
 } from './figma-api.h';
-import { figmaLogger, logRequest } from './shared';
 
 export interface CreateFigmaApiParams {
   /**
@@ -109,6 +109,9 @@ export function createFigmaApi({
   }
 
   return {
+    __: {
+      fetch
+    },
     /** @api GET /v1/files/:key */
     async getFile({ id, ...params }: GetFileParams) {
       return fetchJson<GetFileResult>(`/files/${id}`, { params });

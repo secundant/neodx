@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/require-array-sort-compare */
 import { uniq } from '@neodx/std';
 import { describe, expect, test } from 'vitest';
-import type { FigmaApi } from '../create-figma-api';
-import { collectDownloadable } from '../export/collect-downloadable';
-import { collectExportable } from '../export/collect-exportable';
-import { downloadExports } from '../export/download-exports';
+import type { AnyNode, FigmaApi } from '../core';
+import { downloadExports, receiveExportsDownloadInfo } from '../export';
+import type { GraphNode } from '../graph';
+import { collectNodes } from '../graph';
 import { getGraphNodeName } from '../utils';
 import {
   createMockApi,
@@ -18,7 +18,7 @@ import {
 describe('export low-level API', async () => {
   describe('collect exportable', () => {
     test('should collect all components by default', () => {
-      const exportable = collectExportable(testGraphs.weather, {});
+      const exportable = collectNodes(testGraphs.weather, {});
 
       expect(exportable.map(item => item.id).sort()).toEqual(
         testGraphs.weather.registry.types.COMPONENT?.map(node => node.id).sort()
@@ -26,14 +26,14 @@ describe('export low-level API', async () => {
     });
 
     test('should filter by componentSet', () => {
-      const exportable = collectExportable(testGraphs.weather, { componentSet: 'Wind' });
+      const exportable = collectNodes(testGraphs.weather, { componentSet: 'Wind' });
 
       expect(exportable.every(node => node.type === 'COMPONENT')).toBe(true);
       expect(exportable.length).toBe(2);
     });
 
     test('should support multiple filter', () => {
-      const exportable = collectExportable(testGraphs.weather, {
+      const exportable = collectNodes(testGraphs.weather, {
         componentSet: ['Wind', node => node.source.name.includes('Snow'), /Sun/]
       });
       const parents = exportable.map(
@@ -55,7 +55,7 @@ describe('export low-level API', async () => {
     });
 
     test('should filter by component', () => {
-      const exportable = collectExportable(testGraphs.weather, {
+      const exportable = collectNodes(testGraphs.weather, {
         componentSet: ['Wind', node => node.source.name.includes('Snow'), /Sun/],
         component: 'Color=Off'
       });
@@ -67,10 +67,27 @@ describe('export low-level API', async () => {
   });
 
   describe('get image urls', async () => {
-    test('should return image urls', async () => {
+    const createImagesMockApi = () => {
       const { api, fetch } = createMockApi();
-      const exports = collectExportable(testGraphs.weather);
-      const items = await collectDownloadable({
+
+      return {
+        fetch,
+        api: {
+          ...api,
+          getImage: async params => {
+            await api.getImage(params);
+            return {
+              images: {}
+            };
+          }
+        } as FigmaApi
+      };
+    };
+
+    test('should return image urls', async () => {
+      const { api, fetch } = createImagesMockApi();
+      const exports = collectNodes(testGraphs.weather);
+      const items = await receiveExportsDownloadInfo({
         api,
         target: exports,
         fileId: testFileIds.weather,
@@ -79,7 +96,7 @@ describe('export low-level API', async () => {
       });
 
       expect(fetch).toHaveBeenCalledTimes(Math.ceil(exports.length / 10));
-      expect(items.map(item => item.node)).toEqual(exports);
+      expect(items.map(item => item.node.id).sort()).toEqual(exports.map(node => node.id).sort());
     });
 
     test.each([
@@ -87,9 +104,9 @@ describe('export low-level API', async () => {
       [90, 20, 5],
       [90, 1, 90]
     ])(`should batch %i items by %i in %i requests`, async (length, batching, expected) => {
-      const { api, fetch } = createMockApi();
+      const { api, fetch } = createImagesMockApi();
       const exports = createMockNodes(length, 'COMPONENT');
-      const items = await collectDownloadable({
+      const items = await receiveExportsDownloadInfo({
         api,
         target: exports,
         logger: testFigmaLogger,
@@ -99,14 +116,14 @@ describe('export low-level API', async () => {
 
       expect(fetch).toHaveBeenCalledTimes(expected);
       expect(items.length).toBe(length);
-      expect(items.map(item => item.node)).toEqual(exports);
+      expect(items.map(item => item.node.id).sort()).toEqual(exports.map(node => node.id).sort());
     });
   });
 
   test('should download content for all downloadable nodes and return it in the correct order', async () => {
     const fetch = createMockFetch(req => `content for ${new URL(req.url).searchParams.get('id')}`);
     const exports = createMockNodes(120, 'COMPONENT');
-    const items = await collectDownloadable({
+    const items = await receiveExportsDownloadInfo({
       api: {
         async getImage({ ids }) {
           return {
@@ -128,16 +145,86 @@ describe('export low-level API', async () => {
     });
 
     expect(items).toEqual(
-      exports.map(node => ({
-        node,
-        url: `https://foo.com/download?id=${node.id}`
-      }))
+      exports.map(node =>
+        expect.objectContaining({
+          node,
+          url: `https://foo.com/download?id=${node.id}`
+        })
+      )
     );
     expect(downloaded).toEqual(
-      items.map(item => ({
-        node: item.node,
-        content: `content for ${item.node.id}`
-      }))
+      items.map(item =>
+        expect.objectContaining({
+          node: item.node,
+          content: `content for ${item.node.id}`
+        })
+      )
+    );
+  });
+
+  test('should download multiple exports for same node in "export" resolving mode', async () => {
+    const fetch = createMockFetch(req => {
+      const { id, format, scale } = Object.fromEntries(new URL(req.url).searchParams);
+
+      return `content for ${id} - ${format.toLowerCase()} x${scale}`;
+    });
+    const exportsSchema = [
+      ['PNG', 1],
+      ['PNG', 2],
+      ['PNG', 3],
+      ['JPG', 1],
+      ['SVG', 1],
+      ['PDF', 1]
+    ] as const;
+    const exportNodes = createMockNodes(27, 'COMPONENT').map(node => ({
+      ...node,
+      source: {
+        ...node.source,
+        exportSettings: exportsSchema.map(([format, scale]) => ({
+          format,
+          suffix: `${format} ${scale}x`,
+          constraint: {
+            type: 'SCALE',
+            value: scale
+          }
+        }))
+      }
+    })) as GraphNode<AnyNode>[];
+    const items = await receiveExportsDownloadInfo({
+      api: {
+        async getImage({ ids, format, scale }) {
+          return {
+            images: Object.fromEntries(
+              ids.map(id => [
+                id,
+                `https://foo.com/download?id=${id}&format=${format}&scale=${scale}`
+              ])
+            )
+          };
+        }
+      } as FigmaApi,
+      target: exportNodes,
+      resolver: 'export',
+      logger: testFigmaLogger,
+      fileId: testFileIds.weather,
+      batching: 15,
+      concurrency: 5
+    });
+    const downloaded = await downloadExports({
+      items,
+      fetch,
+      logger: testFigmaLogger,
+      concurrency: 10
+    });
+
+    expect(downloaded.map(item => item.content).sort()).toEqual(
+      exportNodes
+        .flatMap(node =>
+          exportsSchema.map(
+            ([format, scale]) => `content for ${node.id} - ${format.toLowerCase()} x${scale}`
+          )
+        )
+        .sort()
     );
   });
 });

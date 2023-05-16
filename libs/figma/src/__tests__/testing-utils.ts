@@ -1,10 +1,9 @@
 import { fromLength } from '@neodx/std';
 import { readFile } from 'node:fs/promises';
 import { vi } from 'vitest';
-import { createFigmaApi } from '../create-figma-api';
-import { type GraphNode, createFileGraph } from '../create-nodes-graph';
-import type { AnyNode, NodeType } from '../figma.h';
-import type { GetFileResult } from '../figma-api.h';
+import type { AnyNode, GetFileResult, NodeType } from '../core';
+import { createFigmaApi } from '../core';
+import { type GraphNode, createFileGraph } from '../graph';
 import { figmaLogger } from '../shared';
 import { parseFileIdFromLink } from '../utils';
 
@@ -22,8 +21,8 @@ export const testFileResults = {
   ) as GetFileResult
 };
 export const testGraphs = {
-  weather: createFileGraph(testFileResults.weather),
-  simple: createFileGraph(testFileResults.simple)
+  weather: createFileGraph('stub-weather', testFileResults.weather),
+  simple: createFileGraph('stub-simple', testFileResults.simple)
 };
 
 export const testFigmaLogger = figmaLogger.fork({

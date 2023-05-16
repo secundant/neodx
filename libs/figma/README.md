@@ -52,11 +52,12 @@ const figma = createFigmaApi({
   // accessToken: 'my-oauth-token'
 });
 // Load file by file key
+const myFileId = parseFileIdFromLink('https://www.figma.com/file/xxx/yyy');
 const myFile = await figma.getFile({
-  id: parseFileIdFromLink('https://www.figma.com/file/xxx/yyy')
+  id: myFileId
 });
 // Create well-typed human-friendly graph for convenient access to all file data
-const graph = createFileGraph(myFile);
+const graph = createFileGraph(myFileId, myFile);
 
 const allTexts = graph.registry.types.TEXT.map(text => text.source.characters);
 ```
@@ -78,8 +79,32 @@ const api = createFigmaApi({
 });
 const file = await api.getFile({ id: 'xxx' });
 
-const graph = createFileGraph(file);
+const graph = createFileGraph('xxx', file);
 // ...
+```
+
+### Collect specific components within the components sets
+
+```ts
+import { collectNodes, extractNodeType } from '@neodx/figma';
+
+// All components in "Icons" page withing "32/..." component set
+const icons32 = collectNodes(graph, {
+  page: 'Icons',
+  componentSet: node => node.name.startsWith('32/')
+});
+```
+
+### Collect instances by multiple criteria
+
+```ts
+import { collectNodes, extractNodeType } from '@neodx/figma';
+
+const complexCollected = collectNodes(graph, {
+  page: ['Icons', 'Assets'], // Include 2 pages
+  frame: /Colored|Outlined|Filled/, // Filter frames with names that contains "Colored", "Outlined" or "Filled"
+  extract: extractNodeType('INSTANCE') // Get all instances
+});
 ```
 
 ### Get all text nodes
@@ -116,12 +141,15 @@ for (const { name, styles } of filledColors) {
 
 ## API
 
-### `createFileGraph(file): GraphNode<Document>`
+### `createFileGraph(fileId, file): GraphNode<Document>`
 
 Create a well-typed human-friendly graph for convenient access to the Figma document data.
 
+- `fileId` - Your Figma file id, can be parsed from the file link via [`parseFileIdFromLink`](#parsefileidfromlinklink-string) function
+- `file` - Figma file data from [`api.getFile`](https://www.figma.com/developers/api#get-file-endpoint)
+
 ```ts
-const graph = createFileGraph(myFigmaFile);
+const graph = createFileGraph(fileId, myFigmaFile);
 
 // Every node contains a two subgraphs with equal structure but different meaning:
 graph.children; // registry of direct child nodes
@@ -193,6 +221,35 @@ Simple abstraction for downloading Figma nodes exports.
 - `fetch` - custom fetch function, default: `globalThis.fetch`
 - `logger` - [Logger](https://www.npmjs.com/package/@neodx/log)
 - `concurrency` - concurrency for downloading, default: `3`
+
+### Helpers
+
+#### `parseFileIdFromLink(link: string)`
+
+Parse file id from Figma file link.
+
+```ts
+import { parseFileIdFromLink, createFigmaApi } from '@neodx/figma';
+
+const api = createFigmaApi({
+  personalAccessToken: process.env.FIGMA_TOKEN
+});
+
+const fileId = parseFileIdFromLink('https://www.figma.com/file/xxx/yyy'); // 'xxx'
+const file = await api.getFile({ id: fileId });
+```
+
+#### `getColor(color: Color)`
+
+Wrapper around [colord](https://github.com/omgovich/colord) for getting high-level color manipulation API.
+
+```ts
+import { getColor } from '@neodx/figma';
+
+const color = getColor(myTextNode.fills[0].color);
+
+color.toHex(); // '#ffffff'
+```
 
 ## Inspiration
 

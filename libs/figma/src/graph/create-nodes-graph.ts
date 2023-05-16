@@ -1,6 +1,7 @@
 import { entries, pick } from '@neodx/std';
 import type {
   AnyNode,
+  GetFileResult,
   NodeByType,
   NodeID,
   NodeType,
@@ -9,11 +10,13 @@ import type {
   StylesMap,
   TextNode,
   TypeStyle
-} from './figma.h';
-import type { GetFileResult } from './figma-api.h';
+} from '../core';
 
-export function createFileGraph(file: GetFileResult) {
-  return createNodesGraph(file.document, null, pick(file, ['styles', 'components']));
+export function createFileGraph(fileId: string, file: GetFileResult) {
+  return createNodesGraph(file.document, null, {
+    ...pick(file, ['styles', 'components']),
+    fileId
+  });
 }
 
 export function createNodesGraph<Node extends AnyNode>(
@@ -26,6 +29,7 @@ export function createNodesGraph<Node extends AnyNode>(
     id: node.id,
     type: node.type,
     source: node,
+    fileId: context.fileId,
     styles,
     parentId: parent?.id,
     registry: createEmptyRegistry(),
@@ -55,6 +59,7 @@ function addToRegistry<T extends AnyNode>(node: GraphNode<T>, registry: GraphNod
   registry.list.push(node);
   registry.byId[node.id] = node;
   registry.types[node.source.type] ??= [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   registry.types[node.source.type]!.push(node as any);
   for (const style of node.styles) {
     registry.styles[style.id] = style;
@@ -91,6 +96,7 @@ export interface GraphNode<Original> {
   type: NodeType;
   source: Original;
   styles: ComputedStyleNode[];
+  fileId: string;
   parentId?: NodeID;
   /**
    * The aggregated registry of descendants of this node, collected recursively.
@@ -120,4 +126,6 @@ export interface ComputedStyleNode extends Style {
   textStyles?: TypeStyle;
 }
 
-type InternalContext = Pick<GetFileResult, 'components' | 'styles'>;
+interface InternalContext extends Pick<GetFileResult, 'components' | 'styles'> {
+  fileId: string;
+}

@@ -1,5 +1,4 @@
 import { isEmpty, toArray } from '@neodx/std';
-import type { GraphNode } from '../create-nodes-graph';
 import type {
   AnyNode,
   CanvasNode,
@@ -8,9 +7,10 @@ import type {
   DocumentNode,
   FrameNode,
   NodeType
-} from '../figma.h';
+} from '../core';
+import type { GraphNode } from './create-nodes-graph';
 
-export interface CollectExportableParams {
+export interface CollectNodesParams {
   page?: PredicateInput<GraphNode<CanvasNode>>;
   frame?: PredicateInput<GraphNode<FrameNode>>;
   component?: PredicateInput<GraphNode<ComponentNode>>;
@@ -19,25 +19,7 @@ export interface CollectExportableParams {
    * When we're done with filtering nodes hierarchy, we can extract the nodes we want to export.
    * @example (node) => node.registry.types.COMPONENT // export all components
    */
-  getExportNode?(node: GraphNode<AnyNode>): GraphNode<AnyNode> | GraphNode<AnyNode>[];
-
-  /**
-   * Exported nodes can provide wrong built-in names, so we can override them here.
-   * @default (node) => node.source.name
-   * @example node => allNodes.registry.byId[node.parentId!].source.name // use parent name
-   */
-  getExportName?(node: GraphNode<AnyNode>): string;
-}
-
-export interface ExportableItem {
-  /**
-   * Original preprocessed node
-   */
-  node: GraphNode<AnyNode>;
-  /**
-   * Computed export name
-   */
-  name: string;
+  extract?(node: GraphNode<AnyNode>): GraphNode<AnyNode> | GraphNode<AnyNode>[];
 }
 
 export type PredicateInput<T> = PredicateInputValue<T> | PredicateInputValue<T>[];
@@ -46,26 +28,27 @@ export type PredicateFn<T> = (node: T) => boolean;
 
 type NodeTypeCondition = [NodeType, PredicateInput<GraphNode<any>> | undefined];
 
-export function collectExportable(
+/**
+ * Filter and collect all specified nodes from the graph.
+ * You can specify multiple conditions for each node type.
+ * @default Collects all `COMPONENT` nodes.
+ */
+export function collectNodes(
   root: GraphNode<DocumentNode>,
-  {
-    page,
-    frame,
-    component,
-    componentSet,
-    getExportNode = extractComponents
-  }: CollectExportableParams = {}
+  { page, frame, component, componentSet, extract = extractComponents }: CollectNodesParams = {}
 ) {
   return collectByConditions(root, [
     ['CANVAS', page],
     ['FRAME', frame],
     ['COMPONENT_SET', componentSet],
     ['COMPONENT', component]
-  ]).flatMap(getExportNode);
+  ]).flatMap(extract);
 }
 
-const extractComponents = (node: GraphNode<AnyNode>) =>
-  node.type === 'COMPONENT' ? node : node.registry.types.COMPONENT ?? [];
+export const extractNodeType = (type: NodeType) => (node: GraphNode<AnyNode>) =>
+  node.type === type ? node : node.registry.types[type] ?? [];
+
+const extractComponents = extractNodeType('COMPONENT');
 
 const collectByConditions = (
   root: GraphNode<AnyNode>,

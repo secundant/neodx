@@ -16,18 +16,23 @@ export const logRequest = (
   url: URLInit,
   time: number
 ) => {
-  const showSeconds = time >= 100;
-
   logger.debug(
     'Done in %s - %s %s',
-    (time / (showSeconds ? 1000 : 1))
-      .toLocaleString('en', {
-        style: 'unit',
-        unit: showSeconds ? 'second' : 'millisecond',
-        unitDisplay: 'narrow'
-      })
-      .padEnd(showSeconds ? 6 : 4),
+    formatTimeMs(time),
     method ?? 'GET',
     truncateString(url.toString(), 70)
   );
+};
+
+export const formatTimeMs = (time: number) => {
+  const showSeconds = time >= 100;
+  const timeValue = showSeconds ? time / 1000 : time;
+
+  return timeValue
+    .toLocaleString('en', {
+      style: 'unit',
+      unit: showSeconds ? 'second' : 'millisecond',
+      unitDisplay: 'narrow'
+    })
+    .padEnd(showSeconds ? 6 : 4);
 };
