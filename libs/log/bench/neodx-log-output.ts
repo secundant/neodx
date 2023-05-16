@@ -1,8 +1,8 @@
 import { colors } from '@neodx/colors';
-import { createLogger, type DefaultLoggerLevel } from '@neodx/log';
+import { createLogger } from '@neodx/log';
 import { createPrettyTarget } from '@neodx/log/node';
 
-const unnamed = createLogger<DefaultLoggerLevel>({
+const unnamed = createLogger({
   level: 'debug',
   target: createPrettyTarget()
 });

@@ -29,7 +29,7 @@ export const createLogger = createLoggerFactory<DefaultLoggerLevel>({
   defaultParams: {
     ...DEFAULT_LOGGER_PARAMS,
     meta: NODE_LOGGER_SYSTEM_INFO,
-    target: process.env.NODE_ENV === 'development' ? createPrettyTarget() : createJsonTarget()
+    target: process.env.NODE_ENV === 'production' ? createJsonTarget() : createPrettyTarget()
   },
   formatMessage: printf,
   readArguments
