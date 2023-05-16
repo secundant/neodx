@@ -28,5 +28,7 @@ export {
 } from './object';
 export type { Falsy, ObjectEntry } from './shared';
 export { entries, False, hasOwn, identity, isTruthy, keys, toArray, True, values } from './shared';
+export { truncateString } from './string';
 export { cases, toCase } from './to-case';
+export type { URLInit } from './url';
 export { addSearchParams, createRelativeUrl } from './url';

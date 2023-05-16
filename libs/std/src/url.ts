@@ -1,3 +1,5 @@
+export type URLInit = URL | string;
+
 export const createRelativeUrl = (path: string, baseUrl: string) =>
   new URL(path.replace(firstSlash, ''), baseUrl.replace(lastSlash, '') + '/');
 
