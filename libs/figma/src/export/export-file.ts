@@ -1,4 +1,4 @@
-import { concurrently, toCase } from '@neodx/std';
+import { concurrently } from '@neodx/std';
 import type { VFS } from '@neodx/vfs';
 import type { DocumentNode, FigmaApi } from '../core';
 import type { CollectNodesParams, GraphNode } from '../graph';
@@ -79,12 +79,12 @@ export async function exportFile({
 
 /**
  * Formats file name as lower-cased string with replaced spaces and special characters to dashes.
- * @example "MyFile.svg" -> "my-file.svg"
- * @example "COMMON/Animals and Plants/Cat_sleeping.svg" -> "common/animals-and-plants/cat-sleeping.svg"
+ * @example "File.svg" -> "file.svg"
+ * @example "Common/Animals and Plants/Cat_sleeping.svg" -> "common/animals-and-plants/cat_sleeping.svg"
  * @example "print: 32/copy&pasted.svg" -> "print-32/copy-pasted.svg"
  */
 export const formatExportFileName = (fileName: string) =>
-  toCase(fileName, 'ca-se', 'A-Z\\s_-&#:;*%$');
+  fileName.toLowerCase().replaceAll(/[^a-z0-9-_./]+/g, '-');
 
 const getDefaultExportFileName = ({ node, format, scale }: DownloadedItem) => {
   const scalePostfix = scale > 1 ? `.x${scale}` : '';

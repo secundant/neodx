@@ -8,7 +8,7 @@ import { resolveNormalizedConfiguration } from './config';
 import { createFigmaApi } from './core';
 import { exportFile } from './export';
 import { createFileGraph } from './graph';
-import { figmaLogger } from './shared';
+import { figmaLogger, formatTimeMs } from './shared';
 
 export function createFigmaCli() {
   const cli = new Command('figma');
@@ -68,7 +68,7 @@ export function createFigmaCli() {
         await vfs.applyChanges();
       }
 
-      logger.info('All done in %dms', Date.now() - startedAt);
+      logger.info('All done in %s', formatTimeMs(Date.now() - startedAt));
     });
 
   return cli;
