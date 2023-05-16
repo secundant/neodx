@@ -1,6 +1,6 @@
 {
   "name": "@neodx/figma",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "packageManager": "yarn@3.2.0",
   "description": "No description",
   "type": "module",

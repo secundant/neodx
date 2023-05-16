@@ -1,5 +1,17 @@
 # @neodx/std
 
+## 0.1.2
+
+### Patch Changes
+
+- [`2c1a1a6`](https://github.com/secundant/neodx/commit/2c1a1a6e1e2980f2fdd26260790707db7352bce8) Thanks [@secundant](https://github.com/secundant)! - Add `concurrently` task runner
+
+- [`2c1a1a6`](https://github.com/secundant/neodx/commit/2c1a1a6e1e2980f2fdd26260790707db7352bce8) Thanks [@secundant](https://github.com/secundant)! - Add `truncateString` helper
+
+- [`e2f2ece`](https://github.com/secundant/neodx/commit/e2f2eceec7aaa5d4ddbc5f156a018cf3822d529a) Thanks [@secundant](https://github.com/secundant)! - Add `concurrent` factory
+
+- [`e2f2ece`](https://github.com/secundant/neodx/commit/e2f2eceec7aaa5d4ddbc5f156a018cf3822d529a) Thanks [@secundant](https://github.com/secundant)! - Add `chunk`, fix `sliding` behavior
+
 ## 0.1.1
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @neodx/log
 
+## 0.1.5
+
+### Patch Changes
+
+- [`2c1a1a6`](https://github.com/secundant/neodx/commit/2c1a1a6e1e2980f2fdd26260790707db7352bce8) Thanks [@secundant](https://github.com/secundant)! - Fix incorrect level/levels types
+
+- Updated dependencies []:
+  - @neodx/colors@0.2.2
+
 ## 0.1.4
 
 ### Patch Changes
