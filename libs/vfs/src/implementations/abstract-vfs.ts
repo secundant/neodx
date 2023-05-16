@@ -1,5 +1,5 @@
 import { colors } from '@neodx/colors';
-import type { Logger } from '@neodx/log';
+import type { LoggerMethods } from '@neodx/log';
 import { createLogger, createPrettyTarget } from '@neodx/log/node';
 import { compact, uniq } from '@neodx/std';
 import { dirname, join, relative, sep } from 'pathe';
@@ -13,10 +13,10 @@ interface InternalFileChange {
 
 export interface AbstractVfsParams {
   root: string;
-  log?: Logger<'info' | 'debug'> | false | null;
+  log?: LoggerMethods<'info' | 'debug'> | false | null;
 }
 
-const defaultLog = createLogger<'info' | 'debug' | 'silent'>({
+const defaultLog = createLogger({
   level: 'info',
   target: createPrettyTarget({
     displayLevel: false
@@ -25,12 +25,12 @@ const defaultLog = createLogger<'info' | 'debug' | 'silent'>({
 
 export abstract class AbstractVfs implements BaseVFS {
   protected changes = new Map<string, InternalFileChange>();
-  public readonly log: Logger<'info' | 'debug'>;
+  public readonly log: LoggerMethods<'info' | 'debug'>;
   public readonly root: string;
 
   public constructor({ root, log = defaultLog }: AbstractVfsParams) {
     this.root = root;
-    this.log = log || defaultLog.fork<'info' | 'debug' | 'silent'>({ level: 'silent' });
+    this.log = log || defaultLog.fork({ level: 'silent' });
   }
 
   async applyChanges(): Promise<void> {
