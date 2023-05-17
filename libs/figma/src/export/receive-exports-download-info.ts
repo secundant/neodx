@@ -1,9 +1,7 @@
-import { chunk, concurrently, entries, groupBy, sum } from '@neodx/std';
-import type { FigmaApi } from '../core/create-figma-api';
-import type { AnyNode, ExportSetting } from '../core/figma.h';
-import { ConstrainType, ImageType } from '../core/figma.h';
-import type { GetImageParams } from '../core/figma-api.h';
-import type { GraphNode } from '../graph/create-nodes-graph';
+import { chunk, concurrently, entries, groupBy, sum, toArray, uniq } from '@neodx/std';
+import type { AnyNode, ExportSetting, FigmaApi, GetImageParams } from '../core';
+import { ConstrainType, ImageType } from '../core';
+import type { GraphNode } from '../graph';
 import type { FigmaLogger } from '../shared';
 import { figmaLogger } from '../shared';
 
@@ -19,7 +17,7 @@ export interface ReceiveExportsDownloadInfoParams {
    * function - custom resolver
    * @default 'svg'
    */
-  resolver?: 'svg' | 'export' | GetNodeExportSettings;
+  resolver?: ExportResolver | ExportResolver[];
   batching?: number;
   concurrency?: number;
 }
@@ -31,6 +29,9 @@ export interface DownloadableItem {
   node: GraphNode<AnyNode>;
   url: string;
 }
+
+export type ExportResolver = BuiltInExportResolverName | GetNodeExportSettings;
+export type BuiltInExportResolverName = keyof typeof exportsResolvers;
 
 export interface GetNodeExportSettings {
   (node: GraphNode<AnyNode>): ExportSetting[];
@@ -45,12 +46,17 @@ export async function receiveExportsDownloadInfo({
   batching = 50,
   concurrency = 3
 }: ReceiveExportsDownloadInfoParams): Promise<DownloadableItem[]> {
-  if (resolver === 'svg') {
-    analyzeSvgNodesExports(target, logger);
+  const resolvers = toArray(resolver).map(resolver =>
+    typeof resolver === 'function' ? resolver : exportsResolvers[resolver]
+  );
+
+  if (resolvers.includes(exportsResolvers.export)) {
+    analyzeExportsAreDefined(target, logger);
   }
-  const getExports = typeof resolver === 'function' ? resolver : exportsResolvers[resolver];
   const exportsByType = groupBy(
-    target.flatMap(node => getExports(node).map(setting => ({ setting, node }))),
+    target.flatMap(node =>
+      uniq(resolvers.flatMap(resolver => resolver(node))).map(setting => ({ setting, node }))
+    ),
     ({
       setting: {
         format,
@@ -111,44 +117,33 @@ export async function receiveExportsDownloadInfo({
   );
 }
 
-export const exportsResolvers = {
-  svg: () => [SVG_EXPORT],
-  export: (node: GraphNode<AnyNode>) =>
-    'exportSettings' in node.source ? node.source.exportSettings : []
-};
-
-export const SVG_EXPORT: ExportSetting = {
-  format: ImageType.SVG,
+export const createExportSetting = (format: ImageType): ExportSetting => ({
+  format,
   suffix: '',
   constraint: {
     type: ConstrainType.SCALE,
     value: 1
   }
+});
+
+export const exportsResolvers = {
+  svg: () => [createExportSetting(ImageType.SVG)],
+  png: () => [createExportSetting(ImageType.PNG)],
+  pdf: () => [createExportSetting(ImageType.PDF)],
+  jpg: () => [createExportSetting(ImageType.JPG)],
+  export: (node: GraphNode<AnyNode>) =>
+    'exportSettings' in node.source ? node.source.exportSettings : []
 };
 
-/**
- * We don't throw an error here because we want to continue the process and force export SVG
- */
-function analyzeSvgNodesExports(nodes: GraphNode<AnyNode>[], logger: FigmaLogger) {
+function analyzeExportsAreDefined(nodes: GraphNode<AnyNode>[], logger: FigmaLogger) {
   for (const node of nodes) {
     const original = node.source;
-    const haveExportSettings = 'exportSettings' in original;
-    const exportSettings = haveExportSettings ? original.exportSettings : [];
-    const imageTypes = exportSettings.map(({ format }) => format);
 
-    if (!haveExportSettings) {
+    if (!('exportSettings' in original)) {
       logger.debug(
         'Exports analyzing - no export settings for "%s" (id: %s)',
         original.name,
         original.id
-      );
-    }
-    if (haveExportSettings && !imageTypes.includes(ImageType.SVG)) {
-      logger.debug(
-        'Exports analyzing - no SVG export found for "%s" (id: %s), found exports: %s',
-        original.name,
-        original.id,
-        imageTypes.join(', ')
       );
     }
   }
