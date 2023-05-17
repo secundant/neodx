@@ -1,5 +1,7 @@
 # Export icons from the Community Weather Icons Kit
 
+> We strongly recommend checking out the [impressive `@neodx/svg` example](../svg-magic-with-figma-export). This showcases automatic sprite generation, type creation, practical code usage, and a complex icon export setup.
+
 A simple example of how to use the [@neodx/figma](https://www.npmjs.com/package/@neodx/figma) to export icons.
 
 Our point of interest is a [Community Weather Icons Kit](<https://www.figma.com/file/H9kVbqMwzIxh579BpXKZbj/Weather--Icons-Kit-(Community)?type=design&node-id=0-1>).
@@ -69,6 +71,8 @@ pnpm figma export --token <your_token>
 # npm
 npm run figma export --token <your_token>
 ```
+
+> In our package.json we have a script `export` that is an alias for `@neodx/figma` CLI.
 
 ## Result
 

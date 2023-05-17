@@ -1,5 +1,5 @@
 {
-  "name": "example-figma-exported-icons",
+  "name": "example-figma-simple-export",
   "version": "0.0.1",
   "private": true,
   "packageManager": "yarn@3.2.0",
@@ -12,11 +12,11 @@
     "@neodx/figma": "workspace:*"
   },
   "scripts": {
-    "export-icons": "figma export --verbose"
+    "export": "figma export --verbose"
   },
   "nx": {
     "targets": {
-      "export-icons": {
+      "export": {
         "outputs": [
           "assets/icons"
         ],
