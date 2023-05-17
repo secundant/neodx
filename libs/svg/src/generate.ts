@@ -1,5 +1,6 @@
 import { scan } from '@neodx/fs';
-import { compact } from '@neodx/std';
+import type { LoggerMethods } from '@neodx/log';
+import { compact, quickPluralize } from '@neodx/std';
 import type { VFS } from '@neodx/vfs';
 import { basename, join } from 'node:path';
 import { parse } from 'svgson';
@@ -10,6 +11,10 @@ import type { SvgNode } from './types';
 
 export interface GenerateParams {
   vfs: VFS;
+  /**
+   * Logger instance
+   */
+  logger?: LoggerMethods<'info' | 'debug'>;
   /**
    * Globs to icons files
    */
@@ -51,6 +56,7 @@ export interface GenerateParams {
 export async function generateSvgSprites({
   vfs,
   input,
+  logger,
   group: enableGroup,
   root = '.',
   optimize,
@@ -61,7 +67,24 @@ export async function generateSvgSprites({
   fileName = '{name}.svg',
   keepTreeChanges
 }: GenerateParams) {
-  const filePaths = await scan(join(vfs.root, root), input);
+  const startedAt = Date.now();
+  const rootDir = join(vfs.root, root);
+
+  logger?.debug(
+    {
+      input,
+      output,
+      root: rootDir,
+      group: enableGroup,
+      optimize,
+      definitions,
+      resetColorValues,
+      resetColorProperties,
+      fileName
+    },
+    'Start generating sprites...'
+  );
+  const filePaths = await scan(rootDir, input);
   const hooks = combinePlugins(
     compact([
       enableGroup && groupSprites(),
@@ -77,6 +100,8 @@ export async function generateSvgSprites({
         })
     ])
   );
+
+  logger?.info('Reading %d files...', filePaths.length);
   const files = await Promise.all(
     filePaths
       .filter(path => !join(vfs.root, path).startsWith(join(vfs.root, output)))
@@ -96,6 +121,11 @@ export async function generateSvgSprites({
   const unionGroup = new Map([['sprite', { name: 'sprite', files }]]);
   const groups = hooks.resolveEntriesMap(unionGroup, { vfs });
 
+  logger?.info(
+    'Generating %d %s...',
+    groups.size,
+    quickPluralize(groups.size, 'sprite', 'sprites')
+  );
   for (const { name, files } of groups.values()) {
     const content = await hooks.transformOutputEntryContent(
       renderSvgNodesToString(files.map(file => file.node))
@@ -109,4 +139,5 @@ export async function generateSvgSprites({
   if (!keepTreeChanges) {
     await vfs.applyChanges();
   }
+  logger?.debug('Done in %dms', Date.now() - startedAt);
 }
