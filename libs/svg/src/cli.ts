@@ -1,3 +1,4 @@
+import { createLogger } from '@neodx/log';
 import { toArray } from '@neodx/std';
 import { createVfs } from '@neodx/vfs';
 import { Command } from 'commander';
@@ -9,6 +10,7 @@ export function createCli(cwd = process.cwd()) {
 
   program
     .option('--dry-run', 'Show generated files but dont generate it')
+    .option('--verbose', 'Show more logs')
     .option('--root <root>', 'Root folder for inputs, useful for correct groups naming', '')
     .option('--group', 'Should we group icons?', false)
     .option('--optimize', 'Should we group icons?', true)
@@ -23,9 +25,10 @@ export function createCli(cwd = process.cwd()) {
       '--reset-color-properties <resetColorProperties>',
       'An array of SVG properties to replace with `currentColor`'
     )
-    .action(({ dryRun, ...options }) => {
+    .action(({ dryRun, verbose, ...options }) => {
       return generateSvgSprites({
         ...Options.parse(options),
+        logger: createLogger({ level: verbose ? 'debug' : 'info', name: 'svg' }),
         vfs: createVfs(cwd, { dryRun })
       });
     });

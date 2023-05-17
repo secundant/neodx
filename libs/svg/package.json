@@ -52,6 +52,7 @@
   "dependencies": {
     "@neodx/fs": "*",
     "@neodx/std": "*",
+    "@neodx/log": "*",
     "@neodx/vfs": "*",
     "commander": "10.0.1",
     "react": "^18.2.0",
