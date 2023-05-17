@@ -55,11 +55,14 @@ export function createFigmaCli() {
           })
         });
         const file = await api.getFile({ id: fileId });
+        const startedGraphAt = Date.now();
+        const target = createFileGraph(fileId, file);
 
+        logger.info('Document was analyzed in %s', formatTimeMs(Date.now() - startedGraphAt));
         await exportFile({
           api,
           vfs,
-          target: createFileGraph(fileId, file),
+          target,
           logger,
           ...exportOptions
         });
