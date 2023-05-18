@@ -27,7 +27,12 @@ describe('export low-level API', async () => {
     });
 
     test('should filter by componentSet', () => {
-      const exportable = collectNodes(testGraphs.weather, { COMPONENT_SET: 'Wind' });
+      const exportable = collectNodes(testGraphs.weather, {
+        target: {
+          type: 'COMPONENT_SET',
+          filter: 'Wind'
+        }
+      });
 
       expect(exportable.every(node => node.type === 'COMPONENT')).toBe(true);
       expect(exportable.length).toBe(2);
@@ -35,7 +40,10 @@ describe('export low-level API', async () => {
 
     test('should support multiple filter', () => {
       const exportable = collectNodes(testGraphs.weather, {
-        COMPONENT_SET: ['Wind', node => node.source.name.includes('Snow'), /Sun/]
+        target: {
+          type: 'COMPONENT_SET',
+          filter: ['Wind', node => node.source.name.includes('Snow'), /Sun/]
+        }
       });
       const parents = exportable.map(
         exported => testGraphs.weather.registry.byId[exported.parentId!]
@@ -86,8 +94,16 @@ describe('export low-level API', async () => {
 
     test('should filter by component', () => {
       const exportable = collectNodes(testGraphs.weather, {
-        COMPONENT_SET: ['Wind', node => node.source.name.includes('Snow'), /Sun/],
-        COMPONENT: 'Color=Off'
+        target: [
+          {
+            type: 'COMPONENT_SET',
+            filter: ['Wind', node => node.source.name.includes('Snow'), /Sun/]
+          },
+          {
+            type: 'COMPONENT',
+            filter: 'Color=Off'
+          }
+        ]
       });
       const exportableNames = uniq(exportable.map(getGraphNodeName).sort());
 

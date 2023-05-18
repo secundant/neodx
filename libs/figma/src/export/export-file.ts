@@ -25,6 +25,10 @@ export interface ExportFileParams {
   receiveExportsConcurrency?: number;
   /**
    * Exported nodes can provide wrong built-in names, so we can override them here.
+   *
+   * @param item - Downloaded item
+   * @param root - Root node of the exported file
+   *
    * @example ({ node, format }) => `${node.source.name}.${format}`
    * @default Lowercased node name separated by "/" + scale postfix if scale > 1
    */
