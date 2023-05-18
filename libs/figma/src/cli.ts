@@ -14,19 +14,16 @@ export function createFigmaCli() {
   const cli = new Command('figma');
 
   cli
-    .command('export [fileId]')
+    .command('export')
     .description('Export images from Figma file')
     .option('--dry-run [dryRun]', 'Dry run mode (no files will be written)')
     .option('--verbose', 'Show all possible logs')
     .option('-o, --output [output]', 'Output path')
     .option('-t, --token [token]', 'Personal access token', process.env.FIGMA_TOKEN)
-    .action(async (cliFileId, { dryRun, verbose, ...cliConfig }) => {
+    .action(async ({ dryRun, verbose, ...cliConfig }) => {
       const startedAt = Date.now();
       const cwd = process.cwd();
-      const config = await resolveNormalizedConfiguration(cwd, {
-        ...cliConfig,
-        fileId: cliFileId
-      });
+      const config = await resolveNormalizedConfiguration(cwd, cliConfig);
       const logger = figmaLogger.fork({
         level: verbose ? 'debug' : 'info'
       });
@@ -45,7 +42,8 @@ export function createFigmaCli() {
       );
 
       for (const { fileId, output, ...exportOptions } of config.export) {
-        logger.debug('Starting export file "%s" to "%s"', fileId, output);
+        logger.info('Starting export file "%s" to "%s"', fileId, output);
+        const startedGraphAt = Date.now();
         const vfs = createVfs(resolve(cwd, output), {
           dryRun,
           log: logger.child('fs', {
@@ -55,10 +53,9 @@ export function createFigmaCli() {
           })
         });
         const file = await api.getFile({ id: fileId });
-        const startedGraphAt = Date.now();
         const target = createFileGraph(fileId, file);
 
-        logger.info('Document was analyzed in %s', formatTimeMs(Date.now() - startedGraphAt));
+        logger.info('Document loaded in %s', formatTimeMs(Date.now() - startedGraphAt));
         await exportFile({
           api,
           vfs,

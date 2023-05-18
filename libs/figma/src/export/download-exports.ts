@@ -18,7 +18,7 @@ export function downloadExports({
   items,
   fetch = globalThis.fetch,
   logger = figmaLogger,
-  concurrency = 3
+  concurrency = 5
 }: DownloadExportsParams): Promise<DownloadedItem[]> {
   async function downloadItem(item: DownloadableItem) {
     const { url, format, scale, node } = item;
