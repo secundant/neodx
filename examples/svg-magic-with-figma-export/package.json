@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "@neodx/figma": "workspace:*",
-    "@neodx/svg": "workspace:*",
     "@neodx/std": "workspace:*",
+    "@neodx/svg": "workspace:*",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
