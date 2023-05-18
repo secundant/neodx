@@ -1,0 +1,69 @@
+{
+  "name": "example-svg-magic-with-figma-export",
+  "version": "0.0.1",
+  "private": true,
+  "packageManager": "yarn@3.2.0",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "dependencies": {
+    "@neodx/figma": "workspace:*",
+    "@neodx/svg": "workspace:*",
+    "@neodx/std": "workspace:*",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.1",
+    "@vitejs/plugin-react": "^4.0.0",
+    "autoprefixer": "10.4.14",
+    "postcss": "8.4.23",
+    "tailwindcss": "3.3.2",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.6",
+    "vite-tsconfig-paths": "^4.2.0",
+    "vitest": "^0.31.0"
+  },
+  "scripts": {
+    "build-sprite": "sprite --verbose --group --root assets/icons -o public -d src/shared/ui/icon/sprite.gen.ts --reset-color-values '#6C707E,#A8ADBD,#818594'",
+    "export-icons": "figma export --verbose",
+    "typecheck": "tsc --noEmit",
+    "build": "vite build",
+    "test": "vitest run",
+    "lint": "eslint src",
+    "dev": "vite",
+    "nuke": "rm -rf dist"
+  },
+  "nx": {
+    "targets": {
+      "export-icons": {
+        "outputs": [
+          "assets/icons"
+        ],
+        "inputs": [
+          "{projectRoot}/assets/**/*.svg",
+          "shared",
+          "config"
+        ],
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "build-sprite": {
+        "outputs": [
+          "public/sprites"
+        ],
+        "inputs": [
+          "{projectRoot}/assets/**/*.svg",
+          "shared",
+          "config"
+        ],
+        "dependsOn": [
+          "^build"
+        ]
+      }
+    }
+  }
+}

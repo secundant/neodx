@@ -12,7 +12,7 @@
     "@neodx/figma": "workspace:*"
   },
   "scripts": {
-    "export": "figma export --verbose"
+    "export": "figma export"
   },
   "nx": {
     "targets": {

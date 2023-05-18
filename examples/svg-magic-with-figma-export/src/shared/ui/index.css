@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .icon {
+    @apply select-none fill-current w-[1em] h-[1em] inline-block text-inherit box-content;
+  }
+}

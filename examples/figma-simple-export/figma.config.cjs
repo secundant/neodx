@@ -11,12 +11,25 @@ module.exports = {
     getExportFileName({ format, node }, root) {
       const parent = root.registry.byId[node.parentId];
 
-      return formatExportFileName(`${parent.source.name.toLowerCase()}.${format}`);
+      return formatExportFileName(
+        `${parent.source.name.toLowerCase().replace('32/', '')}.${format}`
+      );
     },
     collect: {
-      componentSet: /32/,
-      component: 'Color=Off',
-      page: 'icon'
+      target: [
+        {
+          type: 'CANVAS',
+          filter: 'icon'
+        },
+        {
+          type: 'COMPONENT_SET',
+          filter: /32/
+        },
+        {
+          type: 'COMPONENT',
+          filter: 'Color=Off'
+        }
+      ]
     }
   }
 };
