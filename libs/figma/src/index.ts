@@ -8,12 +8,14 @@ export type {
   DownloadExportsParams,
   ExportFileParams,
   GetNodeExportSettings,
+  OptimizeExportParams,
   ReceiveExportsDownloadInfoParams
 } from './export';
 export {
   downloadExports,
   exportFile,
   formatExportFileName,
+  optimizeExport,
   receiveExportsDownloadInfo
 } from './export';
 export type {

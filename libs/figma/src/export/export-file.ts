@@ -5,6 +5,8 @@ import type { CollectNodesParams, GraphNode } from '../graph';
 import { collectNodes } from '../graph';
 import { type FigmaLogger, figmaLogger, formatTimeMs } from '../shared';
 import { type DownloadedItem, downloadExports } from './download-exports';
+import type { OptimizeExportParams } from './optimize-export';
+import { optimizeExport } from './optimize-export';
 import {
   type ReceiveExportsDownloadInfoParams,
   receiveExportsDownloadInfo
@@ -15,6 +17,7 @@ export interface ExportFileParams {
   vfs: VFS;
   target: GraphNode<DocumentNode>;
   logger?: FigmaLogger;
+  optimize?: false | OptimizeExportParams;
   collect?: CollectNodesParams;
   downloadConcurrency?: number;
   receiveExportsResolver?: ReceiveExportsDownloadInfoParams['resolver'];
@@ -34,6 +37,7 @@ export async function exportFile({
   target,
   logger = figmaLogger,
   collect,
+  optimize = {},
   receiveExportsResolver = 'svg',
   receiveExportsBatching,
   receiveExportsConcurrency,
@@ -42,7 +46,10 @@ export async function exportFile({
 }: ExportFileParams) {
   logger.info('Exporting file "%s" (ID: %s)...', target.source.name, target.fileId);
   const startedAt = Date.now();
-  const collected = collectNodes(target, collect);
+  const collected = collectNodes(target, {
+    ...collect,
+    logger
+  });
 
   logger.info('Collected %d nodes, receiving exports info...', collected.length);
   const downloadable = await receiveExportsDownloadInfo({
@@ -68,8 +75,9 @@ export async function exportFile({
     downloadedItems,
     async item => {
       const fileName = getExportFileName(item, target);
+      const content = optimize ? optimizeExport(item, optimize) : item.content;
 
-      await vfs.write(fileName, item.content);
+      await vfs.write(fileName, content);
       logger.debug('Saved "%s" at %s', item.node.source.name, fileName);
     },
     10
