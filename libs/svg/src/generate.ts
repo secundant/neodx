@@ -110,6 +110,7 @@ export async function generateSvgSprites({
         const content = await vfs.read(join(root, path), 'utf-8');
         const nodeToFile = (node: SvgNode) => ({ name, node, path });
 
+        logger?.debug('Parsing %s...', path);
         const node = await parse(await hooks.transformSourceContent(path, content), {
           camelcase: true,
           transformNode: node => hooks.transformNode(nodeToFile(node))
