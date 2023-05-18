@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/require-array-sort-compare */
-import { uniq } from '@neodx/std';
+import { identity, uniq } from '@neodx/std';
 import { describe, expect, test } from 'vitest';
 import type { AnyNode, FigmaApi } from '../core';
 import { downloadExports, receiveExportsDownloadInfo } from '../export';
@@ -10,6 +10,7 @@ import {
   createMockApi,
   createMockFetch,
   createMockNodes,
+  getNodesIds,
   testFigmaLogger,
   testFileIds,
   testGraphs
@@ -26,7 +27,7 @@ describe('export low-level API', async () => {
     });
 
     test('should filter by componentSet', () => {
-      const exportable = collectNodes(testGraphs.weather, { componentSet: 'Wind' });
+      const exportable = collectNodes(testGraphs.weather, { COMPONENT_SET: 'Wind' });
 
       expect(exportable.every(node => node.type === 'COMPONENT')).toBe(true);
       expect(exportable.length).toBe(2);
@@ -34,7 +35,7 @@ describe('export low-level API', async () => {
 
     test('should support multiple filter', () => {
       const exportable = collectNodes(testGraphs.weather, {
-        componentSet: ['Wind', node => node.source.name.includes('Snow'), /Sun/]
+        COMPONENT_SET: ['Wind', node => node.source.name.includes('Snow'), /Sun/]
       });
       const parents = exportable.map(
         exported => testGraphs.weather.registry.byId[exported.parentId!]
@@ -54,10 +55,39 @@ describe('export low-level API', async () => {
       ]);
     });
 
+    test('should support multiple extractor formats', () => {
+      expect(
+        getNodesIds(
+          collectNodes(testGraphs.weather, {
+            extract: ['FRAME', 'COMPONENT', 'RECTANGLE']
+          })
+        )
+      ).toEqual(
+        getNodesIds([
+          ...(testGraphs.weather.registry.types.FRAME ?? []),
+          ...(testGraphs.weather.registry.types.COMPONENT ?? []),
+          ...(testGraphs.weather.registry.types.RECTANGLE ?? [])
+        ])
+      );
+      expect(
+        getNodesIds(
+          collectNodes(testGraphs.weather, {
+            extract: ['COMPONENT', identity, node => node.children.list]
+          })
+        )
+      ).toEqual(
+        getNodesIds([
+          testGraphs.weather,
+          ...testGraphs.weather.children.list,
+          ...(testGraphs.weather.registry.types.COMPONENT ?? [])
+        ])
+      );
+    });
+
     test('should filter by component', () => {
       const exportable = collectNodes(testGraphs.weather, {
-        componentSet: ['Wind', node => node.source.name.includes('Snow'), /Sun/],
-        component: 'Color=Off'
+        COMPONENT_SET: ['Wind', node => node.source.name.includes('Snow'), /Sun/],
+        COMPONENT: 'Color=Off'
       });
       const exportableNames = uniq(exportable.map(getGraphNodeName).sort());
 

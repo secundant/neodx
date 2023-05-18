@@ -1,11 +1,19 @@
-import { fromLength } from '@neodx/std';
+/* eslint-disable @typescript-eslint/require-array-sort-compare */
+import { fromLength, uniq } from '@neodx/std';
 import { readFile } from 'node:fs/promises';
-import { vi } from 'vitest';
+import { expect, vi } from 'vitest';
 import type { AnyNode, GetFileResult, NodeType } from '../core';
 import { createFigmaApi } from '../core';
 import { type GraphNode, createFileGraph } from '../graph';
 import { figmaLogger } from '../shared';
 import { parseFileIdFromLink } from '../utils';
+
+export const expectSameGraphNodesList = (left: GraphNode<any>[], right: GraphNode<any>[]) =>
+  expect(getNodesIds(left)).toEqual(getNodesIds(right));
+export const getNodesIds = (nodes: GraphNode<AnyNode>[]) =>
+  uniq(nodes)
+    .map(node => node.id)
+    .sort();
 
 export const testFileIds = {
   weather: parseFileIdFromLink(
