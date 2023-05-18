@@ -1,4 +1,5 @@
-import { entries, isEmpty, toArray, uniq } from '@neodx/std';
+import type { LoggerMethods } from '@neodx/log';
+import { entries, isEmpty, toArray, True, uniq } from '@neodx/std';
 import type { AnyNode, DocumentNode, NodeByType, NodeType } from '../core';
 import type { GraphNode } from './create-nodes-graph';
 
@@ -15,6 +16,7 @@ export interface CollectNodesParams
    * @default Extracts all `COMPONENT` nodes.
    */
   extract?: NodesExtractor | NodeType | Array<NodeType | NodesExtractor>;
+  logger?: LoggerMethods<'debug'>;
 }
 
 export interface NodesExtractor {
@@ -34,17 +36,18 @@ type NodeTypeCondition = [NodeType, PredicateInput<GraphNode<any>> | undefined];
  */
 export function collectNodes(
   root: GraphNode<DocumentNode>,
-  { extract = 'COMPONENT', ...conditions }: CollectNodesParams = {}
+  { logger, extract = 'COMPONENT', ...conditions }: CollectNodesParams = {}
 ) {
   const extractors = toArray(extract).map(extractor =>
     typeof extractor === 'string' ? extractNodeType(extractor) : extractor
   );
 
-  return uniq(
-    collectByConditions(root, entries(conditions)).flatMap(node =>
-      extractors.flatMap(extractor => extractor(node))
-    )
-  );
+  logger?.debug('Collecting nodes...');
+  const collected = collectByConditions(root, entries(conditions), logger);
+
+  logger?.debug('Collected %s nodes', collected.length);
+
+  return uniq(collected.flatMap(node => extractors.flatMap(extractor => extractor(node))));
 }
 
 export const extractNodeType = (type: NodeType) => (node: GraphNode<AnyNode>) =>
@@ -52,21 +55,23 @@ export const extractNodeType = (type: NodeType) => (node: GraphNode<AnyNode>) =>
 
 const collectByConditions = (
   root: GraphNode<AnyNode>,
-  conditions: [...NodeTypeCondition[]]
+  conditions: [...NodeTypeCondition[]],
+  logger?: LoggerMethods<'debug'>
 ): GraphNode<AnyNode>[] => {
   if (isEmpty(conditions)) return [root];
   const [[type, predicate], ...nextConditions] = conditions;
   const nodes: GraphNode<AnyNode>[] = root.registry.types[type] ?? [];
 
   if (!predicate) {
-    return isEmpty(nextConditions) ? nodes : collectByConditions(root, nextConditions);
+    return isEmpty(nextConditions) ? nodes : collectByConditions(root, nextConditions, logger);
   }
   if (isEmpty(nodes)) return [];
   const collected = nodes.filter(toPredicate(predicate, node => node.source.name));
 
+  logger?.debug('Collected "%s" node types: %s', type, collected.length);
   return isEmpty(nextConditions)
     ? collected
-    : collected.flatMap(node => collectByConditions(node, nextConditions));
+    : collected.flatMap(node => collectByConditions(node, nextConditions, logger));
 };
 
 const toPredicate = <T>(
@@ -79,5 +84,6 @@ const toPredicate = <T>(
     return (node: T) => filter.test(getStringValue(node));
   });
 
+  if (isEmpty(filters)) return True;
   return (node: T) => filters.some(fn => fn(node));
 };
