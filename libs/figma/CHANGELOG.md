@@ -1,5 +1,13 @@
 # @neodx/figma
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`b5dc26e`](https://github.com/secundant/neodx/commit/b5dc26e0c47bab3f01863a15cf5db360e39efdcf)]:
+  - @neodx/std@0.1.3
+  - @neodx/vfs@0.1.6
+
 ## 0.2.0
 
 ### Minor Changes

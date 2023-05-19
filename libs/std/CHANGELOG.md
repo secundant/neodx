@@ -1,5 +1,11 @@
 # @neodx/std
 
+## 0.1.3
+
+### Patch Changes
+
+- [`b5dc26e`](https://github.com/secundant/neodx/commit/b5dc26e0c47bab3f01863a15cf5db360e39efdcf) Thanks [@secundant](https://github.com/secundant)! - Add `quickPluralize` util
+
 ## 0.1.2
 
 ### Patch Changes
