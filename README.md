@@ -11,6 +11,32 @@ This project designed to tackle common web development challenges with ease.
 > Most of the packages are still under development, so API may change.
 > I'll try to keep it stable, but updates still can bring breaking changes.
 
+### [@neodx/figma](./libs/figma)
+
+Figma is a great tool for design collaboration, but we don't have a solid way to use it in our development workflow.
+
+Probably, you've already tried to write your own integration or use some existing solutions and faced the following problems as me:
+
+- Multiple different not maintained packages with different APIs
+- Bad documentation/usage examples or even no documentation at all
+- Terrible flexibility and solution design, you just can't use it in your project because of the different document structure or workflow
+- No type safety, autocomplete, etc.
+
+In the other words, there is no really well-designed complex solution for Figma integration.
+
+So, `@neodx/figma` is an attempt to create it. Currently, we have the following features:
+
+- **Flexible Export CLI**: You can use it to export icons or other elements. It's a simple wrapper around our Node.JS API.
+- **Typed Figma API**: All Figma API methods are typed and have autocomplete support.
+- **Built-in document graph API**: Figma API is too low-level for writing any stable solution. We provide an API that allows you work with the document as a simple high-level graph of nodes.
+
+See our examples for more details:
+
+- [SVG sprite generation on steroids with Figma export](./examples/svg-magic-with-figma-export) - Integrated showcase of the `@neodx/svg` and `@neodx/figma` packages with real application usage!
+- [Export icons from the Community Weather Icons Kit](./examples/figma-simple-export) - A simple step-by-step example of how to use the `@neodx/figma` to export icons.
+
+We have a some ideas for future development, so stay tuned and feel free to request your own! 🚀
+
 ### [@neodx/svg](./libs/svg)
 
 Are you converting every SVG icon to React component with SVGR or something similar? It's so ease to use!

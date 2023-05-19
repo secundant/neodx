@@ -598,7 +598,7 @@ So I decided to create my own Figma API, which will be:
 
 - **Powerful CLI** solves the most common tasks
 - **Fully typed** consistent Figma API and common helpers
-- **Convenient high-level** Node.JS API for working with Figma pr
+- **Convenient high-level** Node.JS API for working with Figma projects
 - **Web API based** and not depends on specific third-party libraries
 - **Safe** and **stable** as possible without strict value validation (via `zod`, `runtypes` or something like that)
 - etc.
