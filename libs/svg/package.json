@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "@neodx/fs": "*",
-    "@neodx/log": "*",
+    "@neodx/log": "0.1.0",
     "@neodx/std": "*",
     "@neodx/vfs": "*",
     "commander": "10.0.1",
