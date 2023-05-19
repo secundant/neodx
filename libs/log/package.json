@@ -57,7 +57,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@neodx/colors": "*"
+    "@neodx/colors": "^0.2.3"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
