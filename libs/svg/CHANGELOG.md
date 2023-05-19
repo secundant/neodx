@@ -1,5 +1,11 @@
 # @neodx/svg
 
+## 0.1.8
+
+### Patch Changes
+
+- [#72](https://github.com/secundant/neodx/pull/72) [`e68a8a8`](https://github.com/secundant/neodx/commit/e68a8a8e4e121b31b8c53f7ae13c20f72f3e2697) Thanks [@secundant](https://github.com/secundant)! - Improve logging
+
 ## 0.1.7
 
 ### Patch Changes

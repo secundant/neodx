@@ -1,5 +1,21 @@
 # @neodx/figma
 
+## 0.2.0
+
+### Minor Changes
+
+- [#72](https://github.com/secundant/neodx/pull/72) [`e68a8a8`](https://github.com/secundant/neodx/commit/e68a8a8e4e121b31b8c53f7ae13c20f72f3e2697) Thanks [@secundant](https://github.com/secundant)! - Optimize exported SVG files with `svgo`
+
+- [#72](https://github.com/secundant/neodx/pull/72) [`e68a8a8`](https://github.com/secundant/neodx/commit/e68a8a8e4e121b31b8c53f7ae13c20f72f3e2697) Thanks [@secundant](https://github.com/secundant)! - Rework `collectNodes` conditions
+
+### Patch Changes
+
+- [#72](https://github.com/secundant/neodx/pull/72) [`e68a8a8`](https://github.com/secundant/neodx/commit/e68a8a8e4e121b31b8c53f7ae13c20f72f3e2697) Thanks [@secundant](https://github.com/secundant)! - Well documentation
+
+- [#72](https://github.com/secundant/neodx/pull/72) [`e68a8a8`](https://github.com/secundant/neodx/commit/e68a8a8e4e121b31b8c53f7ae13c20f72f3e2697) Thanks [@secundant](https://github.com/secundant)! - Rework filters params in the `collectNodes`
+
+- [#72](https://github.com/secundant/neodx/pull/72) [`e68a8a8`](https://github.com/secundant/neodx/commit/e68a8a8e4e121b31b8c53f7ae13c20f72f3e2697) Thanks [@secundant](https://github.com/secundant)! - Extend the `receiveExportsDownloadInfo` exports resolving API
+
 ## 0.1.0
 
 ### Minor Changes
