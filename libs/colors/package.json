@@ -48,7 +48,7 @@
     "@neodx/autobuild": "*"
   },
   "dependencies": {
-    "@neodx/std": "*"
+    "@neodx/std": "^0.1.3"
   },
   "exports": {
     ".": {
