@@ -1,5 +1,16 @@
 # @neodx/vfs
 
+## 0.1.6
+
+### Patch Changes
+
+- Updated dependencies [[`b5dc26e`](https://github.com/secundant/neodx/commit/b5dc26e0c47bab3f01863a15cf5db360e39efdcf)]:
+  - @neodx/std@0.1.3
+  - @neodx/colors@0.2.3
+  - @neodx/fs@0.0.7
+  - @neodx/pkg-misc@0.0.5
+  - @neodx/log@0.1.6
+
 ## 0.1.5
 
 ### Patch Changes

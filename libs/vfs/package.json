@@ -1,6 +1,6 @@
 {
   "name": "@neodx/vfs",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Simple virtual file system - working dir context, lazy changes, different modes, integrations and moreover",
   "type": "module",
   "main": "./dist/cjs/index.cjs",

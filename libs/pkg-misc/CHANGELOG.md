@@ -1,5 +1,13 @@
 # @neodx/pkg-misc
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [[`b5dc26e`](https://github.com/secundant/neodx/commit/b5dc26e0c47bab3f01863a15cf5db360e39efdcf)]:
+  - @neodx/std@0.1.3
+  - @neodx/fs@0.0.7
+
 ## 0.0.4
 
 ### Patch Changes
