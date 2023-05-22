@@ -1,9 +1,33 @@
+import { entries } from '@neodx/std';
+import { join } from 'pathe';
 import type { FileChange } from '../types';
 import { FileChangeType } from '../types';
 import { type AbstractVfsParams, AbstractVfs } from './abstract-vfs';
 
 export interface VirtualFsParams extends AbstractVfsParams {
-  initial?: Record<string, string>;
+  initial?: VirtualFsInitializer;
+}
+
+export interface VirtualFsInitializer {
+  /**
+   * File or nested directory
+   */
+  [path: string]: string | VirtualFsInitializer;
+}
+
+export function flattenVirtualFsInitializer(initial: VirtualFsInitializer, base: string) {
+  const result = {} as Record<string, string>;
+
+  for (const [path, contentOrSubFolder] of entries(initial)) {
+    const entryPath = join(base, path);
+
+    if (typeof contentOrSubFolder === 'string') {
+      result[entryPath] = contentOrSubFolder;
+    } else {
+      Object.assign(result, flattenVirtualFsInitializer(contentOrSubFolder, entryPath));
+    }
+  }
+  return result;
 }
 
 /**
@@ -24,7 +48,10 @@ export class VirtualFs extends AbstractVfs {
   constructor({ initial = {}, ...params }: VirtualFsParams) {
     super(params);
     this.virtualFs = new Map(
-      Object.entries(initial).map(([path, content]) => [path, Buffer.from(content)])
+      entries(flattenVirtualFsInitializer(initial, '')).map(([path, content]) => [
+        path,
+        Buffer.from(content)
+      ])
     );
   }
 
