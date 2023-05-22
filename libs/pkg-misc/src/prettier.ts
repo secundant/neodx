@@ -29,7 +29,11 @@ export async function tryFormatPrettier(
   content: string,
   transform: TransformPrettierOptions = markSwcRcAsJson
 ) {
-  const { default: prettier } = await import('prettier');
+  const prettier = await tryImportPrettier();
+
+  if (!prettier) {
+    return null;
+  }
   const configPath = await prettier.resolveConfigFile(path);
   // TODO: Cache .prettierignore lookup
   const possibleIgnorePath = configPath && resolve(configPath, '../.prettierignore');
@@ -64,5 +68,7 @@ export async function tryFormatPrettier(
     return null;
   }
 }
+
+const tryImportPrettier = () => import('prettier').then(module => module.default).catch(() => null);
 
 const markSwcRcAsJson = (path: string) => (path.endsWith('.swcrc') ? { parser: 'json' } : {});
