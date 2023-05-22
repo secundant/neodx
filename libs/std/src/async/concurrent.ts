@@ -13,13 +13,14 @@
  * console.log(results); // [user1, user2, user3, user4, user5, user6]
  */
 export async function concurrently<Input, Output>(
-  inputs: readonly Input[],
+  inputs: Iterable<Input>,
   handler: (input: Input) => Promise<Output>,
   concurrency = 10
 ) {
   const resultsMap = new Map<Input, Output>();
   const pending = new Set<Input>();
-  const queue = [...inputs];
+  const original = [...inputs];
+  const queue = [...original];
 
   async function run(input: Input) {
     pending.add(input);
@@ -45,7 +46,7 @@ export async function concurrently<Input, Output>(
   }
 
   await next();
-  return inputs.map(input => resultsMap.get(input)!);
+  return original.map(input => resultsMap.get(input)!);
 }
 
 /**
@@ -57,5 +58,5 @@ export function concurrent<Input, Output>(
   handler: (input: Input) => Promise<Output>,
   concurrency = 10
 ) {
-  return async (inputs: readonly Input[]) => concurrently(inputs, handler, concurrency);
+  return async (inputs: Iterable<Input>) => concurrently(inputs, handler, concurrency);
 }
