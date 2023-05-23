@@ -1,8 +1,8 @@
 import { toArray } from '@neodx/std';
 import { type AnyColor, type Colord, colord, extend } from 'colord';
 import namesPlugin from 'colord/plugins/names';
-import { createPlugin } from '../plugin-utils';
-import type { SvgNode } from '../types';
+import type { SvgNode } from '../core/types';
+import { createPlugin } from './plugin-utils';
 
 export type ResetColorsPluginParams =
   | ColorPropertyReplacementInput

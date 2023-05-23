@@ -1,5 +1,5 @@
 import { type Config, optimize } from 'svgo';
-import { createPlugin } from '../plugin-utils';
+import { createPlugin } from './plugin-utils';
 
 export interface SvgoPluginOptions {
   removeAttrs: string[];

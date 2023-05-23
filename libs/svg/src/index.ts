@@ -1,4 +1,3 @@
-export { createCli } from './cli';
-export { type GenerateParams, generateSvgSprites } from './generate';
-export { createPlugin } from './plugin-utils';
-export type { SvgFile, SvgNode, SvgSpritePlugin, SvgSpritePluginHooks } from './types';
+export { type GenerateParams, generateSvgSprites } from './core/generate';
+export type { SvgFile, SvgNode, SvgSpritePlugin, SvgSpritePluginHooks } from './core/types';
+export { createPlugin } from './plugins/plugin-utils';

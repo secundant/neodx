@@ -1,6 +1,6 @@
 import { dirname } from 'node:path';
-import { createPlugin } from '../plugin-utils';
-import type { SpriteGroupsMap, SvgFile } from '../types';
+import type { SpriteGroupsMap, SvgFile } from '../core/types';
+import { createPlugin } from './plugin-utils';
 
 export interface GroupPluginOptions {
   getName?(entry: SvgFile): string | null;
