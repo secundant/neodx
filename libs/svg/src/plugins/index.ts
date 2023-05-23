@@ -3,7 +3,7 @@ export { type GroupPluginOptions, groupSprites } from './group';
 export type {
   AnyColorInput,
   ColorPropertyReplacementInput,
-  ColorReplacementInput,
+  ColorReplacementInputConfig,
   ResetColorsPluginParams
 } from './reset-colors';
 export { resetColors } from './reset-colors';

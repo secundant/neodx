@@ -20,7 +20,12 @@ describe('examples', () => {
     },
     colors: {
       root: 'assets',
-      resetColorValues: ['#000000', '#ffffff', '#000', '#fff', 'black', 'white']
+      resetColors: {
+        replace: {
+          from: ['#000000', '#ffffff', '#000', '#fff', 'black', 'white'],
+          to: 'currentColor'
+        }
+      }
     }
   };
 
