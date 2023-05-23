@@ -11,6 +11,7 @@ export {
   uniqBy
 } from './array';
 export { asyncReduce, concurrent, concurrently, deduplicateAsync } from './async';
+export { debounce } from './debounce';
 export type { AnyKey, AnyObj, Nil } from './guards';
 export { isEmpty, isError, isNil, isObject, isObjectLike } from './guards';
 export { invariant } from './invariant';
