@@ -4,8 +4,16 @@ import { compact, quickPluralize } from '@neodx/std';
 import type { VFS } from '@neodx/vfs';
 import { basename, join } from 'node:path';
 import { parse } from 'svgson';
-import { combinePlugins } from './plugin-utils';
-import { groupSprites, resetColors, setId, svgo, typescript } from './plugins';
+import {
+  type ResetColorsPluginParams,
+  fixViewBox,
+  groupSprites,
+  resetColors,
+  setId,
+  svgo,
+  typescript
+} from '../plugins';
+import { combinePlugins } from '../plugins/plugin-utils';
 import { renderSvgNodesToString } from './render';
 import type { SvgNode } from './types';
 
@@ -40,13 +48,12 @@ export interface GenerateParams {
   fileName?: string;
   optimize?: boolean;
   definitions?: string;
+  resetColors?: ResetColorsPluginParams;
   /**
    * Keep tree changes after generation even if dry-run mode is enabled
    * Useful for testing (for example, to check what EXACTLY was changed)
    */
   keepTreeChanges?: boolean;
-  resetColorValues?: string[];
-  resetColorProperties?: string[];
 }
 
 /**
@@ -61,8 +68,7 @@ export async function generateSvgSprites({
   root = '.',
   optimize,
   definitions,
-  resetColorValues,
-  resetColorProperties,
+  resetColors: resetColorsParams,
   output,
   fileName = '{name}.svg',
   keepTreeChanges
@@ -78,8 +84,7 @@ export async function generateSvgSprites({
       group: enableGroup,
       optimize,
       definitions,
-      resetColorValues,
-      resetColorProperties,
+      resetColors: resetColorsParams,
       fileName
     },
     'Start generating sprites...'
@@ -89,10 +94,8 @@ export async function generateSvgSprites({
     compact([
       enableGroup && groupSprites(),
       setId(),
-      resetColors({
-        includeProperties: resetColorProperties,
-        includeValues: resetColorValues
-      }),
+      fixViewBox(),
+      resetColors(resetColorsParams),
       optimize && svgo(),
       definitions &&
         typescript({

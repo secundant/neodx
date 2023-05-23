@@ -1,5 +1,5 @@
-import { createPlugin } from '../plugin-utils';
-import type { SpriteGroup, SpriteGroupsMap } from '../types';
+import type { SpriteGroup, SpriteGroupsMap } from '../core/types';
+import { createPlugin } from './plugin-utils';
 
 export interface TypescriptPluginOptions {
   output?: string;

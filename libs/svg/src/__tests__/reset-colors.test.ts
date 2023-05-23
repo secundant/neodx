@@ -2,7 +2,7 @@ import { createLogger } from '@neodx/log';
 import { toArray } from '@neodx/std';
 import { createTmpVfs } from '@neodx/vfs/testing-utils';
 import { describe, expect, test } from 'vitest';
-import { generateSvgSprites } from '../generate';
+import { generateSvgSprites } from '../core/generate';
 import type { ResetColorsPluginParams } from '../plugins';
 import { readStub } from './testing-utils';
 

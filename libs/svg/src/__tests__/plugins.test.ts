@@ -2,8 +2,8 @@ import { toArray } from '@neodx/std';
 import { createTmpVfs } from '@neodx/vfs/testing-utils';
 import { describe, expect, test } from 'vitest';
 import type { SvgNode } from '../index';
-import { combinePlugins } from '../plugin-utils';
 import { groupSprites } from '../plugins';
+import { combinePlugins } from '../plugins/plugin-utils';
 
 describe('plugins system', async () => {
   const emptyContext = { vfs: await createTmpVfs() };

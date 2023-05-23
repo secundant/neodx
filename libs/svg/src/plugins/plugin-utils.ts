@@ -1,5 +1,5 @@
 import { asyncReduce } from '@neodx/std';
-import type { SvgSpritePlugin, SvgSpritePluginHooks } from './types';
+import type { SvgSpritePlugin, SvgSpritePluginHooks } from '../core/types';
 
 export function createPlugin(name: string, hooks: Partial<SvgSpritePluginHooks>): SvgSpritePlugin {
   return {

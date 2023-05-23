@@ -1,4 +1,4 @@
-import { createPlugin } from '../plugin-utils';
+import { createPlugin } from './plugin-utils';
 
 export const setId = () =>
   createPlugin('set-id', {

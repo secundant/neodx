@@ -1,4 +1,4 @@
-import { createPlugin } from '../plugin-utils';
+import { createPlugin } from './plugin-utils';
 
 /**
  * Fix viewBox attribute if it's missing and width/height are present
