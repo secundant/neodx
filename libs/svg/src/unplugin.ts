@@ -1,72 +1,84 @@
-import type { LoggerMethods } from '@neodx/log';
+import { createLogger, createPrettyTarget } from '@neodx/log/node';
+import { createVfs } from '@neodx/vfs';
+import type { FSWatcher } from 'chokidar';
 import { createUnplugin } from 'unplugin';
-import type { ResetColorsPluginParams } from './plugins';
+import { type CreateSpriteBuilderParams, createSpriteBuilder } from './core/create-sprite-builder';
+import { createWatcher } from './core/create-watcher';
 
-export interface SvgPluginParams {
-  verbose?: boolean;
-  /**
-   * Logger instance
-   */
-  logger?: LoggerMethods<'info' | 'debug'>;
+export interface SvgPluginParams extends Omit<CreateSpriteBuilderParams, 'vfs'> {
   /**
    * Globs to icons files
    */
   input?: string | string[];
-  /**
-   * Path to generated sprite/sprites folder
-   */
-  output?: string;
-  /**
-   * Root folder for inputs, useful for correct groups naming
-   */
-  root?: string;
-  /**
-   * Should we group icons?
-   * @default false
-   */
-  group?: boolean;
-  /**
-   * Template of sprite file name
-   * @example {name}.svg
-   * @example sprite-{name}.svg
-   */
-  fileName?: string;
-  /**
-   * Should we optimize icons?
-   */
-  optimize?: boolean;
-  /**
-   * Path to generated definitions file
-   */
-  definitions?: string;
-  /**
-   * Reset colors config
-   */
-  resetColors?: ResetColorsPluginParams | false;
+  logLevel?: 'debug' | 'info' | 'silent';
 }
 
 export const unplugin = createUnplugin(
-  ({
-    optimize,
-    resetColors,
-    definitions,
-    group,
-    logger,
-    input,
-    output,
-    root,
-    fileName
-  }: SvgPluginParams) => {
+  (
+    {
+      logLevel = 'silent',
+      logger = createLogger({
+        name: 'svg',
+        level: logLevel,
+        target: createPrettyTarget()
+      }),
+      root = '.',
+      input = '**/*.svg',
+      ...params
+    }: SvgPluginParams,
+    { watchMode = false }
+  ) => {
+    const builder = createSpriteBuilder({
+      vfs: createVfs(process.cwd()),
+      root,
+      logger,
+      ...params
+    });
+    let watcher: FSWatcher | undefined;
+    let isBuild = !watchMode;
+    let isWatch = watchMode;
+
     return {
       name: '@neodx/svg',
-      watchChange(id, change) {
-        console.log('watch change', id, change);
+      async buildStart() {
+        logger.debug(
+          {
+            isWatch,
+            isBuild,
+            ...params
+          },
+          'Start building SVG sprites'
+        );
+        await builder.load(input);
+        await builder.build();
+        await builder.vfs.applyChanges();
+        if (isWatch) {
+          watcher = createWatcher({
+            builder,
+            input,
+            root
+          });
+        }
+        if (isBuild) {
+          // TODO
+        }
       },
-      buildStart() {
-        console.log('build start');
+      async buildEnd() {
+        await watcher?.close();
       },
-      buildEnd() {
-        console.log('build end');
+      vite: {
+        async configResolved(config) {
+          isBuild = config.command === 'build';
+          isWatch = config.command === 'serve';
+        }
+      },
+      webpack(compiler) {
+        isBuild = compiler.options.mode === 'production';
+        isWatch = !isBuild;
+      },
+      rspack(compiler) {
+        isBuild = compiler.options.mode === 'production';
+        isWatch = !isBuild;
       }
     };
   }

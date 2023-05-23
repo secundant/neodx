@@ -2,7 +2,7 @@ import { createLogger } from '@neodx/log';
 import { toArray } from '@neodx/std';
 import { createTmpVfs } from '@neodx/vfs/testing-utils';
 import { describe, expect, test } from 'vitest';
-import { generateSvgSprites } from '../core/generate';
+import { buildSprites } from '../core/build-sprites';
 import type { ResetColorsPluginParams } from '../plugins';
 import { readStub } from './testing-utils';
 
@@ -26,7 +26,7 @@ describe('resetColors', async () => {
       log: logger
     });
 
-    await generateSvgSprites({
+    await buildSprites({
       vfs,
       optimize: false,
       output: 'dist',

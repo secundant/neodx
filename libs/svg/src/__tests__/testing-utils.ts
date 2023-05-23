@@ -3,7 +3,7 @@ import { concurrently } from '@neodx/std';
 import { createVfs } from '@neodx/vfs';
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { type GenerateParams, generateSvgSprites } from '../index';
+import { type GenerateParams, buildSprites } from '../index';
 
 export async function readStub(name: string) {
   const root = getStubRoot(name);
@@ -26,7 +26,7 @@ export async function generateExample(
 ) {
   const vfs = createVfs(getExampleRoot(name), { dryRun: !write });
 
-  await generateSvgSprites({
+  await buildSprites({
     vfs,
     input: ['**/*.svg'],
     output: 'generated',

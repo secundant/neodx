@@ -3,7 +3,7 @@ import { toArray } from '@neodx/std';
 import { createVfs } from '@neodx/vfs';
 import { Command } from 'commander';
 import { z } from 'zod';
-import { generateSvgSprites } from './core/generate';
+import { buildSprites } from './core/build-sprites';
 
 export function createCli(cwd = process.cwd()) {
   const program = new Command('sprite');
@@ -34,7 +34,7 @@ export function createCli(cwd = process.cwd()) {
       const { resetColorValues, resetColorProperties, resetUnknownColors, ...other } =
         Options.parse(options);
 
-      return generateSvgSprites({
+      return buildSprites({
         ...other,
         resetColors:
           resetColorValues || resetUnknownColors
