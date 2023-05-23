@@ -339,17 +339,34 @@ interface CreateFigmaApiParams {
 
 Returns an object with the API methods:
 
+#### Files
+
 - `getFile({ id, ...params }: GetFileParams)`: `GetFileResult` - GET /v1/files/:key
 - `getFileNodes<Node extends AnyNode>({ id, ...params }: GetFileNodesParams)`: `GetFileNodesResult<Node>` - GET /v1/files/:key/nodes
 - `getImage({ id, ...params }: GetImageParams)`: `GetImageResult` - GET/v1/images/:key
 - `getImageFills({ id }: GetImageFillsParams)`: `GetImageFillsResult` - GET/v1/files/:key/images
+
+#### Comments
+
 - `getComments({ id }: GetCommentsParams)`: `GetCommentsResult` - GET/v1/files/:key/comments
 - `postComments({ id, ...body }: PostCommentsParams)`: `PostCommentResult` - POST/v1/files/:file_key/comments
 - `deleteComments({ id, comment_id }: DeleteCommentsParams)`: `void` - DELETE/v1/files/:file_key/comments/:comment_id
+
+#### Users
+
 - `getMe()`: `GetUserMeResult` - GET/v1/me
+
+#### Versions
+
 - `getVersions({ id }: GetVersionsParams)`: `GetVersionsResult` - GET/v1/files/:key/versions
+
+#### Teams and projects
+
 - `getTeamProjects({ team_id }: GetTeamProjectsParams)`: `GetTeamProjectsResult` - GET/v1/teams/:team_id/projects
 - `getProjectFiles({ project_id }: GetProjectFilesParams)`: `GetProjectFilesResult` - GET/v1/projects/:project_id/files
+
+#### Components and styles
+
 - `getTeamComponents({ team_id }: GetTeamComponentsParams)`: `GetTeamComponentsResult` - GET/v1/teams/:team_id/components
 - `getFileComponents({ id }: GetFileComponentsParams)`: `GetFileComponentsResult` - GET/v1/files/:file_key/components
 - `getComponent({ key }: GetComponentParams)`: `GetComponentResult` - GET/v1/components/:key
