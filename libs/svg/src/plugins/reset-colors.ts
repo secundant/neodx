@@ -1,5 +1,6 @@
 import { toArray } from '@neodx/std';
-import { type AnyColor, type Colord, colord } from 'colord';
+import { type AnyColor, type Colord, colord, extend } from 'colord';
+import namesPlugin from 'colord/plugins/names';
 import { createPlugin } from '../plugin-utils';
 import type { SvgNode } from '../types';
 
@@ -13,9 +14,11 @@ export interface ColorPropertyReplacementInput {
   replaceUnknown?: string;
 }
 
-export interface ColorReplacementInput {
+export type ColorReplacementInput = string | ColorReplacementInputConfig;
+
+export interface ColorReplacementInputConfig {
   from: AnyColorInput | AnyColorInput[];
-  to: string;
+  to?: string;
 }
 
 export type AnyColorInput = AnyColor | Colord;
@@ -24,10 +27,7 @@ export const resetColors = (params: ResetColorsPluginParams = defaults) => {
   const replacements = toArray(params).map<ColorPropertyReplacement>(input => ({
     properties: toArray(input.properties ?? defaults.properties),
     replaceUnknown: input.replaceUnknown,
-    replace: toArray(input.replace ?? []).map(({ from, to }) => ({
-      from: toArray(from).map(colord),
-      to
-    }))
+    replace: toArray(input.replace ?? []).map(anyInputToReplacement)
   }));
 
   return createPlugin('reset-colors', {
@@ -39,6 +39,13 @@ export const resetColors = (params: ResetColorsPluginParams = defaults) => {
     }
   });
 };
+
+const anyInputToReplacement = (input: ColorReplacementInput) =>
+  configToReplacement(typeof input === 'string' ? { from: input } : input);
+const configToReplacement = ({ from, to }: ColorReplacementInputConfig) => ({
+  from: toArray(from).map(colord),
+  to: to ?? defaults.replaceUnknown
+});
 
 const transformChildren = (node: SvgNode, replacements: ColorPropertyReplacement[]) =>
   Array.isArray(node.children)
@@ -67,7 +74,6 @@ const getResetColorAttributes = (
         replace.find(({ from }) => from.some(color => color.isEqual(value)))?.to ?? replaceUnknown;
 
       result[name] = replacement ?? result[name];
-      console.log('reset', name, value, replacement);
     }
   }
   return result;
@@ -75,11 +81,10 @@ const getResetColorAttributes = (
 
 const defaults = {
   properties: ['fill', 'stroke'],
-  replace: {
-    from: ['#000', '#000000'],
-    to: 'currentColor'
-  }
+  replaceUnknown: 'currentColor'
 } satisfies ColorPropertyReplacementInput;
+
+extend([namesPlugin]);
 
 interface ColorPropertyReplacement {
   properties: string[];

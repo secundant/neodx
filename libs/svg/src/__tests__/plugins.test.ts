@@ -5,8 +5,8 @@ import type { SvgNode } from '../index';
 import { combinePlugins } from '../plugin-utils';
 import { groupSprites } from '../plugins';
 
-describe('plugins system', () => {
-  const emptyContext = { vfs: createTmpVfs() };
+describe('plugins system', async () => {
+  const emptyContext = { vfs: await createTmpVfs() };
   const file = (path: string) => ({ name: path, path: `${path}.svg`, node: {} as SvgNode });
   const files = (...paths: Array<string | string[]>) => paths.flatMap(toArray).map(file);
 
