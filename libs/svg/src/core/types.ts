@@ -28,6 +28,7 @@ export interface SvgFile {
   node: SvgNode;
   path: string;
   name: string;
+  content: string;
 }
 
 export interface SvgNode {

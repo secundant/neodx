@@ -1,7 +1,8 @@
+import { omit } from '@neodx/std';
 import { createPlugin } from './plugin-utils';
 
 /**
- * Fix viewBox attribute if it's missing and width/height are present
+ * Fix viewBox attribute if it's missing and width/height are present and remove width/height attributes
  */
 export const fixViewBox = () =>
   createPlugin('fix-view-box', {
@@ -10,14 +11,11 @@ export const fixViewBox = () =>
         attributes: { viewBox, width, height }
       } = node;
 
-      if (viewBox || !width || !height) {
-        return node;
-      }
       return {
         ...node,
         attributes: {
-          ...node.attributes,
-          viewBox: `0 0 ${width} ${height}`
+          ...omit(node.attributes, ['width', 'height']),
+          viewBox: viewBox || !width || !height ? viewBox : `0 0 ${width} ${height}`
         }
       };
     }
