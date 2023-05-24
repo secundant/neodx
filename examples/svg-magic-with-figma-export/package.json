@@ -15,8 +15,8 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.1",
+    "@types/react": "^18.2.6",
+    "@types/react-dom": "^18.2.4",
     "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "10.4.14",
     "postcss": "8.4.23",
@@ -27,7 +27,6 @@
     "vitest": "^0.31.0"
   },
   "scripts": {
-    "build-sprite": "sprite --verbose --group --root assets/icons -o public -d src/shared/ui/icon/sprite.gen.ts --reset-color-values '#6C707E,#A8ADBD,#818594'",
     "export-icons": "figma export --verbose",
     "typecheck": "tsc --noEmit",
     "build": "vite build",
