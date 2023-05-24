@@ -101,28 +101,28 @@
     },
     "./esbuild": {
       "types": "./dist/esbuild.d.ts",
-      "default": "./dist/esbuild.mjs",
-      "require": "./dist/esbuild.cjs"
+      "require": "./dist/esbuild.cjs",
+      "default": "./dist/esbuild.mjs"
     },
     "./rollup": {
       "types": "./dist/rollup.d.ts",
-      "default": "./dist/rollup.mjs",
-      "require": "./dist/rollup.cjs"
+      "require": "./dist/rollup.cjs",
+      "default": "./dist/rollup.mjs"
     },
     "./rspack": {
       "types": "./dist/rspack.d.ts",
-      "default": "./dist/rspack.mjs",
-      "require": "./dist/rspack.cjs"
+      "require": "./dist/rspack.cjs",
+      "default": "./dist/rspack.mjs"
     },
     "./vite": {
       "types": "./dist/vite.d.ts",
-      "default": "./dist/vite.mjs",
-      "require": "./dist/vite.cjs"
+      "require": "./dist/vite.cjs",
+      "default": "./dist/vite.mjs"
     },
     "./webpack": {
       "types": "./dist/webpack.d.ts",
-      "default": "./dist/webpack.mjs",
-      "require": "./dist/webpack.cjs"
+      "require": "./dist/webpack.cjs",
+      "default": "./dist/webpack.mjs"
     }
   }
 }
