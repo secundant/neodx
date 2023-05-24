@@ -103,13 +103,11 @@ export function createSpriteBuilder({
     const additions = parsed.filter(isTruthy);
 
     if (additions.length > 0) {
+      changed = true;
       logger?.debug('Adding %d files to sprites generation...', additions.length);
     }
     for (const file of additions) {
-      if (!files.has(file.path)) {
-        files.set(file.path, file);
-        changed = true;
-      }
+      files.set(file.path, file);
     }
   };
 
@@ -154,6 +152,7 @@ export function createSpriteBuilder({
         await hooks.afterWriteGroup({ name, files }, { vfs });
       }
       await hooks.afterWrite(groups, { vfs });
+      await vfs.formatChangedFiles();
     }
   };
 }

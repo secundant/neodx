@@ -11,7 +11,13 @@ export interface CreateWatcherParams {
 
 export function createWatcher({ root = '.', input, builder }: CreateWatcherParams) {
   const watcher = watch(input, {
-    cwd: join(builder.vfs.root, root)
+    cwd: join(builder.vfs.root, root),
+    ignoreInitial: true,
+    ignorePermissionErrors: true,
+    awaitWriteFinish: {
+      stabilityThreshold: 200,
+      pollInterval: 20
+    }
   });
   const rebuild = debounce(async () => {
     await builder.build();

@@ -1,6 +1,5 @@
 import { createLogger, createPrettyTarget } from '@neodx/log/node';
 import { createVfs } from '@neodx/vfs';
-import type { FSWatcher } from 'chokidar';
 import { createUnplugin } from 'unplugin';
 import { type CreateSpriteBuilderParams, createSpriteBuilder } from './core/create-sprite-builder';
 import { createWatcher } from './core/create-watcher';
@@ -29,18 +28,23 @@ export const unplugin = createUnplugin(
     { watchMode = false }
   ) => {
     const builder = createSpriteBuilder({
-      vfs: createVfs(process.cwd()),
+      vfs: createVfs(process.cwd(), {
+        log: logger
+      }),
       root,
       logger,
       ...params
     });
-    let watcher: FSWatcher | undefined;
     let isBuild = !watchMode;
     let isWatch = watchMode;
+    let started = false;
 
     return {
       name: '@neodx/svg',
       async buildStart() {
+        // Avoid multiple builds, for example, webpack calls buildStart on every change
+        if (started) return;
+        started = true;
         logger.debug(
           {
             isWatch,
@@ -53,18 +57,15 @@ export const unplugin = createUnplugin(
         await builder.build();
         await builder.vfs.applyChanges();
         if (isWatch) {
-          watcher = createWatcher({
+          createWatcher({
             builder,
             input,
             root
           });
         }
         if (isBuild) {
-          // TODO
+          // TODO Implement unused icons removal
         }
-      },
-      async buildEnd() {
-        await watcher?.close();
       },
       vite: {
         async configResolved(config) {
