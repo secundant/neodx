@@ -1,5 +1,12 @@
 # @neodx/log
 
+## 0.1.7
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @neodx/colors@0.2.4
+
 ## 0.1.6
 
 ### Patch Changes

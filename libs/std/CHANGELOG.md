@@ -1,5 +1,13 @@
 # @neodx/std
 
+## 0.1.4
+
+### Patch Changes
+
+- [#79](https://github.com/secundant/neodx/pull/79) [`bc94f93`](https://github.com/secundant/neodx/commit/bc94f933baecc6dad4702359ebde5bc64b81141e) Thanks [@secundant](https://github.com/secundant)! - Add `Iterable` support for `concurrent`
+
+- [#79](https://github.com/secundant/neodx/pull/79) [`bc94f93`](https://github.com/secundant/neodx/commit/bc94f933baecc6dad4702359ebde5bc64b81141e) Thanks [@secundant](https://github.com/secundant)! - Add simple `debounce` implementation
+
 ## 0.1.3
 
 ### Patch Changes
