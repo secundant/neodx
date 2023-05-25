@@ -27,5 +27,24 @@
     "@neodx/svg": "workspace:*",
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4"
+  },
+  "nx": {
+    "targets": {
+      "dev": {
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "build": {
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "lint": {
+        "dependsOn": [
+          "^build"
+        ]
+      }
+    }
   }
 }
