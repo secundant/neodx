@@ -47,7 +47,7 @@ export async function createExportsGenerator({
                 require: !dts && format === 'cjs' && exportFile
               })
             },
-            ['types', 'node', 'browser', 'import', 'default', 'require']
+            ['types', 'node', 'browser', 'import', 'require', 'default']
           )
         );
       }
