@@ -1,5 +1,27 @@
 # @neodx/svg
 
+## 0.2.0
+
+### Minor Changes
+
+- [#82](https://github.com/secundant/neodx/pull/82) [`9c896ef`](https://github.com/secundant/neodx/commit/9c896efc7bd09c51e693d694e8265e0e580e30b4) Thanks [@secundant](https://github.com/secundant)! - Provide built-in plugins for all major bundlers
+
+- [#82](https://github.com/secundant/neodx/pull/82) [`9c896ef`](https://github.com/secundant/neodx/commit/9c896efc7bd09c51e693d694e8265e0e580e30b4) Thanks [@secundant](https://github.com/secundant)! - Add built-in `fixViewBox` plugin for fallback missed viewBox
+
+- [#82](https://github.com/secundant/neodx/pull/82) [`9c896ef`](https://github.com/secundant/neodx/commit/9c896efc7bd09c51e693d694e8265e0e580e30b4) Thanks [@secundant](https://github.com/secundant)! - Introduce `createWatcher` API for simple integration of `SpriteBuilder` to development workflow
+
+- [#82](https://github.com/secundant/neodx/pull/82) [`9c896ef`](https://github.com/secundant/neodx/commit/9c896efc7bd09c51e693d694e8265e0e580e30b4) Thanks [@secundant](https://github.com/secundant)! - Introduce standalone `SpriteBuilder`, an abstraction for implementing different build flows
+
+- [#82](https://github.com/secundant/neodx/pull/82) [`9c896ef`](https://github.com/secundant/neodx/commit/9c896efc7bd09c51e693d694e8265e0e580e30b4) Thanks [@secundant](https://github.com/secundant)! - Rework `resetColors` plugin - now it handles multiple colors and rule sets, replaces unknown colors, and supports all colors variants (via `colord`)
+
+### Patch Changes
+
+- Updated dependencies [[`9c896ef`](https://github.com/secundant/neodx/commit/9c896efc7bd09c51e693d694e8265e0e580e30b4), [`9c896ef`](https://github.com/secundant/neodx/commit/9c896efc7bd09c51e693d694e8265e0e580e30b4)]:
+  - @neodx/std@0.1.4
+  - @neodx/vfs@0.1.7
+  - @neodx/fs@0.0.8
+  - @neodx/log@0.1.7
+
 ## 0.1.9
 
 ### Patch Changes

@@ -61,10 +61,10 @@
     "tmp": "^0.2.1"
   },
   "dependencies": {
-    "@neodx/fs": "^0.0.7",
-    "@neodx/pkg-misc": "^0.0.5",
-    "@neodx/std": "^0.1.3",
-    "@neodx/vfs": "^0.1.6",
+    "@neodx/fs": "^0.0.8",
+    "@neodx/pkg-misc": "^0.0.6",
+    "@neodx/std": "^0.1.4",
+    "@neodx/vfs": "^0.1.7",
     "ejs": "^3.1.9",
     "jsonc-parser": "^3.2.0",
     "picocolors": "^1.0.0",
