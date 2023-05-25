@@ -22,6 +22,7 @@
       "@neodx/pkg-misc": ["libs/pkg-misc/src/index.ts"],
       "@neodx/std": ["libs/std/src/index.ts"],
       "@neodx/svg": ["libs/svg/src/index.ts"],
+      "@neodx/svg/*": ["libs/svg/src/*.ts", "libs/svg/src/*/index.ts"],
       "@neodx/vfs": ["libs/vfs/src/index.ts"],
       "@neodx/vfs/testing-utils": ["libs/vfs/src/testing-utils.ts"],
       "@neodx/vite-plugin-library": ["libs/vite-plugin-library/src/index.ts"]
