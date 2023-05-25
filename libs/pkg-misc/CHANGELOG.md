@@ -1,15 +1,5 @@
 # @neodx/pkg-misc
 
-## 0.0.6
-
-### Patch Changes
-
-- [#79](https://github.com/secundant/neodx/pull/79) [`bc94f93`](https://github.com/secundant/neodx/commit/bc94f933baecc6dad4702359ebde5bc64b81141e) Thanks [@secundant](https://github.com/secundant)! - Make safe silent prettier import
-
-- Updated dependencies [[`bc94f93`](https://github.com/secundant/neodx/commit/bc94f933baecc6dad4702359ebde5bc64b81141e), [`bc94f93`](https://github.com/secundant/neodx/commit/bc94f933baecc6dad4702359ebde5bc64b81141e)]:
-  - @neodx/std@0.1.4
-  - @neodx/fs@0.0.8
-
 ## 0.0.5
 
 ### Patch Changes
