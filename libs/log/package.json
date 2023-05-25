@@ -2,7 +2,7 @@
   "name": "@neodx/log",
   "packageManager": "yarn@3.2.0",
   "description": "A lightweight universal logging framework",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -57,7 +57,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@neodx/colors": "^0.2.3"
+    "@neodx/colors": "^0.2.4"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
