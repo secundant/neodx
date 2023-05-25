@@ -62,7 +62,7 @@
     "@neodx/fs": "^0.0.7",
     "@neodx/log": "^0.1.6",
     "@neodx/std": "^0.1.3",
-    "@neodx/vfs": "^0.1.6",
+    "@neodx/vfs": "^0.1.0",
     "chokidar": "^3.5.3",
     "colord": "2.9.3",
     "commander": "10.0.1",
