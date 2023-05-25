@@ -1,6 +1,6 @@
 {
   "name": "@neodx/fs",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "File system helpers",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -26,7 +26,7 @@
     "tmp": "^0.2.1"
   },
   "dependencies": {
-    "@neodx/std": "^0.1.3",
+    "@neodx/std": "^0.1.4",
     "jsonc-parser": "^3.2.0",
     "tiny-glob": "^0.2.9"
   },
