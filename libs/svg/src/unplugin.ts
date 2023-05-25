@@ -1,10 +1,9 @@
 import { createLogger, createPrettyTarget } from '@neodx/log/node';
 import { createVfs } from '@neodx/vfs';
 import { createUnplugin } from 'unplugin';
-import { type CreateSpriteBuilderParams, createSpriteBuilder } from './core/create-sprite-builder';
-import { createWatcher } from './core/create-watcher';
+import { type CreateSpriteBuilderParams, createSpriteBuilder, createWatcher } from './core';
 
-export interface SvgPluginParams extends Omit<CreateSpriteBuilderParams, 'vfs'> {
+export interface SvgPluginParams extends Partial<Omit<CreateSpriteBuilderParams, 'vfs'>> {
   /**
    * Globs to icons files
    */
@@ -24,7 +23,7 @@ export const unplugin = createUnplugin(
       root = '.',
       input = '**/*.svg',
       ...params
-    }: SvgPluginParams,
+    }: SvgPluginParams = {},
     { watchMode = false }
   ) => {
     const builder = createSpriteBuilder({
@@ -33,6 +32,7 @@ export const unplugin = createUnplugin(
       }),
       root,
       logger,
+      output: 'public',
       ...params
     });
     let isBuild = !watchMode;
