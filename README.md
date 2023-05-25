@@ -49,9 +49,9 @@ import { Icon } from '@/shared/ui';
 export const MyComponent = () => (
   <>
     <Icon name="check" />
-    <Icon name="close" />
-    <Icon name="text/bold" />
-    <Icon name="actions/delete" />
+    <Icon name="close" className="text-red-500" />
+    <Icon name="text/bold" className="text-lg" />
+    <Icon name="actions/delete" className="p-2 rounded-md bg-stone-300" />
   </>
 );
 ```
@@ -61,15 +61,121 @@ No runtime overhead, one component for all icons, native browser support, static
 Sounds good? Of course! Native sprites are unfairly deprived technique.
 Probably, you already know about it, but didn't use it because of the lack of tooling.
 
-Here we go! Type safety, autocomplete, runtime access to icon metadata all wrapped in simple CLI:
+Here we go! Type safety, autocomplete, runtime access to icon metadata all wrapped in simple plugins for all popular bundlers (thx [unplugin](https://github.com/unjs/unplugin)) and CLI, for example:
+
+<details>
+  <summary>Vite plugin</summary>
+
+```typescript
+import { defineConfig } from 'vite';
+import svg from '@neodx/svg/vite';
+
+export default defineConfig({
+  plugins: [
+    svg({
+      root: 'assets',
+      output: 'public',
+      definition: 'src/shared/ui/icon/sprite.h.ts'
+    })
+  ]
+});
+```
+
+</details>
+
+<details>
+  <summary>Webpack plugin</summary>
+
+```typescript
+import svg from '@neodx/svg/webpack';
+
+export default {
+  plugins: [
+    svg({
+      root: 'assets',
+      output: 'public',
+      definition: 'src/shared/ui/icon/sprite.h.ts'
+    })
+  ]
+};
+```
+
+</details>
+
+<details>
+  <summary>Rollup plugin</summary>
+
+```typescript
+import svg from '@neodx/svg/rollup';
+
+export default {
+  plugins: [
+    svg({
+      root: 'assets',
+      output: 'public',
+      definition: 'src/shared/ui/icon/sprite.h.ts'
+    })
+  ]
+};
+```
+
+</details>
+
+<details>
+  <summary>ESBuild plugin</summary>
+
+```typescript
+import svg from '@neodx/svg/esbuild';
+
+export default {
+  plugins: [
+    svg({
+      root: 'assets',
+      output: 'public',
+      definition: 'src/shared/ui/icon/sprite.h.ts'
+    })
+  ]
+};
+```
+
+</details>
+
+<details>
+  <summary>CLI</summary>
 
 ```shell
-npx @neodx/svg --group --root assets --output public/sprites --definition src/shared/ui/icon/sprite.h.ts
+npx @neodx/svg --group --root assets --output public --definition src/shared/ui/icon/sprite.h.ts
 # --root - root folder with SVGs
 # --group - group icons by folders (assets/common/add.svg -> common/add, assets/other/cut.svg -> other/cut)
 # --output (-o) - output folder for sprites
 # --definition (-d) - output file for sprite definitions
 ```
+
+</details>
+
+<details>
+<summary>Node.JS API (programmatic usage, low-level)</summary>
+
+```typescript
+import { buildSprites } from '@neodx/svg';
+import { createVfs } from '@neodx/vfs';
+
+await buildSprites({
+  vfs: createVfs(process.cwd()),
+  root: 'assets',
+  input: '**/*.svg',
+  output: 'public',
+  definition: 'src/shared/ui/icon/sprite.h.ts'
+});
+```
+
+</details>
+
+For the details and real usage see our examples:
+
+- [React, Vite, TailwindCSS, and multicolored icon](./examples/svg-vite) - A step-by-step tutorial showcasing how to integrate sprite icons into your Vite project.
+- [React, Vite, icons exported by "@neodx/figma"](./examples/svg-magic-with-figma-export) - Integrated showcase of the seamless automation capabilities of `@neodx/svg` and `@neodx/figma` for your icons!
+- [NextJS, webpack and simple flat icons](./examples/svg-next) - An example demonstrating the usage of `@neodx/svg` webpack plugin with NextJS.
 
 In the result, you'll get something like this:
 
