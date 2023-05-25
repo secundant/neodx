@@ -1,13 +1,18 @@
 import { toArray } from '@neodx/std';
 import { createTmpVfs } from '@neodx/vfs/testing-utils';
 import { describe, expect, test } from 'vitest';
-import type { SvgNode } from '../index';
+import type { SvgFile, SvgNode } from '..';
 import { groupSprites } from '../plugins';
 import { combinePlugins } from '../plugins/plugin-utils';
 
 describe('plugins system', async () => {
   const emptyContext = { vfs: await createTmpVfs() };
-  const file = (path: string) => ({ name: path, path: `${path}.svg`, node: {} as SvgNode });
+  const file = (path: string): SvgFile => ({
+    name: path,
+    path: `${path}.svg`,
+    node: {} as SvgNode,
+    content: ''
+  });
   const files = (...paths: Array<string | string[]>) => paths.flatMap(toArray).map(file);
 
   test('resolveEntriesMap should return new map', () => {
