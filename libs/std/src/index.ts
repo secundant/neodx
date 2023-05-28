@@ -13,7 +13,7 @@ export {
 export { asyncReduce, concurrent, concurrently, deduplicateAsync } from './async';
 export { debounce } from './debounce';
 export type { AnyKey, AnyObj, Nil } from './guards';
-export { isEmpty, isError, isNil, isObject, isObjectLike } from './guards';
+export { isEmpty, isError, isNil, isNotNil, isObject, isObjectLike, isPrimitive } from './guards';
 export { invariant } from './invariant';
 export { sum } from './math';
 export { memoizeWeak } from './memoize';
@@ -28,7 +28,18 @@ export {
   sortObjectByOrder
 } from './object';
 export type { Falsy, ObjectEntry } from './shared';
-export { entries, False, hasOwn, identity, isTruthy, keys, toArray, True, values } from './shared';
+export {
+  entries,
+  False,
+  hasOwn,
+  identity,
+  isTruthy,
+  keys,
+  toArray,
+  toInt,
+  True,
+  values
+} from './shared';
 export { quickPluralize, truncateString } from './string';
 export { cases, toCase } from './to-case';
 export type { URLInit } from './url';

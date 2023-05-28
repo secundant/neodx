@@ -8,6 +8,9 @@ export type AnyObj = Record<AnyKey, unknown>;
 
 export const isEmpty = (target: unknown[]): target is [] => target.length === 0;
 export const isError = (target: unknown): target is Error => target instanceof Error;
+
+export const isPrimitive = (value: unknown) =>
+  value === null || (typeof value !== 'function' && typeof value !== 'object');
 export const isObject = (target: unknown): target is AnyObj => {
   if (isNil(target) || !isObjectLike(target) || toString.call(target) !== objectString) {
     return false;
@@ -18,6 +21,7 @@ export const isObject = (target: unknown): target is AnyObj => {
 };
 
 export const isNil = (target: unknown): target is Nil => target == null;
+export const isNotNil = <T>(target: T | Nil): target is T => target != null;
 export const isObjectLike = (target: unknown): target is object =>
   typeof target === 'object' && target !== null;
 
