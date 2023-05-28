@@ -57,7 +57,9 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@neodx/colors": "^0.2.4"
+    "@neodx/colors": "^0.2.4",
+    "cli-truncate": "^3.1.0",
+    "pathe": "^1.1.0"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
