@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { isEmpty, keys, toArray } from '@neodx/std';
+import { isEmpty, isTruthy, keys, toArray } from '@neodx/std';
 import { LOGGER_SILENT_LEVEL } from './shared';
 import type {
   CreateLogger,
@@ -36,6 +36,7 @@ export function createLoggerFactory<BaseLevel extends string>({
     const { meta, target, level: rootLevel, name = '', levels } = params;
     const transform = toArray(params.transform) as unknown as LoggerTransformer<BaseLevel>[];
     const targets = toArray(target)
+      .filter(isTruthy)
       .map(target => (typeof target === 'function' ? { target } : target))
       .map(target => ({
         ...target,

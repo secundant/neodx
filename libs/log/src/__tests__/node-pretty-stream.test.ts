@@ -1,6 +1,6 @@
 import { createColors } from '@neodx/colors';
 import { describe, expect, test, vi } from 'vitest';
-import type { PrettyStreamOptions } from '../node';
+import type { PrettyTargetParams } from '../node';
 import { createLogger, pretty } from '../node';
 import type { DefaultLoggerLevel } from '../shared';
 import type { LoggerParams } from '../types';
@@ -8,7 +8,7 @@ import type { LoggerParams } from '../types';
 describe('node pretty stream', () => {
   const createTestLogger = (
     params?: Partial<LoggerParams<DefaultLoggerLevel>>,
-    prettyParams?: Partial<PrettyStreamOptions<DefaultLoggerLevel>>
+    prettyParams?: Partial<PrettyTargetParams<DefaultLoggerLevel>>
   ) => {
     const log = vi.fn();
     const logError = vi.fn();
@@ -41,6 +41,19 @@ describe('node pretty stream', () => {
 
     logger.info('foo');
 
+    expect(log.mock.lastCall).toEqual([expect.stringMatching(/\d{2}:\d{2}:\d{2} ℹ info\s+foo/)]);
+  });
+
+  test('should show milliseconds with flag', async () => {
+    const { log, logger } = createTestLogger(
+      {},
+      {
+        displayMs: true
+      }
+    );
+
+    logger.info('foo');
+
     expect(log.mock.lastCall).toEqual([
       expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ℹ info\s+foo/)
     ]);
@@ -53,7 +66,7 @@ describe('node pretty stream', () => {
 
     logger.info('foo');
     expect(log.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} \[test] ℹ info\s+foo/)
+      expect.stringMatching(/\d{2}:\d{2}:\d{2} \[test] ℹ info\s+foo/)
     ]);
   });
 
@@ -61,14 +74,12 @@ describe('node pretty stream', () => {
     const { log, logError, logger } = createTestLogger();
 
     logger.error('foo');
-    expect(log.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ✘ error\s+foo/)
-    ]);
+    expect(log.mock.lastCall).toEqual([expect.stringMatching(/\d{2}:\d{2}:\d{2} ✘ error\s+foo/)]);
     expect(logError).not.toBeCalled();
 
     logger.error(new Error('as error'));
     expect(logError.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ✘ Error\s+as error/),
+      expect.stringMatching(/\d{2}:\d{2}:\d{2} ✘ Error\s+as error/),
       expect.stringContaining('at')
     ]);
     expect(log).toBeCalledTimes(1);
@@ -91,7 +102,7 @@ describe('node pretty stream', () => {
 
     logger.error(getError());
     expect(logError.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ✘ TypeError\s+final/),
+      expect.stringMatching(/\d{2}:\d{2}:\d{2} ✘ TypeError\s+final/),
       expect.stringContaining('at')
     ]);
   });
@@ -101,7 +112,7 @@ describe('node pretty stream', () => {
 
     logger.info({ foo: 'bar' });
     expect(log.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ℹ info\s+\{\n {2}"foo": "bar"\n}/)
+      expect.stringMatching(/\d{2}:\d{2}:\d{2} ℹ info\s+\{\n {2}"foo": "bar"\n}/)
     ]);
   });
 
@@ -111,7 +122,7 @@ describe('node pretty stream', () => {
     logger.error({ foo: 'bar', err: new Error('example'), bar: 'bar' }, 'additional message');
     expect(logError.mock.lastCall).toEqual([
       expect.stringMatching(
-        /\d{2}:\d{2}:\d{2}.\d{3} ✘ Error\s+additional message \{\n {2}"foo": "bar",\n {2}"bar": "bar"\n}/
+        /\d{2}:\d{2}:\d{2} ✘ Error\s+additional message \{\n {2}"foo": "bar",\n {2}"bar": "bar"\n}/
       ),
       expect.stringContaining('at')
     ]);
@@ -139,7 +150,7 @@ describe('node pretty stream', () => {
 
     logger.info({ a: 1 }, 'foo');
     expect(log.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} foo \{\n {2}"a": 1\n}/)
+      expect.stringMatching(/\d{2}:\d{2}:\d{2} foo \{\n {2}"a": 1\n}/)
     ]);
   });
 
@@ -150,9 +161,7 @@ describe('node pretty stream', () => {
 
     logger.child('child').info({ a: 1 }, 'foo');
     expect(log.mock.lastCall).toEqual([
-      expect.stringMatching(
-        /\d{2}:\d{2}:\d{2}.\d{3} \[parent › child] ℹ info\s+foo \{\n {2}"a": 1\n}/
-      )
+      expect.stringMatching(/\d{2}:\d{2}:\d{2} \[parent › child] ℹ info\s+foo \{\n {2}"a": 1\n}/)
     ]);
   });
 

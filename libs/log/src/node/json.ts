@@ -1,8 +1,9 @@
+import { type PathLike, createWriteStream } from 'node:fs';
 import type { Writable } from 'node:stream';
 import type { LogChunk } from '../types';
 import { serializeJSON } from '../utils';
 
-export interface JsonStreamOptions {
+export interface JsonTargetParams {
   target?: Writable | ((...args: unknown[]) => void);
   dateKey?: string;
   errorKey?: string;
@@ -11,13 +12,20 @@ export interface JsonStreamOptions {
   levelValueKey?: string;
 }
 
-export function createJsonTarget({
+export function file(filename: PathLike, options?: Omit<JsonTargetParams, 'target'>) {
+  return json({
+    target: createWriteStream(filename),
+    ...options
+  });
+}
+
+export function json({
   target = process.stdout,
   dateKey = 'time',
   errorKey = 'err',
   messageKey = 'msg',
   levelValueKey = 'level'
-}: JsonStreamOptions = {}) {
+}: JsonTargetParams = {}) {
   const write = 'writable' in target ? target.write.bind(target) : target;
 
   return function handleLog({

@@ -1,3 +1,4 @@
+import { hostname } from 'node:os';
 import { type CreateLoggerFactoryParams, createLoggerFactory } from '../create-logger-factory';
 import {
   type DefaultLoggerLevel,
@@ -6,30 +7,31 @@ import {
   LOGGER_SILENT_LEVEL
 } from '../shared';
 import { printf, readArguments } from '../utils';
-import { createJsonTarget } from './create-json-target';
-import { createPrettyTarget } from './create-pretty-target';
-import { NODE_LOGGER_SYSTEM_INFO } from './system-info';
+import { file, json } from './json';
+import { pretty } from './pretty';
 
-export type { JsonStreamOptions } from './create-json-target';
-export type { PrettyStreamOptions } from './create-pretty-target';
+export type { JsonTargetParams } from './json';
+export type { PrettyTargetParams } from './pretty';
 
 export {
   type CreateLoggerFactoryParams,
   type DefaultLoggerLevel,
-  createJsonTarget,
   createLoggerFactory,
-  createPrettyTarget,
   DEFAULT_LOGGER_LEVELS,
   DEFAULT_LOGGER_PARAMS,
+  file,
+  json,
   LOGGER_SILENT_LEVEL,
-  NODE_LOGGER_SYSTEM_INFO
+  pretty
 };
+
+export const NODE_LOGGER_SYSTEM_INFO = { pid: process.pid, hostname: hostname() };
 
 export const createLogger = createLoggerFactory<DefaultLoggerLevel>({
   defaultParams: {
     ...DEFAULT_LOGGER_PARAMS,
     meta: NODE_LOGGER_SYSTEM_INFO,
-    target: process.env.NODE_ENV === 'production' ? createJsonTarget() : createPrettyTarget()
+    target: process.env.NODE_ENV === 'production' ? json() : pretty()
   },
   formatMessage: printf,
   readArguments

@@ -1,3 +1,5 @@
+import type { Falsy } from '@neodx/std';
+
 /**
  * Representing log methods. All log methods must implement this interface.
  */
@@ -69,7 +71,7 @@ export interface LogChunk<Level extends string> {
   msgArgs?: unknown[];
   msgTemplate?: string;
 
-  __: Readonly<LoggerInternals<Level>>;
+  __: Readonly<LoggerInternals<Level> & Record<string, unknown>>;
 }
 
 export interface LoggerInternals<Level extends string> {
@@ -147,7 +149,7 @@ export interface LoggerParams<Level extends string> {
   target:
     | LoggerHandler<Level>
     | LoggerHandleConfig<Level>
-    | Array<LoggerHandler<Level> | LoggerHandleConfig<Level>>;
+    | Array<LoggerHandler<Level> | LoggerHandleConfig<Level> | Falsy>;
   transform: LoggerTransformer<Level> | LoggerTransformer<Level>[];
 }
 
