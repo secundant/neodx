@@ -242,5 +242,52 @@ describe('logger', () => {
       expect(spies.debug).not.toHaveBeenCalled();
       expect(spies.silent).not.toHaveBeenCalled();
     });
+
+    test('should support aliases', () => {
+      const original = vi.fn();
+      const alias = vi.fn();
+
+      const log = createLogger({
+        level: 'alias',
+        levels: {
+          original: 100,
+          alias: 'original'
+        },
+        target: [
+          {
+            level: 'original',
+            target: original
+          },
+          {
+            level: 'alias',
+            target: alias
+          }
+        ]
+      });
+
+      log.original('foo');
+      expect(original).toHaveBeenCalledTimes(1);
+      expect(alias).toHaveBeenCalledTimes(1);
+      expect(alias).toHaveBeenCalledWith(
+        expect.objectContaining({
+          level: 'original',
+          __: expect.objectContaining({
+            originalLevel: 'original'
+          })
+        })
+      );
+
+      log.alias('bar');
+      expect(original).toHaveBeenCalledTimes(2);
+      expect(alias).toHaveBeenCalledTimes(2);
+      expect(alias).toHaveBeenCalledWith(
+        expect.objectContaining({
+          level: 'original',
+          __: expect.objectContaining({
+            originalLevel: 'alias'
+          })
+        })
+      );
+    });
   });
 });

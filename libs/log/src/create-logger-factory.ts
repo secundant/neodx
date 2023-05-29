@@ -39,6 +39,7 @@ export function createLoggerFactory<BaseLevel extends string>({
       .map(target => (typeof target === 'function' ? { target } : target))
       .map(target => ({
         ...target,
+        level: target.level ? getOriginalLevelName(target.level, levels) : undefined,
         target: toArray(target.target)
       }))
       .filter(target => !isEmpty(target.target) && !isSilent(target.level));
