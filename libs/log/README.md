@@ -7,7 +7,7 @@
 </h4>
 
 <div align="center">
-  <img alt="Header" src="docs/preview-intro.png" width="1458">
+  <img alt="Header" src="docs/preview-intro.png" width="1416">
 </div>
 
 <div align="center">
@@ -89,15 +89,77 @@ We're supporting multiple log levels for semantic and output control.
 You can use one of the built-in log levels: `error`, `warn`, `info`, `verbose`, `debug`:
 
 ```typescript
-log.error('Something went wrong!'); // errors most important level
-log.warn('Deprecated function used!'); // warnings
-log.info('User logged in'); // information, most used level, neutral messages
-log.verbose('User opened the page %s', '/home'); // verbose messages, extended information,
-log.debug({ login, password }, 'User logged in, session id: %s', sessionId); // debug messages, the least important level, can contain sensitive information for debugging purposes
+named.error('Something went wrong!'); // errors most important level
+named.warn('Deprecated function used!'); // warnings
+named.info('User logged in'); // information, most used level, neutral messages
+named.done('Task completed'); // any success messages, by default less important than "info"
+named.success('Session has been closed'); // alias to "done"
+named.debug({ login: 'gigachad', password: '123' }, 'User logged in, session id: %s', 'xx-dj2jd'); // debug messages, the least important level, can contain sensitive information for debugging purposes
+named.verbose('User opened the page %s', '/home'); // verbose messages, extended information, alias to "debug"
 ```
 
 <div align="center">
-  <img alt="Header" src="docs/output-levels.png" width="1458">
+  <img alt="Header" src="docs/output-levels.png" width="1416">
+</div>
+
+#### Level aliases
+
+Sometimes you want to specify additional semantic levels, for example, `trace` or `fatal`, but you don't want to add a new **real** level to the logger, because it requires additional configuration and output control.
+
+To solve this problem, you can define level aliases:
+
+```typescript
+const log = createLogger({
+  level: 'info',
+  levels: {
+    fatal: 'error',
+    trace: 'debug'
+  }
+});
+
+log.fatal('Something went wrong!'); // [my-app] Something went wrong!
+log.trace('User opened the page %s', '/home'); // [my-app] User opened the page /home
+```
+
+In this example, we defined two aliases: `fatal` and `trace` that will be mapped to `error` and `debug` levels respectively without any additional behavior.
+
+Some targets are supporting additional configuration for aliases, for example, `pretty` target tries to work with aliases as with real levels, so you can specify different settings for them:
+
+```typescript
+const aliases = createLogger({
+  name: 'aliases',
+  level: 'trace',
+  levels: {
+    ...DEFAULT_LOGGER_LEVELS,
+    fatal: 'error',
+    trace: 'debug'
+  },
+  target: pretty({
+    levelColors: {
+      ...pretty.defaultColors,
+      fatal: 'red',
+      trace: 'magentaBright'
+    },
+    levelBadges: {
+      ...pretty.defaultBadges,
+      fatal: '💀',
+      trace: '❯'
+    }
+  })
+});
+
+aliases.error('Message from error level');
+aliases.fatal('fatal is alias for error');
+aliases.warn('Attention!');
+aliases.info('Some common information');
+aliases.done('Success message');
+aliases.debug('Additional details');
+aliases.verbose('is alias for debug');
+aliases.trace('is alias for debug, too!');
+```
+
+<div align="center">
+  <img alt="Aliases" src="docs/aliases.png" width="1124">
 </div>
 
 ### Formatting, metadata, and errors
@@ -189,27 +251,29 @@ Imagine that you have a server application, and you want to get the following be
 To achieve this, you can use `target` option and specify different targets based on the environment:
 
 ```typescript
+import { createLogger, pretty, json, file } from '@neodx/log/node';
+
 const log = createLogger({
   target: [
     // Enabling pretty output for errors in test mode
     {
       level: 'error',
-      target: process.env.NODE_ENV === 'test' ? createPrettyTarget() : []
+      target: process.env.NODE_ENV === 'test' ? pretty() : []
     },
     // Enabling JSON stdout streaming for errors in production mode
     {
       level: 'error',
-      target: process.env.NODE_ENV === 'production' ? createJsonTarget() : []
+      target: process.env.NODE_ENV === 'production' ? json() : []
     },
     // Enabling file streaming for "info", "warn" and "error" in production mode
     {
       level: 'info',
-      target: process.env.NODE_ENV === 'production' ? createFileTarget('/dev/null') : [] // Just an example, we don't support file target natively yet :)
+      target: process.env.NODE_ENV === 'production' ? file('/dev/null') : []
     },
     // Enabling pretty output for "debug" in development mode
     {
       level: 'debug',
-      target: process.env.NODE_ENV === 'development' ? createPrettyTarget() : []
+      target: process.env.NODE_ENV === 'development' ? pretty() : []
     }
   ]
 });
@@ -312,11 +376,12 @@ const log = createLogger({
     warn: 20,
     info: 30,
     debug: 40, // Highest value - lowest priority, logs will be emitted only with { level: "debug" },
+    verbose: 'debug', // You can use level aliases
     [LOGGER_SILENT_LEVEL]: Infinity // Special level, which can be used to disable all logs. Ignore it if you don't need it.
   },
   /**
    * Logger target(s). See details further.
-   * @type {LoggerHandler<Level> | Array<LoggerHandler<Level> | LoggerHandleConfig<Level>>}
+   * @type {LoggerHandler<Level> | Array<LoggerHandler<Level> | LoggerHandleConfig<Level> | Falsy>}
    */
   target: createConsoleTarget(),
   /**
@@ -347,10 +412,10 @@ Alternatively, can be created with [`createLoggerFactory`](#createLoggerFactory)
 Single target for all logs.
 
 ```typescript
-import { createLogger, createPrettyTarget, createJsonTarget } from '@neodx/log/node';
+import { createLogger, pretty, json } from '@neodx/log/node';
 
 const log = createLogger({
-  target: process.env.NODE_ENV === 'production' ? createJsonTarget() : createPrettyTarget()
+  target: process.env.NODE_ENV === 'production' ? json() : pretty()
 });
 ```
 
@@ -378,7 +443,7 @@ const log = createLogger({
 });
 ```
 
-#### `target: Array<LoggerHandler<Level> | LoggerHandleConfig<Level>>`
+#### `target: Array<LoggerHandler<Level> | LoggerHandleConfig<Level> | Falsy>`
 
 If you need to send different log chunks to different targets, you can specify an array of targets:
 
@@ -387,10 +452,15 @@ const log = createLogger({
   target: [
     {
       level: 'info', // Will receive only 'info', 'warn' and 'error' chunks
-      target: [createJsonTarget(), chunk => writeLogToFile(chunk)]
+      target: [json(), chunk => writeLogToFile(chunk)]
     },
     {
       level: 'error', // Will receive only 'error' chunks
+      target: chunk => sendLogToSentry(chunk)
+    },
+    // You can use simple conditional expressions to specify targets
+    process.env.NODE_ENV === 'production' && {
+      level: 'debug', // Will receive only 'debug' chunks
       target: chunk => sendLogToSentry(chunk)
     }
   ]
