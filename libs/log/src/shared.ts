@@ -17,7 +17,7 @@ export const DEFAULT_LOGGER_LEVELS = {
 
 export const DEFAULT_LOGGER_PARAMS = {
   levels: DEFAULT_LOGGER_LEVELS,
-  level: 'info',
+  level: 'done',
   name: '',
   transform: [],
   target: [],
