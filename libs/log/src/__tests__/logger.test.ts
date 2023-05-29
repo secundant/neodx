@@ -127,7 +127,7 @@ describe('logger', () => {
           target: [error]
         },
         {
-          level: 'verbose',
+          level: 'debug',
           target: [verbose]
         }
       ]
@@ -162,7 +162,7 @@ describe('logger', () => {
         target: [spies[level]]
       }));
       const logger = createLogger({
-        level: 'verbose',
+        level: 'done',
         levels,
         target,
         meta: {},

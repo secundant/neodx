@@ -78,9 +78,10 @@ export interface LoggerInternals<Level extends string> {
    * @default { error: 10, warn: 20, info: 30, verbose: 40, debug: 50, silent: Infinity }
    */
   levelsConfig: LoggerLevelsConfig<Level>;
+  originalLevel: Level;
 }
 
-export type LoggerLevelsConfig<Level extends string> = Record<Level, number>;
+export type LoggerLevelsConfig<Level extends string> = Record<Level, number | Level>;
 export type LoggerBaseMeta = Record<keyof any, unknown>;
 export type LoggerMethods<Levels extends string> = Record<Levels, LoggerMethod>;
 
@@ -97,9 +98,9 @@ export type Logger<Levels extends string> = {
 } & LoggerMethods<Levels>;
 
 export interface CreateLogger<DefaultLevel extends string> {
-  <CustomLevels extends BaseLevelsConfig>(options: LoggerParamsWithLevels<CustomLevels>): Logger<
-    GetLevelNames<CustomLevels>
-  >;
+  <const CustomLevels extends BaseLevelsConfig>(
+    options: LoggerParamsWithLevels<CustomLevels>
+  ): Logger<GetLevelNames<CustomLevels>>;
   (options?: Partial<LoggerParams<DefaultLevel>>): Logger<DefaultLevel>;
 }
 

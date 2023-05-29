@@ -1,7 +1,7 @@
 import { createColors } from '@neodx/colors';
 import { describe, expect, test, vi } from 'vitest';
 import type { PrettyStreamOptions } from '../node';
-import { createLogger, createPrettyTarget } from '../node';
+import { createLogger, pretty } from '../node';
 import type { DefaultLoggerLevel } from '../shared';
 import type { LoggerParams } from '../types';
 
@@ -17,7 +17,7 @@ describe('node pretty stream', () => {
         {
           level: 'error',
           target: [
-            createPrettyTarget({
+            pretty({
               log,
               logError,
               colors: createColors(false, true),

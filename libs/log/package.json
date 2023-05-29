@@ -69,6 +69,7 @@
     "loglevel": "^1.8.1",
     "pino": "^8.14.1",
     "tmp": "^0.2.1",
+    "tsx": "^3.12.7",
     "winston": "^3.8.2"
   },
   "types": "./dist/index.d.ts",

@@ -43,7 +43,9 @@ export function createLoggerFactory<BaseLevel extends string>({
       }))
       .filter(target => !isEmpty(target.target) && !isSilent(target.level));
 
-    const log = (level: BaseLevel, ...args: unknown[]) => {
+    const log = (levelOrAlias: BaseLevel, ...args: unknown[]) => {
+      const level = getOriginalLevelName(levelOrAlias, levels);
+
       if (isSilent(rootLevel) || (rootLevel && levels[level] > levels[rootLevel])) return;
       const [[unknownMsgTemplate = '', ...msgArgs], additionalFields, error] = readArguments(args);
       const msgTemplate = String(unknownMsgTemplate);
@@ -62,6 +64,7 @@ export function createLoggerFactory<BaseLevel extends string>({
           msgTemplate,
           msg: isEmpty(msgArgs) ? msgTemplate : formatMessage(msgTemplate, msgArgs),
           __: {
+            originalLevel: levelOrAlias,
             levelsConfig: levels
           }
         }
@@ -96,3 +99,11 @@ export function createLoggerFactory<BaseLevel extends string>({
 }
 
 const isSilent = (value?: string): value is 'silent' => value === LOGGER_SILENT_LEVEL;
+const getOriginalLevelName = <Level extends string>(
+  level: Level,
+  levels: LoggerLevelsConfig<Level>
+): Level => {
+  const value = levels[level] as Level | number;
+
+  return typeof value === 'string' ? getOriginalLevelName(value, levels) : level;
+};
