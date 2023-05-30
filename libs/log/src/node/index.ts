@@ -10,6 +10,12 @@ import { printf, readArguments } from '../utils';
 import { file, json } from './json';
 import { pretty } from './pretty';
 
+export {
+  type PrintCodeFrameOptions,
+  type PrintPrettyErrorOptions,
+  printCodeFrame,
+  printPrettyError
+} from './error';
 export type { JsonTargetParams } from './json';
 export type { PrettyTargetParams } from './pretty';
 

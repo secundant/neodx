@@ -23,13 +23,3 @@ export const DEFAULT_LOGGER_PARAMS = {
   target: [],
   meta: {}
 } satisfies Readonly<LoggerParamsWithLevels<typeof DEFAULT_LOGGER_LEVELS>>;
-
-export const CLI_SYMBOL = {
-  arrowUp: '↑',
-  arrowRight: '→',
-  arrowBottom: '↓',
-  enter: '↳',
-  cross: '×',
-  pointer: '❯',
-  pointerSmall: '›'
-};

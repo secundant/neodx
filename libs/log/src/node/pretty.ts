@@ -1,9 +1,10 @@
 import { type ColorName, type Colors, colors as defaultColors } from '@neodx/colors';
-import { type Falsy, hasOwn, identity, keys, memoizeWeak, omit, values } from '@neodx/std';
+import { type Falsy, hasOwn, identity, isEmpty, keys, memoizeWeak, omit, values } from '@neodx/std';
 import type { DefaultLoggerLevel } from '../shared';
-import { CLI_SYMBOL } from '../shared';
 import type { LogChunk } from '../types';
 import { serializeJSON } from '../utils';
+import { printPrettyError } from './error/print-pretty-error';
+import { cliSymbols } from './shared';
 
 export interface PrettyTargetParams<Level extends string> {
   /**
@@ -22,9 +23,21 @@ export interface PrettyTargetParams<Level extends string> {
   colors?: Colors;
   // Possible feature for future versions
   // underline?: boolean;
+  /**
+   * Display milliseconds in log message (e.g. `12:34:56.789`).
+   * Works only if `displayTime` is `true`.
+   */
   displayMs?: boolean;
+  /**
+   * Display time in log message
+   */
   displayTime?: boolean;
+  /**
+   * Display log level in log message.
+   */
   displayLevel?: boolean;
+
+  prettyErrors?: boolean;
 
   levelColors?: Partial<Record<Level, ColorName>> | null;
   levelBadges?: Partial<Record<Level, string>> | null;
@@ -40,6 +53,7 @@ export function pretty<const Level extends string>({
   displayMs = false,
   displayTime = true,
   displayLevel = true,
+  prettyErrors = true,
   levelColors = defaultLevelColors as any,
   levelBadges = defaultLevelBadges as any
 }: PrettyTargetParams<Level> = {}) {
@@ -61,8 +75,13 @@ export function pretty<const Level extends string>({
       level: resolvedLevel,
       __: { levelsConfig, originalLevel: level }
     } = chunk;
+
+    // In `prettyErrors` mode, we will display error in a more readable way
+    const possibleLabelFromError = prettyErrors ? null : error?.name;
+    const userDefinedMessage = prettyErrors && msg === error?.message ? null : msg;
+
     const maxLevelLength = getMaxObjectKeysLength(levelsConfig);
-    const label = (error?.name ?? level.toLowerCase()).padEnd(1);
+    const label = (possibleLabelFromError ?? level.toLowerCase()).padEnd(1);
     const badge = getLevelSetting(levelBadges, level);
     const levelColorName =
       getLevelSetting(levelColors, level) ?? getLevelSetting(levelColors, resolvedLevel);
@@ -75,18 +94,31 @@ export function pretty<const Level extends string>({
       name && colors.gray(`[${name.split(':').join(nameDelimiter)}]`),
       displayLevel && levelColorFn(fullLabel.padEnd(maxLevelLength + maxBadgesLength))
     ]);
+
+    const haveVisibleMeta = !isEmpty(keys(visibleMeta));
     const formatter = displayMs ? withMs : withoutMs;
     const formatted = mergeString([
       displayTime && colors.gray(formatter.format(date)),
       firstPart,
-      msg,
-      keys(visibleMeta).length > 0 && serializeJSON(visibleMeta, 2)
+      userDefinedMessage,
+      haveVisibleMeta && serializeJSON(visibleMeta, 2)
     ]);
 
     if (error) {
       const [_, ...stackBody] = error.stack?.toString().split('\n') ?? [];
 
-      logError(formatted, colors.gray(stackBody.map(line => line.replace(/^/, '\n')).join('')));
+      if (prettyErrors) {
+        const shouldPrintErrorInAdditionalLine = userDefinedMessage || haveVisibleMeta;
+
+        logError(
+          formatted,
+          shouldPrintErrorInAdditionalLine ? '\n' : '',
+          printPrettyError(error),
+          error instanceof Error ? '\n' : ''
+        );
+      } else {
+        logError(formatted, colors.gray(stackBody.map(line => line.replace(/^/, '\n')).join('')));
+      }
     } else {
       log(formatted);
     }
@@ -98,7 +130,7 @@ const getMaxObjectKeysLength = memoizeWeak((levels: object) =>
   Math.max(...Object.keys(levels).map(level => level.length))
 );
 
-const nameDelimiter = ` ${CLI_SYMBOL.pointerSmall} `;
+const nameDelimiter = ` ${cliSymbols.pointerSmall} `;
 const defaultLevelBadges = {
   info: 'ℹ',
   done: '✔',
