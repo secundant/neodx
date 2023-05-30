@@ -28,12 +28,12 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.1",
-    "@commitlint/cli": "^17.6.3",
-    "@commitlint/config-conventional": "^17.6.3",
+    "@commitlint/cli": "^17.6.5",
+    "@commitlint/config-conventional": "^17.6.5",
     "@neodx/scripts": "workspace:*",
-    "@types/node": "^20.2.3",
+    "@types/node": "^20.2.5",
     "eslint": "^8.41.0",
-    "eslint-kit": "^6.12.0",
+    "eslint-kit": "^9.0.9",
     "husky": "^8.0.3",
     "is-ci": "^3.0.1",
     "lint-staged": "^13.2.2",
@@ -41,10 +41,10 @@
     "prettier": "^2.8.8",
     "tsx": "^3.12.7",
     "typescript": "^5.0.4",
-    "vite": "^4.3.6",
+    "vite": "^4.3.9",
     "vite-plugin-dts": "^2.3.0",
     "vite-tsconfig-paths": "^4.2.0",
-    "vitest": "^0.31.0"
+    "vitest": "^0.31.2"
   },
   "dependenciesMeta": {
     "core-js": {
