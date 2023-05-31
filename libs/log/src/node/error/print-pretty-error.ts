@@ -1,11 +1,12 @@
 import type { Colors } from '@neodx/colors';
 import { colors as defaultColors } from '@neodx/colors';
-import { isEmpty, isPrimitive, keys, omit, pick, toArray, True } from '@neodx/std';
+import { isPrimitive, pick, toArray, True } from '@neodx/std';
 import { existsSync, readFileSync } from 'node:fs';
 import { relative } from 'pathe';
 import { serializeJSON } from '../../utils';
 import { cliSymbols } from '../shared';
 import { printCodeFrame } from './print-code-frame';
+import { getErrorCustomProperties } from './serialize-error';
 import { newlineRe } from './source-map';
 import { type ParsedStack, parseStackTraces } from './stack-trace';
 
@@ -35,7 +36,7 @@ export function printPrettyError(originalError: unknown, options: PrintPrettyErr
   const error = toError(originalError);
 
   const stacks = parseStackTraces(error.stack || '', fullStack ? True : filterStack);
-  const errorProperties = omit(Object.fromEntries(Object.entries(error)), excludedProps);
+  const errorProperties = getErrorCustomProperties(error);
   const highlightedStacks = toArray(getHighlightedStacks?.(stacks) ?? []);
   const prefix = (value = indent) => (value ? ' '.repeat(value) : '');
 
@@ -66,7 +67,7 @@ export function printPrettyError(originalError: unknown, options: PrintPrettyErr
     ];
   });
 
-  if (!isEmpty(keys(errorProperties))) {
+  if (!errorProperties) {
     messageParts.push(
       `${prefix()}${colors.red(`${cliSymbols.longArrowRight} serialized error properties:`)}`,
       `${colors.gray(
@@ -119,5 +120,3 @@ const toError = (error?: unknown) => {
   }
   return error as Error;
 };
-
-const excludedProps = ['stack', 'cause', 'name', 'message'];

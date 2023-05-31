@@ -1,14 +1,13 @@
 import { colors } from '@neodx/colors';
-import { createLogger } from '@neodx/log';
-import { createPrettyTarget } from '@neodx/log/node';
+import { createLogger, DEFAULT_LOGGER_LEVELS, pretty } from '@neodx/log/node';
 
 const unnamed = createLogger({
   level: 'debug',
-  target: createPrettyTarget()
+  target: pretty()
 });
 const system = unnamed.fork({
   name: '@neodx/log',
-  target: createPrettyTarget({
+  target: pretty({
     displayTime: false
   }),
   transform: chunk => ({
@@ -38,8 +37,8 @@ named.info('Shutting down...');
 inmemory.info('Unloading database...');
 inmemory.verbose("Database wasn't initialized, skipping...");
 notifier.info('Clean up connections...');
-notifier.verbose('Closed connections: %s', 'no active connections');
-named.info('Shutdown complete, exiting...');
+notifier.success('Closed connections: %s', 'no active connections');
+named.done('Shutdown complete, exiting...');
 
 console.log('\n\n\n');
 
@@ -50,8 +49,10 @@ console.log('\n\n\n');
 named.error('Something went wrong!'); // errors most important level
 named.warn('Deprecated function used!'); // warnings
 named.info('User logged in'); // information, most used level, neutral messages
-named.verbose('User opened the page %s', '/home'); // verbose messages, extended information,
+named.done('Task completed'); // any success messages, by default less important than "info"
+named.success('Session has been closed'); // alias to "done"
 named.debug({ login: 'gigachad', password: '123' }, 'User logged in, session id: %s', 'xx-dj2jd'); // debug messages, the least important level, can contain sensitive information for debugging purposes
+named.verbose('User opened the page %s', '/home'); // verbose messages, extended information, alias to "debug"
 
 console.log('\n\n\n');
 /**
@@ -95,8 +96,8 @@ child.warn('will automatically');
 child.error('have name prefix');
 child.verbose('and will be synchronized');
 const forked = child.fork({
-  target: createPrettyTarget({
-    badges: null
+  target: pretty({
+    levelBadges: null
   })
 });
 
@@ -110,7 +111,7 @@ forked.warn('Warning without level symbol');
 forked.error('Error without level symbol');
 
 const timelessChild = child.fork({
-  target: createPrettyTarget({
+  target: pretty({
     displayTime: false
   })
 });
@@ -137,3 +138,38 @@ unnamed.error(
   },
   'Error in object with additional info'
 );
+
+const aliases = createLogger({
+  name: 'aliases',
+  level: 'trace',
+  levels: {
+    ...DEFAULT_LOGGER_LEVELS,
+    fatal: 'error',
+    trace: 'debug'
+  },
+  target: pretty({
+    levelColors: {
+      ...pretty.defaultColors,
+      fatal: 'red',
+      trace: 'magentaBright'
+    },
+    levelBadges: {
+      ...pretty.defaultBadges,
+      fatal: '💀',
+      trace: '❯'
+    }
+  })
+});
+
+console.log('\n\n');
+
+aliases.error('Message from error level');
+aliases.fatal('fatal is alias for error');
+aliases.warn('Attention!');
+aliases.info('Some common information');
+aliases.done('Success message');
+aliases.debug('Additional details');
+aliases.verbose('is alias for debug');
+aliases.trace('is alias for debug, too!');
+
+console.log('\n\n');

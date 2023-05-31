@@ -2,6 +2,7 @@ import { type PathLike, createWriteStream } from 'node:fs';
 import type { Writable } from 'node:stream';
 import type { LogChunk } from '../types';
 import { serializeJSON } from '../utils';
+import { serializeError } from './error';
 
 export interface JsonTargetParams {
   target?: Writable | ((...args: unknown[]) => void);
@@ -41,12 +42,13 @@ export function json({
       {
         [levelValueKey]: levelsConfig[level],
         [dateKey]: date.getTime(),
-        [errorKey]: error,
+        [errorKey]: error && serializeError(error),
         [messageKey]: msg
       },
       name && { name },
       meta
     );
+
     write(serializeJSON(info) + '\n');
   };
 }

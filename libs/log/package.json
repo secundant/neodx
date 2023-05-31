@@ -48,7 +48,7 @@
   "scripts": {
     "compare-bundle": "tsx bench/compare-bundle.ts",
     "compare-output": "tsx bench/compare-output.ts",
-    "show-output": "tsx bench/neodx-log-output.ts",
+    "show-output": "tsx examples/big-list-of-logs.ts",
     "bench": "vitest bench",
     "typecheck": "tsc --noEmit",
     "clean": "yarn dlx rimraf dist",

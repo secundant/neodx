@@ -590,8 +590,10 @@ This is a simple comparison of JSON logging output from different libraries.
 
 This project got inspiration about API design and some features from the following projects:
 
-- [pino](https://www.npmjs.com/package/pino)
-- [signale](https://www.npmjs.com/package/signale)
+- [signale](https://www.npmjs.com/package/signale) for pretty target inspiration
+- [pino](https://www.npmjs.com/package/pino) for JSON logging, API design and framework integration ideas
+- [vitest](https://vitest.dev/) for beautiful errors printing
+- Other loggers for comparison:
 - [loglevel](https://www.npmjs.com/package/loglevel)
 - [winston](https://www.npmjs.com/package/winston)
 - [bunyan](https://www.npmjs.com/package/bunyan)

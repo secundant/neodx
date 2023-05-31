@@ -1,5 +1,4 @@
-import { createLogger } from '@neodx/log';
-import { createJsonTarget, createPrettyTarget, NODE_LOGGER_SYSTEM_INFO } from '@neodx/log/node';
+import { createLogger, json, NODE_LOGGER_SYSTEM_INFO, pretty } from '@neodx/log/node';
 import * as bunyan from 'bunyan';
 import loglevel from 'loglevel';
 import { createWriteStream } from 'node:fs';
@@ -11,11 +10,11 @@ const voidFn = () => {};
 
 export const neodxLoggerTargets = {
   dummy: {
-    pretty: createPrettyTarget({
+    pretty: pretty({
       log: voidFn,
       logError: voidFn
     }),
-    json: createJsonTarget({
+    json: json({
       target: voidFn
     })
   }
@@ -36,11 +35,31 @@ export const createExampleCircularJson = () => {
 (deep as any).deep.deep = Object.assign({}, JSON.parse(JSON.stringify(deep)));
 (deep as any).deep.deep.deep = Object.assign({}, JSON.parse(JSON.stringify(deep)));
 
+export class CustomError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'CustomError';
+  }
+
+  myProp = 'custom error property';
+  createdAt = new Date();
+  array = [1, 2, 3];
+}
+
+export const errorWithCause = new Error('error with cause', {
+  cause: new ReferenceError('second level error', {
+    cause: new SyntaxError('third level error', {
+      cause: new CustomError('fourth level error')
+    })
+  })
+});
+
 export const exampleObjects = {
   simpleError: new Error('simple error'),
   circular: createExampleCircularJson(),
   simple: { num: 1, hello: 'world' },
   simpleErrorWithMeta: { err: new Error('hello'), num: 10, hello: 'world' },
+  complexError: errorWithCause,
   deep
 };
 export const exampleLogArgs = {
@@ -89,7 +108,7 @@ export const loggers = {
       process.stdout
     ),
     neodx: createLogger({
-      target: createJsonTarget(),
+      target: json(),
       name: 'myapp',
       meta: {
         ...NODE_LOGGER_SYSTEM_INFO
@@ -119,3 +138,5 @@ export const loggers = {
 };
 
 loglevel.setLevel('info');
+
+export const excludeFromPerfComparison = ['winston', 'loglevel'];
