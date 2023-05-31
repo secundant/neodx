@@ -1,6 +1,7 @@
 {
   "name": "example-svg-magic-with-figma-export",
   "version": "0.0.1",
+  "type": "module",
   "private": true,
   "packageManager": "yarn@3.2.0",
   "sideEffects": false,

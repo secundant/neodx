@@ -1,2 +1,2 @@
-export { type IconName, type IconProps, Icon } from './icon';
-export { type SpritesMap, SPRITES_META } from './sprite.gen';
+export { Icon, type IconName, type IconProps } from './icon';
+export { SPRITES_META, type SpritesMap } from './sprite.gen';
