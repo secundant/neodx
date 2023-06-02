@@ -316,7 +316,7 @@ export function SomeFeature() {
 ```tsx
 // shared/ui/icon/icon.tsx
 import clsx from 'clsx';
-import { SVGProps, ForwardedRef, forwardRef } from 'react';
+import { SVGProps } from 'react';
 import { SpritesMap } from './sprite-definitions';
 
 // Merging all icons as `SPRITE_NAME/SPRITE_ICON_NAME`
