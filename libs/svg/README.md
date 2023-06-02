@@ -254,7 +254,7 @@ Now we can use it in our code - for type checking, autocomplete and other cool s
 
 ```tsx
 // shared/ui/icon/icon.tsx
-import { SpritesMap } from './sprite-definitions';
+import { SpritesMap } from './sprite.h';
 
 export interface IconProps<Group extends keyof SpritesMap> {
   name: SpritesMap[Group];
@@ -317,7 +317,7 @@ export function SomeFeature() {
 // shared/ui/icon/icon.tsx
 import clsx from 'clsx';
 import { SVGProps, ForwardedRef, forwardRef } from 'react';
-import { SpritesMap } from './sprite-definitions';
+import { SpritesMap } from './sprite.h';
 
 // Merging all icons as `SPRITE_NAME/SPRITE_ICON_NAME`
 export type IconName = {
