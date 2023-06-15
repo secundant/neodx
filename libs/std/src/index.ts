@@ -13,7 +13,20 @@ export {
 export { asyncReduce, concurrent, concurrently, deduplicateAsync } from './async';
 export { debounce } from './debounce';
 export type { AnyKey, AnyObj, Nil } from './guards';
-export { isEmpty, isError, isNil, isNotNil, isObject, isObjectLike, isPrimitive } from './guards';
+export {
+  isEmpty,
+  isError,
+  isNil,
+  isNotNil,
+  isNotNull,
+  isNotUndefined,
+  isNull,
+  isObject,
+  isObjectLike,
+  isPrimitive,
+  isUndefined,
+  negate
+} from './guards';
 export { invariant } from './invariant';
 export { sum } from './math';
 export { memoizeWeak } from './memoize';

@@ -9,6 +9,13 @@ export type AnyObj = Record<AnyKey, unknown>;
 export const isEmpty = (target: unknown[]): target is [] => target.length === 0;
 export const isError = (target: unknown): target is Error => target instanceof Error;
 
+export const negate =
+  <R>(fn: (value: unknown) => value is R) =>
+  <Value>(value: Value): value is Exclude<Value, R> =>
+    !fn(value);
+
+export const isNull = (value: unknown): value is null => value === null;
+export const isUndefined = (value: unknown): value is undefined => value === undefined;
 export const isPrimitive = (value: unknown) =>
   value === null || (typeof value !== 'function' && typeof value !== 'object');
 export const isObject = (target: unknown): target is AnyObj => {
@@ -21,7 +28,6 @@ export const isObject = (target: unknown): target is AnyObj => {
 };
 
 export const isNil = (target: unknown): target is Nil => target == null;
-export const isNotNil = <T>(target: T | Nil): target is T => target != null;
 export const isObjectLike = (target: unknown): target is object =>
   typeof target === 'object' && target !== null;
 
@@ -30,3 +36,7 @@ const getLastPrototypeOf = (target: unknown): unknown => {
 
   return proto === null ? target : getLastPrototypeOf(proto);
 };
+
+export const isNotUndefined = negate(isUndefined);
+export const isNotNull = negate(isNull);
+export const isNotNil = negate(isNil);
