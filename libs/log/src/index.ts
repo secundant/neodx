@@ -1,18 +1,18 @@
 import { identity, isEmpty, keys } from '@neodx/std';
-import { createLoggerFactory } from './create-logger-factory';
-import type { DefaultLoggerLevel } from './shared';
-import { DEFAULT_LOGGER_PARAMS } from './shared';
-import type { LogChunk } from './types';
+import { createLoggerFactory } from './core/create-logger-factory';
+import type { DefaultLoggerLevel } from './core/shared';
+import { DEFAULT_LOGGER_PARAMS } from './core/shared';
+import type { LogChunk } from './core/types';
 import { readArguments } from './utils';
 
-export { type CreateLoggerFactoryParams, createLoggerFactory } from './create-logger-factory';
+export { createLoggerFactory, type CreateLoggerFactoryParams } from './core/create-logger-factory';
 export {
-  type DefaultLoggerLevel,
   DEFAULT_LOGGER_LEVELS,
   DEFAULT_LOGGER_PARAMS,
+  type DefaultLoggerLevel,
   LOGGER_SILENT_LEVEL
-} from './shared';
-export type * from './types';
+} from './core/shared';
+export type * from './core/types';
 
 export const createLogger = createLoggerFactory<DefaultLoggerLevel>({
   defaultParams: {

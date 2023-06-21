@@ -88,11 +88,15 @@ export type LoggerBaseMeta = Record<keyof any, unknown>;
 export type LoggerMethods<Levels extends string> = Record<Levels, LoggerMethod>;
 
 export type Logger<Levels extends string> = {
-  fork(options?: Partial<LoggerParams<Levels>>): Logger<Levels>;
+  readonly meta: LoggerBaseMeta;
+  fork<P extends LoggerParams<Levels>>(options?: Partial<P>): Logger<Levels>;
   fork<LevelsConfig extends BaseLevelsConfig>(
     options: LoggerParamsWithLevels<LevelsConfig>
   ): Logger<GetLevelNames<LevelsConfig>>;
-  child(name: string, options?: Partial<Omit<LoggerParams<Levels>, 'name'>>): Logger<Levels>;
+  child<P extends LoggerParams<Levels>>(
+    name: string,
+    options?: Partial<Omit<P, 'name'>>
+  ): Logger<Levels>;
   child<LevelsConfig extends BaseLevelsConfig>(
     name: string,
     options: Omit<LoggerParamsWithLevels<LevelsConfig>, 'name'>
@@ -119,7 +123,7 @@ export interface LoggerParamsWithLevels<LevelsConfig extends BaseLevelsConfig>
 
 export interface LoggerParams<Level extends string> {
   /**
-   * Logger name, will be shown in the logs.
+   * Logger name will be shown in the logs.
    * @example 'my-app'
    * @example 'my-app:my-module'
    */

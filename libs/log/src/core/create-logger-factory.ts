@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { isEmpty, isTruthy, keys, toArray } from '@neodx/std';
+import type { LogArguments } from '../utils';
 import { LOGGER_SILENT_LEVEL } from './shared';
 import type {
   CreateLogger,
@@ -11,7 +12,6 @@ import type {
   LoggerParamsWithLevels,
   LoggerTransformer
 } from './types';
-import type { LogArguments } from './utils';
 
 export interface CreateLoggerFactoryParams<DefaultLevels extends string> {
   defaultParams: LoggerParams<DefaultLevels>;
@@ -87,6 +87,9 @@ export function createLoggerFactory<BaseLevel extends string>({
 
     return {
       ...methods,
+      get meta() {
+        return params.meta;
+      },
       fork: (options: any) => createLogger({ ...userParams, ...options }),
       child: (childName: string, options: any) =>
         createLogger({
