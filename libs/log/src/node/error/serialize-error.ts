@@ -3,7 +3,8 @@ import { isEmpty, keys, omit } from '@neodx/std';
 /**
  * Serialize an error into a plain object that can be serialized into JSON then.
  */
-export function serializeError(error: Error) {
+export function serializeError(error: unknown) {
+  if (!(error instanceof Error)) return error;
   const result: Record<string, unknown> = {
     name: error.name,
     stack: error.stack,

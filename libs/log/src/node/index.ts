@@ -1,30 +1,30 @@
 import { hostname } from 'node:os';
-import { type CreateLoggerFactoryParams, createLoggerFactory } from '../create-logger-factory';
+import { createLoggerFactory, type CreateLoggerFactoryParams } from '../core/create-logger-factory';
 import {
-  type DefaultLoggerLevel,
   DEFAULT_LOGGER_LEVELS,
   DEFAULT_LOGGER_PARAMS,
+  type DefaultLoggerLevel,
   LOGGER_SILENT_LEVEL
-} from '../shared';
+} from '../core/shared';
 import { printf, readArguments } from '../utils';
 import { file, json } from './json';
 import { pretty } from './pretty';
 
 export {
-  type PrintCodeFrameOptions,
-  type PrintPrettyErrorOptions,
   printCodeFrame,
-  printPrettyError
+  type PrintCodeFrameOptions,
+  printPrettyError,
+  type PrintPrettyErrorOptions
 } from './error';
 export type { JsonTargetParams } from './json';
 export type { PrettyTargetParams } from './pretty';
 
 export {
-  type CreateLoggerFactoryParams,
-  type DefaultLoggerLevel,
   createLoggerFactory,
+  type CreateLoggerFactoryParams,
   DEFAULT_LOGGER_LEVELS,
   DEFAULT_LOGGER_PARAMS,
+  type DefaultLoggerLevel,
   file,
   json,
   LOGGER_SILENT_LEVEL,

@@ -1,9 +1,20 @@
 import { type ColorName, type Colors, colors as defaultColors } from '@neodx/colors';
-import { type Falsy, hasOwn, identity, isEmpty, keys, memoizeWeak, omit, values } from '@neodx/std';
-import type { DefaultLoggerLevel } from '../shared';
-import type { LogChunk } from '../types';
-import { serializeJSON } from '../utils';
-import { printPrettyError } from './error/print-pretty-error';
+import {
+  type Falsy,
+  hasOwn,
+  identity,
+  isEmpty,
+  isObject,
+  keys,
+  memoizeWeak,
+  omit,
+  values
+} from '@neodx/std';
+import type { DefaultLoggerLevel } from '../core/shared';
+import type { LogChunk } from '../core/types';
+import { printPrettyError, type PrintPrettyErrorOptions } from './error';
+import type { LogSerializers } from './serializers';
+import { DEFAULT_SERIALIZERS, serializeJSON, serializeMeta } from './serializers';
 import { cliSymbols } from './shared';
 
 export interface PrettyTargetParams<Level extends string> {
@@ -28,8 +39,9 @@ export interface PrettyTargetParams<Level extends string> {
    * Works only if `displayTime` is `true`.
    */
   displayMs?: boolean;
+  serializers?: LogSerializers;
   /**
-   * Display time in log message
+   * Display time in a log message
    */
   displayTime?: boolean;
   /**
@@ -37,7 +49,7 @@ export interface PrettyTargetParams<Level extends string> {
    */
   displayLevel?: boolean;
 
-  prettyErrors?: boolean;
+  prettyErrors?: boolean | Partial<PrintPrettyErrorOptions>;
 
   levelColors?: Partial<Record<Level, ColorName>> | null;
   levelBadges?: Partial<Record<Level, string>> | null;
@@ -47,10 +59,12 @@ export interface PrettyTargetParams<Level extends string> {
  * Creates a pretty log handler for development mode in node.
  */
 export function pretty<const Level extends string>({
+  // eslint-disable-next-line no-console
   log = console.log,
   logError = console.error,
   colors = defaultColors,
   displayMs = false,
+  serializers = DEFAULT_SERIALIZERS,
   displayTime = true,
   displayLevel = true,
   prettyErrors = true,
@@ -64,6 +78,7 @@ export function pretty<const Level extends string>({
   const maxBadgesLength = levelBadges
     ? Math.max(...values(levelBadges).map(b => String(b).length))
     : 0;
+  const prettyErrorCustomOptions = isObject(prettyErrors) ? prettyErrors : {};
 
   return function prettyHandler(chunk: LogChunk<Level>) {
     const {
@@ -101,7 +116,7 @@ export function pretty<const Level extends string>({
       displayTime && colors.gray(formatter.format(date)),
       firstPart,
       userDefinedMessage,
-      haveVisibleMeta && serializeJSON(visibleMeta, 2)
+      haveVisibleMeta && serializeJSON(serializeMeta(visibleMeta, serializers), 2)
     ]);
 
     if (error) {
@@ -113,7 +128,7 @@ export function pretty<const Level extends string>({
         logError(
           formatted,
           shouldPrintErrorInAdditionalLine ? '\n' : '',
-          printPrettyError(error),
+          printPrettyError(error, prettyErrorCustomOptions),
           error instanceof Error ? '\n' : ''
         );
       } else {

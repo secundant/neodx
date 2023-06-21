@@ -1,14 +1,20 @@
-import { type PathLike, createWriteStream } from 'node:fs';
+import { createWriteStream, type PathLike } from 'node:fs';
 import type { Writable } from 'node:stream';
-import type { LogChunk } from '../types';
-import { serializeJSON } from '../utils';
-import { serializeError } from './error';
+import type { LogChunk } from '../core/types';
+import {
+  DEFAULT_SERIALIZERS,
+  type LogSerializers,
+  serializeError,
+  serializeJSON,
+  serializeMeta
+} from './serializers';
 
 export interface JsonTargetParams {
   target?: Writable | ((...args: unknown[]) => void);
   dateKey?: string;
   errorKey?: string;
   messageKey?: string;
+  serializers?: LogSerializers;
   levelNameKey?: string;
   levelValueKey?: string;
 }
@@ -25,6 +31,7 @@ export function json({
   dateKey = 'time',
   errorKey = 'err',
   messageKey = 'msg',
+  serializers = DEFAULT_SERIALIZERS,
   levelValueKey = 'level'
 }: JsonTargetParams = {}) {
   const write = 'writable' in target ? target.write.bind(target) : target;
@@ -46,7 +53,7 @@ export function json({
         [messageKey]: msg
       },
       name && { name },
-      meta
+      serializeMeta(meta, serializers)
     );
 
     write(serializeJSON(info) + '\n');
