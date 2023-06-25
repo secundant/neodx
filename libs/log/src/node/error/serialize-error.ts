@@ -1,4 +1,4 @@
-import { isEmpty, keys, omit } from '@neodx/std';
+import { isEmptyObject, omit } from '@neodx/std';
 
 /**
  * Serialize an error into a plain object that can be serialized into JSON then.
@@ -22,7 +22,7 @@ export function serializeError(error: unknown) {
 export function getErrorCustomProperties(error: Error) {
   const errorProperties = omit(Object.fromEntries(Object.entries(error)), builtInErrorProps);
 
-  return isEmpty(keys(errorProperties)) ? null : errorProperties;
+  return isEmptyObject(errorProperties) ? null : errorProperties;
 }
 
 const builtInErrorProps = ['stack', 'cause', 'name', 'message'];

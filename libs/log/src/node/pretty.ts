@@ -78,7 +78,10 @@ export function pretty<const Level extends string>({
   const maxBadgesLength = levelBadges
     ? Math.max(...values(levelBadges).map(b => String(b).length))
     : 0;
-  const prettyErrorCustomOptions = isObject(prettyErrors) ? prettyErrors : {};
+  const prettyErrorCustomOptions: PrintPrettyErrorOptions = {
+    colors,
+    ...(isObject(prettyErrors) ? prettyErrors : {})
+  };
 
   return function prettyHandler(chunk: LogChunk<Level>) {
     const {

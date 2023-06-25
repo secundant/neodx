@@ -67,7 +67,7 @@ export function printPrettyError(originalError: unknown, options: PrintPrettyErr
     ];
   });
 
-  if (!errorProperties) {
+  if (errorProperties) {
     messageParts.push(
       `${prefix()}${colors.red(`${cliSymbols.longArrowRight} serialized error properties:`)}`,
       `${colors.gray(
