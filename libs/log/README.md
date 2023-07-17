@@ -23,25 +23,29 @@
 > **Warning**
 > This project is still in the development stage, under 0.x.x version breaking changes can be introduced in any release, but I'll try to make them loud.
 
-- **Tiny**. ~1kb!
+- **Tiny and simple**. `< 1kb!` without extra configuration
 - **Fast enough**. No extra overhead, no hidden magic
 - **Customizable**. You can replace most of the parts with your own
-- **Isomorphic**. Works in node.js and browser without any changes, pre-configured for both environments
+- **Isomorphic**. Automatically works in Node.js and browsers
 - **Typed**. Written in TypeScript, with full type support
+- **Well featured**. JSON logs, pretty console logs, error handling, and more
+- 🆕 **Built-in HTTP frameworks** ⛓️`express`, `koa`, Node core `http` loggers are supported out of the box
 
 ```typescript
-const log = createLogger({
-  name: 'my-app',
-  level: 'info'
-});
+const log = createLogger();
 
 log.info('Hello, world!'); // [my-app] Hello, world!
 log.info({ object: 'property' }, 'Template %s', 'string'); // Template string { object: 'property' }
-log.debug('Hello, world!'); // nothing, because debug level is disabled
+log.debug('Some additional information...'); // nothing, because debug level is disabled
 
-const child = log.child('example');
+// Child logger will extend all unspecified settings from the parent
+const childLog = log.child('example');
+const needToGoDeeper = childLog.child('next one', {
+  level: 'debug' // override level
+});
 
-child.warn('Hello, world!'); // [my-app › example] Hello, world!
+childLog.warn('Hello, world!'); // [example] Hello, world!
+needToGoDeeper.debug('debug is enabled here'); // [example › next one] debug is enabled here
 ```
 
 ## Installation
@@ -69,9 +73,9 @@ const log = createLogger();
 log.info('Hello, world!'); // Hello, world!
 ```
 
-### Adding a name
+### Branding your logs
 
-But by default, the logger doesn't have a name, so you can't distinguish between different loggers.
+By default, logger doesn't have a name, so you can't distinguish between different loggers.
 Let's add a name:
 
 ```typescript
@@ -82,11 +86,11 @@ const log = createLogger({
 log.info('Hello, world!'); // [my-app] Hello, world!
 ```
 
-### Log levels
+### Semantic levels
 
-We're supporting multiple log levels for semantic and output control.
+We're supporting multiple log levels exposed as methods for semantic and output control.
 
-You can use one of the built-in log levels: `error`, `warn`, `info`, `verbose`, `debug`:
+You can use one of the built-in log levels: `error`, `warn`, `info`, `done`, `success`, `verbose`, `debug`:
 
 ```typescript
 named.error('Something went wrong!'); // errors most important level
@@ -102,7 +106,7 @@ named.verbose('User opened the page %s', '/home'); // verbose messages, extended
   <img alt="Header" src="docs/output-levels.png" width="1416">
 </div>
 
-#### Level aliases
+#### Level aliasing
 
 Sometimes you want to specify additional semantic levels, for example, `trace` or `fatal`, but you don't want to add a new **real** level to the logger, because it requires additional configuration and output control.
 
@@ -123,7 +127,7 @@ log.trace('User opened the page %s', '/home'); // [my-app] User opened the page 
 
 In this example, we defined two aliases: `fatal` and `trace` that will be mapped to `error` and `debug` levels respectively without any additional behavior.
 
-Some targets are supporting additional configuration for aliases, for example, `pretty` target tries to work with aliases as with real levels, so you can specify different settings for them:
+Some targets are supporting additional configuration for aliases, for example, `pretty` target tries to work with aliases as with real levels, so you can specify different settings for them.
 
 ```typescript
 const aliases = createLogger({
@@ -176,8 +180,8 @@ You can use any combination of arguments:
 
 In other words:
 
-- If the first argument is an object, it will be treated as metadata, other arguments are a format template and arguments for it
-- If the first argument is an error, it will be treated as an error, other arguments are a format template and arguments for it
+- If the first argument is an object, it will be treated as metadata; other arguments are a format template and arguments for it
+- If the first argument is an error, it will be treated as an error; other arguments are a format template and arguments for it
 - Otherwise, the first argument is a format template and the other arguments are arguments for it
 
 Let's see how it works:
@@ -192,6 +196,217 @@ log.info({ name: 'world' }, 'Hello, %s!', 'world'); // [ Metadata: { "name": "wo
 log.error(new Error('Something went wrong!')); // Error: Something went wrong!
 log.error({ err: new Error('Something went wrong!'), foo: 'bar' }); // Error: Something went wrong! [ Metadata: { "foo": "bar" } ]
 ```
+
+### 🆕 Frameworks integration
+
+`@neodx/log` provides a set of integrations for popular frameworks built on top of the core logger and Node.JS `http` module.
+
+> **Note:** We have a plan to add more integrations in the future, but you can use the core logger with any framework.
+
+#### Express
+
+![Express](docs/example-express-logs.png)
+
+> **Note:** Under explanation, we will use `@neodx/log/express`, but the same approach can be used for any supported framework.
+
+> **Note:** Currently, we are not able to catch errors from single middleware, so you need to use `preserveErrorMiddleware` to catch errors from all middlewares.
+
+```typescript
+import { createExpressLogger } from '@neodx/log/express';
+import { createLogger } from '@neodx/log/node';
+import express from 'express';
+import createError from 'http-errors';
+
+const app = express();
+const expressLogger = createExpressLogger();
+
+app.use(expressLogger);
+app.get('/', (req, res) => {
+  res.send('respond with a resource');
+});
+app.get('/:id', (req, res) => {
+  req.log.info('Requested user ID %s', req.params.id);
+  res.status(200).json({ id: req.params.id });
+});
+// ... other routes
+app.use((req, res, next) => {
+  next(createError(404));
+});
+app.use(expressLogger.preserveErrorMiddleware);
+```
+
+###### Pass your own logger instance
+
+By default, `createExpressLogger` and other framework integrations will create a new empty logger instance,
+but you can pass your own instance:
+
+```typescript
+import { createExpressLogger } from '@neodx/log/express';
+import { createLogger } from '@neodx/log';
+
+const logger = createLogger({
+  name: 'my-app',
+  level: 'debug'
+});
+
+app.use(createExpressLogger({ logger }));
+```
+
+##### Configure every part of request logging
+
+```typescript
+// Other frameworks adapters will have same options
+createExpressLogger({
+  // Control logging behavior
+
+  shouldLog: ({ req }) => !isHealthCheck(req), // enable/disable logging. By default, it will log every request
+  shouldLogError: true, // will log any tracked error
+  shouldLogRequest: true, // log information about the request
+  shouldLogResponse: true, // log successful response
+
+  // Extract information from request/response
+
+  getMeta: ({ req }) => ({ ip: req.ip }), // function to get metadata for every request
+  // function to get metadata for error
+  getErrorMeta: ({ req, res, error }) => ({
+    /* ... */
+  }),
+  // function to get metadata for request
+  getRequestMeta: ({ req, res }) => ({
+    /* ... */
+  }),
+  // function to get metadata for response
+  getResponseMeta: ({ req, res }) => ({
+    /* ... */
+  }),
+
+  // Customize log messages (we already format them for you in a well-readable way)
+
+  getErrorMessage: ({ req }) => `Failed ${req.method} ${req.url}`, // function to get log message for error
+  getRequestMessage: ({ req }) => `Request ${req.method} ${req.url}`, // function to get log message for request
+  getResponseMessage: ({ req }) => `Success ${req.method} ${req.url}` // function to get log message for response
+});
+```
+
+#### Koa
+
+In Koa, you don't need to pass anything except `createKoaLogger` middleware:
+
+```typescript
+app.use(createKoaLogger());
+```
+
+<details>
+  <summary>Detailed example</summary>
+
+  <img alt="Koa" src="docs/example-koa-logs.png" width="1892" />
+
+```typescript
+import { createKoaLogger } from '@neodx/log/koa';
+import { createLogger } from '@neodx/log/node';
+import createError from 'http-errors';
+import Koa from 'koa';
+
+const dev = process.env.NODE_ENV !== 'production';
+const port = process.env.PORT || 3000;
+
+const app = new Koa();
+const logger = createLogger({
+  name: 'koa-app'
+});
+const koaLogger = createKoaLogger({
+  logger,
+  simple: dev,
+  shouldLogRequest: true
+});
+
+app.use(koaLogger);
+app.use(async (ctx, next) => {
+  await next();
+  const status = ctx.status || 404;
+
+  if (status === 404) {
+    ctx.throw(createError(404));
+  }
+});
+app.get('/users', ctx => {
+  ctx.body = 'respond with a resource';
+});
+app.get('/users/:id', ctx => {
+  ctx.req.log.info('Requested user ID %s', ctx.params.id);
+  ctx.status = 200;
+  ctx.body = { id: ctx.params.id };
+});
+
+app.listen(port, () => {
+  logger.success(`Example app listening on port ${port}!`);
+});
+```
+
+</details>
+
+#### Node.JS HTTP
+
+Node.JS `http` module is the most basic way to create a server in Node.JS,
+so we don't have any abstractions as we have for Express or Koa.
+
+We need to create http logger handler and pass it to `http.createServer` by ourselves:
+
+```typescript
+const httpLogger = createHttpLogger();
+const server = createServer((req, res) => {
+  httpLogger(req, res);
+  // ... your code
+});
+```
+
+<details>
+  <summary>Detailed example</summary>
+
+  <img alt="Koa" src="docs/example-http-logs.png" width="1892" />
+
+```typescript
+import { createHttpLogger } from '@neodx/log/http';
+import { createLogger } from '@neodx/log/node';
+import createError from 'http-errors';
+import { createServer } from 'node:http';
+
+const dev = process.env.NODE_ENV !== 'production';
+const port = process.env.PORT || 3000;
+
+const logger = createLogger({
+  name: 'node-http-app'
+});
+const httpLogger = createHttpLogger({
+  logger,
+  simple: dev,
+  shouldLogRequest: true
+});
+
+const server = createServer((req, res) => {
+  httpLogger(req, res);
+  if (req.url === '/users') {
+    res.setHeader('Content-Type', 'application/json');
+    res.writeHead(200);
+    res.end(
+      JSON.stringify([
+        { id: 1, name: 'John' },
+        { id: 2, name: 'Jane' }
+      ])
+    );
+  } else {
+    res.err = createError(404);
+    res.writeHead(404);
+    res.end('Unknown route');
+  }
+});
+
+server.listen(port, () => {
+  logger.success(`Example app listening on port ${port}!`);
+});
+```
+
+</details>
 
 ## Key concepts
 
@@ -284,7 +499,7 @@ It's an example for multiple targets configuration only, but you also can use a 
 ### Format template
 
 We're providing support for **limited (_see further_)** [printf](https://en.wikipedia.org/wiki/Printf_format_string) format for log messages.
-You can annotate string with special placeholders, which will be replaced with values from the arguments list:
+You can annotate string with special placeholders, which will be replaced with values from the argument list:
 
 - `%s` - string
 - `%d` - number
@@ -369,7 +584,7 @@ const log = createLogger({
   level: 'debug',
   /**
    * Object with all available levels and their values.
-   * @default { error: 10, warn: 20, info: 30, verbose: 40, debug: 50, [LOGGER_SILENT_LEVEL]: Infinity }
+   * @default { error: 10, warn: 20, info: 30, done: 40, debug: 50, success: 'done', verbose: 'debug', [LOGGER_SILENT_LEVEL]: Infinity }
    */
   levels: {
     error: 10, // Lowest value - highest priority, can be disabled only with { level: "silent" }
@@ -508,6 +723,16 @@ const log = createLogger({
 });
 ```
 
+### `createHttpLogger`
+
+> TODO ...
+
+#### `createExpressLogger`
+
+#### `createKoaLogger`
+
+Create a special logger for HTTP requests.
+
 ### `createLoggerFactory`
 
 Customize logger behavior and create a new logger factory.
@@ -551,7 +776,7 @@ Nevertheless, embracing comprehensive logging is essential for effective softwar
 So, what's the problem? Why do we avoid logging?
 
 During software development, developers frequently face the same issue: "How can I turn off, replace, or modify my logs?"
-The inability to easily control logging behavior often leads us to one of two choices - either drop the logs (we even have ESLint rules for this purpose) altogether or introduce an abstraction layer.
+The inability to easily control logging behavior often leads us to one of two choices—either drop the logs (we even have ESLint rules for this purpose) altogether or introduce an abstraction layer.
 
 Dropping logs means avoiding any use of `console.log` and similar APIs, simply because we **cannot control them**.
 
