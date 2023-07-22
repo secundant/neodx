@@ -1,6 +1,7 @@
 {
   "name": "example-svg-magic-with-figma-export",
   "version": "0.0.1",
+  "type": "module",
   "private": true,
   "packageManager": "yarn@3.2.0",
   "sideEffects": false,
@@ -15,16 +16,16 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.6",
-    "@types/react-dom": "^18.2.4",
-    "@vitejs/plugin-react": "^4.0.0",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
     "autoprefixer": "10.4.14",
-    "postcss": "8.4.23",
-    "tailwindcss": "3.3.2",
-    "typescript": "^5.0.4",
-    "vite": "^4.3.6",
+    "postcss": "8.4.26",
+    "tailwindcss": "3.3.3",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.5",
     "vite-tsconfig-paths": "^4.2.0",
-    "vitest": "^0.31.0"
+    "vitest": "^0.33.0"
   },
   "scripts": {
     "export-icons": "figma export --verbose",

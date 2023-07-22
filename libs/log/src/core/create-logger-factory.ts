@@ -1,0 +1,114 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { isEmpty, isTruthy, keys, toArray } from '@neodx/std';
+import type { LogArguments } from '../utils';
+import { LOGGER_SILENT_LEVEL } from './shared';
+import type {
+  CreateLogger,
+  LogChunk,
+  Logger,
+  LoggerLevelsConfig,
+  LoggerMethods,
+  LoggerParams,
+  LoggerParamsWithLevels,
+  LoggerTransformer
+} from './types';
+
+export interface CreateLoggerFactoryParams<DefaultLevels extends string> {
+  defaultParams: LoggerParams<DefaultLevels>;
+  readArguments(args: unknown[]): LogArguments;
+  /**
+   * Formats a message template with replaces.
+   * @default Our lightweight implementation with %s, %d, %i, %f, %j/%o/%O (same output as %j) support
+   * @example (template, replaces) => util.format(template, ...replaces) // Node.js util.format
+   */
+  formatMessage(template: string, replaces: unknown[]): string;
+}
+
+export function createLoggerFactory<BaseLevel extends string>({
+  defaultParams,
+  formatMessage,
+  readArguments
+}: CreateLoggerFactoryParams<BaseLevel>): CreateLogger<BaseLevel> {
+  function createLogger(userParams: any): Logger<any> {
+    const params = { ...defaultParams, ...userParams } as Required<
+      LoggerParamsWithLevels<LoggerLevelsConfig<BaseLevel>>
+    >;
+    const { meta, target, level: rootLevel, name = '', levels } = params;
+    const transform = toArray(params.transform) as unknown as LoggerTransformer<BaseLevel>[];
+    const targets = toArray(target)
+      .filter(isTruthy)
+      .map(target => (typeof target === 'function' ? { target } : target))
+      .map(target => ({
+        ...target,
+        level: target.level ? getOriginalLevelName(target.level, levels) : undefined,
+        target: toArray(target.target)
+      }))
+      .filter(target => !isEmpty(target.target) && !isSilent(target.level));
+
+    const log = (levelOrAlias: BaseLevel, ...args: unknown[]) => {
+      const level = getOriginalLevelName(levelOrAlias, levels);
+
+      if (isSilent(rootLevel) || (rootLevel && levels[level] > levels[rootLevel])) return;
+      const [[unknownMsgTemplate = '', ...msgArgs], additionalFields, error] = readArguments(args);
+      const msgTemplate = String(unknownMsgTemplate);
+      const chunk = transform.reduce<LogChunk<BaseLevel>>(
+        (chunk, transformer) => transformer(chunk),
+        {
+          name,
+          level,
+          error,
+          meta: {
+            ...meta,
+            ...additionalFields
+          },
+          date: new Date(),
+          msgArgs,
+          msgTemplate,
+          msg: isEmpty(msgArgs) ? msgTemplate : formatMessage(msgTemplate, msgArgs),
+          __: {
+            originalLevel: levelOrAlias,
+            levelsConfig: levels
+          }
+        }
+      );
+
+      for (const handle of targets) {
+        if (!handle.level || levels[handle.level] <= levels[level]) {
+          for (const target of handle.target) {
+            target(chunk as any);
+          }
+        }
+      }
+    };
+
+    const methods = Object.fromEntries(
+      keys(levels).map(level => [level, log.bind(null, level)])
+    ) as LoggerMethods<BaseLevel>;
+
+    return {
+      ...methods,
+      get meta() {
+        return params.meta;
+      },
+      fork: (options: any) => createLogger({ ...userParams, ...options }),
+      child: (childName: string, options: any) =>
+        createLogger({
+          ...userParams,
+          ...options,
+          name: name ? `${name}:${childName}` : childName
+        })
+    } as Logger<BaseLevel>;
+  }
+
+  return createLogger;
+}
+
+const isSilent = (value?: string): value is 'silent' => value === LOGGER_SILENT_LEVEL;
+const getOriginalLevelName = <Level extends string>(
+  level: Level,
+  levels: LoggerLevelsConfig<Level>
+): Level => {
+  const value = levels[level] as Level | number;
+
+  return typeof value === 'string' ? getOriginalLevelName(value, levels) : level;
+};

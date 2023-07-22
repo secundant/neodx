@@ -25,11 +25,11 @@ export const combinePlugins = (plugins: SvgSpritePlugin[]): SvgSpritePluginHooks
       entries
     );
   },
-  afterWrite(info, context) {
-    return Promise.all(plugins.map(plugin => plugin.afterWrite?.(info, context)));
+  afterWriteAll(info, context) {
+    return Promise.all(plugins.map(plugin => plugin.afterWriteAll?.(info, context)));
   },
-  afterWriteGroup({ name, files }, context) {
-    return Promise.all(plugins.map(plugin => plugin.afterWriteGroup?.({ name, files }, context)));
+  afterWriteSprite(sprite, context) {
+    return Promise.all(plugins.map(plugin => plugin.afterWriteSprite?.(sprite, context)));
   },
   transformSourceContent(source, content) {
     return asyncReduce(

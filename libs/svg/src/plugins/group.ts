@@ -1,5 +1,5 @@
 import { dirname } from 'node:path';
-import type { SpriteGroupsMap, SvgFile } from '../core/types';
+import type { SpriteGroupsMap, SvgFile } from '../core';
 import { createPlugin } from './plugin-utils';
 
 export interface GroupPluginOptions {
@@ -9,7 +9,7 @@ export interface GroupPluginOptions {
 
 export function groupSprites({
   getName = getNameByDirname,
-  defaultName = '__root'
+  defaultName = 'sprite'
 }: GroupPluginOptions = {}) {
   return createPlugin('group', {
     resolveEntriesMap(entries) {

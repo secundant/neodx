@@ -1,5 +1,5 @@
 import { assertType, describe, expectTypeOf, test } from 'vitest';
-import { type DefaultLoggerLevel, type Logger, createLogger } from '../index';
+import { createLogger, type DefaultLoggerLevel, type Logger } from '../index';
 
 describe('logger types', () => {
   test('should override levels', () => {
@@ -52,5 +52,14 @@ describe('logger types', () => {
         .child('child')
         .child('child', { levels: { c: 3 } })
     ).toEqualTypeOf<Logger<'c'>>();
+  });
+
+  test('should support widest level', () => {
+    function wrapper(_: Logger<'a' | 'b'>) {}
+
+    // @ts-expect-error default levels are different
+    wrapper(createLogger());
+    wrapper(createLogger({ levels: { a: 1, b: 2 } }));
+    wrapper(createLogger({ levels: { a: 1, b: 2, c: 3 } }));
   });
 });

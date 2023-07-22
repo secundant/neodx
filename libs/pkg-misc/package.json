@@ -22,8 +22,9 @@
   "dependencies": {
     "@neodx/fs": "^0.0.8",
     "@neodx/std": "^0.1.4",
-    "pathe": "^1.1.0",
-    "semver": "^7.5.1"
+    "@types/prettier": "^2.7.3",
+    "pathe": "^1.1.1",
+    "semver": "^7.5.4"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",

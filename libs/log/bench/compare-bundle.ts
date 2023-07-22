@@ -1,4 +1,4 @@
-import { buildAndAnalyze, type TestBuildParams } from '../src/__tests__/testing-utils';
+import { type TestBuildParams, buildAndAnalyze } from '../src/__tests__/testing-utils';
 
 const root = new URL('./build-entries', import.meta.url).pathname;
 const createBuildPlans = (name: string, ssr: boolean, entryFile: string): TestBuildParams[] => [

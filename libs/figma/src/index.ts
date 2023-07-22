@@ -1,5 +1,5 @@
 export type { Configuration, ExportConfigurationItem } from './config';
-export { type CreateFigmaApiParams, type FigmaApi, createFigmaApi } from './core';
+export { createFigmaApi, type CreateFigmaApiParams, type FigmaApi } from './core';
 export * from './core/figma.h'; // not "export type * from" because there are enums
 export type * from './core/figma-api.h';
 export type {

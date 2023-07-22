@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { expect, vi } from 'vitest';
 import type { AnyNode, GetFileResult, NodeType } from '../core';
 import { createFigmaApi } from '../core';
-import { type GraphNode, createFileGraph } from '../graph';
+import { createFileGraph, type GraphNode } from '../graph';
 import { figmaLogger } from '../shared';
 import { parseFileIdFromLink } from '../utils';
 

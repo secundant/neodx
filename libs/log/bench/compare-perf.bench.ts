@@ -1,8 +1,13 @@
 import { bench, describe } from 'vitest';
-import { exampleLogArgs, exampleObjects, loggers } from './shared';
+import { exampleLogArgs, exampleObjects, excludeFromPerfComparison, loggers } from './shared';
+
+const excludeNotRelevantLoggers = true;
 
 function createBench(fn: (log: any) => void) {
   for (const [logName, log] of Object.entries(loggers.dummyNodeJson)) {
+    if (excludeNotRelevantLoggers && excludeFromPerfComparison.includes(logName)) {
+      continue;
+    }
     bench(logName, () => {
       fn(log);
     });

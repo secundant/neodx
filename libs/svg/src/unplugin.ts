@@ -1,14 +1,14 @@
-import { createLogger, createPrettyTarget } from '@neodx/log/node';
+import { createLogger, pretty } from '@neodx/log/node';
 import { createVfs } from '@neodx/vfs';
 import { createUnplugin } from 'unplugin';
-import { type CreateSpriteBuilderParams, createSpriteBuilder, createWatcher } from './core';
+import { createSpriteBuilder, type CreateSpriteBuilderParams, createWatcher } from './core';
 
 export interface SvgPluginParams extends Partial<Omit<CreateSpriteBuilderParams, 'vfs'>> {
   /**
    * Globs to icons files
    */
   input?: string | string[];
-  logLevel?: 'debug' | 'info' | 'silent';
+  logLevel?: 'debug' | 'info' | 'error' | 'silent';
 }
 
 export const unplugin = createUnplugin(
@@ -18,7 +18,7 @@ export const unplugin = createUnplugin(
       logger = createLogger({
         name: 'svg',
         level: logLevel,
-        target: createPrettyTarget()
+        target: pretty()
       }),
       root = '.',
       input = '**/*.svg',

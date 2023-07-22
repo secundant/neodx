@@ -1,7 +1,7 @@
 import { difference, keys, mapObject } from '@neodx/std';
 import { describe, expect, test, vi } from 'vitest';
-import { type DefaultLoggerLevel, createLogger, DEFAULT_LOGGER_LEVELS } from '../node';
-import type { LogChunk, LoggerParams } from '../types';
+import type { LogChunk, LoggerParams } from '../core/types';
+import { createLogger, DEFAULT_LOGGER_LEVELS, type DefaultLoggerLevel } from '../node';
 
 describe('logger', () => {
   const createTestLogger = () => {
@@ -127,7 +127,7 @@ describe('logger', () => {
           target: [error]
         },
         {
-          level: 'verbose',
+          level: 'debug',
           target: [verbose]
         }
       ]
@@ -162,7 +162,7 @@ describe('logger', () => {
         target: [spies[level]]
       }));
       const logger = createLogger({
-        level: 'verbose',
+        level: 'done',
         levels,
         target,
         meta: {},
@@ -241,6 +241,53 @@ describe('logger', () => {
       expect(spies.verbose).not.toHaveBeenCalled();
       expect(spies.debug).not.toHaveBeenCalled();
       expect(spies.silent).not.toHaveBeenCalled();
+    });
+
+    test('should support aliases', () => {
+      const original = vi.fn();
+      const alias = vi.fn();
+
+      const log = createLogger({
+        level: 'alias',
+        levels: {
+          original: 100,
+          alias: 'original'
+        },
+        target: [
+          {
+            level: 'original',
+            target: original
+          },
+          {
+            level: 'alias',
+            target: alias
+          }
+        ]
+      });
+
+      log.original('foo');
+      expect(original).toHaveBeenCalledTimes(1);
+      expect(alias).toHaveBeenCalledTimes(1);
+      expect(alias).toHaveBeenCalledWith(
+        expect.objectContaining({
+          level: 'original',
+          __: expect.objectContaining({
+            originalLevel: 'original'
+          })
+        })
+      );
+
+      log.alias('bar');
+      expect(original).toHaveBeenCalledTimes(2);
+      expect(alias).toHaveBeenCalledTimes(2);
+      expect(alias).toHaveBeenCalledWith(
+        expect.objectContaining({
+          level: 'original',
+          __: expect.objectContaining({
+            originalLevel: 'alias'
+          })
+        })
+      );
     });
   });
 });

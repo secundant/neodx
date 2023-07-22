@@ -1,6 +1,6 @@
 import { colors } from '@neodx/colors';
 import type { LoggerMethods } from '@neodx/log';
-import { createLogger, createPrettyTarget } from '@neodx/log/node';
+import { createLogger, pretty } from '@neodx/log/node';
 import { compact, uniq } from '@neodx/std';
 import { dirname, join, relative, sep } from 'pathe';
 import type { BaseVFS, ContentLike, FileChange } from '../types';
@@ -18,7 +18,7 @@ export interface AbstractVfsParams {
 
 const defaultLog = createLogger({
   level: 'info',
-  target: createPrettyTarget({
+  target: pretty({
     displayLevel: false
   })
 });

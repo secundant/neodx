@@ -3,7 +3,7 @@ import { concurrently } from '@neodx/std';
 import { createVfs } from '@neodx/vfs';
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { type GenerateParams, buildSprites } from '../index';
+import { buildSprites, type GenerateParams } from '../index';
 
 export async function readStub(name: string) {
   const root = getStubRoot(name);

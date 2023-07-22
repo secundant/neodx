@@ -1,7 +1,7 @@
 import { compact } from '@neodx/std';
 import { builtinModules } from 'node:module';
 import { dirname } from 'node:path';
-import type { OutputOptions, RollupOptions, RollupWarning, WarningHandler } from 'rollup';
+import type { LoggingFunction, OutputOptions, RollupLog, RollupOptions } from 'rollup';
 import dts from 'rollup-plugin-dts';
 import postcss from 'rollup-plugin-postcss';
 import type { ExportsGenerator } from '../core/exports';
@@ -148,7 +148,7 @@ const createExternal = ({ deps }: Project) => {
   return (id: string) => predicate.test(id);
 };
 
-function onwarn(warning: RollupWarning, warn: WarningHandler) {
+function onwarn(warning: RollupLog, fallback: LoggingFunction) {
   // TODO Describe that message
   // https://github.com/rollup/rollup/blob/0fa9758cb7b1976537ae0875d085669e3a21e918/src/utils/error.ts#L324
   if (warning.code === 'UNRESOLVED_IMPORT') {
@@ -160,7 +160,7 @@ function onwarn(warning: RollupWarning, warn: WarningHandler) {
         `\n ↳ to depend on a module via import/require, install it to "dependencies".`
     );
   } else {
-    warn(warning);
+    fallback(warning);
   }
 }
 

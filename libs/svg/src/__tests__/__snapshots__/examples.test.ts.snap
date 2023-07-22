@@ -13,6 +13,20 @@ exports[`examples > "colors" example should generate files 1`] = `
 
 exports[`examples > "colors" example should replay same output 1`] = `[]`;
 
+exports[`examples > "experimental-runtime" example should generate files 1`] = `
+[
+  "assets/common/close.svg",
+  "assets/common/favourite.svg",
+  "assets/format/align-left.svg",
+  "assets/format/tag.svg",
+  "generated/common.2eb4b56f.svg",
+  "generated/format.c890959d.svg",
+  "generated/sprite-info.ts",
+]
+`;
+
+exports[`examples > "experimental-runtime" example should replay same output 1`] = `[]`;
+
 exports[`examples > "groups-with-root" example should generate files 1`] = `
 [
   "assets/common/close.svg",

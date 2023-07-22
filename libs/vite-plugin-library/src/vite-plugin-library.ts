@@ -1,11 +1,11 @@
 import { scan } from '@neodx/fs';
 import { compact, toArray } from '@neodx/std';
-import { type VFS, createVfs } from '@neodx/vfs';
+import { createVfs, type VFS } from '@neodx/vfs';
 import { builtinModules } from 'node:module';
 import type { PackageJson } from 'pkg-types';
 import type { Plugin } from 'vite';
 import { analyzeProject } from './analyze-project';
-import { type ExportsGenerator, createExportsGenerator } from './exports';
+import { createExportsGenerator, type ExportsGenerator } from './exports';
 
 export interface VitePluginLibraryParams {
   entry?: string | string[];

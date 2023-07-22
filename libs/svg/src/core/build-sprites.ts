@@ -1,4 +1,4 @@
-import { type CreateSpriteBuilderParams, createSpriteBuilder } from './create-sprite-builder';
+import { createSpriteBuilder, type CreateSpriteBuilderParams } from './create-sprite-builder';
 
 export interface GenerateParams extends CreateSpriteBuilderParams {
   /**

@@ -1,3 +1,4 @@
+import { keys } from '@neodx/std';
 import { Fragment } from 'react';
 import type { IconName } from '../shared/ui/icon';
 import { Icon, SPRITES_META } from '../shared/ui/icon';
@@ -30,9 +31,9 @@ export function App() {
       </section>
       <h1>All icons</h1>
       <section className="flex gap-4 flex-nowrap text-4xl">
-        {Object.entries(SPRITES_META).map(([group, names]) => (
+        {Object.entries(SPRITES_META).map(([group, { items }]) => (
           <Fragment key={group}>
-            {names.map(name => (
+            {keys(items).map(name => (
               <Icon
                 key={name}
                 className="rounded-lg bg-neutral-100 border border-stone-200 p-4 text-violet-800"

@@ -5,7 +5,7 @@
 </h1>
 <hr />
 
-This project designed to tackle common web development challenges with ease.
+This project is designed to tackle common web development challenges with ease.
 
 > **Warning**
 > Most of the packages are still under development, so API may change.
@@ -22,7 +22,7 @@ Probably, you've already tried to write your own integration or use some existin
 - Terrible flexibility and solution design, you just can't use it in your project because of the different document structure or workflow
 - No type safety, autocomplete, etc.
 
-In the other words, there is no really well-designed complex solution for Figma integration.
+In other words, there is no really well-designed complex solution for Figma integration.
 
 So, `@neodx/figma` is an attempt to create it. Currently, we have the following features:
 

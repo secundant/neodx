@@ -1,7 +1,7 @@
 import { deepReadDir } from '@neodx/fs';
 import { getChangesHash } from '@neodx/vfs/testing-utils';
 import { describe, expect, test } from 'vitest';
-import type { GenerateParams } from '../index';
+import type { GenerateParams } from '..';
 import { generateExample, getExamplesNames } from './testing-utils';
 
 describe('examples', () => {
@@ -26,6 +26,12 @@ describe('examples', () => {
           to: 'currentColor'
         }
       }
+    },
+    'experimental-runtime': {
+      root: 'assets',
+      group: true,
+      fileName: '{name}.{hash:8}.svg',
+      experimentalRuntime: true
     }
   };
 
