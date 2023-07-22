@@ -28,8 +28,8 @@
 - **Customizable**. You can replace most of the parts with your own
 - **Isomorphic**. Automatically works in Node.js and browsers
 - **Typed**. Written in TypeScript, with full type support
-- **Well featured**. JSON logs, pretty console logs, error handling, and more
-- 🆕 **Built-in HTTP frameworks** ⛓️`express`, `koa`, Node core `http` loggers are supported out of the box
+- **Well featured**. Semantic levels, JSON logs, pretty output, error handling, and more
+- 🆕 [**Built-in HTTP frameworks**](#-frameworks-integration) ⛓️`express`, `koa`, Node core `http` loggers are supported out of the box
 
 ```typescript
 const log = createLogger();
@@ -254,9 +254,14 @@ app.use(createExpressLogger({ logger }));
 
 ##### Configure every part of request logging
 
+> For detailed information, check [HttpLoggerParams API reference](#httploggerparams)
+
 ```typescript
 // Other frameworks adapters will have same options
 createExpressLogger({
+  // You can pass your own request ID extractor instead of our built-in generator
+  getRequestId: req => req.headers['x-request-id'],
+
   // Control logging behavior
 
   shouldLog: ({ req }) => !isHealthCheck(req), // enable/disable logging. By default, it will log every request
@@ -725,13 +730,165 @@ const log = createLogger({
 
 ### `createHttpLogger`
 
-> TODO ...
+Create new HTTP logger middleware for handling `node:http`-based requests.
+
+`req` and `res` are `node:http` request and response objects or their extensions (e.g. `express` request and response).
+
+Extended signature:
+
+```typescript
+declare function createHttpLogger<
+  // By default, `req` and `res` are `node:http` request and response objects
+  Req extends IncomingMessage = IncomingMessage,
+  Res extends OutgoingMessage = OutgoingMessage
+>(params: HttpLoggerParams<Req, Res>): RequestHandler<Req, Res>;
+
+type RequestHandler<Req extends IncomingMessage, Res extends OutgoingMessage> = (
+  req: Req,
+  res: Res,
+  next: (err?: any) => void
+) => void;
+```
+
+#### `HttpLoggerParams`
+
+```typescript
+interface HttpLoggerParams<
+  Req extends IncomingMessage = IncomingMessage,
+  Res extends OutgoingMessage = OutgoingMessage
+> {
+  /**
+   * Custom logger instance.
+   * @default createLogger()
+   */
+  logger?: Logger<HttpLogLevels>;
+  /**
+   * Custom colors instance
+   * @see `@neodx/colors`
+   */
+  colors?: Colors;
+  /**
+   * If `true`, the logger will only log the pre-formatted message without any additional metadata.
+   * @default process.env.NODE_ENV === 'development'
+   */
+  simple?: boolean;
+  /**
+   * Optional function to extract/create request ID.
+   * @default built-in simple safe number counter
+   */
+  getRequestId?: (req: Req, res: Res) => string | number;
+
+  // ===
+  // Metadata and formatting
+  // ===
+
+  /**
+   * Extract shared metadata for every produced log
+   */
+  getMeta?: (req: Req, res: Res) => Record<string, unknown>;
+  /**
+   * Extract metadata for request logs
+   */
+  getRequestMeta?: (ctx: HttpResponseContext<Req, Res>) => Record<string, unknown>;
+  /**
+   * Custom incoming request message formatter
+   */
+  getRequestMessage?: (ctx: HttpResponseContext<Req, Res>) => string;
+  /**
+   * Extract metadata for success response logs
+   */
+  getResponseMeta?: (ctx: HttpResponseContext<Req, Res>) => Record<string, unknown>;
+  /**
+   * Custom success response message formatter
+   */
+  getResponseMessage?: (ctx: HttpResponseContext<Req, Res>) => string;
+  /**
+   * Extract metadata for error response logs
+   */
+  getErrorMeta?: (ctx: HttpResponseContext<Req, Res>) => Record<string, unknown>;
+  /**
+   * Custom error response message formatter
+   */
+  getErrorMessage?: (ctx: HttpResponseContext<Req, Res>) => string;
+
+  // ===
+  // Control logging behavior
+  // ===
+
+  /**
+   * Whether to log anything at all.
+   * @default true
+   */
+  shouldLog?: boolean | ((req: Req, res: Res) => boolean);
+  /**
+   * Prevents logging of errors.
+   * @default true
+   */
+  shouldLogError?: boolean | ((ctx: HttpResponseContext<Req, Res>) => boolean);
+  /**
+   * Prevents built-in logging of requests.
+   * DISABLED BY DEFAULT, because it can be very verbose.
+   * @default false
+   */
+  shouldLogRequest?: boolean | ((ctx: HttpResponseContext<Req, Res>) => boolean);
+  /**
+   * Prevents built-in logging of responses.
+   * @default true
+   */
+  shouldLogResponse?: boolean | ((ctx: HttpResponseContext<Req, Res>) => boolean);
+}
+```
+
+#### `HttpResponseContext`
+
+```typescript
+interface HttpResponseContext<
+  Req extends IncomingMessage = IncomingMessage,
+  Res extends OutgoingMessage = OutgoingMessage
+> {
+  // request
+  req: Req;
+  // response
+  res: Res;
+  // error will be present if is an error response
+  error?: Error;
+  // reference to logger instance
+  logger: Logger<HttpLogLevels>; // 'debug' | 'error' | 'info' | 'done'
+  // reference to @neodx/colors instance
+  colors: Colors;
+  // measured response time, filled on response finish/error
+  responseTime: number;
+}
+```
 
 #### `createExpressLogger`
 
+Same signature as `createHttpLogger`, but with `express`-specific types and additional `preserveErrorMiddleware`.
+
+```typescript
+import type { Request, Response, ErrorRequestHandler } from 'express';
+
+declare function createExpressLogger(
+  params: HttpLoggerParams<Request, Response>
+): ExpressLoggerMiddleware;
+
+interface ExpressLoggerMiddleware extends RequestHandler {
+  /**
+   * Middleware to preserve error status code and message
+   */
+  preserveErrorMiddleware: ErrorRequestHandler;
+}
+```
+
 #### `createKoaLogger`
 
-Create a special logger for HTTP requests.
+Same signature as `createHttpLogger`.
+
+```typescript
+import type { Middleware } from 'koa';
+
+declare function createKoaLogger(params: HttpLoggerParams): Middleware;
+```
 
 ### `createLoggerFactory`
 
