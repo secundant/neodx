@@ -150,11 +150,11 @@ const getMaxObjectKeysLength = memoizeWeak((levels: object) =>
 
 const nameDelimiter = ` ${cliSymbols.pointerSmall} `;
 const defaultLevelBadges = {
-  info: 'ℹ',
+  info: '◌',
   done: '✔',
   warn: '⚠',
   error: '✘',
-  debug: '⬢'
+  debug: '⚙'
 } as Partial<Record<DefaultLoggerLevel, string>>;
 
 const defaultLevelColors = {

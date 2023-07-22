@@ -86,12 +86,12 @@ describe('errors', () => {
           72|     const b = new TypeError('second', { cause: a });
           73|     const c = new Error('third', { cause: b });
             |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-          74|
+          74| 
           75|     expect(
-
+       
         ↳ caused by TypeError: second
          ›   src/__tests__/errors.test.ts:LL:CC
-
+       
           ↳ caused by SyntaxError: first
            ›     src/__tests__/errors.test.ts:LL:CC"
     `);

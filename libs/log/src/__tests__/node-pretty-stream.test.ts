@@ -1,9 +1,9 @@
 import { createColors } from '@neodx/colors';
 import { describe, expect, test, vi } from 'vitest';
+import type { DefaultLoggerLevel } from '../core/shared';
+import type { LoggerParams } from '../core/types';
 import type { PrettyTargetParams } from '../node';
 import { createLogger, pretty } from '../node';
-import type { DefaultLoggerLevel } from '../shared';
-import type { LoggerParams } from '../types';
 
 describe('node pretty stream', () => {
   const createTestLogger = (
@@ -21,6 +21,7 @@ describe('node pretty stream', () => {
               log,
               logError,
               colors: createColors(false, true),
+              prettyErrors: false,
               ...prettyParams
             })
           ]
@@ -41,7 +42,7 @@ describe('node pretty stream', () => {
 
     logger.info('foo');
 
-    expect(log.mock.lastCall).toEqual([expect.stringMatching(/\d{2}:\d{2}:\d{2} ℹ info\s+foo/)]);
+    expect(log.mock.lastCall).toEqual([expect.stringMatching(/\d{2}:\d{2}:\d{2} ◌ info\s+foo/)]);
   });
 
   test('should show milliseconds with flag', async () => {
@@ -55,7 +56,7 @@ describe('node pretty stream', () => {
     logger.info('foo');
 
     expect(log.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ℹ info\s+foo/)
+      expect.stringMatching(/\d{2}:\d{2}:\d{2}.\d{3} ◌ info\s+foo/)
     ]);
   });
 
@@ -66,7 +67,7 @@ describe('node pretty stream', () => {
 
     logger.info('foo');
     expect(log.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2} \[test] ℹ info\s+foo/)
+      expect.stringMatching(/\d{2}:\d{2}:\d{2} \[test] ◌ info\s+foo/)
     ]);
   });
 
@@ -112,7 +113,7 @@ describe('node pretty stream', () => {
 
     logger.info({ foo: 'bar' });
     expect(log.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2} ℹ info\s+\{\n {2}"foo": "bar"\n}/)
+      expect.stringMatching(/\d{2}:\d{2}:\d{2} ◌ info\s+\{\n {2}"foo": "bar"\n}/)
     ]);
   });
 
@@ -137,7 +138,7 @@ describe('node pretty stream', () => {
     );
 
     logger.info('foo');
-    expect(log.mock.lastCall).toEqual([expect.stringMatching(/ℹ info\s+foo/)]);
+    expect(log.mock.lastCall).toEqual([expect.stringMatching(/◌ info\s+foo/)]);
   });
 
   test('should display log without level', () => {
@@ -161,7 +162,7 @@ describe('node pretty stream', () => {
 
     logger.child('child').info({ a: 1 }, 'foo');
     expect(log.mock.lastCall).toEqual([
-      expect.stringMatching(/\d{2}:\d{2}:\d{2} \[parent › child] ℹ info\s+foo \{\n {2}"a": 1\n}/)
+      expect.stringMatching(/\d{2}:\d{2}:\d{2} \[parent › child] ◌ info\s+foo \{\n {2}"a": 1\n}/)
     ]);
   });
 

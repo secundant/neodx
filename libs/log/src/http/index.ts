@@ -23,7 +23,8 @@ export interface HttpLoggerParams<
    */
   logger?: Logger<HttpLogLevels>;
   /**
-   * Custom colors instance (see `@neodx/colors`).
+   * Custom colors instance
+   * @see `@neodx/colors`
    */
   colors?: Colors;
   /**
@@ -31,37 +32,68 @@ export interface HttpLoggerParams<
    * @default process.env.NODE_ENV === 'development'
    */
   simple?: boolean;
-  generateRequestId?: (req: Req, res: Res) => string | number;
+  /**
+   * Optional function to extract/create request ID.
+   * @default built-in simple safe number counter
+   */
+  getRequestId?: (req: Req, res: Res) => string | number;
 
+  // ===
+  // Metadata and formatting
+  // ===
+
+  /**
+   * Extract shared metadata for every produced log
+   */
   getMeta?: (req: Req, res: Res) => Record<string, unknown>;
-
+  /**
+   * Extract metadata for request logs
+   */
   getRequestMeta?: (ctx: HttpResponseContext<Req, Res>) => Record<string, unknown>;
+  /**
+   * Custom incoming request message formatter
+   */
   getRequestMessage?: (ctx: HttpResponseContext<Req, Res>) => string;
-
+  /**
+   * Extract metadata for success response logs
+   */
   getResponseMeta?: (ctx: HttpResponseContext<Req, Res>) => Record<string, unknown>;
+  /**
+   * Custom success response message formatter
+   */
   getResponseMessage?: (ctx: HttpResponseContext<Req, Res>) => string;
-
+  /**
+   * Extract metadata for error response logs
+   */
   getErrorMeta?: (ctx: HttpResponseContext<Req, Res>) => Record<string, unknown>;
+  /**
+   * Custom error response message formatter
+   */
   getErrorMessage?: (ctx: HttpResponseContext<Req, Res>) => string;
+
+  // ===
+  // Control logging behavior
+  // ===
 
   /**
    * Whether to log anything at all.
+   * @default true
    */
   shouldLog?: boolean | ((req: Req, res: Res) => boolean);
   /**
    * Prevents logging of errors.
+   * @default true
    */
   shouldLogError?: boolean | ((ctx: HttpResponseContext<Req, Res>) => boolean);
   /**
-   * Alias for `shouldLogRequest` + `shouldLogResponse`.
-   */
-  shouldLogSuccess?: boolean | ((ctx: HttpResponseContext<Req, Res>) => boolean);
-  /**
    * Prevents built-in logging of requests.
+   * DISABLED BY DEFAULT, because it can be very verbose.
+   * @default false
    */
   shouldLogRequest?: boolean | ((ctx: HttpResponseContext<Req, Res>) => boolean);
   /**
    * Prevents built-in logging of responses.
+   * @default true
    */
   shouldLogResponse?: boolean | ((ctx: HttpResponseContext<Req, Res>) => boolean);
 }
@@ -111,7 +143,7 @@ export function createHttpLogger<
   simple = process.env.NODE_ENV === 'development',
   colors = defaultColors,
   logger: rootLogger = createLogger(),
-  generateRequestId = createRequestIdGenerator(),
+  getRequestId = createRequestIdGenerator(),
 
   getMeta,
   getErrorMeta,
@@ -123,7 +155,6 @@ export function createHttpLogger<
 
   shouldLog = true,
   shouldLogError = true,
-  shouldLogSuccess = true,
   shouldLogRequest = false,
   shouldLogResponse = true
 }: HttpLoggerParams<Req, Res> = {}) {
@@ -167,7 +198,7 @@ export function createHttpLogger<
   return function httpLogger(req: Req, res: Res, next?: () => void) {
     if (!condition(shouldLog, req, res)) return next?.();
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    req.id ??= generateRequestId(req, res);
+    req.id ??= getRequestId(req, res);
 
     const startTime = Date.now();
     const logger = rootLogger.fork({
@@ -198,18 +229,17 @@ export function createHttpLogger<
     };
 
     res.on('error', handleResponse);
-
-    if (!condition(shouldLogSuccess, baseContext)) return next?.();
     res.on('close', handleResponse);
     res.on('finish', handleResponse);
 
     if (condition(shouldLogRequest, baseContext)) {
       if (!simple) {
-        return logger.info(getRequestMeta?.(baseContext) ?? {}, getRequestMessage(baseContext));
-      }
-      logger.info(getRequestMessage(baseContext));
-      if (getRequestMeta) {
-        logger.debug(getRequestMeta(baseContext), 'Request details:');
+        logger.info(getRequestMeta?.(baseContext) ?? {}, getRequestMessage(baseContext));
+      } else {
+        logger.info(getRequestMessage(baseContext));
+        if (getRequestMeta) {
+          logger.debug(getRequestMeta(baseContext), 'Request details:');
+        }
       }
     }
     next?.();
