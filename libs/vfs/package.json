@@ -61,7 +61,7 @@
     "@neodx/log": "^0.1.7",
     "@neodx/pkg-misc": "^0.0.6",
     "@neodx/std": "^0.1.4",
-    "pathe": "^1.1.0",
+    "pathe": "^1.1.1",
     "picocolors": "^1.0.0"
   }
 }

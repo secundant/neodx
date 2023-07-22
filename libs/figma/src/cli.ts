@@ -1,4 +1,4 @@
-import { createPrettyTarget } from '@neodx/log/node';
+import { pretty } from '@neodx/log/node';
 import { truncateString } from '@neodx/std';
 import { createVfs } from '@neodx/vfs';
 import { Command } from 'commander';
@@ -47,7 +47,7 @@ export function createFigmaCli() {
         const vfs = createVfs(resolve(cwd, output), {
           dryRun,
           log: logger.child('fs', {
-            target: createPrettyTarget({
+            target: pretty({
               displayLevel: false
             })
           })

@@ -10,7 +10,7 @@
     "@neodx/autobuild": "*",
     "@neodx/std": "*",
     "@neodx/vfs": "*",
-    "@nrwl/devkit": "16.2.2",
+    "@nrwl/devkit": "16.5.3",
     "execa": "7.1.1",
     "sade": "1.8.1"
   }

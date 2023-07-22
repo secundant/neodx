@@ -6,7 +6,7 @@ export function App() {
     <div className="container mx-auto min-h-screen text-2xl py-8 flex flex-col gap-8">
       <section className="grid grid-cols-2 grid-flow-row gap-8">
         <h1 className="inline-flex items-center gap-2">
-          Playground <Icon name="favourite" />
+          Playground <Icon name="sprite/favourite" />
         </h1>
         <div>
           <h1>Multicolor icon</h1>
@@ -20,11 +20,11 @@ export function App() {
         </div>
         <Icon
           className="rounded-xl bg-gradient-to-br from-slate-100 to-stone-200 shadow-sm border border-gray-300 p-8 text-8xl text-red-800"
-          name="__root/icon-with-filter-url"
+          name="sprite/icon-with-filter-url"
         />
         <Icon
           className="rounded-xl bg-zinc-100 border border-gray-300 p-8 text-8xl text-sky-600 [--icon-color:theme(colors.green.800)]"
-          name="__root/double-color"
+          name="sprite/double-color"
         />
       </section>
       <h1>All icons</h1>

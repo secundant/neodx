@@ -23,7 +23,7 @@ export interface CreateSpriteBuilderParams {
   /**
    * Logger instance
    */
-  logger?: LoggerMethods<'info' | 'debug'>;
+  logger?: LoggerMethods<'info' | 'debug' | 'error'>;
   /**
    * Should we group icons?
    * @default false

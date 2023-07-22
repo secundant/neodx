@@ -8,8 +8,8 @@ import { type DownloadedItem, downloadExports } from './download-exports';
 import type { OptimizeExportParams } from './optimize-export';
 import { optimizeExport } from './optimize-export';
 import {
-  type ReceiveExportsDownloadInfoParams,
-  receiveExportsDownloadInfo
+  receiveExportsDownloadInfo,
+  type ReceiveExportsDownloadInfoParams
 } from './receive-exports-download-info';
 
 export interface ExportFileParams {

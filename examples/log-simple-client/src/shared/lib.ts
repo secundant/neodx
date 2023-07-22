@@ -1,5 +1,5 @@
 import { createLogger } from '@neodx/log';
 
 export const logger = createLogger({
-  name: 'simple-logs'
+  name: 'log-simple-client'
 });

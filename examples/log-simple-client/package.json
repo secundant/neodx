@@ -1,5 +1,5 @@
 {
-  "name": "example-simple-logs",
+  "name": "example-log-simple-client",
   "version": "0.0.1",
   "private": true,
   "packageManager": "yarn@3.2.0",

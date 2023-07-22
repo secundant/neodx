@@ -5,14 +5,6 @@ layout: home
 hero:
   name: 'Neodx'
   text: 'Modern solutions for great DX'
-  tagline: My great project tagline
-  actions:
-    - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
-    - theme: alt
-      text: API Examples
-      link: /api-examples
 
 features:
   - title: '@neodx/log'
@@ -21,6 +13,7 @@ features:
     details: Lightweight (<b><1 kb!</b>) flexible isomorphic logger and logging framework
   - title: '@neodx/svg'
     icon: ⚡️
+    link: /svg/
     details: Supercharge your icons<br />Well featured sprites generator with DX in mind
   - title: '@neodx/figma'
     icon: 🎨

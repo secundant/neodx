@@ -8,5 +8,5 @@ export type {
 } from './reset-colors';
 export { resetColors } from './reset-colors';
 export { setId } from './set-id';
-export { type SvgoPluginOptions, svgo } from './svgo';
-export { type TypescriptPluginOptions, typescript } from './typescript';
+export { svgo, type SvgoPluginOptions } from './svgo';
+export { typescript, type TypescriptPluginOptions } from './typescript';

@@ -69,6 +69,7 @@ export async function tryFormatPrettier(
   }
 }
 
-const tryImportPrettier = () => import('prettier').then(module => module.default).catch(() => null);
+const tryImportPrettier = () =>
+  import('prettier').then(module => module.default ?? module).catch(() => null);
 
 const markSwcRcAsJson = (path: string) => (path.endsWith('.swcrc') ? { parser: 'json' } : {});

@@ -15,6 +15,7 @@ export { debounce } from './debounce';
 export type { AnyKey, AnyObj, Nil } from './guards';
 export {
   isEmpty,
+  isEmptyObject,
   isError,
   isNil,
   isNotNil,

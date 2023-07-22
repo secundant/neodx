@@ -1,5 +1,5 @@
 {
-  "name": "neodx-root",
+  "name": "@neodx/root",
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
@@ -14,6 +14,7 @@
   },
   "workspaces": [
     "examples/*",
+    "apps/*",
     "libs/*",
     "tools/*",
     "tools/scripts/templates/*"
@@ -27,24 +28,24 @@
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
-    "@changesets/cli": "^2.26.1",
-    "@commitlint/cli": "^17.6.5",
-    "@commitlint/config-conventional": "^17.6.5",
+    "@changesets/cli": "^2.26.2",
+    "@commitlint/cli": "^17.6.7",
+    "@commitlint/config-conventional": "^17.6.7",
     "@neodx/scripts": "workspace:*",
-    "@types/node": "^20.2.5",
-    "eslint": "^8.41.0",
-    "eslint-kit": "^9.0.9",
+    "@types/node": "^20.4.2",
+    "eslint": "^8.45.0",
+    "eslint-kit": "^9.5.1",
     "husky": "^8.0.3",
     "is-ci": "^3.0.1",
-    "lint-staged": "^13.2.2",
-    "nx": "^16.2.2",
+    "lint-staged": "^13.2.3",
+    "nx": "^16.5.3",
     "prettier": "^2.8.8",
     "tsx": "^3.12.7",
-    "typescript": "^5.0.4",
-    "vite": "^4.3.9",
-    "vite-plugin-dts": "^2.3.0",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.5",
+    "vite-plugin-dts": "^3.3.1",
     "vite-tsconfig-paths": "^4.2.0",
-    "vitest": "^0.31.2"
+    "vitest": "^0.33.0"
   },
   "dependenciesMeta": {
     "core-js": {

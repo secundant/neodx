@@ -2,7 +2,7 @@ import { entries } from '@neodx/std';
 import { join } from 'pathe';
 import type { FileChange } from '../types';
 import { FileChangeType } from '../types';
-import { type AbstractVfsParams, AbstractVfs } from './abstract-vfs';
+import { AbstractVfs, type AbstractVfsParams } from './abstract-vfs';
 
 export interface VirtualFsParams extends AbstractVfsParams {
   initial?: VirtualFsInitializer;

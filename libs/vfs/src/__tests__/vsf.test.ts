@@ -1,5 +1,5 @@
 import { createLogger } from '@neodx/log';
-import { createPrettyTarget } from '@neodx/log/node';
+import { pretty } from '@neodx/log/node';
 import { fromLength, sum } from '@neodx/std';
 import { join } from 'pathe';
 import { describe, expect, test } from 'vitest';
@@ -9,7 +9,7 @@ import { type ContentLike, FileChangeType } from '../types';
 
 const log = createLogger({
   level: 'silent',
-  target: createPrettyTarget({
+  target: pretty({
     displayLevel: false
   })
 });

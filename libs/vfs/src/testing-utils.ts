@@ -4,10 +4,10 @@ import { concurrently, entries } from '@neodx/std';
 import { resolve } from 'pathe';
 import type { Options } from 'prettier';
 import { dirSync } from 'tmp';
-import { type CreateVfsParams, type VFS, createVfs } from './create-vfs';
+import { createVfs, type CreateVfsParams, type VFS } from './create-vfs';
 import {
-  type VirtualFsInitializer,
-  flattenVirtualFsInitializer
+  flattenVirtualFsInitializer,
+  type VirtualFsInitializer
 } from './implementations/virtual-fs';
 import type { ContentLike } from './types';
 

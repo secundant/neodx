@@ -1,1 +1,1 @@
-export { type Shared, div } from './shared';
+export { div, type Shared } from './shared';

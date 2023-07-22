@@ -1,3 +1,5 @@
+import { keys } from './shared';
+
 const toString = Object.prototype.toString;
 const getPrototypeOf = Object.getPrototypeOf;
 const objectString = '[object Object]';
@@ -8,6 +10,7 @@ export type AnyObj = Record<AnyKey, unknown>;
 
 export const isEmpty = (target: unknown[]): target is [] => target.length === 0;
 export const isError = (target: unknown): target is Error => target instanceof Error;
+export const isEmptyObject = (target: AnyObj) => isEmpty(keys(target));
 
 export const negate =
   <R>(fn: (value: unknown) => value is R) =>
