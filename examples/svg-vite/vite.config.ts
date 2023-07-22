@@ -11,6 +11,8 @@ export default defineConfig(({ command }) => ({
       root: 'assets',
       group: true,
       output: 'public',
+      fileName: '{name}.{hash:8}.svg',
+      experimentalRuntime: true,
       definitions: 'src/shared/ui/icon/sprite.gen.ts',
       resetColors: {
         replace: ['#000', '#eee', '#6C707E'],

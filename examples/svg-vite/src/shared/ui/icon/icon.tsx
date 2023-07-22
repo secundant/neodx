@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import type { SVGProps } from 'react';
-import type { SpritesMap } from './sprite.gen';
+import { SPRITES_META, type SpritesMap } from './sprite.gen';
 
 export type IconName = {
   [Key in keyof SpritesMap]: `${Key}/${SpritesMap[Key]}`;
@@ -10,18 +10,24 @@ export interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'name' | 'type'
   name: IconName;
 }
 
-export function Icon({ name, className, viewBox, ...props }: IconProps) {
-  const [spriteName, iconName] = name.split('/');
+export function Icon({ name, className, viewBox: viewBoxFromProps, ...props }: IconProps) {
+  const [spriteName, iconName] = name.split('/') as [
+    keyof SpritesMap,
+    SpritesMap[keyof SpritesMap]
+  ];
+  const { filePath, items } = SPRITES_META[spriteName];
+  // TODO Fix types
+  const { viewBox } = (items as any)[iconName] as { viewBox: string };
 
   return (
     <svg
       className={clsx('icon', className)}
-      viewBox={viewBox}
+      viewBox={viewBoxFromProps ?? viewBox}
       focusable="false"
       aria-hidden
       {...props}
     >
-      <use xlinkHref={`/${spriteName}.svg#${iconName}`} />
+      <use xlinkHref={`/${filePath}#${iconName}`} />
     </svg>
   );
 }

@@ -1,5 +1,7 @@
 # Example of using `@neodx/svg` Vite plugin
 
+> **Warning** In this example was used `experimentalRuntime` option and advanced `fileName` feature, API will be changed in the nearest future.
+
 This example shows how to use `@neodx/svg` as Vite plugin and simple step-by-step setup for React.
 
 In the addition you can see how to use multicolored icons with TailwindCSS and CSS variable (it's not very pleasant, but it works 🌝).
