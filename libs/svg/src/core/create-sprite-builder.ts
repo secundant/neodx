@@ -21,7 +21,9 @@ export interface CreateSpriteBuilderParams {
    */
   output: string;
   /**
-   * Logger instance
+   * Logger instance (or object with any compatible interface)
+   * @see `@neodx/log`
+   * @default built-in logger
    */
   logger?: LoggerMethods<'info' | 'debug' | 'error'>;
   /**
@@ -52,10 +54,25 @@ export interface CreateSpriteBuilderParams {
   resetColors?: ResetColorsPluginParams;
   /**
    * WILL BE CHANGED IN FUTURE
-   *
-   * Replace generation of TS definitions with extended information about runtime: file
+   * Replaces current approach (just array of IDs per sprite) with extended runtime metadata
    *
    * @unstable
+   * @example
+   * export const SPRITES_META = {
+   *   'common-arrows': {
+   *     fileName: 'common/arrows.a766b3.svg',
+   *     items: {
+   *       left: {
+   *         viewBox: '0 0 24 24',
+   *       },
+   *       right: {
+   *         viewBox: '0 0 24 24',
+   *       },
+   *       // ...
+   *     }
+   *   },
+   *   // ...
+   * };
    */
   experimentalRuntime?: boolean;
 }

@@ -23,8 +23,8 @@ is better than a super-efficient, but unusable setup with semi-manual generators
 
 That's why we're here! 🥳
 
-- TypeScript support out of box - generated types and information about your sprites
-- Built-in plugins for all major bundlers: `vite`, `webpack`, `rollup`, `esbuild`, etc.
+- TypeScript support out of box - generated types and [information about your sprites](#-get-content-based-hashes-in-filenames-with-experimental-runtime-information)
+- [Built-in integrated plugins](#integrate-with-your-bundler) for all major bundlers: `vite`, `webpack`, `rollup`, `esbuild`, etc.
 - Optional grouping by folders
 - Optimization with svgo
 - Flexible colors reset
@@ -41,26 +41,18 @@ yarn add -D @neodx/svg
 pnpm add -D @neodx/svg
 ```
 
-### CLI Mode
+### CLI (Not recommended)
 
-> **Warning:**
-> While the CLI mode is currently available, it's not the recommended method of use and might be removed in future major versions.
->
-> Now we're providing built-it bundlers integration, please, use [our plugin](#plugins) instead.
-
-To get started, you can try the CLI mode even without any configuration, just run `sprite` command:
+Currently, we don't recommend using CLI mode, because it's not flexible enough and requires extra setup, if you want to use it - see [CLI](#cli) section and [CLI Options API](#cli-options).
 
 ```shell
-yarn sprite
+yarn sprite --help
 ```
 
-This command searches for all SVG files, excluding those in the `public/sprites` folder and generate sprites in `public/sprites`.
+### Integrate with your bundler
 
-By default, it creates a single sprite containing all icons without any grouping or TS definitions. However, this can be customized. See [CLI options](#cli-options) for more information
-
-### Plugins
-
-Our plugins provide a consistent interface and working principle across all major bundlers.
+Our plugins are built upon [unplugin](https://github.com/unjs/unplugin)
+and provide a consistent interface and working principle across all multiple bundlers and frameworks.
 
 For instance, here's an example of `vite` plugin with some options:
 
@@ -73,7 +65,7 @@ export default defineConfig({
       root: 'assets',
       group: true,
       output: 'public',
-      definitions: 'src/shared/ui/icon/sprite.h.ts',
+      definitions: 'src/shared/ui/icon/sprite.gen.ts',
       resetColors: {
         replaceUnknown: 'currentColor'
       }
@@ -83,9 +75,10 @@ export default defineConfig({
 ```
 
 It will search for all SVG files in `assets` folder, group them by folders, optimize them with `svgo`,
-reset all colors to `currentColor` and generate sprites in `public` folder with TS definitions in `src/shared/ui/icon/sprite.h.ts`.
+reset all colors to `currentColor`
+and generate sprites in `public` folder with TS definitions in `src/shared/ui/icon/sprite.gen.ts`.
 
-For more details see our [Step-by-step guide](#step-by-step).
+For more details, see our [Step-by-step guide](#step-by-step).
 
 Another plugins:
 
@@ -100,7 +93,7 @@ export default {
     svg({
       root: 'assets',
       output: 'public',
-      definition: 'src/shared/ui/icon/sprite.h.ts'
+      definition: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 };
@@ -119,7 +112,7 @@ export default {
     svg({
       root: 'assets',
       output: 'public',
-      definition: 'src/shared/ui/icon/sprite.h.ts'
+      definition: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 };
@@ -138,13 +131,84 @@ export default {
     svg({
       root: 'assets',
       output: 'public',
-      definition: 'src/shared/ui/icon/sprite.h.ts'
+      definition: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 };
 ```
 
 </details>
+
+## Features
+
+### 🆕 ⚠️ Get content-based hashes in filenames with experimental runtime information
+
+> **Warning:** This feature is experimental and will be changed in the future.
+
+By default, you will get the following sprites in your output:
+
+```diff
+public/
++  sprite-foo.svg
++  sprite-bar.svg
+```
+
+But this is not very good for caching,
+because if you change any of the SVG files,
+the sprite filename won't be updated, which could result in an infinite cache.
+
+To solve this issue and achieve content-based hashes in filenames, you need to take three steps:
+
+1. Provide the `fileName` option with a `hash` variable (e.g. `fileName: "{name}.{hash:8}.svg"`)
+2. Enable the `experimentalRuntime` option to get information about the file path by sprite name during runtime
+3. Update your `Icon` component (or whatever you use) to support the new runtime information
+
+```typescript
+// vite.config.ts
+
+export default defineConfig({
+  plugins: [
+    svg({
+      fileName: '{name}.{hash:8}.svg',
+      experimentalRuntime: true
+      // ...
+    })
+    // ...
+  ]
+  // ...
+});
+```
+
+Your output will be:
+
+```diff
+public/
++  sprite-foo.12abc678.svg
++  sprite-bar.87654def.svg
+```
+
+And updates of `Icon` component will be like this:
+
+> This example is based on implementation from [Building Icon component with TailwindCSS](#building-icon-component-with-tailwindcss-see-example) recipe and our [Vite application example (link to GH repo)](https://github.com/secundant/neodx/tree/main/examples/svg-vite)
+
+```diff
++ import { SPRITES_META, type SpritesMap } from './sprite.gen';
+
++ export function Icon({ name, viewBox: viewBoxFromProps, /* ... */ }) {
+   const [spriteName, iconName] = name.split('/');
++  const { filePath, items } = SPRITES_META[spriteName];
++  const { viewBox } = items[iconName];
+
+   return (
+     <svg
++      viewBox={viewBoxFromProps ?? viewBox}
+       // ...
+     >
++      <use xlinkHref={`/${filePath}#${iconName}`} />
+     </svg>
+   );
+}
+```
 
 ## Step-by-step
 
@@ -171,7 +235,7 @@ We want to generate separate sprites for each folder and use them in our React c
 
 ### Build icons
 
-Firstly, we adopt configuration from [Plugins](#plugins) section:
+Firstly, we adopt configuration from [Integrate with your bundler](#integrate-with-your-bundler) section:
 
 ```typescript
 import svg from '@neodx/svg/vite';
@@ -187,7 +251,7 @@ export default defineConfig({
       root: 'assets',
       group: true,
       output: 'public',
-      definitions: 'src/shared/ui/icon/sprite.h.ts',
+      definitions: 'src/shared/ui/icon/sprite.gen.ts',
       resetColors: {
         replaceUnknown: 'currentColor'
       }
@@ -202,7 +266,7 @@ export default defineConfig({
 Let's run `sprite` with some additional options:
 
 ```bash
-yarn sprite --group --root assets -o public/sprite -d src/shared/ui/icon/sprite.h.ts --reset-unknown-colors
+yarn sprite --group --root assets -o public/sprite -d src/shared/ui/icon/sprite.gen.ts --reset-unknown-colors
 ```
 
 In details:
@@ -221,7 +285,7 @@ Now let's run `vite` (or `vite build`) and see what we have:
 shared/
   ui/
     icon/
-+      sprite.h.ts
++      sprite.gen.ts
 public/
 +  sprite/
 +    common.svg
@@ -254,7 +318,7 @@ Now we can use it in our code - for type checking, autocomplete and other cool s
 
 ```tsx
 // shared/ui/icon/icon.tsx
-import { SpritesMap } from './sprite-definitions';
+import { SpritesMap } from './sprite.gen';
 
 export interface IconProps<Group extends keyof SpritesMap> {
   name: SpritesMap[Group];
@@ -285,6 +349,24 @@ export function SomeFeature() {
   );
 }
 ```
+
+## CLI
+
+> **Warning:**
+> While the CLI mode is currently available,
+> it's not the recommended method of use and might be removed in future major versions.
+>
+> Now we're providing built-it bundlers integration, please, use [our plugin](#integrate-with-your-bundler) instead.
+
+To get started, you can try the CLI mode even without any configuration, just run `sprite` command:
+
+```shell
+yarn sprite
+```
+
+This command searches for all SVG files, excluding those in the `public/sprites` folder and generate sprites in `public/sprites`.
+
+By default, it creates a single sprite containing all icons without any grouping or TS definitions. However, this can be customized. See [CLI options](#cli-options) for more information
 
 ## Recipes
 
@@ -317,7 +399,7 @@ export function SomeFeature() {
 // shared/ui/icon/icon.tsx
 import clsx from 'clsx';
 import { SVGProps, ForwardedRef, forwardRef } from 'react';
-import { SpritesMap } from './sprite-definitions';
+import { SpritesMap } from './sprite.gen';
 
 // Merging all icons as `SPRITE_NAME/SPRITE_ICON_NAME`
 export type IconName = {
@@ -435,8 +517,81 @@ await buildSprites({
   root: 'assets',
   input: '**/*.svg',
   output: 'public',
-  definition: 'src/shared/ui/icon/sprite.h.ts'
+  definition: 'src/shared/ui/icon/sprite.gen.ts'
+  // ... options (see below)
 });
+```
+
+#### Options
+
+```typescript
+interface Options {
+  /**
+   * Root folder for inputs, useful for correct groups naming
+   * @default process.cwd()
+   */
+  root?: string;
+  /**
+   * Path to generated sprite/sprites folder
+   * @default public
+   */
+  output?: string;
+  /**
+   * Logger instance (or object with any compatible interface)
+   * @see `@neodx/log`
+   * @default built-in logger
+   */
+  logger?: LoggerMethods<'info' | 'debug' | 'error'>;
+  /**
+   * Should we group icons?
+   * @default false
+   */
+  group?: boolean;
+  /**
+   * Template of sprite file name
+   * @example {name}.svg
+   * @example sprite-{name}.svg
+   * @example {name}-{hash}.svg
+   * @example {name}-{hash:8}.svg
+   * @default {name}.svg
+   */
+  fileName?: string;
+  /**
+   * Should we optimize icons?
+   */
+  optimize?: boolean;
+  /**
+   * Path to generated definitions file
+   */
+  definitions?: string;
+  /**
+   * Reset colors config
+   */
+  resetColors?: ResetColorsPluginParams;
+  /**
+   * WILL BE CHANGED IN FUTURE
+   * Replaces current approach (just array of IDs per sprite) with extended runtime metadata
+   *
+   * @unstable
+   * @example
+   * export const SPRITES_META = {
+   *   'common-arrows': {
+   *     fileName: 'common/arrows.a766b3.svg',
+   *     items: {
+   *       left: {
+   *         viewBox: '0 0 24 24',
+   *       },
+   *       right: {
+   *         viewBox: '0 0 24 24',
+   *       },
+   *       // ...
+   *     }
+   *   },
+   *   // ...
+   * };
+   */
+  experimentalRuntime?: boolean;
+}
 ```
 
 ### CLI Options
