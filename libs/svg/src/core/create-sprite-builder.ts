@@ -1,4 +1,4 @@
-import { scan } from '@neodx/fs';
+import { getHash, scan } from '@neodx/fs';
 import type { LoggerMethods } from '@neodx/log';
 import { compact, isTruthy, quickPluralize } from '@neodx/std';
 import type { VFS } from '@neodx/vfs';
@@ -8,7 +8,7 @@ import type { ResetColorsPluginParams } from '../plugins';
 import { fixViewBox, groupSprites, resetColors, setId, svgo, typescript } from '../plugins';
 import { combinePlugins } from '../plugins/plugin-utils';
 import { renderSvgNodesToString } from './render';
-import type { SvgFile, SvgNode } from './types';
+import type { GeneratedSprites, SvgFile, SvgNode } from './types';
 
 export interface CreateSpriteBuilderParams {
   vfs: VFS;
@@ -33,6 +33,9 @@ export interface CreateSpriteBuilderParams {
    * Template of sprite file name
    * @example {name}.svg
    * @example sprite-{name}.svg
+   * @example {name}-{hash}.svg
+   * @example {name}-{hash:8}.svg
+   * @default {name}.svg
    */
   fileName?: string;
   /**
@@ -47,6 +50,14 @@ export interface CreateSpriteBuilderParams {
    * Reset colors config
    */
   resetColors?: ResetColorsPluginParams;
+  /**
+   * WILL BE CHANGED IN FUTURE
+   *
+   * Replace generation of TS definitions with extended information about runtime: file
+   *
+   * @unstable
+   */
+  experimentalRuntime?: boolean;
 }
 
 export type SpriteBuilder = ReturnType<typeof createSpriteBuilder>;
@@ -57,10 +68,11 @@ export function createSpriteBuilder({
   output,
   logger,
   group: enableGroup,
-  fileName = '{name}.svg',
+  fileName: fileNameTemplate = '{name}.svg',
   optimize,
   definitions,
-  resetColors: resetColorsParams
+  resetColors: resetColorsParams,
+  experimentalRuntime
 }: CreateSpriteBuilderParams) {
   const hooks = combinePlugins(
     compact([
@@ -71,7 +83,8 @@ export function createSpriteBuilder({
       optimize && svgo(),
       definitions &&
         typescript({
-          output: definitions
+          output: definitions,
+          experimentalRuntime
         })
     ])
   );
@@ -135,7 +148,7 @@ export function createSpriteBuilder({
         return;
       }
       const unionGroup = new Map([['sprite', { name: 'sprite', files: [...files.values()] }]]);
-      const groups = hooks.resolveEntriesMap(unionGroup, { vfs });
+      const groups = hooks.resolveEntriesMap(unionGroup, { vfs }) as GeneratedSprites;
 
       changed = false;
       logger?.info(
@@ -147,11 +160,19 @@ export function createSpriteBuilder({
         const content = await hooks.transformOutputEntryContent(
           renderSvgNodesToString(files.map(file => file.node))
         );
+        const hash = getHash(content);
+        const filePath = fileNameTemplate
+          .replace('{name}', name)
+          .replace(/\{hash:(\d)}/, (_, length) => hash.slice(0, Number(length)))
+          .replace('{hash}', hash);
+        const fullFilePath = join(output, filePath);
+        const generatedSprite = { name, files, filePath, fullFilePath };
 
-        await vfs.write(join(output, fileName.replace('{name}', name)), content);
-        await hooks.afterWriteGroup({ name, files }, { vfs });
+        await vfs.write(fullFilePath, content);
+        await hooks.afterWriteSprite(generatedSprite, { vfs });
+        groups.set(name, generatedSprite);
       }
-      await hooks.afterWrite(groups, { vfs });
+      await hooks.afterWriteAll(groups, { vfs });
       await vfs.formatChangedFiles();
     }
   };

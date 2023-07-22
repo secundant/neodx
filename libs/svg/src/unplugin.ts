@@ -8,7 +8,7 @@ export interface SvgPluginParams extends Partial<Omit<CreateSpriteBuilderParams,
    * Globs to icons files
    */
   input?: string | string[];
-  logLevel?: 'debug' | 'info' | 'silent';
+  logLevel?: 'debug' | 'info' | 'error' | 'silent';
 }
 
 export const unplugin = createUnplugin(
