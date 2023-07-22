@@ -398,7 +398,7 @@ By default, it creates a single sprite containing all icons without any grouping
 ```tsx
 // shared/ui/icon/icon.tsx
 import clsx from 'clsx';
-import { SVGProps, ForwardedRef, forwardRef } from 'react';
+import { SVGProps } from 'react';
 import { SpritesMap } from './sprite.gen';
 
 // Merging all icons as `SPRITE_NAME/SPRITE_ICON_NAME`

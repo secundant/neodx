@@ -75,7 +75,7 @@ export default defineConfig({
     svg({
       root: 'assets',
       output: 'public',
-      definition: 'src/shared/ui/icon/sprite.h.ts'
+      definitions: 'src/shared/ui/icon/sprite.h.ts'
     })
   ]
 });
@@ -94,7 +94,7 @@ export default {
     svg({
       root: 'assets',
       output: 'public',
-      definition: 'src/shared/ui/icon/sprite.h.ts'
+      definitions: 'src/shared/ui/icon/sprite.h.ts'
     })
   ]
 };
@@ -113,7 +113,7 @@ export default {
     svg({
       root: 'assets',
       output: 'public',
-      definition: 'src/shared/ui/icon/sprite.h.ts'
+      definitions: 'src/shared/ui/icon/sprite.h.ts'
     })
   ]
 };
@@ -132,7 +132,7 @@ export default {
     svg({
       root: 'assets',
       output: 'public',
-      definition: 'src/shared/ui/icon/sprite.h.ts'
+      definitions: 'src/shared/ui/icon/sprite.h.ts'
     })
   ]
 };
