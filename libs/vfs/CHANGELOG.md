@@ -1,5 +1,12 @@
 # @neodx/vfs
 
+## 0.1.8
+
+### Patch Changes
+
+- Updated dependencies [[`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678), [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678), [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678), [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678), [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678), [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678), [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678), [`211badf`](https://github.com/secundant/neodx/commit/211badf76788775353e1cb5a6b4a5518628e9082), [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678)]:
+  - @neodx/log@0.2.0
+
 ## 0.1.7
 
 ### Patch Changes

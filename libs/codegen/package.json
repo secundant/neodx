@@ -63,7 +63,7 @@
     "@neodx/fs": "^0.0.8",
     "@neodx/pkg-misc": "^0.0.6",
     "@neodx/std": "^0.1.4",
-    "@neodx/vfs": "^0.1.7",
+    "@neodx/vfs": "^0.1.8",
     "ejs": "^3.1.9",
     "jsonc-parser": "^3.2.0",
     "picocolors": "^1.0.0",

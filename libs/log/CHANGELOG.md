@@ -1,5 +1,29 @@
 # @neodx/log
 
+## 0.2.0
+
+### Minor Changes
+
+- [#106](https://github.com/secundant/neodx/pull/106) [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678) Thanks [@secundant](https://github.com/secundant)! - Enhance error printing in the `pretty` log target
+
+- [#106](https://github.com/secundant/neodx/pull/106) [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678) Thanks [@secundant](https://github.com/secundant)! - Introduce `@neodx/log/http` submodule for brilliant integrated HTTP logging with simple setup
+
+- [#106](https://github.com/secundant/neodx/pull/106) [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678) Thanks [@secundant](https://github.com/secundant)! - Extend built-in support with `@neodx/log/express` and `@neodx/log/koa` submodules
+
+- [#106](https://github.com/secundant/neodx/pull/106) [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678) Thanks [@secundant](https://github.com/secundant)! - Introduce built-in HTTP and Web Frameworks support
+
+- [#106](https://github.com/secundant/neodx/pull/106) [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678) Thanks [@secundant](https://github.com/secundant)! - Add support for simple level aliasing
+
+- [#106](https://github.com/secundant/neodx/pull/106) [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678) Thanks [@secundant](https://github.com/secundant)! - Add error pretty-printing for in-development logging - ".cause" chains, code frames, custom props displaying and more
+
+- [#106](https://github.com/secundant/neodx/pull/106) [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678) Thanks [@secundant](https://github.com/secundant)! - Improve `json` target's error handling
+
+- [#106](https://github.com/secundant/neodx/pull/106) [`31bf7f4`](https://github.com/secundant/neodx/commit/31bf7f44e8ccbff258d79a2b60b2834331cdd678) Thanks [@secundant](https://github.com/secundant)! - Add serializing API (currently available as part of built-in targets: pretty and json)
+
+### Patch Changes
+
+- [#106](https://github.com/secundant/neodx/pull/106) [`211badf`](https://github.com/secundant/neodx/commit/211badf76788775353e1cb5a6b4a5518628e9082) Thanks [@secundant](https://github.com/secundant)! - Rework pretty logging level badges to prevent emojis in console
+
 ## 0.1.7
 
 ### Patch Changes
