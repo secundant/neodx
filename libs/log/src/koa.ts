@@ -15,7 +15,7 @@ declare module 'koa' {
   }
 }
 
-export function createKoaLogger(params: HttpLoggerParams) {
+export function createKoaLogger(params?: HttpLoggerParams) {
   const http = createHttpLogger(params);
 
   return async function koaLogger(ctx: Context, next: Next) {
