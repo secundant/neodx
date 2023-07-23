@@ -1,5 +1,11 @@
 # @neodx/svg
 
+## 0.4.0
+
+### Minor Changes
+
+- [#109](https://github.com/secundant/neodx/pull/109) [`6156a08`](https://github.com/secundant/neodx/commit/6156a08ebd2657945d1213b9f0bf396862b4d783) Thanks [@secundant](https://github.com/secundant)! - Extend Color Reset API
+
 ## 0.3.0
 
 ### Minor Changes
