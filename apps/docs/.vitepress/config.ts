@@ -30,7 +30,8 @@ export default defineConfig({
         items: [
           { text: 'Getting started', link: '/svg/' },
           { text: 'Motivation', link: '/svg/motivation' },
-          { text: 'Frameworks and bundlers', link: '/svg/frameworks-and-bundlers' }
+          { text: 'Frameworks and bundlers', link: '/svg/frameworks-and-bundlers' },
+          { text: 'Automatically reset colors', link: '/svg/colors-reset' }
         ]
       }
     ],
