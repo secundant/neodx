@@ -33,8 +33,9 @@ export function createConsoleTarget() {
   }: LogChunk<string>) {
     const consoleMethod =
       level in console ? console[level as SupportedConsoleMethods] : console.log;
-    const args = [msgTemplate, ...msgArgs, isEmpty(keys(meta)) ? undefined : meta];
+    const args = [msgTemplate, ...msgArgs];
 
+    if (!isEmpty(keys(meta))) args.push(meta);
     consoleMethod(...args);
 
     if (error) {
