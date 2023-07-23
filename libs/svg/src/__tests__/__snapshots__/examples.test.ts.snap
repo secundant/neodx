@@ -34,7 +34,6 @@ exports[`examples > "colors-advanced" example should generate files 1`] = `
   "assets/flags/ae.svg",
   "assets/flags/af.svg",
   "assets/folder-colored.svg",
-  "assets/logos/instagram.svg",
   "assets/logos/linkedin.svg",
   "assets/logos/twitter.svg",
   "assets/sort-by-visibility.svg",
@@ -57,11 +56,11 @@ exports[`examples > "colors-advanced" example should replay same output 1`] = `
   ],
   [
     "generated/logos.svg",
-    "8b8de57649d7c2701905ca06c5daa501355dd4973816271f30e43dde89c1c4aa",
+    "6c76e8cdf522e8b7cb20f1fb6303584d547ff0f15054b4333c351f4f1fb1d2c6",
   ],
   [
     "generated/sprite-info.ts",
-    "b57eabbb6914bcdd017b84da18c2b5898c6b176896778c77a2f3a9bdfd1a9811",
+    "ccea76ebfa7898989ef6da5c21ff18e8225a629e84098600b52debde57b37d44",
   ],
 ]
 `;
