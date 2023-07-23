@@ -28,6 +28,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "start": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
     "nuke": "rm -rf dist"

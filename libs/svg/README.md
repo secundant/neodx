@@ -80,6 +80,11 @@ and generate sprites in `public` folder with TS definitions in `src/shared/ui/ic
 
 For more details, see our [Step-by-step guide](#step-by-step).
 
+> **Note**: If you receive the error `TS2307: Cannot find module '@neodx/svg/vite' or its corresponding type declarations`,
+> it's a common issue that will be fixed in one of the next versions.
+>
+> To resolve this issue at present, change `moduleResolution` to `Bundler` in your `tsconfig.json`.
+
 Another plugins:
 
 <details>
