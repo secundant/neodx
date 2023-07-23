@@ -173,12 +173,12 @@ describe('logger', () => {
         expectedChunkPartials: Partial<LogChunk<DefaultLoggerLevel>>
       ) => {
         for (const level of expectedTriggeredLevels) {
-          expect(spies[level], `${level} should be called`).toHaveBeenLastCalledWith(
+          expect(spies[level], `"${level}" level should be called`).toHaveBeenLastCalledWith(
             expect.objectContaining(expectedChunkPartials)
           );
         }
         for (const level of difference(keys(spies), expectedTriggeredLevels)) {
-          expect(spies[level], `${level} shouldn't be called`).not.toHaveBeenCalled();
+          expect(spies[level], `"${level}" level shouldn't be called`).not.toHaveBeenCalled();
         }
       };
 
@@ -198,6 +198,39 @@ describe('logger', () => {
         level: 'info',
         meta: { foo: 'bar' },
         msg: ''
+      });
+    });
+
+    test('should support levels hierarchy', () => {
+      const debugWithDebugCall = init({
+        level: 'debug'
+      });
+      const debugWithInfoCall = init({
+        level: 'debug'
+      });
+      const infoWithDebugCall = init({
+        level: 'info'
+      });
+      const infoWithWarnCall = init({
+        level: 'info'
+      });
+
+      debugWithDebugCall.logger.debug('msg');
+      debugWithDebugCall.check(['error', 'warn', 'info', 'success', 'done', 'verbose', 'debug'], {
+        level: 'debug',
+        msg: 'msg'
+      });
+      debugWithInfoCall.logger.info('msg');
+      debugWithInfoCall.check(['error', 'warn', 'info'], {
+        level: 'info',
+        msg: 'msg'
+      });
+      infoWithDebugCall.logger.debug('msg');
+      infoWithDebugCall.check([], {});
+      infoWithWarnCall.logger.warn('msg');
+      infoWithWarnCall.check(['error', 'warn'], {
+        level: 'warn',
+        msg: 'msg'
       });
     });
 

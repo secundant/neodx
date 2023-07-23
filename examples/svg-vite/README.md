@@ -116,3 +116,18 @@ export function SomeComponent() {
   );
 }
 ```
+
+### Roadmap for future
+
+Under this example I want to cover all planned features of `@neodx/svg`, you can track it here:
+
+- [x] Colors: auto replaces unknown colors
+- [x] Colors: replace known to CSS variables
+- [x] Colors: exclude specific icons
+- [x] Colors: exclude specific colors
+- [ ] Non-standard sizes: generate `viewBox` and `width`/`height` attributes
+- [ ] Non-standard sizes: example of enhanced `Icon` component
+- [ ] Inline SVG: auto-detection of internal references
+- [ ] Inline SVG: injection into HTML
+- [ ] Remove unnecessary attributes
+- [ ] Remove unnecessary elements and prevent inlining

@@ -2,7 +2,7 @@ import { getHash, scan } from '@neodx/fs';
 import type { LoggerMethods } from '@neodx/log';
 import { compact, isTruthy, quickPluralize } from '@neodx/std';
 import type { VFS } from '@neodx/vfs';
-import { basename, join } from 'node:path';
+import { basename, join } from 'pathe';
 import { parse } from 'svgson';
 import type { ResetColorsPluginParams } from '../plugins';
 import { fixViewBox, groupSprites, resetColors, setId, svgo, typescript } from '../plugins';
@@ -118,14 +118,23 @@ export function createSpriteBuilder({
     if (prevContent === content) {
       return null;
     }
-    const nodeToFile = (node: SvgNode): SvgFile => ({ name, node, path, content });
+    try {
+      const nodeToFile = (node: SvgNode): SvgFile => ({ name, node, path, content });
 
-    const node = await parse(await hooks.transformSourceContent(path, content), {
-      camelcase: true,
-      transformNode: node => hooks.transformNode(nodeToFile(node))
-    });
+      const node = await parse(await hooks.transformSourceContent(path, content), {
+        camelcase: true,
+        transformNode: node => hooks.transformNode(nodeToFile(node))
+      });
 
-    return nodeToFile(node);
+      return nodeToFile(node);
+    } catch (error) {
+      const parseFailedError = new Error(`Failed to parse ${path}`, {
+        cause: error
+      });
+
+      logger?.error(parseFailedError);
+      throw parseFailedError;
+    }
   };
 
   const add = async (paths: string[]) => {
@@ -174,20 +183,31 @@ export function createSpriteBuilder({
         quickPluralize(groups.size, 'sprite', 'sprites')
       );
       for (const { name, files } of groups.values()) {
-        const content = await hooks.transformOutputEntryContent(
-          renderSvgNodesToString(files.map(file => file.node))
-        );
-        const hash = getHash(content);
-        const filePath = fileNameTemplate
-          .replace('{name}', name)
-          .replace(/\{hash:(\d)}/, (_, length) => hash.slice(0, Number(length)))
-          .replace('{hash}', hash);
-        const fullFilePath = join(output, filePath);
-        const generatedSprite = { name, files, filePath, fullFilePath };
+        try {
+          const content = await hooks.transformOutputEntryContent(
+            renderSvgNodesToString(files.map(file => file.node))
+          );
+          const hash = getHash(content);
+          const filePath = fileNameTemplate
+            .replace('{name}', name)
+            .replace(/\{hash:(\d)}/, (_, length) => hash.slice(0, Number(length)))
+            .replace('{hash}', hash);
+          const fullFilePath = join(output, filePath);
+          const generatedSprite = { name, files, filePath, fullFilePath };
 
-        await vfs.write(fullFilePath, content);
-        await hooks.afterWriteSprite(generatedSprite, { vfs });
-        groups.set(name, generatedSprite);
+          logger?.info('Writing %s...', filePath);
+          await vfs.write(fullFilePath, content);
+          await hooks.afterWriteSprite(generatedSprite, { vfs });
+          groups.set(name, generatedSprite);
+        } catch (error) {
+          const writeFailedError = new Error(`Failed to generate sprite "${name}"`, {
+            cause: error
+          });
+
+          logger?.debug({ files }, 'Failed files');
+          logger?.error(writeFailedError);
+          throw writeFailedError;
+        }
       }
       await hooks.afterWriteAll(groups, { vfs });
       await vfs.formatChangedFiles();

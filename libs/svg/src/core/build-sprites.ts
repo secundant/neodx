@@ -18,14 +18,15 @@ export interface GenerateParams extends CreateSpriteBuilderParams {
  */
 export async function buildSprites({
   vfs,
-  logger,
   input,
+  logger,
   keepTreeChanges,
   ...builderParams
 }: GenerateParams) {
   const startedAt = Date.now();
   const builder = createSpriteBuilder({
     vfs,
+    logger,
     ...builderParams
   });
 

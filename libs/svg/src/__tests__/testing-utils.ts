@@ -1,7 +1,7 @@
-import { readdirSync } from 'fs';
 import { concurrently } from '@neodx/std';
 import { createVfs } from '@neodx/vfs';
-import { readdir, readFile } from 'node:fs/promises';
+import { readdirSync } from 'node:fs';
+import { readdir, readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { buildSprites, type GenerateParams } from '../index';
 
@@ -24,8 +24,9 @@ export async function generateExample(
   write: boolean,
   options?: Partial<GenerateParams>
 ) {
-  const vfs = createVfs(getExampleRoot(name), { dryRun: !write });
+  const vfs = createVfs(getExampleRoot(name), { dryRun: !write, log: false });
 
+  await rm(getExampleOutput(name), { recursive: true, force: true });
   await buildSprites({
     vfs,
     input: ['**/*.svg'],
@@ -41,6 +42,7 @@ export async function generateExample(
 
 export const getExamplesNames = () => readdirSync(examplesRoot);
 
+export const getExampleOutput = (name: string) => join(examplesRoot, name, 'generated');
 export const getExampleRoot = (name: string) => join(examplesRoot, name);
 
 export const getStubRoot = (name: string) => join(stubsRoot, name);

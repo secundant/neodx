@@ -27,6 +27,31 @@ describe('examples', () => {
         }
       }
     },
+    'colors-advanced': {
+      root: 'assets',
+      group: true,
+      resetColors: [
+        {
+          include: /^flags/,
+          replace: {
+            from: 'white',
+            to: 'currentColor'
+          }
+        },
+        {
+          keep: '#DB3B4B',
+          exclude: [/^flags/, /^logos/, /-colored\.svg$/],
+          replace: [
+            {
+              from: '#6C707E',
+              to: 'currentColor'
+            }
+          ],
+          properties: ['fill', 'stroke'],
+          replaceUnknown: 'var(--icon-color)'
+        }
+      ]
+    },
     'experimental-runtime': {
       root: 'assets',
       group: true,

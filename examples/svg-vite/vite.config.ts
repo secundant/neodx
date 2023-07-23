@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-export default defineConfig(({ command }) => ({
+export default defineConfig({
   plugins: [
     tsconfigPaths(),
     react(),
@@ -15,9 +15,10 @@ export default defineConfig(({ command }) => ({
       experimentalRuntime: true,
       definitions: 'src/shared/ui/icon/sprite.gen.ts',
       resetColors: {
-        replace: ['#000', '#eee', '#6C707E'],
+        exclude: [/^flags/, /^logos/],
+        replace: ['#000', '#eee', '#6C707E', '#313547'],
         replaceUnknown: 'var(--icon-color)'
       }
     })
   ]
-}));
+});
