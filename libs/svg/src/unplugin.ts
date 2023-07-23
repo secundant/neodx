@@ -14,7 +14,7 @@ export interface SvgPluginParams extends Partial<Omit<CreateSpriteBuilderParams,
 export const unplugin = createUnplugin(
   (
     {
-      logLevel = 'silent',
+      logLevel = 'error',
       logger = createLogger({
         name: 'svg',
         level: logLevel,

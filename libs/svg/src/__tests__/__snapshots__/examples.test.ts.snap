@@ -11,7 +11,60 @@ exports[`examples > "colors" example should generate files 1`] = `
 ]
 `;
 
-exports[`examples > "colors" example should replay same output 1`] = `[]`;
+exports[`examples > "colors" example should replay same output 1`] = `
+[
+  [
+    "generated/sprite.svg",
+    "62b41de3545a4350fe7ef5f3cc3adbbb221c82ef0863bf5871361f821b6cd028",
+  ],
+  [
+    "generated/sprite-info.ts",
+    "4793076202450a65b7b04efe27b0b74ddda29399e95da47f55cfe47450854d12",
+  ],
+]
+`;
+
+exports[`examples > "colors-advanced" example should generate files 1`] = `
+[
+  "assets/close.svg",
+  "assets/exit.svg",
+  "assets/favourite.svg",
+  "assets/flags/ac.svg",
+  "assets/flags/ad.svg",
+  "assets/flags/ae.svg",
+  "assets/flags/af.svg",
+  "assets/folder-colored.svg",
+  "assets/logos/instagram.svg",
+  "assets/logos/linkedin.svg",
+  "assets/logos/twitter.svg",
+  "assets/sort-by-visibility.svg",
+  "generated/flags.svg",
+  "generated/logos.svg",
+  "generated/sprite-info.ts",
+  "generated/sprite.svg",
+]
+`;
+
+exports[`examples > "colors-advanced" example should replay same output 1`] = `
+[
+  [
+    "generated/sprite.svg",
+    "ffef88ad150b16c58a121b4efe656db2159b9a3498efb53067180a88a0bfd711",
+  ],
+  [
+    "generated/flags.svg",
+    "f4756b243c9212d40aa8c5484660ff8dfae36f09c777f89555f557382f453857",
+  ],
+  [
+    "generated/logos.svg",
+    "8b8de57649d7c2701905ca06c5daa501355dd4973816271f30e43dde89c1c4aa",
+  ],
+  [
+    "generated/sprite-info.ts",
+    "b57eabbb6914bcdd017b84da18c2b5898c6b176896778c77a2f3a9bdfd1a9811",
+  ],
+]
+`;
 
 exports[`examples > "experimental-runtime" example should generate files 1`] = `
 [
@@ -25,7 +78,22 @@ exports[`examples > "experimental-runtime" example should generate files 1`] = `
 ]
 `;
 
-exports[`examples > "experimental-runtime" example should replay same output 1`] = `[]`;
+exports[`examples > "experimental-runtime" example should replay same output 1`] = `
+[
+  [
+    "generated/common.2eb4b56f.svg",
+    "2eb4b56ff266279ca9c0af3b16f7f3114ae35c4555657bb106acbd15ff9d4f52",
+  ],
+  [
+    "generated/format.c890959d.svg",
+    "c890959d268bf53d6006012438788b4104189d3cfaf997b0b43b2fd4f1a41159",
+  ],
+  [
+    "generated/sprite-info.ts",
+    "046df9f47812fc3681fd787ae23e64db1f089a509fd18607a57d2613bf4cdff7",
+  ],
+]
+`;
 
 exports[`examples > "groups-with-root" example should generate files 1`] = `
 [
@@ -39,7 +107,22 @@ exports[`examples > "groups-with-root" example should generate files 1`] = `
 ]
 `;
 
-exports[`examples > "groups-with-root" example should replay same output 1`] = `[]`;
+exports[`examples > "groups-with-root" example should replay same output 1`] = `
+[
+  [
+    "generated/common.svg",
+    "2eb4b56ff266279ca9c0af3b16f7f3114ae35c4555657bb106acbd15ff9d4f52",
+  ],
+  [
+    "generated/format.svg",
+    "c890959d268bf53d6006012438788b4104189d3cfaf997b0b43b2fd4f1a41159",
+  ],
+  [
+    "generated/sprite-info.ts",
+    "fac807c42c630ce77d6e1fea77b808338cf68776235c48736f3b82aa09e761df",
+  ],
+]
+`;
 
 exports[`examples > "groups-without-root" example should generate files 1`] = `
 [
@@ -53,7 +136,22 @@ exports[`examples > "groups-without-root" example should generate files 1`] = `
 ]
 `;
 
-exports[`examples > "groups-without-root" example should replay same output 1`] = `[]`;
+exports[`examples > "groups-without-root" example should replay same output 1`] = `
+[
+  [
+    "generated/assets/common.svg",
+    "2eb4b56ff266279ca9c0af3b16f7f3114ae35c4555657bb106acbd15ff9d4f52",
+  ],
+  [
+    "generated/assets/format.svg",
+    "c890959d268bf53d6006012438788b4104189d3cfaf997b0b43b2fd4f1a41159",
+  ],
+  [
+    "generated/sprite-info.ts",
+    "1153d305b1db1f1605d0d5e9b30a19ec4fea65b221553ef862158f31c2270de8",
+  ],
+]
+`;
 
 exports[`examples > "react" example should generate files 1`] = `
 [
@@ -69,7 +167,22 @@ exports[`examples > "react" example should generate files 1`] = `
 ]
 `;
 
-exports[`examples > "react" example should replay same output 1`] = `[]`;
+exports[`examples > "react" example should replay same output 1`] = `
+[
+  [
+    "generated/common.svg",
+    "2eb4b56ff266279ca9c0af3b16f7f3114ae35c4555657bb106acbd15ff9d4f52",
+  ],
+  [
+    "generated/format.svg",
+    "c890959d268bf53d6006012438788b4104189d3cfaf997b0b43b2fd4f1a41159",
+  ],
+  [
+    "generated/sprite-info.ts",
+    "fac807c42c630ce77d6e1fea77b808338cf68776235c48736f3b82aa09e761df",
+  ],
+]
+`;
 
 exports[`examples > "simple" example should generate files 1`] = `
 [
@@ -80,4 +193,15 @@ exports[`examples > "simple" example should generate files 1`] = `
 ]
 `;
 
-exports[`examples > "simple" example should replay same output 1`] = `[]`;
+exports[`examples > "simple" example should replay same output 1`] = `
+[
+  [
+    "generated/sprite.svg",
+    "de338dcd1643d85f1cc9bc1b0fd01e6904bb82b600a1a4914c31577766ead4d2",
+  ],
+  [
+    "generated/sprite-info.ts",
+    "89e0e5e36909c3dce4af5977af027d8779b20860232d34612d27a7778bdcc1e3",
+  ],
+]
+`;
