@@ -1,5 +1,6 @@
 export { fixViewBox } from './fix-view-box';
 export { type GroupPluginOptions, groupSprites } from './group';
+export { legacyTypescript, type LegacyTypescriptPluginOptions } from './legacy-typescript';
 export type {
   AnyColorInput,
   ColorPropertyReplacementInput,
@@ -9,4 +10,3 @@ export type {
 export { resetColors } from './reset-colors';
 export { setId } from './set-id';
 export { svgo, type SvgoPluginOptions } from './svgo';
-export { typescript, type TypescriptPluginOptions } from './typescript';

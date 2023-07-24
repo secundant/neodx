@@ -32,7 +32,7 @@ export async function generateExample(
     input: ['**/*.svg'],
     output: 'generated',
     optimize: true,
-    definitions: 'generated/sprite-info.ts',
+    metadata: 'generated/sprite-info.ts',
     keepTreeChanges: !write,
     ...options
   });

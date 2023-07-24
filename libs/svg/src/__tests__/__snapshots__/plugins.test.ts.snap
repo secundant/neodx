@@ -1,0 +1,219 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`plugins system > "metadata" plugin > should generate basic runtime info with metadata.runtime as constant name 1`] = `
+"export interface SpritesMap {
+    'a': 'a' | 'b',
+'b': 'a' | 'b'
+  }
+export const RuntimeExample = {
+    'a': ['a',
+'b'],
+'b': ['a',
+'b']
+  } satisfies {
+      'a': Array<'a' | 'b'>,
+'b': Array<'a' | 'b'>
+    };"
+`;
+
+exports[`plugins system > "metadata" plugin > should generate runtime with size 1`] = `
+"export interface SpritesMap {
+    'a': 'a' | 'b',
+'b': 'a' | 'b'
+  }
+export const SPRITES_META = {
+    'a': {
+    filePath: 'a.svg',
+    items: {
+      'a': {
+    
+    width: 16, height: 16,
+  },
+'b': {
+    
+    width: 16, height: 16,
+  }
+    }
+},
+'b': {
+    filePath: 'b.svg',
+    items: {
+      'a': {
+    
+    width: 16, height: 16,
+  },
+'b': {
+    
+    width: 16, height: 16,
+  }
+    }
+}
+  } satisfies Record<string, {
+         filePath: string;
+         items: Record<string, {
+            
+            width: number, height: number,
+         }>
+       }>;"
+`;
+
+exports[`plugins system > "metadata" plugin > should generate runtime with size, viewBox and custom name 1`] = `
+"export interface SpritesMap {
+    'a': 'a' | 'b',
+'b': 'a' | 'b'
+  }
+export const RuntimeExample = {
+    'a': {
+    filePath: 'a.svg',
+    items: {
+      'a': {
+    viewBox: '0 0 16 16',
+    width: 16, height: 16,
+  },
+'b': {
+    viewBox: '0 0 16 16',
+    width: 16, height: 16,
+  }
+    }
+},
+'b': {
+    filePath: 'b.svg',
+    items: {
+      'a': {
+    viewBox: '0 0 16 16',
+    width: 16, height: 16,
+  },
+'b': {
+    viewBox: '0 0 16 16',
+    width: 16, height: 16,
+  }
+    }
+}
+  } satisfies Record<string, {
+         filePath: string;
+         items: Record<string, {
+            viewBox: string,
+            width: number, height: number,
+         }>
+       }>;"
+`;
+
+exports[`plugins system > "metadata" plugin > should generate runtime with viewBox 1`] = `
+"export interface SpritesMap {
+    'a': 'a' | 'b',
+'b': 'a' | 'b'
+  }
+export const SPRITES_META = {
+    'a': {
+    filePath: 'a.svg',
+    items: {
+      'a': {
+    viewBox: '0 0 16 16',
+    
+  },
+'b': {
+    viewBox: '0 0 16 16',
+    
+  }
+    }
+},
+'b': {
+    filePath: 'b.svg',
+    items: {
+      'a': {
+    viewBox: '0 0 16 16',
+    
+  },
+'b': {
+    viewBox: '0 0 16 16',
+    
+  }
+    }
+}
+  } satisfies Record<string, {
+         filePath: string;
+         items: Record<string, {
+            viewBox: string,
+            
+         }>
+       }>;"
+`;
+
+exports[`plugins system > "metadata" plugin > should generate runtime without types 1`] = `
+"export const RuntimeExample = {
+    'a': {
+    filePath: 'a.svg',
+    items: {
+      'a': {
+    viewBox: '0 0 16 16',
+    width: 16, height: 16,
+  },
+'b': {
+    viewBox: '0 0 16 16',
+    width: 16, height: 16,
+  }
+    }
+},
+'b': {
+    filePath: 'b.svg',
+    items: {
+      'a': {
+    viewBox: '0 0 16 16',
+    width: 16, height: 16,
+  },
+'b': {
+    viewBox: '0 0 16 16',
+    width: 16, height: 16,
+  }
+    }
+}
+  };"
+`;
+
+exports[`plugins system > "metadata" plugin > should generate same default output with metadata as string and as { path } 1`] = `
+"export interface SpritesMap {
+    'a': 'a' | 'b',
+'b': 'a' | 'b'
+  }
+export const SPRITES_META = {
+    'a': ['a',
+'b'],
+'b': ['a',
+'b']
+  } satisfies {
+      'a': Array<'a' | 'b'>,
+'b': Array<'a' | 'b'>
+    };"
+`;
+
+exports[`plugins system > "metadata" plugin > should generate types and runtime at the same time 1`] = `
+"export interface TypesExample {
+    'a': 'a' | 'b',
+'b': 'a' | 'b'
+  }
+export const RuntimeExample = {
+    'a': ['a',
+'b'],
+'b': ['a',
+'b']
+  } satisfies {
+      'a': Array<'a' | 'b'>,
+'b': Array<'a' | 'b'>
+    };"
+`;
+
+exports[`plugins system > "metadata" plugin > should generate types with metadata.types as interface name 1`] = `
+"export interface TypesExample {
+    'a': 'a' | 'b',
+'b': 'a' | 'b'
+  }
+export const SPRITES_META = {
+    'a': ['a',
+'b'],
+'b': ['a',
+'b']
+  } satisfies {
+      'a': Array<'a' | 'b'>,
+'b': Array<'a' | 'b'>
+    };"
+`;
