@@ -10,7 +10,7 @@ const nextConfig = {
         svg({
           root: 'assets',
           output: 'public',
-          definitions: 'src/shared/ui/icon/sprite.gen.ts',
+          metadata: 'src/shared/ui/icon/sprite.gen.ts',
           resetColors: {
             replaceUnknown: 'currentColor'
           }

@@ -1,10 +1,9 @@
 # Example of using `@neodx/svg` Vite plugin
 
-> **Warning** In this example was used `experimentalRuntime` option and advanced `fileName` feature, API will be changed in the nearest future.
-
 This example shows how to use `@neodx/svg` as Vite plugin and simple step-by-step setup for React.
 
-In the addition you can see how to use multicolored icons with TailwindCSS and CSS variable (it's not very pleasant, but it works 🌝).
+In addition, you can see how to use multicolored icons with TailwindCSS and CSS variable
+(it's not very pleasant, but it works 🌝).
 
 ![result](./docs/result.png)
 
@@ -37,7 +36,14 @@ export default defineConfig(({ command }) => ({
       root: 'assets', // Root folder for SVG files, all source paths will be relative to this folder
       group: true, // Group SVG files by folder
       output: 'public', // Output folder for generated files
-      definitions: 'src/shared/ui/icon/sprite.gen.ts', // Output file for generated TypeScript definitions
+      metadata: {
+        path: 'src/shared/ui/icon/sprite.gen.ts', // Output file for generated TypeScript definitions
+        runtime: {
+          // Generate additional runtime information
+          size: true,
+          viewBox: true
+        }
+      },
       resetColors: {
         replace: ['#000', '#eee', '#6C707E'], // Resets all known colors to `currentColor`
         replaceUnknown: 'var(--icon-color)' // Replaces unknown colors with custom CSS variable

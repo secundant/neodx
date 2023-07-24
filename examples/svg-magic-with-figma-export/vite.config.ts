@@ -14,10 +14,10 @@ export default defineConfig({
       root: 'assets/icons',
       output: 'public',
       group: true,
+      metadata: 'src/shared/ui/icon/sprite.gen.ts',
       resetColors: {
         replace: ['#6C707E', '#A8ADBD', '#818594']
-      },
-      definitions: 'src/shared/ui/icon/sprite.gen.ts'
+      }
     })
   ]
 });
