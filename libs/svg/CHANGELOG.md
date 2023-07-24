@@ -1,5 +1,11 @@
 # @neodx/svg
 
+## 0.5.0
+
+### Minor Changes
+
+- [#112](https://github.com/secundant/neodx/pull/112) [`d61f02b`](https://github.com/secundant/neodx/commit/d61f02bd98b2169b995a0e819629d5e1973f9d0d) Thanks [@secundant](https://github.com/secundant)! - Introduce new `metadata` API
+
 ## 0.4.0
 
 ### Minor Changes
