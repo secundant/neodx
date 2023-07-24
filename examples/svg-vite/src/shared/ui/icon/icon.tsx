@@ -17,11 +17,17 @@ export function Icon({ name, className, ...props }: IconProps) {
   ];
   const { filePath, items } = SPRITES_META[spriteName];
   // TODO Fix types
-  const { viewBox } = (items as any)[iconName] as { viewBox: string };
+  const { viewBox, width, height } = (items as any)[iconName] as any;
+  const rect = width === height ? 'xy' : width > height ? 'x' : 'y';
 
   return (
     <svg
       className={clsx('icon', className)}
+      /**
+       * this prop is used by the "icon" class to set the icon's scaled size
+       * @see https://github.com/secundant/neodx/issues/92
+       */
+      data-icon-aspect-ratio={rect}
       viewBox={viewBox}
       focusable="false"
       aria-hidden
