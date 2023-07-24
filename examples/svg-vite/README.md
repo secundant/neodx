@@ -83,7 +83,7 @@ export function Icon({ name, className, viewBox, ...props }: IconProps) {
       aria-hidden
       {...props}
     >
-      <use xlinkHref={`/${spriteName}.svg#${iconName}`} />
+      <use href={`/${spriteName}.svg#${iconName}`} />
     </svg>
   );
 }

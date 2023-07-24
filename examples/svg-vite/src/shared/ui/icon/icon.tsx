@@ -10,7 +10,7 @@ export interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'name' | 'type'
   name: IconName;
 }
 
-export function Icon({ name, className, viewBox: viewBoxFromProps, ...props }: IconProps) {
+export function Icon({ name, className, ...props }: IconProps) {
   const [spriteName, iconName] = name.split('/') as [
     keyof SpritesMap,
     SpritesMap[keyof SpritesMap]
@@ -22,12 +22,12 @@ export function Icon({ name, className, viewBox: viewBoxFromProps, ...props }: I
   return (
     <svg
       className={clsx('icon', className)}
-      viewBox={viewBoxFromProps ?? viewBox}
+      viewBox={viewBox}
       focusable="false"
       aria-hidden
       {...props}
     >
-      <use xlinkHref={`/${filePath}#${iconName}`} />
+      <use href={`/${filePath}#${iconName}`} />
     </svg>
   );
 }
