@@ -4,11 +4,13 @@ import { compact, isTruthy, quickPluralize } from '@neodx/std';
 import type { VFS } from '@neodx/vfs';
 import { basename, join } from 'pathe';
 import { parse } from 'svgson';
-import type { ResetColorsPluginParams } from '../plugins';
-import { fixViewBox, groupSprites, resetColors, setId, svgo, typescript } from '../plugins';
+import { fixViewBox, groupSprites, legacyTypescript, resetColors, setId, svgo } from '../plugins';
+import { extractSvgMeta } from '../plugins/fix-view-box';
+import { metadata as metadataPlugin, type MetadataPluginParams } from '../plugins/metadata';
 import { combinePlugins } from '../plugins/plugin-utils';
+import type { ResetColorsPluginParams } from '../plugins/reset-colors';
 import { renderSvgNodesToString } from './render';
-import type { GeneratedSprites, SvgFile, SvgNode } from './types';
+import type { GeneratedSprites, SvgFile, SvgFileMeta, SvgNode } from './types';
 
 export interface CreateSpriteBuilderParams {
   vfs: VFS;
@@ -45,7 +47,16 @@ export interface CreateSpriteBuilderParams {
    */
   optimize?: boolean;
   /**
+   * Configures metadata generation
+   * @example "src/sprites/meta.ts"
+   * @example { path: "meta.ts", runtime: false } // will generate only types
+   * @example { path: "meta.ts", types: 'TypeName', runtime: 'InfoName' } // will generate "interface TypeName" types and "const InfoName" runtime metadata
+   * @example { path: "meta.ts", runtime: { size: true, viewBox: true } } // will generate runtime metadata with size and viewBox
+   */
+  metadata?: MetadataPluginParams;
+  /**
    * Path to generated definitions file
+   * @deprecated use `metadata` instead
    */
   definitions?: string;
   /**
@@ -56,6 +67,7 @@ export interface CreateSpriteBuilderParams {
    * WILL BE CHANGED IN FUTURE
    * Replaces current approach (just array of IDs per sprite) with extended runtime metadata
    *
+   * @deprecated use `metadata` instead
    * @unstable
    * @example
    * export const SPRITES_META = {
@@ -85,12 +97,19 @@ export function createSpriteBuilder({
   output,
   logger,
   group: enableGroup,
+  metadata,
   fileName: fileNameTemplate = '{name}.svg',
   optimize,
   definitions,
   resetColors: resetColorsParams,
   experimentalRuntime
 }: CreateSpriteBuilderParams) {
+  if (definitions || experimentalRuntime) {
+    logger?.error(
+      'DEPRECATED: `definitions` and `experimentalRuntime` options will be removed in future versions, use `metadata` instead'
+    );
+  }
+
   const hooks = combinePlugins(
     compact([
       enableGroup && groupSprites(),
@@ -98,8 +117,10 @@ export function createSpriteBuilder({
       fixViewBox(),
       resetColors(resetColorsParams),
       optimize && svgo(),
-      definitions &&
-        typescript({
+      !definitions && metadataPlugin(metadata),
+      !metadata &&
+        definitions &&
+        legacyTypescript({
           output: definitions,
           experimentalRuntime
         })
@@ -119,11 +140,15 @@ export function createSpriteBuilder({
       return null;
     }
     try {
-      const nodeToFile = (node: SvgNode): SvgFile => ({ name, node, path, content });
+      let meta: SvgFileMeta;
+      const nodeToFile = (node: SvgNode): SvgFile => ({ name, meta, node, path, content });
 
       const node = await parse(await hooks.transformSourceContent(path, content), {
         camelcase: true,
-        transformNode: node => hooks.transformNode(nodeToFile(node))
+        transformNode: node => {
+          meta = extractSvgMeta(node);
+          return hooks.transformNode(nodeToFile(node));
+        }
       });
 
       return nodeToFile(node);

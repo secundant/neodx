@@ -39,9 +39,9 @@ We have a some ideas for future development, so stay tuned and feel free to requ
 
 ### [@neodx/svg](./libs/svg)
 
-Are you converting every SVG icon to React component with SVGR or something similar? It's so ease to use!
+Are you converting every SVG icon to a React component with SVGR or something similar? It's so ease to use!
 
-But wait, did you know that SVG sprites are native approach for icons? It's even easier to use!
+But wait; did you know that SVG sprites are a native approach for icons? It's even easier to use!
 
 ```typescript jsx
 import { Icon } from '@/shared/ui';
@@ -75,7 +75,7 @@ export default defineConfig({
     svg({
       root: 'assets',
       output: 'public',
-      definitions: 'src/shared/ui/icon/sprite.h.ts'
+      metadata: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 });
@@ -94,7 +94,7 @@ export default {
     svg({
       root: 'assets',
       output: 'public',
-      definitions: 'src/shared/ui/icon/sprite.h.ts'
+      metadata: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 };
@@ -113,7 +113,7 @@ export default {
     svg({
       root: 'assets',
       output: 'public',
-      definitions: 'src/shared/ui/icon/sprite.h.ts'
+      metadata: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 };
@@ -132,7 +132,7 @@ export default {
     svg({
       root: 'assets',
       output: 'public',
-      definitions: 'src/shared/ui/icon/sprite.h.ts'
+      metadata: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 };
@@ -144,7 +144,7 @@ export default {
   <summary>CLI</summary>
 
 ```shell
-npx @neodx/svg --group --root assets --output public --definition src/shared/ui/icon/sprite.h.ts
+npx @neodx/svg --group --root assets --output public --definition src/shared/ui/icon/sprite.gen.ts
 # --root - root folder with SVGs
 # --group - group icons by folders (assets/common/add.svg -> common/add, assets/other/cut.svg -> other/cut)
 # --output (-o) - output folder for sprites
@@ -165,7 +165,7 @@ await buildSprites({
   root: 'assets',
   input: '**/*.svg',
   output: 'public',
-  definition: 'src/shared/ui/icon/sprite.h.ts'
+  metadata: 'src/shared/ui/icon/sprite.gen.ts'
 });
 ```
 
@@ -185,7 +185,7 @@ src/
   shared/
     ui/
       icon/
-+        sprite.h.ts // sprite definitions - types, metadata, etc.
++        sprite.gen.ts // sprite definitions - types, metadata, etc.
 public/
 +  sprite/
 +    common.svg
@@ -208,7 +208,7 @@ Having trouble finding a suitable logging library because they're too heavy, pla
 
 I faced the same issues, which led me to create `@neodx/log`.
 It's simple, efficient, and avoids most critical drawbacks.
-Furthermore, it's easily replaceable and extensible, making it the great fit for your development needs.
+Furthermore, it's easily replaceable and extensible, making it a great fit for your development needs.
 
 <div align="center">
   <img alt="Header" src="libs/log/docs/preview-intro.png" width="1458">

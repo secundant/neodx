@@ -18,7 +18,7 @@ export default defineConfig({
       root: 'assets',
       group: true,
       output: 'public',
-      definitions: 'src/shared/ui/icon/sprite.h.ts',
+      metadata: 'src/shared/ui/icon/sprite.gen.ts',
       resetColors: {
         replaceUnknown: 'currentColor'
       }

@@ -39,10 +39,17 @@ export interface GeneratedSprite extends SpriteGroup {
 }
 
 export interface SvgFile {
+  meta: SvgFileMeta;
   node: SvgNode;
   path: string;
   name: string;
   content: string;
+}
+
+export interface SvgFileMeta {
+  width?: number;
+  height?: number;
+  viewBox?: string;
 }
 
 export interface SvgNode {

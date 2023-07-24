@@ -52,11 +52,18 @@ describe('examples', () => {
         }
       ]
     },
-    'experimental-runtime': {
+    metadata: {
       root: 'assets',
       group: true,
       fileName: '{name}.{hash:8}.svg',
-      experimentalRuntime: true
+      metadata: {
+        path: 'generated/meta.ts',
+        types: true,
+        runtime: {
+          viewBox: true,
+          size: true
+        }
+      }
     }
   };
 

@@ -5,11 +5,11 @@ Supercharge your icons ⚡️
 ## Motivation
 
 Sprites are the most effective way to work with your SVG icons,
-but for some reason developers (vision from react world) prefer
-mostly bloated and ineffective - "compile" SVG to react component with inlined SVG content.
+but for some reason developers (vision from a React world) prefer
+mostly bloated and ineffective, "compile" SVG to react component with inlined SVG content.
 
 Of course, we can use some external tools like https://svgsprit.es/ or some npm libraries,
-but that's not serious (if you know any alternatives - let me know, and I'll add links), developers need DX.
+but that's not serious (if you know any alternatives, let me know, and I'll add links), developers need DX.
 
 In a ridiculous, but incredibly popular way, we don't have other solutions with the same DX.
 
@@ -23,11 +23,11 @@ is better than a super-efficient, but unusable setup with semi-manual generators
 
 That's why we're here! 🥳
 
-- TypeScript support out of box - generated types and [information about your sprites](#content-based-hashes)
+- TypeScript support out of box - generated types and [information about your sprites](#-content-based-hashes-and-runtime-metadata-generation)
 - [Built-in integrated plugins](#integrate-with-your-bundler) for all major bundlers: `vite`, `webpack`, `rollup`, `esbuild`, etc.
 - Optional grouping by folders
 - Optimization with svgo
-- [Automatically reset colors](#-powerful-colors-reset)
+- [Automatically reset colors](#-automatically-reset-colors)
 - Powerful files selection
 
 ## Installation and usage
@@ -43,7 +43,8 @@ pnpm add -D @neodx/svg
 
 ### CLI (Not recommended)
 
-Currently, we don't recommend using CLI mode, because it's not flexible enough and requires extra setup, if you want to use it - see [CLI](#cli) section and [CLI Options API](#cli-options).
+Currently, we don't recommend using CLI mode because it's not flexible enough and requires extra setup
+if you want to use it - see [CLI](#cli) section and [CLI Options API](#cli-options).
 
 ```shell
 yarn sprite --help
@@ -65,7 +66,7 @@ export default defineConfig({
       root: 'assets',
       group: true,
       output: 'public',
-      definitions: 'src/shared/ui/icon/sprite.gen.ts',
+      metadata: 'src/shared/ui/icon/sprite.gen.ts',
       resetColors: {
         replaceUnknown: 'currentColor'
       }
@@ -98,7 +99,7 @@ export default {
     svg({
       root: 'assets',
       output: 'public',
-      definition: 'src/shared/ui/icon/sprite.gen.ts'
+      metadata: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 };
@@ -117,7 +118,7 @@ export default {
     svg({
       root: 'assets',
       output: 'public',
-      definition: 'src/shared/ui/icon/sprite.gen.ts'
+      metadata: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 };
@@ -136,7 +137,7 @@ export default {
     svg({
       root: 'assets',
       output: 'public',
-      definition: 'src/shared/ui/icon/sprite.gen.ts'
+      metadata: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 };
@@ -276,9 +277,9 @@ svg({
 });
 ```
 
-### <a name="content-based-hashes" id="content-based-hashes" /> 🆕 ⚠️ Get content-based hashes in filenames with experimental runtime information
+### 🆕 Content-based hashes and runtime metadata generation
 
-> **Warning:** This feature is experimental and will be changed in the future.
+> **Note:** If you used `definitions` or `experimentalRuntime` options before, you need to update your configuration, see [Migration guide](#move-from-definitions-and-experimentalruntime-options-to-metadata-api).
 
 By default, you will get the following sprites in your output:
 
@@ -295,7 +296,7 @@ the sprite filename won't be updated, which could result in an infinite cache.
 To solve this issue and achieve content-based hashes in filenames, you need to take three steps:
 
 1. Provide the `fileName` option with a `hash` variable (e.g. `fileName: "{name}.{hash:8}.svg"`)
-2. Enable the `experimentalRuntime` option to get information about the file path by sprite name during runtime
+2. Configure the `metadata` option to get additional information about the file path by sprite name during runtime
 3. Update your `Icon` component (or whatever you use) to support the new runtime information
 
 ```typescript
@@ -305,7 +306,13 @@ export default defineConfig({
   plugins: [
     svg({
       fileName: '{name}.{hash:8}.svg',
-      experimentalRuntime: true
+      metadata: {
+        path: 'src/shared/ui/icon/sprite.gen.ts',
+        runtime: {
+          size: true,
+          viewBox: true
+        }
+      }
       // ...
     })
     // ...
@@ -322,6 +329,37 @@ public/
 +  sprite-bar.87654def.svg
 ```
 
+With the following metadata in `src/shared/ui/icon/sprite.gen.ts`:
+
+```typescript
+export interface SpritesMap {
+  'sprite-foo': 'first' | 'second';
+  'sprite-bar': ' /* ... */ ';
+}
+export const SPRITES_META = {
+  'sprite-foo': {
+    filePath: 'sprite-foo.12abc678.svg',
+    items: {
+      first: {
+        // all items will have `viewBox`, `width` and `height` properties
+        viewBox: '0 0 48 48',
+        width: 48,
+        height: 48
+      },
+      second: {
+        /* ... */
+      }
+    }
+  },
+  'sprite-bar': {
+    filePath: 'sprite-bar.87654def.svg',
+    items: {
+      /* ... */
+    }
+  }
+};
+```
+
 And updates of `Icon` component will be like this:
 
 > This example is based on implementation from [Building Icon component with TailwindCSS](#building-icon-component-with-tailwindcss-see-example) recipe and our [Vite application example (link to GH repo)](https://github.com/secundant/neodx/tree/main/examples/svg-vite)
@@ -329,17 +367,17 @@ And updates of `Icon` component will be like this:
 ```diff
 + import { SPRITES_META, type SpritesMap } from './sprite.gen';
 
-+ export function Icon({ name, viewBox: viewBoxFromProps, /* ... */ }) {
++ export function Icon({ name, /* ... */ }) {
    const [spriteName, iconName] = name.split('/');
 +  const { filePath, items } = SPRITES_META[spriteName];
 +  const { viewBox } = items[iconName];
 
    return (
      <svg
-+      viewBox={viewBoxFromProps ?? viewBox}
++      viewBox={viewBox}
        // ...
      >
-+      <use xlinkHref={`/${filePath}#${iconName}`} />
++      <use href={`/${filePath}#${iconName}`} />
      </svg>
    );
 }
@@ -386,7 +424,9 @@ export default defineConfig({
       root: 'assets',
       group: true,
       output: 'public',
-      definitions: 'src/shared/ui/icon/sprite.gen.ts',
+      metadata: {
+        path: 'src/shared/ui/icon/sprite.gen.ts'
+      },
       resetColors: {
         replaceUnknown: 'currentColor'
       }
@@ -445,11 +485,11 @@ export const SPRITES_META: { [K in keyof SpritesMap]: SpritesMap[K][] } = {
 
 As you can see, we have a map of all sprites and meta information about them.
 
-Now we can use it in our code - for type checking, autocomplete and other cool stuff.
+Now we can use it in our code - for type checking, autocomplete, and other cool stuff.
 
 ### Create your Icon component
 
-> It's a **simple** implementation, you can see a more real one in the "Recipes" section
+> It's a **simple** implementation, you can see a real one in the "Recipes" section
 
 ```tsx
 // shared/ui/icon/icon.tsx
@@ -463,7 +503,7 @@ export interface IconProps<Group extends keyof SpritesMap> {
 export function Icon<Group extends keyof SpritesMap = 'common'>({ type, name }: IconProps<Group>) {
   return (
     <svg className="icon">
-      <use xlinkHref={`/public/sprite/${type}.svg#${name}`}></use>
+      <use href={`/public/sprite/${type}.svg#${name}`}></use>
     </svg>
   );
 }
@@ -558,7 +598,7 @@ export function Icon({ name, className, viewBox, ...props }: IconProps) {
       {...props}
     >
       {/* For example, "/common.svg#favourite". Change base path if you don't store sprites under the root. */}
-      <use xlinkHref={`/${spriteName}.svg#${iconName}`} />
+      <use href={`/${spriteName}.svg#${iconName}`} />
     </svg>
   );
 }
@@ -639,6 +679,27 @@ export function SomeFeature() {
 }
 ```
 
+## Migrations
+
+### Move from `definitions` and `experimentalRuntime` options to `metadata API`
+
+Now [metadata](#-content-based-hashes-and-runtime-metadata-generation) is stable
+and covered under one `metadata` option.
+
+```diff
+svg({
+-  definitions: 'src/shared/ui/icon/sprite.gen.ts',
+-  experimentalRuntime: true,
++  metadata: {
++    path: 'src/shared/ui/icon/sprite.gen.ts',
++    runtime: {
++      size: true,
++      viewBox: true,
++    }
++  }
+});
+```
+
 ## API
 
 ### Node.JS API
@@ -696,36 +757,17 @@ interface Options {
    */
   optimize?: boolean;
   /**
-   * Path to generated definitions file
+   * Configures metadata generation
+   * @example "src/sprites/meta.ts"
+   * @example { path: "meta.ts", runtime: false } // will generate only types
+   * @example { path: "meta.ts", types: 'TypeName', runtime: 'InfoName' } // will generate "interface TypeName" types and "const InfoName" runtime metadata
+   * @example { path: "meta.ts", runtime: { size: true, viewBox: true } } // will generate runtime metadata with size and viewBox
    */
-  definitions?: string;
+  metadata?: MetadataPluginParams;
   /**
    * Reset colors config
    */
   resetColors?: ResetColorsPluginParams;
-  /**
-   * WILL BE CHANGED IN FUTURE
-   * Replaces current approach (just array of IDs per sprite) with extended runtime metadata
-   *
-   * @unstable
-   * @example
-   * export const SPRITES_META = {
-   *   'common-arrows': {
-   *     fileName: 'common/arrows.a766b3.svg',
-   *     items: {
-   *       left: {
-   *         viewBox: '0 0 24 24',
-   *       },
-   *       right: {
-   *         viewBox: '0 0 24 24',
-   *       },
-   *       // ...
-   *     }
-   *   },
-   *   // ...
-   * };
-   */
-  experimentalRuntime?: boolean;
 }
 ```
 

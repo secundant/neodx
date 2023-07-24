@@ -24,7 +24,7 @@ export function Icon({ name, className, viewBox, ...props }: IconProps) {
       aria-hidden
       {...props}
     >
-      <use xlinkHref={`/path/to/sprites/${spriteName}.svg#${iconName}`} />
+      <use href={`/path/to/sprites/${spriteName}.svg#${iconName}`} />
     </svg>
   );
 }

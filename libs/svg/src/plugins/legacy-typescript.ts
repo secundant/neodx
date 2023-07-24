@@ -1,19 +1,19 @@
 import type { GeneratedSprite, GeneratedSprites, SvgFile } from '../core';
 import { createPlugin } from './plugin-utils';
 
-export interface TypescriptPluginOptions {
+export interface LegacyTypescriptPluginOptions {
   output?: string;
   metaName?: string;
   typeName?: string;
   experimentalRuntime?: boolean;
 }
 
-export function typescript({
+export function legacyTypescript({
   output = 'sprite.types.ts',
   typeName = 'SpritesMap',
   metaName = 'SPRITES_META',
   experimentalRuntime
-}: TypescriptPluginOptions = {}) {
+}: LegacyTypescriptPluginOptions = {}) {
   return createPlugin('typescript', {
     async afterWriteAll(entries, context) {
       await context.vfs.write(
@@ -80,11 +80,7 @@ const renderSpriteAsExperimentalRuntimeMeta = (sprite: GeneratedSprite) =>
      }
    }`;
 
-const renderSvgFileAsExperimentalRuntimeMeta = ({
-  node: {
-    attributes: { viewBox }
-  }
-}: SvgFile) =>
+const renderSvgFileAsExperimentalRuntimeMeta = ({ meta: { viewBox } }: SvgFile) =>
   `{
       viewBox: '${viewBox}',
     }`;
