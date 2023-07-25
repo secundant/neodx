@@ -595,6 +595,17 @@ export interface Component {
   documentationLinks: DocumentationLinks[];
 }
 
+export interface ComponentSet {
+  /** The key of the component */
+  key: string;
+  /** The name of the component */
+  name: string;
+  /** The description of the component as entered in the editor */
+  description: string;
+  /** The documentation links for this component */
+  documentationLinks: DocumentationLinks[];
+}
+
 /** Represents a link to documentation for a component. */
 export interface DocumentationLinks {
   /** Should be a valid URI (e.g. https://www.figma.com). */
@@ -633,13 +644,6 @@ export enum ComponentPropertyType {
   VARIANT = 'VARIANT'
 }
 
-export interface InstanceSwapPreferredValue {
-  /** Type of node for this preferred value **/
-  type: 'COMPONENT' | 'COMPONENT_SET';
-  /** Key of this component or component set **/
-  key: string;
-}
-
 export interface ComponentProperty {
   /** Type of this component property **/
   type: ComponentPropertyType;
@@ -647,6 +651,25 @@ export interface ComponentProperty {
   value: boolean | string;
   /** List of user-defined preferred values for this property. Only exists on INSTANCE_SWAP properties **/
   preferredValues?: InstanceSwapPreferredValue[];
+}
+
+export interface InstanceSwapPreferredValue {
+  /** Type of node for this preferred value **/
+  type: 'COMPONENT' | 'COMPONENT_SET';
+  /** Key of this component or component set **/
+  key: string;
+}
+
+/** Contains a variable alias. */
+export interface VariableAlias {
+  /** Value is always VARIABLE_ALIAS. */
+  type: 'VARIABLE_ALIAS';
+  /**
+   * The id of the variable that the current variable is aliased to.
+   * This variable can be a local or remote variable,
+   * and both can be retrieved via the GET /v1/files/:file_key/variables/local endpoint.
+   **/
+  id: string;
 }
 
 /** Fields directly overridden on an instance. Inherited overrides are not included. **/
@@ -1093,6 +1116,9 @@ export type AnyNode =
 
 export interface Node<Type extends string> {
   id: NodeID;
+  isFixed?: boolean;
+  /** The type of the node, refer to the table below for details. **/
+  type: Type;
   /** The name given to the node by the user in the tool. **/
   name: string;
   /**
@@ -1100,13 +1126,17 @@ export interface Node<Type extends string> {
    * @default true
    */
   visible: boolean;
-  /** The type of the node, refer to table below for details. **/
-  type: Type;
   /** Data written by plugins that is visible only to the plugin that wrote it. Requires the `pluginData` to include the ID of the plugin. **/
   pluginData: unknown;
   /** Data written by plugins that is visible to all plugins. Requires the `pluginData` parameter to include the string "shared". **/
   sharedPluginData: unknown;
-  isFixed?: boolean;
+  /**
+   * A mapping of field to the variables applied to this field.
+   * Most fields will only map to a single "VariableAlias".
+   * However, for fills, strokes, size, and component properties,
+   * it is possible to have multiple variables bound to the field.
+   */
+  boundVariables?: Record<string, VariableAlias | VariableAlias[]>;
   /** A mapping of a layer's property to component property name of component properties attached to this node. The component property name can be used to look up more information on the node's containing component's or component set's componentPropertyDefinitions. **/
   componentPropertyReferences: Record<string, string>;
 }

@@ -2,6 +2,7 @@ import type {
   AnyNode,
   Component,
   ComponentMetadata,
+  ComponentSet,
   ComponentSetMetadata,
   DocumentNode,
   FrameOffset,
@@ -231,6 +232,7 @@ export interface GetStyleResult extends CommonFigmaResponse {
 export interface FileNode<Node extends AnyNode> {
   document: Node;
   components: Record<string, Component>;
+  componentSets: Record<string, ComponentSet>;
   schemaVersion: number;
   styles: Record<string, Style>;
 }
