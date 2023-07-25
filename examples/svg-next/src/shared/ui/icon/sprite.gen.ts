@@ -10,8 +10,7 @@ export interface SpritesMap {
     | 'checkmark'
     | 'commit';
 }
-
-export const SPRITES_META: { [K in keyof SpritesMap]: SpritesMap[K][] } = {
+export const SPRITES_META = {
   sprite: [
     'add',
     'autoscroll-from-source',
@@ -23,4 +22,16 @@ export const SPRITES_META: { [K in keyof SpritesMap]: SpritesMap[K][] } = {
     'checkmark',
     'commit'
   ]
+} satisfies {
+  sprite: Array<
+    | 'add'
+    | 'autoscroll-from-source'
+    | 'autoscroll-to-source'
+    | 'build-server-protocol'
+    | 'build'
+    | 'c-make-tool-window'
+    | 'changes'
+    | 'checkmark'
+    | 'commit'
+  >;
 };
