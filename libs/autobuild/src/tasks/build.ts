@@ -4,15 +4,17 @@ import { rm } from 'node:fs/promises';
 import type { PackageJson } from 'pkg-types';
 import { rollup } from 'rollup';
 import { createExportsGenerator } from '../core/exports';
+import { flattenDist } from '../core/flatten-dist';
 import { createRollupConfig } from '../rollup/create-rollup-config';
 import type { Project } from '../types';
 import { logger } from '../utils/logger';
 
 export interface BuildParams {
   startedAt?: number;
+  flatten?: boolean;
 }
 
-export async function build(project: Project, { startedAt }: BuildParams = {}) {
+export async function build(project: Project, { startedAt, flatten }: BuildParams = {}) {
   const vfs = createVfs(project.cwd);
   const buildStartedAt = Date.now();
   const exportsGenerator = await createExportsGenerator({
@@ -56,6 +58,12 @@ export async function build(project: Project, { startedAt }: BuildParams = {}) {
       ...exportsGenerator.getExports()
     }
   }));
+  if (flatten) {
+    await flattenDist({
+      vfs,
+      outDir: project.outDir
+    });
+  }
   await vfs.applyChanges();
   if (project.log !== 'fatal') {
     logger.info(`Done at`, `${Date.now() - buildStartedAt}ms`);

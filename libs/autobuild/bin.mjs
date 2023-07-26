@@ -11,8 +11,9 @@ sade('autobuild', true)
   .option('-w, --watch', 'Run in watch mode')
   .option('-d, --dev, --no-prod', 'Emulate development output in production build')
   .option('-v, --verbose', 'Show additional information')
+  .option('-f, --flatten', 'Flatten output directory structure and package.json metadata')
   .option('-m, --minify', 'Minify bundle (pass --no-minify to disable it)')
-  .action(async ({ watch, dev, verbose, minify }) => {
+  .action(async ({ watch, dev, verbose, minify, flatten }) => {
     const env = dev || watch ? 'development' : 'production';
     const { build, scanProject, watch: runWatch } = await import('./dist/index.js');
     const project = await scanProject({
@@ -25,7 +26,10 @@ sade('autobuild', true)
     if (watch) {
       await runWatch(project);
     } else {
-      await build(project, { startedAt });
+      await build(project, {
+        startedAt,
+        flatten: flatten || Boolean(process.env.AUTOBUILD_FORCE_FLATTEN)
+      });
     }
   })
   .parse(process.argv);
