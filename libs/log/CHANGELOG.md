@@ -1,5 +1,14 @@
 # @neodx/log
 
+## 0.2.1
+
+### Patch Changes
+
+- [#114](https://github.com/secundant/neodx/pull/114) [`98044fe`](https://github.com/secundant/neodx/commit/98044fef94d8f3159db2b2d5d30292895d7e1472) Thanks [@secundant](https://github.com/secundant)! - Inline `cli-truncate` dependency to solve `cjs` imports issue
+
+- Updated dependencies []:
+  - @neodx/colors@0.2.5
+
 ## 0.2.0
 
 ### Minor Changes

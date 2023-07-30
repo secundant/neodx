@@ -1,5 +1,12 @@
 # @neodx/colors
 
+## 0.2.5
+
+### Patch Changes
+
+- Updated dependencies [[`98044fe`](https://github.com/secundant/neodx/commit/98044fef94d8f3159db2b2d5d30292895d7e1472)]:
+  - @neodx/std@0.1.5
+
 ## 0.2.4
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @neodx/svg
 
+## 0.5.1
+
+### Patch Changes
+
+- [#114](https://github.com/secundant/neodx/pull/114) [`98044fe`](https://github.com/secundant/neodx/commit/98044fef94d8f3159db2b2d5d30292895d7e1472) Thanks [@secundant](https://github.com/secundant)! - Add `resetColors: false` support
+
+- Updated dependencies [[`98044fe`](https://github.com/secundant/neodx/commit/98044fef94d8f3159db2b2d5d30292895d7e1472), [`98044fe`](https://github.com/secundant/neodx/commit/98044fef94d8f3159db2b2d5d30292895d7e1472)]:
+  - @neodx/log@0.2.1
+  - @neodx/std@0.1.5
+  - @neodx/fs@0.0.9
+  - @neodx/vfs@0.1.9
+
 ## 0.5.0
 
 ### Minor Changes
