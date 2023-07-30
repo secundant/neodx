@@ -1,5 +1,11 @@
 # @neodx/autobuild
 
+## 0.1.0
+
+### Minor Changes
+
+- [#114](https://github.com/secundant/neodx/pull/114) [`98044fe`](https://github.com/secundant/neodx/commit/98044fef94d8f3159db2b2d5d30292895d7e1472) Thanks [@secundant](https://github.com/secundant)! - Add `--flatten` option for `dist` unzipping which results in user-friendly structure
+
 ## 0.0.8
 
 ### Patch Changes

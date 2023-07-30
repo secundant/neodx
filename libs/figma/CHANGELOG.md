@@ -1,5 +1,24 @@
 # @neodx/figma
 
+## 0.3.0
+
+### Minor Changes
+
+- [#114](https://github.com/secundant/neodx/pull/114) [`98044fe`](https://github.com/secundant/neodx/commit/98044fef94d8f3159db2b2d5d30292895d7e1472) Thanks [@secundant](https://github.com/secundant)! - Make Export APIs more consistent,
+
+- [#114](https://github.com/secundant/neodx/pull/114) [`98044fe`](https://github.com/secundant/neodx/commit/98044fef94d8f3159db2b2d5d30292895d7e1472) Thanks [@secundant](https://github.com/secundant)! - Introduce new Export API: Exporting published library component
+
+### Patch Changes
+
+- [#114](https://github.com/secundant/neodx/pull/114) [`98044fe`](https://github.com/secundant/neodx/commit/98044fef94d8f3159db2b2d5d30292895d7e1472) Thanks [@secundant](https://github.com/secundant)! - Rework documentation, add big section about docs migration
+
+- [#114](https://github.com/secundant/neodx/pull/114) [`98044fe`](https://github.com/secundant/neodx/commit/98044fef94d8f3159db2b2d5d30292895d7e1472) Thanks [@secundant](https://github.com/secundant)! - Reorganize Node Export API for more accurate stages composition
+
+- Updated dependencies [[`98044fe`](https://github.com/secundant/neodx/commit/98044fef94d8f3159db2b2d5d30292895d7e1472), [`98044fe`](https://github.com/secundant/neodx/commit/98044fef94d8f3159db2b2d5d30292895d7e1472)]:
+  - @neodx/log@0.2.1
+  - @neodx/std@0.1.5
+  - @neodx/vfs@0.1.9
+
 ## 0.2.3
 
 ### Patch Changes

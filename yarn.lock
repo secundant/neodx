@@ -1736,10 +1736,10 @@ __metadata:
   resolution: "@neodx/codegen@workspace:libs/codegen"
   dependencies:
     "@neodx/autobuild": "*"
-    "@neodx/fs": ^0.0.8
-    "@neodx/pkg-misc": ^0.0.6
-    "@neodx/std": ^0.1.4
-    "@neodx/vfs": ^0.1.8
+    "@neodx/fs": ^0.0.9
+    "@neodx/pkg-misc": ^0.0.7
+    "@neodx/std": ^0.1.5
+    "@neodx/vfs": ^0.1.9
     "@types/ejs": ^3.1.2
     "@types/semver": ^7.5.0
     "@types/tmp": ^0.2.3
@@ -1752,12 +1752,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/colors@^0.2.4, @neodx/colors@workspace:libs/colors":
+"@neodx/colors@^0.2.5, @neodx/colors@workspace:libs/colors":
   version: 0.0.0-use.local
   resolution: "@neodx/colors@workspace:libs/colors"
   dependencies:
     "@neodx/autobuild": "*"
-    "@neodx/std": ^0.1.4
+    "@neodx/std": ^0.1.5
   languageName: unknown
   linkType: soft
 
@@ -1774,9 +1774,9 @@ __metadata:
   resolution: "@neodx/figma@workspace:libs/figma"
   dependencies:
     "@neodx/autobuild": "*"
-    "@neodx/log": ^0.2.0
-    "@neodx/std": ^0.1.4
-    "@neodx/vfs": ^0.1.8
+    "@neodx/log": ^0.2.1
+    "@neodx/std": ^0.1.5
+    "@neodx/vfs": ^0.1.9
     colord: 2.9.3
     commander: 11.0.0
     cosmiconfig: 8.2.0
@@ -1787,12 +1787,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/fs@*, @neodx/fs@^0.0.8, @neodx/fs@workspace:libs/fs":
+"@neodx/fs@*, @neodx/fs@^0.0.9, @neodx/fs@workspace:libs/fs":
   version: 0.0.0-use.local
   resolution: "@neodx/fs@workspace:libs/fs"
   dependencies:
     "@neodx/autobuild": "*"
-    "@neodx/std": ^0.1.4
+    "@neodx/std": ^0.1.5
     "@types/tmp": ^0.2.3
     jsonc-parser: ^3.2.0
     tiny-glob: ^0.2.9
@@ -1800,12 +1800,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/log@*, @neodx/log@^0.2.0, @neodx/log@workspace:*, @neodx/log@workspace:libs/log":
+"@neodx/log@*, @neodx/log@^0.2.1, @neodx/log@workspace:*, @neodx/log@workspace:libs/log":
   version: 0.0.0-use.local
   resolution: "@neodx/log@workspace:libs/log"
   dependencies:
     "@neodx/autobuild": "*"
-    "@neodx/colors": ^0.2.4
+    "@neodx/colors": ^0.2.5
     "@types/bunyan": ^1.8.8
     "@types/express": ^4.17.17
     "@types/koa": ^2.13.6
@@ -1837,13 +1837,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/pkg-misc@^0.0.6, @neodx/pkg-misc@workspace:libs/pkg-misc":
+"@neodx/pkg-misc@^0.0.7, @neodx/pkg-misc@workspace:libs/pkg-misc":
   version: 0.0.0-use.local
   resolution: "@neodx/pkg-misc@workspace:libs/pkg-misc"
   dependencies:
     "@neodx/autobuild": "*"
-    "@neodx/fs": ^0.0.8
-    "@neodx/std": ^0.1.4
+    "@neodx/fs": ^0.0.9
+    "@neodx/std": ^0.1.5
     "@types/prettier": ^2.7.3
     "@types/semver": ^7.5.0
     pathe: ^1.1.1
@@ -1906,7 +1906,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/std@*, @neodx/std@^0.1.4, @neodx/std@workspace:*, @neodx/std@workspace:libs/std":
+"@neodx/std@*, @neodx/std@^0.1.5, @neodx/std@workspace:*, @neodx/std@workspace:libs/std":
   version: 0.0.0-use.local
   resolution: "@neodx/std@workspace:libs/std"
   dependencies:
@@ -1919,10 +1919,10 @@ __metadata:
   resolution: "@neodx/svg@workspace:libs/svg"
   dependencies:
     "@neodx/autobuild": "*"
-    "@neodx/fs": ^0.0.8
-    "@neodx/log": ^0.2.0
-    "@neodx/std": ^0.1.4
-    "@neodx/vfs": ^0.1.8
+    "@neodx/fs": ^0.0.9
+    "@neodx/log": ^0.2.1
+    "@neodx/std": ^0.1.5
+    "@neodx/vfs": ^0.1.9
     "@swc/helpers": ^0.5.1
     "@types/react": ^18.2.15
     "@types/react-dom": ^18.2.7
@@ -1944,16 +1944,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/vfs@*, @neodx/vfs@^0.1.8, @neodx/vfs@workspace:libs/vfs":
+"@neodx/vfs@*, @neodx/vfs@^0.1.9, @neodx/vfs@workspace:libs/vfs":
   version: 0.0.0-use.local
   resolution: "@neodx/vfs@workspace:libs/vfs"
   dependencies:
     "@neodx/autobuild": "*"
-    "@neodx/colors": ^0.2.4
-    "@neodx/fs": ^0.0.8
-    "@neodx/log": ^0.2.0
-    "@neodx/pkg-misc": ^0.0.6
-    "@neodx/std": ^0.1.4
+    "@neodx/colors": ^0.2.5
+    "@neodx/fs": ^0.0.9
+    "@neodx/log": ^0.2.1
+    "@neodx/pkg-misc": ^0.0.7
+    "@neodx/std": ^0.1.5
     "@types/tmp": ^0.2.3
     pathe: ^1.1.1
     picocolors: ^1.0.0
