@@ -2,7 +2,7 @@
 
 This example based on the [JetBrains Int UI Icons (Community)](<https://www.figma.com/file/qjGIOVF6243bClGjQid2Y5/Int-UI-Icons-(Community)?type=design&node-id=5590-53429&t=Z8UNLvCnALbUxzRA-0>).
 
-I will skip some common steps, if you're interested in details, please check [Simple Figma export example](../figma-simple-export).
+I will skip some common steps, if you're interested in details, please check [Simple Figma export example](../figma-export-file-assets).
 
 Conditions and requirements (I wanted to export only a part of the icons):
 

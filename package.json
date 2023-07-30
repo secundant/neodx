@@ -24,7 +24,7 @@
     "check-install": "yarn dlx @yarnpkg/doctor .",
     "postinstall": "is-ci || yarn husky install",
     "release-version": "yarn changeset version && yarn nx format:write && yarn install --mode=update-lockfile",
-    "release-publish": "yarn nx affected:build && yarn changeset publish"
+    "release-publish": "AUTOBUILD_FORCE_FLATTEN=true yarn nx affected:build && yarn changeset publish"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",

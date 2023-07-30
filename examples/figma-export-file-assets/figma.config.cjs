@@ -8,12 +8,14 @@ module.exports = {
     fileId:
       'https://www.figma.com/file/H9kVbqMwzIxh579BpXKZbj/Weather--Icons-Kit-(Community)?type=design&node-id=0-1',
     output: 'assets/icons',
-    getExportFileName({ format, node }, root) {
-      const parent = root.registry.byId[node.parentId];
+    write: {
+      getExportFileName({ format, value }, root) {
+        const parent = root.registry.byId[value.parentId];
 
-      return formatExportFileName(
-        `${parent.source.name.toLowerCase().replace('32/', '')}.${format}`
-      );
+        return formatExportFileName(
+          `${parent.source.name.toLowerCase().replace('32/', '')}.${format}`
+        );
+      }
     },
     collect: {
       target: [

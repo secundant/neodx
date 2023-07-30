@@ -427,7 +427,7 @@ export interface SpritesMap {
 }
 export const SPRITES_META = {
   common: {
-    filePath: 'common.76103a6c.svg',
+    filePath: 'common.7854f9b0.svg',
     items: {
       add: {
         viewBox: '0 0 16 16',
@@ -607,7 +607,7 @@ export const SPRITES_META = {
     }
   },
   flags: {
-    filePath: 'flags.49fa86bc.svg',
+    filePath: 'flags.def2b6af.svg',
     items: {
       ac: {
         viewBox: '0 0 512 512',
@@ -2547,7 +2547,7 @@ export const SPRITES_META = {
     }
   },
   logos: {
-    filePath: 'logos.bab17578.svg',
+    filePath: 'logos.6c76e8cd.svg',
     items: {
       linkedin: {
         viewBox: '0 0 140 34',

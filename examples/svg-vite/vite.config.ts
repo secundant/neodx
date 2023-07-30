@@ -20,7 +20,7 @@ export default defineConfig({
         }
       },
       resetColors: {
-        exclude: [/^flags/, /^logos/],
+        exclude: [/^flags/, /^logos/, /^common/],
         replace: ['#000', '#eee', '#6C707E', '#313547'],
         replaceUnknown: 'var(--icon-color)'
       }
