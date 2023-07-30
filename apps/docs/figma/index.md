@@ -36,7 +36,7 @@ pnpm add -D @neodx/figma
 You can use the `@neodx/figma` in two ways:
 
 - [Export API](./api/export/) CLI - built-in automated flow for exporting assets from Figma files or published library components.
-- [Node.js API](./api/low-level/) - a set of functions that you can use to build your own custom Figma integration tools.
+- [Node.js API](./api/figma-api.md) - a set of functions that you can use to build your own custom Figma integration tools.
 
 In this guide, we will use the [Export](./api/export/) CLI to export assets from Figma files.
 
