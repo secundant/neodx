@@ -8,10 +8,10 @@ outline: [2, 3]
 The modern Figma integration tools, typed API, human-friendly files traversing, assets exporter, and more.
 
 - Flexible optimized [Export API](./api/export/) - the simple but powerful way to automate your design system
-  - [Exporting assets from file](./recipes/export-file-assets.md)
-  - [Exporting assets from published library components](./recipes/export-published-components-assets.md)
+  - [Exporting assets from file](recipes/export-file-assets.md)
+  - [Exporting assets from published library components](./recipes/export-published-components.md)
 - Fully Typed [Figma API](./api/figma-api.md) and [common helpers](./api/low-level/utils.md)
-- Brilliant human-friendly Figma [document graph traversing](./recipes/traverse-file-graph.md)
+- Brilliant human-friendly Figma [document graph traversing](./recipes/traverse-figma-file.md)
 
 ## Installation
 
@@ -74,11 +74,9 @@ The simple config is just a file ID, output path and rules for collecting compon
 We're using the [cosmiconfig](https://www.npmjs.com/package/cosmiconfig) package to load the configuration file, so you can use any supported format:
 `figma.config.js`, `.figmarc.cjs`, etc. (we recommend using JS files for possible future extensions).
 
-Let's write it:
+`figma.config.js`:
 
-```javascript figma.config.js
-const { formatExportFileName } = require('@neodx/figma');
-
+```javascript
 /**
  * @type {import('@neodx/figma').Configuration}
  */
@@ -103,9 +101,3 @@ module.exports = {
   }
 };
 ```
-
-We're highly recommended to check the [Configuration](#configuration) section to see all available options (There's a lot to see there!).
-
-::: danger Not ready
-Work in progress...
-:::

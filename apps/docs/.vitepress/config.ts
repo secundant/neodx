@@ -53,7 +53,14 @@ export default defineConfig({
           { text: 'Motivation', link: '/figma/motivation' },
           {
             text: 'Recipes',
-            items: [{ text: 'Traverse file graph', link: '/figma/recipes/traverse-file-graph' }]
+            items: [
+              { text: 'Export File Assets', link: '/figma/recipes/export-file-assets' },
+              {
+                text: 'Export Published Components',
+                link: '/figma/recipes/export-published-components'
+              },
+              { text: 'Traverse Figma File', link: '/figma/recipes/traverse-file-graph' }
+            ]
           },
           {
             text: 'API',
@@ -61,7 +68,14 @@ export default defineConfig({
               { text: 'Figma API', link: '/figma/api/figma-api' },
               {
                 text: 'Export API',
-                link: '/figma/api/export/'
+                link: '/figma/api/export/',
+                items: [
+                  { text: 'Export File Assets', link: '/figma/api/export/export-file-assets' },
+                  {
+                    text: 'Export Published Components',
+                    link: '/figma/api/export/export-published-components'
+                  }
+                ]
               }
             ]
           },

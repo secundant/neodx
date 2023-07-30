@@ -1,4 +1,4 @@
-# Traverse file graph
+# Traverse Figma File
 
 The Figma API is designed as a simple nested tree structure and not fit for high-level interactions.
 
