@@ -62,7 +62,7 @@ export interface CreateSpriteBuilderParams {
   /**
    * Reset colors config
    */
-  resetColors?: ResetColorsPluginParams;
+  resetColors?: ResetColorsPluginParams | false;
   /**
    * WILL BE CHANGED IN FUTURE
    * Replaces current approach (just array of IDs per sprite) with extended runtime metadata
@@ -115,8 +115,8 @@ export function createSpriteBuilder({
       enableGroup && groupSprites(),
       setId(),
       fixViewBox(),
-      resetColors(resetColorsParams),
-      optimize && svgo(),
+      resetColorsParams !== false && resetColors(resetColorsParams),
+      optimize !== false && svgo(),
       !definitions && metadataPlugin(metadata),
       !metadata &&
         definitions &&
