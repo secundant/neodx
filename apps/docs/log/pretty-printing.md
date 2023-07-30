@@ -1,5 +1,9 @@
 # Pretty printing
 
+::: danger WIP
+Documentation is under construction...
+:::
+
 ```typescript
 import { createLogger, pretty } from '@neodx/log/node';
 

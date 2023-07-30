@@ -1,5 +1,9 @@
 # Creating your own logger
 
+::: danger WIP
+Documentation is under construction...
+:::
+
 ```typescript
 import { createLoggerFactory } from '@neodx/log';
 

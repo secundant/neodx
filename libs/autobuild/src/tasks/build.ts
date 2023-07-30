@@ -4,16 +4,20 @@ import { rm } from 'node:fs/promises';
 import type { PackageJson } from 'pkg-types';
 import { rollup } from 'rollup';
 import { createExportsGenerator } from '../core/exports';
+import { flattenDist } from '../core/flatten-dist';
 import { createRollupConfig } from '../rollup/create-rollup-config';
 import type { Project } from '../types';
 import { logger } from '../utils/logger';
 
 export interface BuildParams {
   startedAt?: number;
+  flatten?: boolean;
 }
 
-export async function build(project: Project, { startedAt }: BuildParams = {}) {
-  const vfs = createVfs(project.cwd);
+export async function build(project: Project, { startedAt, flatten }: BuildParams = {}) {
+  const vfs = createVfs(project.cwd, {
+    log: logger.child('fs')
+  });
   const buildStartedAt = Date.now();
   const exportsGenerator = await createExportsGenerator({
     outDir: project.outDir,
@@ -33,18 +37,15 @@ export async function build(project: Project, { startedAt }: BuildParams = {}) {
           await build.write(outputOptions);
         } catch (error) {
           console.error(error);
-          logger.fatal(`[build] Unhandled exception`, `Phase: output. Issuer: ${info.description}`);
+          logger.error(`[build] Unhandled exception. Phase: output. Issuer: ${info.description}`);
           throw error;
         }
       }
       await build.close();
     } catch (error) {
-      logger.fatal(`[build] Unhandled exception`, `Phase: build. Issuer: ${info.description}`);
-      console.error(error);
-      if (project.log === 'verbose') {
-        logger.warn(`Failed project info`, project);
-        logger.warn(`Failed configuration`, input, ...output);
-      }
+      logger.error(`[build] Unhandled exception. Phase: build. Issuer: ${info.description}`);
+      logger.warn(project, `Failed project info`);
+      logger.warn({ input, output }, `Failed configuration`);
       throw error;
     }
   }
@@ -56,12 +57,18 @@ export async function build(project: Project, { startedAt }: BuildParams = {}) {
       ...exportsGenerator.getExports()
     }
   }));
+  if (flatten) {
+    await flattenDist({
+      vfs,
+      outDir: project.outDir
+    });
+  }
   await vfs.applyChanges();
   if (project.log !== 'fatal') {
-    logger.info(`Done at`, `${Date.now() - buildStartedAt}ms`);
+    logger.info(`Done at %sms`, Date.now() - buildStartedAt);
   }
   if (startedAt) {
-    logger.info(`Total`, `${Date.now() - startedAt}ms`);
+    logger.info(`Total %sms`, Date.now() - startedAt);
   }
   return {
     rollupConfigs

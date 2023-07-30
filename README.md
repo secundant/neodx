@@ -33,7 +33,7 @@ So, `@neodx/figma` is an attempt to create it. Currently, we have the following 
 See our examples for more details:
 
 - [SVG sprite generation on steroids with Figma export](./examples/svg-magic-with-figma-export) - Integrated showcase of the `@neodx/svg` and `@neodx/figma` packages with real application usage!
-- [Export icons from the Community Weather Icons Kit](./examples/figma-simple-export) - A simple step-by-step example of how to use the `@neodx/figma` to export icons.
+- [Export icons from the Community Weather Icons Kit](./examples/figma-export-file-assets) - A simple step-by-step example of how to use the `@neodx/figma` to export icons.
 
 We have a some ideas for future development, so stay tuned and feel free to request your own! 🚀
 

@@ -1,16 +1,5 @@
-import colors from 'picocolors';
+import { createLogger } from '@neodx/log/node';
 
-const { bgRed, blue, bold, red, yellow } = colors;
-
-// TODO Replace with a @neodx/log
-export const logger = {
-  fatal(name: string, ...messages: unknown[]) {
-    console.error(bgRed(bold(' FATAL ')), red(bold(name)), ...messages);
-  },
-  info(name: string, ...messages: unknown[]) {
-    console.info(blue('info'), bold(`${name}${messages.length > 0 ? ': ' : ''}`), ...messages);
-  },
-  warn(name: string, ...messages: unknown[]) {
-    console.debug(yellow('warn'), bold(`${name}${messages.length > 0 ? ': ' : ''}`), ...messages);
-  }
-};
+export const logger = createLogger({
+  name: 'autobuild'
+});

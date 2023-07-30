@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/require-array-sort-compare */
 import { identity, uniq } from '@neodx/std';
+import { createTmpVfs } from '@neodx/vfs/testing-utils';
 import { describe, expect, test } from 'vitest';
 import type { AnyNode, FigmaApi } from '../core';
-import { downloadExports, receiveExportsDownloadInfo } from '../export';
+import { createExportContext, downloadExportedAssets, resolveExportedAssets } from '../export';
+import { fileGraphResolversMap, getGraphNodeDownloadableMeta } from '../export/export-file-assets';
 import type { GraphNode } from '../graph';
 import { collectNodes } from '../graph';
 import { getGraphNodeName } from '../utils';
@@ -12,7 +14,6 @@ import {
   createMockNodes,
   getNodesIds,
   testFigmaLogger,
-  testFileIds,
   testGraphs
 } from './testing-utils';
 
@@ -113,36 +114,42 @@ describe('export low-level API', async () => {
   });
 
   describe('get image urls', async () => {
-    const createImagesMockApi = () => {
+    const createImagesMockApi = async () => {
       const { api, fetch } = createMockApi();
+      const mockApi = {
+        ...api,
+        getImage: async params => {
+          await api.getImage(params);
+          return {
+            images: {}
+          };
+        }
+      } as FigmaApi;
+      const ctx = createExportContext({
+        api: mockApi,
+        vfs: await createTmpVfs(),
+        log: testFigmaLogger
+      });
 
       return {
         fetch,
-        api: {
-          ...api,
-          getImage: async params => {
-            await api.getImage(params);
-            return {
-              images: {}
-            };
-          }
-        } as FigmaApi
+        api: mockApi,
+        ctx
       };
     };
 
     test('should return image urls', async () => {
-      const { api, fetch } = createImagesMockApi();
+      const { ctx, fetch } = await createImagesMockApi();
       const exports = collectNodes(testGraphs.weather);
-      const items = await receiveExportsDownloadInfo({
-        api,
-        target: exports,
-        fileId: testFileIds.weather,
-        logger: testFigmaLogger,
-        batching: 10
+      const items = await resolveExportedAssets({
+        ctx,
+        items: exports,
+        batching: 10,
+        getItemMeta: getGraphNodeDownloadableMeta
       });
 
       expect(fetch).toHaveBeenCalledTimes(Math.ceil(exports.length / 10));
-      expect(items.map(item => item.node.id).sort()).toEqual(exports.map(node => node.id).sort());
+      expect(items.map(item => item.value.id).sort()).toEqual(exports.map(node => node.id).sort());
     });
 
     test.each([
@@ -150,50 +157,56 @@ describe('export low-level API', async () => {
       [90, 20, 5],
       [90, 1, 90]
     ])(`should batch %i items by %i in %i requests`, async (length, batching, expected) => {
-      const { api, fetch } = createImagesMockApi();
+      const { ctx, fetch } = await createImagesMockApi();
       const exports = createMockNodes(length, 'COMPONENT');
-      const items = await receiveExportsDownloadInfo({
-        api,
-        target: exports,
-        logger: testFigmaLogger,
-        fileId: testFileIds.weather,
+      const items = await resolveExportedAssets({
+        ctx,
+        items: exports,
+        getItemMeta: getGraphNodeDownloadableMeta,
         batching
       });
 
       expect(fetch).toHaveBeenCalledTimes(expected);
       expect(items.length).toBe(length);
-      expect(items.map(item => item.node.id).sort()).toEqual(exports.map(node => node.id).sort());
+      expect(items.map(item => item.value.id).sort()).toEqual(exports.map(node => node.id).sort());
     });
   });
 
   test('should download content for all downloadable nodes and return it in the correct order', async () => {
-    const fetch = createMockFetch(req => `content for ${new URL(req.url).searchParams.get('id')}`);
     const exports = createMockNodes(120, 'COMPONENT');
-    const items = await receiveExportsDownloadInfo({
+    const ctx = createExportContext({
       api: {
+        __: {
+          fetch: createMockFetch(
+            req => `content for ${new URL(req.url).searchParams.get('id')}`
+          ) as any
+        },
         async getImage({ ids }) {
           return {
             images: Object.fromEntries(ids.map(id => [id, `https://foo.com/download?id=${id}`]))
           };
         }
       } as FigmaApi,
-      target: exports,
-      logger: testFigmaLogger,
-      fileId: testFileIds.weather,
+      vfs: await createTmpVfs(),
+      log: testFigmaLogger
+    });
+    const items = await resolveExportedAssets({
+      ctx,
+      items: exports,
+      getItemMeta: getGraphNodeDownloadableMeta,
       batching: 50,
       concurrency: 10
     });
-    const downloaded = await downloadExports({
+    const downloaded = await downloadExportedAssets({
+      ctx,
       items,
-      fetch,
-      logger: testFigmaLogger,
       concurrency: 10
     });
 
     expect(items).toEqual(
       exports.map(node =>
         expect.objectContaining({
-          node,
+          id: node.id,
           url: `https://foo.com/download?id=${node.id}`
         })
       )
@@ -201,19 +214,14 @@ describe('export low-level API', async () => {
     expect(downloaded).toEqual(
       items.map(item =>
         expect.objectContaining({
-          node: item.node,
-          content: `content for ${item.node.id}`
+          value: item.value,
+          content: `content for ${item.value.id}`
         })
       )
     );
   });
 
   test('should download multiple exports for same node in "export" resolving mode', async () => {
-    const fetch = createMockFetch(req => {
-      const { id, format, scale } = Object.fromEntries(new URL(req.url).searchParams);
-
-      return `content for ${id} - ${format.toLowerCase()} x${scale}`;
-    });
     const exportsSchema = [
       ['PNG', 1],
       ['PNG', 2],
@@ -236,8 +244,15 @@ describe('export low-level API', async () => {
         }))
       }
     })) as GraphNode<AnyNode>[];
-    const items = await receiveExportsDownloadInfo({
+    const ctx = createExportContext({
       api: {
+        __: {
+          fetch: createMockFetch(req => {
+            const { id, format, scale } = Object.fromEntries(new URL(req.url).searchParams);
+
+            return `content for ${id} - ${format.toLowerCase()} x${scale}`;
+          }) as any
+        },
         async getImage({ ids, format, scale }) {
           return {
             images: Object.fromEntries(
@@ -249,17 +264,21 @@ describe('export low-level API', async () => {
           };
         }
       } as FigmaApi,
-      target: exportNodes,
-      resolver: 'export',
-      logger: testFigmaLogger,
-      fileId: testFileIds.weather,
+      vfs: await createTmpVfs(),
+      log: testFigmaLogger
+    });
+    const items = await resolveExportedAssets({
+      ctx,
+      items: exportNodes,
+      exportAs: 'export',
+      resolversMap: fileGraphResolversMap,
+      getItemMeta: getGraphNodeDownloadableMeta,
       batching: 15,
       concurrency: 5
     });
-    const downloaded = await downloadExports({
+    const downloaded = await downloadExportedAssets({
+      ctx,
       items,
-      fetch,
-      logger: testFigmaLogger,
       concurrency: 10
     });
 

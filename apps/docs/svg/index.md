@@ -1,5 +1,9 @@
 # @neodx/svg
 
+::: danger WIP
+Documentation is under construction...
+:::
+
 Powerful lightweight logger for new level of experience.
 
 - TypeScript support out of box - generated types and information about your sprites

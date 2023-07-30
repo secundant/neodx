@@ -1,6 +1,7 @@
 import { invariant, toArray } from '@neodx/std';
 import { cosmiconfig } from 'cosmiconfig';
-import type { ExportFileParams } from './export';
+import type { ExportFileAssetsParams } from './export';
+import type { ExportPublishedComponentsParams } from './export/export-published-components';
 import { isFigmaLink, parseFileIdFromLink } from './utils';
 
 export async function resolveNormalizedConfiguration(
@@ -16,6 +17,7 @@ export async function resolveNormalizedConfiguration(
     const fileId = cliConfig.fileId ?? item.fileId!;
 
     return {
+      type: 'file-assets',
       ...item,
       output: cliConfig.output ?? item.output,
       fileId: isFigmaLink(fileId) ? parseFileIdFromLink(fileId) : fileId
@@ -33,7 +35,7 @@ export async function resolveNormalizedConfiguration(
 
   return {
     token,
-    export: exportConfig as NormalizedExportConfigurationItem[]
+    export: exportConfig as NormalizedExportFileConfigurationItem[]
   };
 }
 
@@ -45,12 +47,24 @@ export async function findConfiguration(cwd: string): Promise<Configuration> {
 
 export interface NormalizedConfiguration {
   token: string;
-  export: NormalizedExportConfigurationItem[];
+  export: NormalizedExportConfigItem[];
 }
 
-export interface NormalizedExportConfigurationItem
-  extends Omit<ExportConfigurationItem, 'fileId' | 'output'>,
-    Required<Pick<ExportConfigurationItem, 'fileId' | 'output'>> {}
+export type NormalizedExportConfigItem =
+  | NormalizedExportFileConfigurationItem
+  | NormalizedExportPublishedComponentsConfigurationItem;
+
+export interface NormalizedExportFileConfigurationItem
+  extends Omit<ExportFileConfiguration, 'fileId' | 'output'>,
+    Required<Pick<ExportFileConfiguration, 'fileId' | 'output'>> {
+  type: 'file-assets';
+}
+
+export interface NormalizedExportPublishedComponentsConfigurationItem
+  extends Omit<ExportPublishedComponentsConfiguration, 'fileId' | 'output'>,
+    Required<Pick<ExportPublishedComponentsConfiguration, 'fileId' | 'output'>> {
+  type: 'published-components';
+}
 
 export interface CliConfiguration {
   token?: string;
@@ -67,19 +81,29 @@ export interface Configuration {
   /**
    * Export configuration
    */
-  export?: ExportConfigurationItem | ExportConfigurationItem[];
+  export?: AnyExportConfigItem | AnyExportConfigItem[];
 }
 
-export interface ExportConfigurationItem
-  extends Pick<
-    ExportFileParams,
-    | 'receiveExportsResolver'
-    | 'receiveExportsBatching'
-    | 'receiveExportsConcurrency'
-    | 'getExportFileName'
-    | 'downloadConcurrency'
-    | 'collect'
-  > {
+export type AnyExportConfigItem = ExportFileConfiguration | ExportPublishedComponentsConfiguration;
+
+export interface ExportFileConfiguration extends Omit<ExportFileAssetsParams, 'ctx' | 'fileId'> {
+  /**
+   * Default export type
+   */
+  type?: 'file-assets';
+  /**
+   * URL or ID of the file to export from
+   */
+  fileId?: string;
+  /**
+   * Path to the output directory of exported files (relative to the current working directory)
+   */
+  output?: string;
+}
+
+export interface ExportPublishedComponentsConfiguration
+  extends Omit<ExportPublishedComponentsParams, 'ctx' | 'fileId'> {
+  type: 'published-components';
   /**
    * URL or ID of the file to export from
    */

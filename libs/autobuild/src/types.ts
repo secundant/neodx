@@ -11,7 +11,6 @@ export interface Project extends ProjectBuildMap {
   sourceMap: boolean | 'inline';
   sourceFiles: string[];
   packageJson: ProjectPackageJSON;
-  addBrowserMain: boolean;
   detectedConfigFiles: Partial<ProjectConfigsMap>;
 }
 
@@ -63,6 +62,7 @@ export interface ProjectPackageJSON extends Record<string, unknown> {
    */
   main?: string;
   type?: 'commonjs' | 'module' | 'auto';
+  files?: string[];
   types?: string;
   source?: string;
   module?: string;
@@ -73,7 +73,7 @@ export interface ProjectPackageJSON extends Record<string, unknown> {
   devDependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
   optionalDependencies?: Record<string, string>;
-  exports?: any;
+  exports?: ExportsField;
 }
 
 // todo
@@ -83,7 +83,13 @@ export type ModuleFormat = 'cjs' | 'esm' | 'umd';
 export type ExternalType = 'all';
 export type LogLevel = 'fatal' | 'info' | 'verbose';
 
-// TODO
+export type ExportsField =
+  | string
+  | ExportsFieldValue
+  | Record<string, `./${string}` | ExportsFieldValue>;
+export type ExportsFieldKey = 'import' | 'require' | 'default' | 'node' | 'browser' | 'types';
+export type ExportsFieldValue = Partial<Record<ExportsFieldKey, `./${string}`>>;
+
 export interface ExportsMeta {
   require: string;
   default: string;

@@ -1,4 +1,6 @@
 import { compact } from '@neodx/std';
+import commonjs from '@rollup/plugin-commonjs';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import { builtinModules } from 'node:module';
 import { dirname } from 'node:path';
 import type { LoggingFunction, OutputOptions, RollupLog, RollupOptions } from 'rollup';
@@ -40,7 +42,15 @@ export async function createRollupConfig(project: Project, exportsGenerator?: Ex
       ? createPostCssPlugin(project)
       : null;
 
-  const mainInputPlugins = compact([postcssPlugin, swcPlugin, log !== 'fatal' && bundleSizePlugin]);
+  const mainInputPlugins = compact([
+    nodeResolve({
+      preferBuiltins: true
+    }),
+    commonjs(),
+    postcssPlugin,
+    swcPlugin,
+    log !== 'fatal' && bundleSizePlugin
+  ]);
   const mainOutputPlugins = compact([minify && swcMinifyPlugin]);
   const mainOutputOptions: OutputOptions = {
     name: packageJson.name,
@@ -66,6 +76,7 @@ export async function createRollupConfig(project: Project, exportsGenerator?: Ex
       info: {
         description: `Source (${outputFormats.map(format => format.type).join(', ')})`
       },
+      logLevel: 'debug',
       ...COMMON_ROLLUP_OPTIONS,
       input: entry,
       external,

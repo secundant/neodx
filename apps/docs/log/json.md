@@ -1,5 +1,5 @@
 # JSON logging
 
-## Options
-
-## Files
+::: danger WIP
+Documentation is under construction...
+:::

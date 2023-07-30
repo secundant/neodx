@@ -1,14 +1,14 @@
 import type { Config } from 'svgo';
 import { optimize } from 'svgo';
-import type { DownloadedItem } from './download-exports';
+import type { DownloadedAsset } from './download-exported-assets';
 
-export interface OptimizeExportParams {
+export interface OptimizeDownloadedAssetsParams {
   svgoConfig?: Config;
 }
 
-export function optimizeExport(
-  { format, content }: DownloadedItem,
-  { svgoConfig = defaultConfig }: OptimizeExportParams
+export function optimizeDownloadedAssets(
+  { format, content }: DownloadedAsset<unknown>,
+  { svgoConfig = defaultConfig }: OptimizeDownloadedAssetsParams
 ) {
   if (format !== 'svg') return content;
   return optimize(content, svgoConfig).data;
@@ -31,6 +31,7 @@ const defaultConfig: Config = {
       params: {
         attrs: [
           '(class|style)',
+          'href',
           'xlink:href',
           'aria-labelledby',
           'aria-describedby',

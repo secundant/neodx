@@ -1,13 +1,13 @@
 import { pretty } from '@neodx/log/node';
-import { truncateString } from '@neodx/std';
+import { omit, truncateString } from '@neodx/std';
 import { createVfs } from '@neodx/vfs';
 import { Command } from 'commander';
 import { resolve } from 'pathe';
 import * as process from 'process';
 import { resolveNormalizedConfiguration } from './config';
 import { createFigmaApi } from './core';
-import { exportFile } from './export';
-import { createFileGraph } from './graph';
+import { exportFileAssets, exportPublishedComponents } from './export';
+import { createExportCache, createExportContext } from './export/create-export-context';
 import { figmaLogger, formatTimeMs } from './shared';
 
 export function createFigmaCli() {
@@ -23,52 +23,73 @@ export function createFigmaCli() {
     .action(async ({ dryRun, verbose, ...cliConfig }) => {
       const startedAt = Date.now();
       const cwd = process.cwd();
-      const config = await resolveNormalizedConfiguration(cwd, cliConfig);
-      const logger = figmaLogger.fork({
-        level: verbose ? 'debug' : 'info'
-      });
-      const api = createFigmaApi({
-        logger,
-        personalAccessToken: config.token
+      const log = figmaLogger.fork({
+        level: verbose ? 'debug' : 'done'
       });
 
-      logger.debug(
-        {
-          ...config,
-          token: truncateString(config.token, 10),
-          cwd
-        },
-        'Configuration loaded'
-      );
+      try {
+        const config = await resolveNormalizedConfiguration(cwd, cliConfig);
+        const api = createFigmaApi({
+          log,
+          personalAccessToken: config.token
+        });
+        const cache = createExportCache();
 
-      for (const { fileId, output, ...exportOptions } of config.export) {
-        logger.info('Starting export file "%s" to "%s"', fileId, output);
-        const startedGraphAt = Date.now();
-        const vfs = createVfs(resolve(cwd, output), {
-          dryRun,
-          log: logger.child('fs', {
-            target: pretty({
-              displayLevel: false
+        log.debug(
+          {
+            ...config,
+            token: truncateString(config.token, 10),
+            cwd
+          },
+          'Configuration loaded'
+        );
+
+        for (const exportConfig of config.export) {
+          const { fileId, type, output } = exportConfig;
+          log.info('👉 Starting export file "%s" to "%s"', fileId, output);
+          const vfs = createVfs(resolve(cwd, output), {
+            dryRun,
+            log: log.child('fs', {
+              target: pretty({
+                displayLevel: false
+              })
             })
-          })
-        });
-        const file = await api.getFile({ id: fileId });
-        const target = createFileGraph(fileId, file);
+          });
+          const ctx = createExportContext({
+            api,
+            vfs,
+            cache,
+            log
+          });
 
-        logger.info('Document loaded in %s', formatTimeMs(Date.now() - startedGraphAt));
-        await exportFile({
-          api,
-          vfs,
-          target,
-          logger,
-          ...exportOptions
-        });
-        logger.info('Writing files...');
-        await vfs.formatChangedFiles();
-        await vfs.applyChanges();
+          switch (exportConfig.type) {
+            case 'file-assets':
+              await exportFileAssets({
+                ctx,
+                fileId,
+                ...omit(exportConfig, ['type', 'fileId', 'output'])
+              });
+              break;
+            case 'published-components':
+              await exportPublishedComponents({
+                ctx,
+                fileId,
+                ...omit(exportConfig, ['type', 'fileId', 'output'])
+              });
+              break;
+            default:
+              throw new Error(`Unknown export type "${type}"`);
+          }
+          log.info('Writing files...');
+          await vfs.formatChangedFiles();
+          await vfs.applyChanges();
+        }
+
+        log.done('👋 All done in %s', formatTimeMs(Date.now() - startedAt));
+      } catch (error) {
+        log.error(error);
+        process.exit(1);
       }
-
-      logger.info('All done in %s', formatTimeMs(Date.now() - startedAt));
     });
 
   return cli;

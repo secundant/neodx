@@ -30,7 +30,7 @@ export function rollupPluginSwc({
     resolveId(source, importer) {
       return importer && source.startsWith('.')
         ? resolveImport(resolve(dirname(importer), source))
-        : source;
+        : null;
     },
     transform(code, filename) {
       if (!filter(filename) || !extensions.includes(extname(filename))) {

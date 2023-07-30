@@ -58,7 +58,7 @@ export const createMockApi = () => {
     fetch,
     api: createFigmaApi({
       personalAccessToken: 'test',
-      logger: testFigmaLogger,
+      log: testFigmaLogger,
       fetch
     })
   };

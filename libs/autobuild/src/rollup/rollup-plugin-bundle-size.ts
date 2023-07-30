@@ -16,17 +16,14 @@ export function rollupPluginBundleSize(): Plugin {
         .forEach(info => {
           const size = maxmin(info.code, info.code, true);
 
-          logger.info(
-            `Compiled ${colors.cyan(info.fileName)}`,
-            `${size.slice(size.indexOf(' → ') + 3)}`
-          );
+          logger.info(`${colors.cyan(info.fileName)}: ${size.slice(size.indexOf(' → ') + 3)}`);
         });
     },
     buildStart() {
       time = Date.now();
     },
     closeBundle() {
-      logger.info(`Compiled at`, `${Date.now() - time}ms`);
+      logger.info(`Compiled at %sms`, Date.now() - time);
     }
   };
 }

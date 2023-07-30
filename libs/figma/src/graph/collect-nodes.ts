@@ -1,9 +1,10 @@
-import type { LoggerMethods } from '@neodx/log';
 import { isEmpty, toArray, True, uniq } from '@neodx/std';
 import type { AnyNode, DocumentNode, NodeByType, NodeType } from '../core';
+import type { FigmaLogger } from '../shared';
 import type { GraphNode } from './create-nodes-graph';
 
 export interface CollectNodesParams {
+  log?: FigmaLogger;
   /**
    * List of the conditions to filter nodes hierarchy.
    * @example { type: 'COMPONENT', filter: 'Button' } // filter all components named "Button"
@@ -24,7 +25,6 @@ export interface CollectNodesParams {
    * @default Extracts all `COMPONENT` nodes.
    */
   extract?: NodesExtractor | NodeType | Array<NodeType | NodesExtractor>;
-  logger?: LoggerMethods<'debug'>;
 }
 
 export type SpecifiedCollectTarget = {
@@ -51,16 +51,16 @@ export type PredicateFn<T> = (node: T) => boolean;
  */
 export function collectNodes(
   root: GraphNode<DocumentNode>,
-  { logger, extract = 'COMPONENT', target = [] }: CollectNodesParams = {}
+  { log, extract = 'COMPONENT', target = [] }: CollectNodesParams = {}
 ) {
   const extractors = toArray(extract).map(extractor =>
     typeof extractor === 'string' ? extractNodeType(extractor) : extractor
   );
 
-  logger?.debug('Collecting nodes...');
+  log?.debug('Collecting nodes...');
   const collected = collectByConditions(root, toArray(target));
 
-  logger?.debug('Collected %s nodes', collected.length);
+  log?.debug('Collected %s nodes', collected.length);
 
   return uniq(collected.flatMap(node => extractors.flatMap(extractor => extractor(node))));
 }
