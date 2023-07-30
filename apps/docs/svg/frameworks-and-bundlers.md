@@ -1,5 +1,9 @@
 # Frameworks and bundlers
 
+::: danger WIP
+Documentation is under construction...
+:::
+
 We're using [unplugin](https://github.com/unjs/unplugin) to minimize additional efforts to integrate with popular bundlers.
 
 ## Vite

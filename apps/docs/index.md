@@ -5,6 +5,7 @@ layout: home
 hero:
   name: 'Neodx'
   text: 'Modern solutions for great DX'
+  tagline: Documentation is under construction...
 
 features:
   - title: '@neodx/log'
@@ -24,5 +25,5 @@ features:
     details: >
       Missing virtual file system abstraction that makes working with the file system a breeze
       <br />
-      (coming soon...)
+      <i>Coming soon...</i>
 ---

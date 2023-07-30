@@ -1,5 +1,9 @@
 # @neodx/log
 
+::: danger WIP
+Documentation is under construction...
+:::
+
 Powerful lightweight logger for new level of experience.
 
 ![preview](./preview-intro.png)

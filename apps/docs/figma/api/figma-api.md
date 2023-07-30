@@ -3,8 +3,7 @@
 Basic API client for Figma. You can find some usage examples in these references:
 
 - [Export API](./export/)
-- [Traverse file graph recipe](../recipes/traverse-figma-file.md)
-- []
+- [Recipe: Traverse Figma File](../recipes/traverse-figma-file.md)
 
 ```typescript
 declare function createFigmaApi(params: CreateFigmaApiParams): FigmaApi;

@@ -59,7 +59,7 @@ export default defineConfig({
                 text: 'Export Published Components',
                 link: '/figma/recipes/export-published-components'
               },
-              { text: 'Traverse Figma File', link: '/figma/recipes/traverse-file-graph' }
+              { text: 'Traverse Figma File', link: '/figma/recipes/traverse-figma-file' }
             ]
           },
           {
