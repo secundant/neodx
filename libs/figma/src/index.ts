@@ -1,22 +1,17 @@
-export type { Configuration, ExportConfigurationItem } from './config';
+export type { Configuration, ExportFileConfiguration } from './config';
 export { createFigmaApi, type CreateFigmaApiParams, type FigmaApi } from './core';
 export * from './core/figma.h'; // not "export type * from" because there are enums
 export type * from './core/figma-api.h';
-export type {
-  DownloadableItem,
-  DownloadedItem,
-  DownloadExportsParams,
-  ExportFileParams,
-  GetNodeExportSettings,
-  OptimizeExportParams,
-  ReceiveExportsDownloadInfoParams
-} from './export';
+export type { ExportFileAssetsParams, OptimizeDownloadedAssetsParams } from './export';
 export {
-  downloadExports,
-  exportFile,
+  createExportContext,
+  downloadExportedAssets,
+  exportFileAssets,
+  exportPublishedComponents,
   formatExportFileName,
-  optimizeExport,
-  receiveExportsDownloadInfo
+  optimizeDownloadedAssets,
+  resolveExportedAssets,
+  writeDownloadedAssets
 } from './export';
 export type {
   CollectNodesParams,
@@ -28,7 +23,7 @@ export type {
   PredicateInput,
   PredicateInputValue
 } from './graph';
-export { collectNodes, createFileGraph, createNodesGraph, extractNodeType } from './graph';
+export { collectNodes, createFileGraph, createNodesGraph } from './graph';
 export {
   getColor,
   getGraphNodeName,

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { LoggerMethods } from '@neodx/log';
 import { addSearchParams, createRelativeUrl, invariant } from '@neodx/std';
+import process from 'process';
 import { figmaLogger, logRequest } from '../shared';
 import type { AnyNode } from './figma.h';
 import type {
@@ -50,8 +51,12 @@ export interface CreateFigmaApiParams {
    * @default 'https://api.figma.com/v1'
    */
   baseUrl?: string;
+  /**
+   * The fetch function to use.
+   * @deprecated Will be replaced with our fetcher
+   */
   fetch?: typeof fetch;
-  logger?: LoggerMethods<'info' | 'error' | 'debug'>;
+  log?: LoggerMethods<'info' | 'error' | 'debug'>;
   accessToken?: string;
   /**
    * The personal access token of the Figma API.
@@ -62,12 +67,12 @@ export interface CreateFigmaApiParams {
 export type FigmaApi = ReturnType<typeof createFigmaApi>;
 
 export function createFigmaApi({
-  personalAccessToken,
+  personalAccessToken = process.env.FIGMA_TOKEN,
   accessToken,
-  logger = figmaLogger,
+  log = figmaLogger,
   baseUrl = 'https://api.figma.com/v1/',
   fetch = globalThis.fetch
-}: CreateFigmaApiParams) {
+}: CreateFigmaApiParams = {}) {
   invariant(personalAccessToken || accessToken, 'accessToken or personalAccessToken is required');
   async function fetchJson<T>(
     path: string,
@@ -85,12 +90,12 @@ export function createFigmaApi({
           'Content-Type': 'application/json'
         },
         options?.headers,
-        personalAccessToken
+        accessToken
           ? {
-              'X-Figma-Token': personalAccessToken
+              Authorization: `Bearer ${accessToken}`
             }
           : {
-              Authorization: `Bearer ${accessToken}`
+              'X-Figma-Token': personalAccessToken
             }
       )
     });
@@ -103,7 +108,7 @@ export function createFigmaApi({
     const contentType = response.headers.get('content-type');
 
     invariant(contentType?.includes('application/json'), 'Content-Type must be application/json');
-    logRequest(logger, options?.method ?? 'GET', url, Date.now() - startTime);
+    logRequest(log, options?.method ?? 'GET', url, Date.now() - startTime);
 
     return (await response.json()) as Promise<T>;
   }

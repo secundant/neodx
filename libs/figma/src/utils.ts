@@ -3,9 +3,11 @@ import { colord } from 'colord';
 import type {
   AnyNode,
   Color,
+  Constrain,
   Effect,
   EffectBlur,
   EffectShadow,
+  GetImageParams,
   NodeByType,
   NodeType,
   Paint,
@@ -13,7 +15,7 @@ import type {
   PaintImage,
   PaintSolid
 } from './core';
-import { EffectType, PaintType } from './core';
+import { EffectType, ImageType, PaintType } from './core';
 import type { GraphNode } from './graph';
 
 export const isFigmaLink = (link: string) => /^https:\/\/www\.figma\.com\/file\/[^/]+/.test(link);
@@ -24,6 +26,10 @@ export const parseFileIdFromLink = (link: string) => {
 
   return id;
 };
+
+export const imageTypeToFormat = (type: ImageType) =>
+  type.toLowerCase() as GetImageParams['format'];
+export const getConstraintScale = ({ type, value }: Constrain) => (type === 'SCALE' ? value : 1);
 
 export const getGraphNodeName = (node: GraphNode<AnyNode>) => node.source.name;
 

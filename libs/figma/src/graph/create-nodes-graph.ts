@@ -91,6 +91,8 @@ const createEmptyRegistry = (): GraphNodeRegistry => ({
   styles: {}
 });
 
+export type AnyGraphNode = GraphNode<AnyNode>;
+
 export interface GraphNode<Original> {
   id: NodeID;
   type: NodeType;

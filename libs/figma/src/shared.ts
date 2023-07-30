@@ -11,12 +11,12 @@ export const figmaLogger = createLogger({
 });
 
 export const logRequest = (
-  logger: LoggerMethods<'debug'>,
+  log: LoggerMethods<'debug'>,
   method: string | undefined,
   url: URLInit,
   time: number
 ) => {
-  logger.debug(
+  log.debug(
     'Done in %s - %s %s',
     formatTimeMs(time),
     method ?? 'GET',
