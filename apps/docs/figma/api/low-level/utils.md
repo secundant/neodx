@@ -2,7 +2,7 @@
 
 Here's a list of common utilities that are internally used in our top-level APIs, but can be useful for you as well.
 
-### `isPaintGradient`
+## `isPaintGradient`
 
 Accepts [Paint](https://www.figma.com/developers/api#paint-type) object and returns `true` if it's an any gradient.
 
@@ -12,7 +12,7 @@ if (isPaintGradient(paint)) {
 }
 ```
 
-### `isPaintSolid`
+## `isPaintSolid`
 
 Accepts [Paint](https://www.figma.com/developers/api#paint-type) object and returns `true` if it's a solid color.
 
@@ -22,7 +22,7 @@ if (isPaintSolid(paint)) {
 }
 ```
 
-### `isEffectShadow`
+## `isEffectShadow`
 
 Accepts [Effect](https://www.figma.com/developers/api#effect-type) object and returns `true` if it's a shadow.
 
@@ -32,7 +32,7 @@ if (isEffectShadow(effect)) {
 }
 ```
 
-### `isEffectBlur`
+## `isEffectBlur`
 
 Accepts [Effect](https://www.figma.com/developers/api#effect-type) object and returns `true` if it's a blur.
 
@@ -42,7 +42,7 @@ if (isEffectBlur(effect)) {
 }
 ```
 
-### `getColor`
+## `getColor`
 
 Returns [colord](https://github.com/omgovich/colord) instance for passed [Color](https://www.figma.com/developers/api#color-type), which provides high-level color manipulation API.
 
@@ -52,7 +52,7 @@ const color = getColor(paint.color);
 color.toHex(); // #ff0000
 ```
 
-### `parseFileIdFromLink`
+## `parseFileIdFromLink`
 
 Accepts Figma link and returns file id.
 
