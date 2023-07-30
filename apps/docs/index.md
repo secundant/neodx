@@ -17,11 +17,12 @@ features:
     details: Supercharge your icons<br />Well featured sprites generator with DX in mind
   - title: '@neodx/figma'
     icon: 🎨
+    link: /figma/
     details: The modern Figma integration tools, typed API, human-friendly files traversing, assets exporter, and more.
   - title: '@neodx/vfs'
     icon: 📁
-    details: Missing virtual file system abstraction that makes working with the file system a breeze
-  - title: '@neodx/colors'
-    icon: 🌈
-    details: Tiny colors for Node CLI
+    details: >
+      Missing virtual file system abstraction that makes working with the file system a breeze
+      <br />
+      (coming soon...)
 ---

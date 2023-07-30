@@ -1,5 +1,14 @@
 # Automatically reset colors
 
+```typescript
+svg({
+  resetColors: {
+    // default, replace all colors with currentColor
+    replaceUnknown: 'currentColor'
+  }
+});
+```
+
 Automate your icons and forget about colors management issues.
 
 ## Motivation
