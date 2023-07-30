@@ -42,14 +42,12 @@ export async function scanProject({
 
   if (tsConfig && !haveTypeScript && log !== 'fatal') {
     logger.warn(
-      'incorrect TypeScript setup',
-      'You have tsconfig.json, but no typescript dependency'
+      'incorrect TypeScript setup' + 'You have tsconfig.json, but no typescript dependency'
     );
   }
   if (haveTypeScript && !tsConfig && log !== 'fatal') {
     logger.warn(
-      'incorrect TypeScript setup',
-      'You have typescript dependency, but no tsconfig.json'
+      'incorrect TypeScript setup' + 'You have typescript dependency, but no tsconfig.json'
     );
   }
   const foundConfigs = await Promise.all(supportedConfigNames.map(name => findConfig(name, cwd)));
@@ -61,19 +59,19 @@ export async function scanProject({
   const minify = minifyParam;
 
   if (log === 'verbose') {
-    logger.info('Library', `${packageJson.name}@${packageJson.version}`);
-    logger.info('Environment (build mode)', env);
-    logger.info('Generate source maps', sourceMap);
-    logger.info('Minify', minify);
-    logger.info('Source folder', packageScanResult.sourceDir);
-    logger.info('Output folder', packageScanResult.outDir);
+    logger.info('Library %s', `${packageJson.name}@${packageJson.version}`);
+    logger.info('Environment (build mode) %s', env);
+    logger.info('Generate source maps %s', sourceMap);
+    logger.info('Minify %s', minify);
+    logger.info('Source folder %s', packageScanResult.sourceDir);
+    logger.info('Output folder %s', packageScanResult.outDir);
     logger.info(
-      'Output formats',
+      'Output formats %s',
       `${packageScanResult.outputFormats
         .map(format => `${moduleFormatText[format.type]} [${format.main}]`)
         .join('; ')}`
     );
-    logger.info('Source patterns', `${packageScanResult.sourcePatterns.join('; ')}`);
+    logger.info('Source patterns %s', `${packageScanResult.sourcePatterns.join('; ')}`);
   }
 
   return {

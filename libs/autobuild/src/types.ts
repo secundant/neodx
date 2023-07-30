@@ -11,7 +11,6 @@ export interface Project extends ProjectBuildMap {
   sourceMap: boolean | 'inline';
   sourceFiles: string[];
   packageJson: ProjectPackageJSON;
-  addBrowserMain: boolean;
   detectedConfigFiles: Partial<ProjectConfigsMap>;
 }
 

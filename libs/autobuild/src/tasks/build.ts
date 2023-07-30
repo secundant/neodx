@@ -15,7 +15,9 @@ export interface BuildParams {
 }
 
 export async function build(project: Project, { startedAt, flatten }: BuildParams = {}) {
-  const vfs = createVfs(project.cwd);
+  const vfs = createVfs(project.cwd, {
+    log: logger.child('fs')
+  });
   const buildStartedAt = Date.now();
   const exportsGenerator = await createExportsGenerator({
     outDir: project.outDir,
@@ -35,18 +37,15 @@ export async function build(project: Project, { startedAt, flatten }: BuildParam
           await build.write(outputOptions);
         } catch (error) {
           console.error(error);
-          logger.fatal(`[build] Unhandled exception`, `Phase: output. Issuer: ${info.description}`);
+          logger.error(`[build] Unhandled exception. Phase: output. Issuer: ${info.description}`);
           throw error;
         }
       }
       await build.close();
     } catch (error) {
-      logger.fatal(`[build] Unhandled exception`, `Phase: build. Issuer: ${info.description}`);
-      console.error(error);
-      if (project.log === 'verbose') {
-        logger.warn(`Failed project info`, project);
-        logger.warn(`Failed configuration`, input, ...output);
-      }
+      logger.error(`[build] Unhandled exception. Phase: build. Issuer: ${info.description}`);
+      logger.warn(project, `Failed project info`);
+      logger.warn({ input, output }, `Failed configuration`);
       throw error;
     }
   }
@@ -66,10 +65,10 @@ export async function build(project: Project, { startedAt, flatten }: BuildParam
   }
   await vfs.applyChanges();
   if (project.log !== 'fatal') {
-    logger.info(`Done at`, `${Date.now() - buildStartedAt}ms`);
+    logger.info(`Done at %sms`, Date.now() - buildStartedAt);
   }
   if (startedAt) {
-    logger.info(`Total`, `${Date.now() - startedAt}ms`);
+    logger.info(`Total %sms`, Date.now() - startedAt);
   }
   return {
     rollupConfigs

@@ -35,7 +35,7 @@ export async function flattenDist({ vfs, outDir = 'dist' }: FlattenDistParams) {
       files: [
         ...files,
         ...(packageJson.files?.filter(
-          (file: string) => !file.match(new RegExp(`^(./)?${outDir}`))
+          (file: string) => !file.match(new RegExp(`^(./)?${outDir}`)) && file !== outDir
         ) ?? [])
       ],
       exports: {
