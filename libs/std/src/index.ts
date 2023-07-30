@@ -37,6 +37,7 @@ export {
   mapObject,
   omit,
   pick,
+  shallowEqual,
   sortObject,
   sortObjectByKeys,
   sortObjectByOrder
