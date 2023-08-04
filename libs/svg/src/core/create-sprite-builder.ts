@@ -2,6 +2,7 @@ import { getHash, scan } from '@neodx/fs';
 import type { LoggerMethods } from '@neodx/log';
 import { compact, isTruthy, quickPluralize } from '@neodx/std';
 import type { VFS } from '@neodx/vfs';
+import { createVfs } from '@neodx/vfs';
 import { basename, join } from 'pathe';
 import { parse } from 'svgson';
 import { fixViewBox, groupSprites, legacyTypescript, resetColors, setId, svgo } from '../plugins';
@@ -13,7 +14,12 @@ import { renderSvgNodesToString } from './render';
 import type { GeneratedSprites, SvgFile, SvgFileMeta, SvgNode } from './types';
 
 export interface CreateSpriteBuilderParams {
-  vfs: VFS;
+  /**
+   * VFS instance
+   * @see `@neodx/vfs`
+   * @default createVfs(process.cwd())
+   */
+  vfs?: VFS;
   /**
    * Root folder for inputs, useful for correct groups naming
    */
@@ -91,8 +97,10 @@ export interface CreateSpriteBuilderParams {
 
 export type SpriteBuilder = ReturnType<typeof createSpriteBuilder>;
 
+export const defaultVfs = createVfs(process.cwd());
+
 export function createSpriteBuilder({
-  vfs,
+  vfs = defaultVfs,
   root = '.',
   output,
   logger,

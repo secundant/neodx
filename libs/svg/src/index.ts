@@ -1,7 +1,7 @@
 export type {
+  BuildSpritesParams,
   CreateSpriteBuilderParams,
   CreateWatcherParams,
-  GenerateParams,
   SpriteBuilder
 } from './core';
 export { buildSprites, createSpriteBuilder, createWatcher } from './core';
