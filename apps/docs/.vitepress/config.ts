@@ -42,7 +42,22 @@ export default defineConfig({
           { text: 'Getting started', link: '/svg/' },
           { text: 'Motivation', link: '/svg/motivation' },
           { text: 'Frameworks and bundlers', link: '/svg/frameworks-and-bundlers' },
-          { text: 'Automatically reset colors', link: '/svg/colors-reset' }
+          { text: 'Automatically reset colors', link: '/svg/colors-reset' },
+          {
+            text: 'API',
+            collapsed: true,
+            link: '/svg/api/',
+            items: [
+              { text: 'createSpritesBuilder', link: '/svg/api/create-sprites-builder' },
+              { text: 'createWatcher', link: '/svg/api/create-watcher' },
+              { text: 'buildSprites', link: '/svg/api/build-sprites' },
+              {
+                text: 'Plugins API',
+                collapsed: true,
+                items: [{ text: 'resetColors', link: '/svg/api/plugins/reset-colors' }]
+              }
+            ]
+          }
         ]
       },
       {
