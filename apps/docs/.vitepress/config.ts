@@ -41,8 +41,25 @@ export default defineConfig({
         items: [
           { text: 'Getting started', link: '/svg/' },
           { text: 'Motivation', link: '/svg/motivation' },
-          { text: 'Frameworks and bundlers', link: '/svg/frameworks-and-bundlers' },
-          { text: 'Automatically reset colors', link: '/svg/colors-reset' },
+          {
+            text: 'Setup',
+            link: '/svg/setup/',
+            items: [
+              { text: 'Vite', link: '/svg/setup/vite.md' },
+              { text: 'Next', link: '/svg/setup/next.md' },
+              { text: 'Webpack', link: '/svg/setup/webpack.md' },
+              { text: 'Other', link: '/svg/setup/other' }
+            ]
+          },
+          {
+            text: 'Guides',
+            items: [
+              { text: 'Group and hash sprites', link: '/svg/group-and-hash' },
+              { text: 'Generate metadata', link: '/svg/metadata' },
+              { text: '✨ Writing Icon component', link: '/svg/writing-icon-component' },
+              { text: 'Automatically reset colors', link: '/svg/colors-reset' }
+            ]
+          },
           {
             text: 'API',
             collapsed: true,
@@ -54,7 +71,14 @@ export default defineConfig({
               {
                 text: 'Plugins API',
                 collapsed: true,
-                items: [{ text: 'resetColors', link: '/svg/api/plugins/reset-colors' }]
+                items: [
+                  { text: 'resetColors', link: '/svg/api/plugins/reset-colors' },
+                  {
+                    text: 'metadata',
+                    link: '/svg/api/plugins/metadata'
+                  },
+                  { text: 'svgo', link: '/svg/api/plugins/svgo' }
+                ]
               }
             ]
           }
@@ -84,6 +108,7 @@ export default defineConfig({
               {
                 text: 'Export API',
                 link: '/figma/api/export/',
+                collapsed: true,
                 items: [
                   { text: 'Export File Assets', link: '/figma/api/export/export-file-assets' },
                   {

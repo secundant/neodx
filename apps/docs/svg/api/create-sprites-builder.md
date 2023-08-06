@@ -50,7 +50,9 @@ export interface SpriteBuilder {
 
 - `vfs`: [@neodx/vfs VFS](/vfs/) instance
 - `logger`: [@neodx/log Logger](/log/) or any compatible object
-- `resetColors` plugin: [ResetColorsPluginParams](./plugins/reset-colors.md)
+- `resetColors` - see `resetColors` plugin params at [ResetColorsPluginParams](./plugins/reset-colors.md)
+- `metadata` - see `metadata` plugin params at [MetadataPluginParams](./plugins/metadata.md)
+- `optimize` - see `svgo` plugin params at [SvgoPluginParams](./plugins/svgo.md)
 
 ```typescript
 interface Options {
@@ -93,7 +95,7 @@ interface Options {
   /**
    * Should we optimize icons?
    */
-  optimize?: boolean;
+  optimize?: false | SvgoPluginParams;
   /**
    * Configures metadata generation
    * @example "src/sprites/meta.ts"

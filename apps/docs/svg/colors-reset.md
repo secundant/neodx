@@ -4,7 +4,7 @@ outline: [2, 3]
 
 # Automatically reset colors
 
-- [API Reference](./api/plugins/reset-colors.md)
+A powerful feature to automatically reset colors in SVG icons.
 
 ```typescript
 svg({
@@ -15,7 +15,7 @@ svg({
 });
 ```
 
-Automate your icons and forget about colors management issues.
+- [API Reference](./api/plugins/reset-colors.md)
 
 ## Motivation
 

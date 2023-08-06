@@ -10,7 +10,7 @@ export default defineConfig({
     svg({
       root: 'assets',
       group: true,
-      output: 'public',
+      output: 'public/icons-sprite',
       fileName: '{name}.{hash:8}.svg',
       metadata: {
         path: 'src/shared/ui/icon/sprite.gen.ts',
@@ -20,7 +20,7 @@ export default defineConfig({
         }
       },
       resetColors: {
-        exclude: [/^flags/, /^logos/, /^common/],
+        exclude: [/^flags/, /^logos/],
         replace: ['#000', '#eee', '#6C707E', '#313547'],
         replaceUnknown: 'var(--icon-color)'
       }

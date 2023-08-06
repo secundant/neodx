@@ -13,15 +13,11 @@
     @apply select-none fill-current inline-block text-inherit box-content;
   }
 
-  .icon[data-icon-aspect-ratio='xy'] {
-    @apply w-[1em] h-[1em];
-  }
-
-  .icon[data-icon-aspect-ratio='x'] {
+  .icon[data-axis*='x'] {
     @apply w-[1em];
   }
 
-  .icon[data-icon-aspect-ratio='y'] {
+  .icon[data-axis*='y'] {
     @apply h-[1em];
   }
 }

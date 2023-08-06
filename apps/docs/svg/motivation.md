@@ -21,4 +21,5 @@ That's why we're here! 🥳
 
 ## Additional references
 
-- https://kurtextrem.de/posts/svg-in-js
+- https://kurtextrem.de/posts/svg-in-js: Great article about problems of SVG in JS
+- https://github.com/DavidWells/icon-pipeline: Simple solution for inlined sprites

@@ -2,38 +2,50 @@ import clsx from 'clsx';
 import type { SVGProps } from 'react';
 import { SPRITES_META, type SpritesMap } from './sprite.gen';
 
-export type IconName = {
-  [Key in keyof SpritesMap]: `${Key}/${SpritesMap[Key]}`;
-}[keyof SpritesMap];
-
-export interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'name' | 'type'> {
-  name: IconName;
+export interface IconProps extends SVGProps<SVGSVGElement> {
+  name: AnyIconName;
+  bugged?: boolean;
 }
 
-export function Icon({ name, className, ...props }: IconProps) {
-  const [spriteName, iconName] = name.split('/') as [
-    keyof SpritesMap,
-    SpritesMap[keyof SpritesMap]
-  ];
-  const { filePath, items } = SPRITES_META[spriteName];
-  // TODO Fix types
-  const { viewBox, width, height } = (items as any)[iconName] as any;
-  const rect = width === height ? 'xy' : width > height ? 'x' : 'y';
+export type AnyIconName = { [Key in keyof SpritesMap]: IconName<Key> }[keyof SpritesMap];
+export type IconName<Key extends keyof SpritesMap> = `${Key}/${SpritesMap[Key]}`;
+
+export function Icon({ name, className, bugged, ...props }: IconProps) {
+  const { viewBox, filePath, iconName, axis } = getIconMeta(name);
 
   return (
     <svg
       className={clsx('icon', className)}
+      viewBox={viewBox}
       /**
-       * this prop is used by the "icon" class to set the icon's scaled size
+       * This prop is used by the "icon" class to set the icon's scaled size
        * @see https://github.com/secundant/neodx/issues/92
        */
-      data-icon-aspect-ratio={rect}
-      viewBox={viewBox}
+      data-axis={bugged ? 'xy' : axis}
+      // prevent icon from being focused when using keyboard navigation
       focusable="false"
+      // hide icon from screen readers
       aria-hidden
       {...props}
     >
-      <use href={`/${filePath}#${iconName}`} />
+      <use href={`/icons-sprite/${filePath}#${iconName}`} />
     </svg>
   );
 }
+
+/**
+ * A function to get and process icon metadata.
+ * It was moved out of the Icon component to prevent type inference issues.
+ */
+const getIconMeta = <Key extends keyof SpritesMap>(name: IconName<Key>) => {
+  const [spriteName, iconName] = name.split('/') as [Key, SpritesMap[Key]];
+  const {
+    filePath,
+    items: {
+      [iconName]: { viewBox, width, height }
+    }
+  } = SPRITES_META[spriteName];
+  const axis = width === height ? 'xy' : width > height ? 'x' : 'y';
+
+  return { filePath, iconName, viewBox, axis };
+};
