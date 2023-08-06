@@ -5,11 +5,19 @@ import type { VFS } from '@neodx/vfs';
 import { createVfs } from '@neodx/vfs';
 import { basename, join } from 'pathe';
 import { parse } from 'svgson';
-import { fixViewBox, groupSprites, legacyTypescript, resetColors, setId, svgo } from '../plugins';
+import {
+  fixViewBox,
+  groupSprites,
+  legacyTypescript,
+  resetColors,
+  type ResetColorsPluginParams,
+  setId,
+  svgo,
+  type SvgoPluginParams
+} from '../plugins';
 import { extractSvgMeta } from '../plugins/fix-view-box';
 import { metadata as metadataPlugin, type MetadataPluginParams } from '../plugins/metadata';
 import { combinePlugins } from '../plugins/plugin-utils';
-import type { ResetColorsPluginParams } from '../plugins/reset-colors';
 import { renderSvgNodesToString } from './render';
 import type { GeneratedSprites, SvgFile, SvgFileMeta, SvgNode } from './types';
 
@@ -26,8 +34,9 @@ export interface CreateSpriteBuilderParams {
   root?: string;
   /**
    * Path to generated sprite/sprites folder
+   * @default "public/sprites"
    */
-  output: string;
+  output?: string;
   /**
    * Logger instance (or object with any compatible interface)
    * @see `@neodx/log`
@@ -51,7 +60,7 @@ export interface CreateSpriteBuilderParams {
   /**
    * Should we optimize icons?
    */
-  optimize?: boolean;
+  optimize?: boolean | SvgoPluginParams;
   /**
    * Configures metadata generation
    * @example "src/sprites/meta.ts"
@@ -102,7 +111,7 @@ export const defaultVfs = createVfs(process.cwd());
 export function createSpriteBuilder({
   vfs = defaultVfs,
   root = '.',
-  output,
+  output = 'public/sprites',
   logger,
   group: enableGroup,
   metadata,
@@ -111,7 +120,7 @@ export function createSpriteBuilder({
   definitions,
   resetColors: resetColorsParams,
   experimentalRuntime
-}: CreateSpriteBuilderParams) {
+}: CreateSpriteBuilderParams = {}) {
   if (definitions || experimentalRuntime) {
     logger?.error(
       'DEPRECATED: `definitions` and `experimentalRuntime` options will be removed in future versions, use `metadata` instead'
@@ -124,7 +133,7 @@ export function createSpriteBuilder({
       setId(),
       fixViewBox(),
       resetColorsParams !== false && resetColors(resetColorsParams),
-      optimize !== false && svgo(),
+      optimize !== false && svgo(optimize === true ? {} : optimize),
       !definitions && metadataPlugin(metadata),
       !metadata &&
         definitions &&

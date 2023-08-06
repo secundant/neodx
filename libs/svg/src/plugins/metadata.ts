@@ -39,7 +39,7 @@ export function metadata(params: MetadataPluginParams = false) {
         config.path,
         [
           isTypeScript && types && renderTypes(types, sprites),
-          runtime && renderRuntime(runtime, sprites, isTypeScript)
+          runtime && renderRuntime(runtime, sprites, types?.name)
         ]
           .filter(Boolean)
           .join('\n')
@@ -60,34 +60,37 @@ const renderTypes = ({ name }: MetadataTypesParams, sprites: GeneratedSprites) =
 const renderRuntime = (
   params: MetadataRuntimeParams,
   sprites: GeneratedSprites,
-  isTypeScript: boolean
+  typesName?: string
 ) => {
   const { name, size, viewBox } = params;
   const detailedRuntime = Boolean(size || viewBox);
-  const satisfies = detailedRuntime
-    ? `Record<string, {
-         filePath: string;
-         items: Record<string, {
-            ${viewBox ? `viewBox: string,` : ''}
-            ${size ? `width: number, height: number,` : ''}
-         }>
-       }>`
-    : `{
-      ${renderIterableAsRecord(
-        sprites.values(),
-        sprite => sprite.name,
-        ({ files }) => `Array<${files.map(file => stringLiteral(file.name)).join(' | ')}>`
-      )}
-    }`;
+  const renderTypeLiteral = () =>
+    detailedRuntime
+      ? `{
+           [Key in keyof ${typesName}]: {
+             filePath: string;
+             items: Record<${typesName}[Key], {
+                ${viewBox ? `viewBox: string,` : ''}
+                ${size ? `width: number, height: number,` : ''}
+             }>
+           }
+         }`
+      : `{
+        ${renderIterableAsRecord(
+          sprites.values(),
+          sprite => sprite.name,
+          ({ files }) => `Array<${files.map(file => stringLiteral(file.name)).join(' | ')}>`
+        )}
+      }`;
 
-  return `export const ${name} = {
+  return `export const ${name}${typesName ? `: ${renderTypeLiteral()}` : ''} = {
     ${renderIterableAsRecord(
       sprites.values(),
       sprite => sprite.name,
       sprite =>
         detailedRuntime ? renderRuntimeAsDetails(sprite, params) : renderRuntimeAsArray(sprite)
     )}
-  }${isTypeScript ? ` satisfies ${satisfies}` : ''};`;
+  };`;
 };
 
 const renderRuntimeAsArray = ({ files }: GeneratedSprite) =>
