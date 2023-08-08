@@ -133,3 +133,8 @@ svg({
   ]
 });
 ```
+
+## Related
+
+- ["Working with multicolored" guide](./multicolored.md)
+- ["Writing Icon Component" guide](./writing-icon-component.md)

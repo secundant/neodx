@@ -28,6 +28,8 @@ pnpm add -D @neodx/svg
 
 ## Getting started
 
+### 1. Setup your bundler
+
 First of all, you need to integrate one of our [plugins](./setup/) into your bundler and configure it:
 
 - [Vite](./setup/vite.md)
@@ -35,14 +37,54 @@ First of all, you need to integrate one of our [plugins](./setup/) into your bun
 - [Webpack](./setup/webpack.md)
 - [Other](./setup/other.md)
 
+For example, `Vite` configuration will look like this:
+
+```typescript [vite.config.ts]
+import { defineConfig } from 'vite';
+import svg from '@neodx/svg/vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [
+    react(),
+    svg({
+      root: 'assets',
+      group: true,
+      output: 'public/sprites',
+      metadata: 'src/sprite.gen.ts'
+    })
+  ]
+});
+```
+
 Now, sprites will be built at the start of your `build`/`dev` command and any changes in the source folder(s) will initiate an incremental rebuild in `dev`/`watch` mode.
+
+For example, you will get the following structure:
+
+```diff
+/
+├── assets
+│   ├── common
+│   │   ├── left.svg
+│   │   └── right.svg
+│   └── actions
+│       └── close.svg
+├── public
++   └── sprites
++       ├── common.svg
++       └── actions.svg
+└── src
++   └── sprite.gen.ts
+```
+
+### 2. Create an Icon component
 
 Next, you need to create a single component that will be responsible for rendering icons, visit our ["Writing an Icon component"](./writing-icon-component.md) guide for more information.
 
 At the end, you can use your `Icon` component in any place of your application:
 
 ```tsx [some-component.tsx]
-import { Icon } from '@/shared/ui/icon';
+import { Icon } from './icon';
 
 export function SomeComponent() {
   return (

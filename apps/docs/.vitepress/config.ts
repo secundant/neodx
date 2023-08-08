@@ -57,7 +57,8 @@ export default defineConfig({
               { text: 'Group and hash sprites', link: '/svg/group-and-hash' },
               { text: 'Generate metadata', link: '/svg/metadata' },
               { text: '✨ Writing Icon component', link: '/svg/writing-icon-component' },
-              { text: 'Automatically reset colors', link: '/svg/colors-reset' }
+              { text: 'Automatically reset colors', link: '/svg/colors-reset' },
+              { text: 'Working with multicolored', link: '/svg/multicolored' }
             ]
           },
           {

@@ -20,7 +20,7 @@ export default defineConfig({
   plugins: [
     svg({
       root: 'assets',
-      output: 'public/icons-sprite',
+      output: 'public/sprites',
       // group icons by sprite name
       group: true,
       // add hash to sprite file name
@@ -51,7 +51,7 @@ export interface SpritesMap {
 export const SPRITES_META = {
   'sprite-name': {
     // `filePath` is a path to sprite file relative to `output` option
-    filePath: 'icons-sprite.12345678.svg',
+    filePath: 'sprites.12345678.svg',
     items: {
       left: {
         viewBox: '0 0 24 24',
@@ -107,7 +107,7 @@ export function Icon<T extends keyof SpritesMap>({
       aria-hidden
       {...props}
     >
-      <use href={`/icons-sprite/${filePath}#${name}`} />
+      <use href={`/sprites/${filePath}#${name}`} />
     </svg>
   );
 }

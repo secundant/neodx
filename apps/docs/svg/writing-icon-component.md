@@ -24,6 +24,26 @@ From the start, I will show you the final result of this guide to give you a bet
 - [Autoscaling](#detect-icon-major-axis-for-correct-scaling) based on the icon's aspect ratio
 - Open to any extension for your needs!
 
+::: details We will work with grouped hashed sprites with generated types and metadata
+
+```diff
+/
+├── assets
+│   ├── common
+│   │   ├── left.svg
+│   │   └── right.svg
+│   └── actions
+│       └── close.svg
+├── public
++   └── sprites
++       ├── common.12ghS6Uj.svg
++       └── actions.1A34ks78.svg
+└── src
++   └── sprite.gen.ts
+```
+
+:::
+
 ::: code-group
 
 ```tsx [icon.tsx]
@@ -35,9 +55,9 @@ import { SPRITES_META, type SpritesMap } from './sprite.gen';
 export interface IconProps extends SVGProps<SVGSVGElement> {
   name: AnyIconName;
 }
-// All possible icon names
+// Merging all possible icon names as `sprite/icon` string
 export type AnyIconName = { [Key in keyof SpritesMap]: IconName<Key> }[keyof SpritesMap];
-// Icon name for a specific sprite
+// Icon name for a specific sprite, e.g. "common/left"
 export type IconName<Key extends keyof SpritesMap> = `${Key}/${SpritesMap[Key]}`;
 
 export function Icon({ name, className, ...props }: IconProps) {
@@ -59,7 +79,8 @@ export function Icon({ name, className, ...props }: IconProps) {
       aria-hidden
       {...props}
     >
-      <use href={`/icons-sprite/${filePath}#${iconName}`} />
+      {/* For example, "/sprites/common.svg#favourite". Change base path if you don't store sprites under the "/sprites". */}
+      <use href={`/sprites/${filePath}#${iconName}`} />
     </svg>
   );
 }
@@ -84,11 +105,15 @@ const getIconMeta = <Key extends keyof SpritesMap>(name: IconName<Key>) => {
 
 ```css [styles.css]
 @layer components {
+  /*
+  Our base class for icons inherits the current text color and applies common styles.
+  We're using a specific component class to prevent potential style conflicts and utilize the [data-axis] attribute.
+  */
   .icon {
-    /* reset styles and prevent icon from being selected */
     @apply select-none fill-current inline-block text-inherit box-content;
   }
 
+  /* Set icon size to 1em based on its aspect ratio, so we can use `font-size` to scale it */
   .icon[data-axis*='x'] {
     /* scale horizontally */
     @apply w-[1em];
@@ -111,7 +136,7 @@ export default defineConfig({
       root: 'assets',
       // group icons by sprite name
       group: true,
-      output: 'public/icons-sprite',
+      output: 'public/sprites',
       // add hash to sprite file name
       fileName: '{name}.{hash:8}.svg',
       metadata: {
@@ -248,7 +273,7 @@ Let's start implementing it:
          viewBox={viewBox}
          // ...
        >
-         <use href={`/icons-sprite/${filePath}#${iconName}`} />
+         <use href={`/sprites/${filePath}#${iconName}`} />
        </svg>
      );
    }
