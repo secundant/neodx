@@ -37,8 +37,8 @@ npm install -D @neodx/figma
   - [Traverse Figma File](https://neodx.pages.dev/figma/recipes/traverse-figma-file)
 - [Figma API](https://neodx.pages.dev/figma/api/figma-api)
 - Node API
-  - [createFileGraph](https://neodx.pages.dev/figma/api/low-level/create-file-graph)
-  - [collectNodes](https://neodx.pages.dev/figma/api/low-level/collect-nodes)
+  - [createFileGraph](https://neodx.pages.dev/figma/api/low-level/create-file-graph) creates a human-friendly Figma file graph
+  - [collectNodes](https://neodx.pages.dev/figma/api/low-level/collect-nodes) is a powerful tool for filtering and extracting Figma elements at any depth by nested selectors
 - [Export API](https://neodx.pages.dev/figma/api/export)
   - [Export File Assets](https://neodx.pages.dev/figma/api/export/export-file-assets)
   - [Export Published Components](https://neodx.pages.dev/figma/api/export/export-published-components)
