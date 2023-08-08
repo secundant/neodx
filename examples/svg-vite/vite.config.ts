@@ -10,7 +10,7 @@ export default defineConfig({
     svg({
       root: 'assets',
       group: true,
-      output: 'public/icons-sprite',
+      output: 'public/sprites',
       fileName: '{name}.{hash:8}.svg',
       metadata: {
         path: 'src/shared/ui/icon/sprite.gen.ts',

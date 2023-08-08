@@ -51,7 +51,7 @@ import clsx from 'clsx';
 import type { SVGProps } from 'react';
 import { SPRITES_META, type SpritesMap } from './sprite.gen';
 
-// Our icon will extend SVG element and accept all its props
+// Our icon will extend an SVG element and accept all its props
 export interface IconProps extends SVGProps<SVGSVGElement> {
   name: AnyIconName;
 }
@@ -79,7 +79,7 @@ export function Icon({ name, className, ...props }: IconProps) {
       aria-hidden
       {...props}
     >
-      {/* For example, "/sprites/common.svg#favourite". Change base path if you don't store sprites under the "/sprites". */}
+      {/* For example, "/sprites/common.svg#favourite". Change a base path if you don't store sprites under the "/sprites". */}
       <use href={`/sprites/${filePath}#${iconName}`} />
     </svg>
   );
