@@ -91,14 +91,14 @@ export function pretty<const Level extends string>({
       meta,
       error,
       level: resolvedLevel,
-      __: { levelsConfig, originalLevel: level }
+      __: { levels, originalLevel: level }
     } = chunk;
 
     // In `prettyErrors` mode, we will display error in a more readable way
     const possibleLabelFromError = prettyErrors ? null : error?.name;
     const userDefinedMessage = prettyErrors && msg === error?.message ? null : msg;
 
-    const maxLevelLength = getMaxObjectKeysLength(levelsConfig);
+    const maxLevelLength = getMaxObjectKeysLength(levels);
     const label = (possibleLabelFromError ?? level.toLowerCase()).padEnd(1);
     const badge = getLevelSetting(levelBadges, level);
     const levelColorName =
@@ -127,13 +127,13 @@ export function pretty<const Level extends string>({
 
       if (prettyErrors) {
         const shouldPrintErrorInAdditionalLine = userDefinedMessage || haveVisibleMeta;
+        const postfix = error instanceof Error ? '\n' : '';
 
-        logError(
-          formatted,
-          shouldPrintErrorInAdditionalLine ? '\n' : '',
-          printPrettyError(error, prettyErrorCustomOptions),
-          error instanceof Error ? '\n' : ''
-        );
+        if (shouldPrintErrorInAdditionalLine) {
+          logError(formatted, '\n', printPrettyError(error, prettyErrorCustomOptions), postfix);
+        } else {
+          logError(formatted, printPrettyError(error, prettyErrorCustomOptions), postfix);
+        }
       } else {
         logError(formatted, colors.gray(stackBody.map(line => line.replace(/^/, '\n')).join('')));
       }

@@ -1,6 +1,5 @@
 import { identity, isEmpty, keys } from '@neodx/std';
 import { createLoggerFactory } from './core/create-logger-factory';
-import type { DefaultLoggerLevel } from './core/shared';
 import { DEFAULT_LOGGER_PARAMS } from './core/shared';
 import type { LogChunk } from './core/types';
 import { readArguments } from './utils';
@@ -14,7 +13,7 @@ export {
 } from './core/shared';
 export type * from './core/types';
 
-export const createLogger = createLoggerFactory<DefaultLoggerLevel>({
+export const createLogger = createLoggerFactory({
   defaultParams: {
     ...DEFAULT_LOGGER_PARAMS,
     target: createConsoleTarget()

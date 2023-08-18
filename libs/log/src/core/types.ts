@@ -70,7 +70,9 @@ export interface LogChunk<Level extends string> {
   msg: string;
   msgArgs?: unknown[];
   msgTemplate?: string;
-
+  /**
+   * @internal
+   */
   __: Readonly<LoggerInternals<Level> & Record<string, unknown>>;
 }
 
@@ -79,7 +81,7 @@ export interface LoggerInternals<Level extends string> {
    * Dictionary of log levels with priority (lower is more prioritized).
    * @default { error: 10, warn: 20, info: 30, verbose: 40, debug: 50, silent: Infinity }
    */
-  levelsConfig: LoggerLevelsConfig<Level>;
+  levels: LoggerLevelsConfig<Level>;
   originalLevel: Level;
 }
 
@@ -89,25 +91,25 @@ export type LoggerMethods<Levels extends string> = Record<Levels, LoggerMethod>;
 
 export type Logger<Levels extends string> = {
   readonly meta: LoggerBaseMeta;
-  fork<P extends LoggerParams<Levels>>(options?: Partial<P>): Logger<Levels>;
+  fork<P extends LoggerParams<Levels>>(params?: Partial<P>): Logger<Levels>;
   fork<LevelsConfig extends BaseLevelsConfig>(
-    options: LoggerParamsWithLevels<LevelsConfig>
+    params: LoggerParamsWithLevels<LevelsConfig>
   ): Logger<GetLevelNames<LevelsConfig>>;
   child<P extends LoggerParams<Levels>>(
     name: string,
-    options?: Partial<Omit<P, 'name'>>
+    params?: Partial<Omit<P, 'name'>>
   ): Logger<Levels>;
   child<LevelsConfig extends BaseLevelsConfig>(
     name: string,
-    options: Omit<LoggerParamsWithLevels<LevelsConfig>, 'name'>
+    params: Omit<LoggerParamsWithLevels<LevelsConfig>, 'name'>
   ): Logger<GetLevelNames<LevelsConfig>>;
 } & LoggerMethods<Levels>;
 
 export interface CreateLogger<DefaultLevel extends string> {
   <const CustomLevels extends BaseLevelsConfig>(
-    options: LoggerParamsWithLevels<CustomLevels>
+    params: LoggerParamsWithLevels<CustomLevels>
   ): Logger<GetLevelNames<CustomLevels>>;
-  (options?: Partial<LoggerParams<DefaultLevel>>): Logger<DefaultLevel>;
+  (params?: Partial<LoggerParams<DefaultLevel>>): Logger<DefaultLevel>;
 }
 
 export interface LoggerParamsWithLevels<LevelsConfig extends BaseLevelsConfig>
@@ -157,5 +159,5 @@ export interface LoggerParams<Level extends string> {
   transform: LoggerTransformer<Level> | LoggerTransformer<Level>[];
 }
 
-type BaseLevelsConfig = LoggerLevelsConfig<string>;
-type GetLevelNames<Config extends BaseLevelsConfig> = Extract<keyof Config, string>;
+export type BaseLevelsConfig = LoggerLevelsConfig<string>;
+export type GetLevelNames<Config extends BaseLevelsConfig> = Extract<keyof Config, string>;

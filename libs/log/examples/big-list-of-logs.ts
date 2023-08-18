@@ -8,7 +8,8 @@ const unnamed = createLogger({
 const system = unnamed.fork({
   name: '@neodx/log',
   target: pretty({
-    displayTime: false
+    displayTime: false,
+    prettyErrors: true
   }),
   transform: chunk => ({
     ...chunk,
@@ -22,6 +23,22 @@ const child = named.child('child');
 const inmemory = named.child('inmemory');
 const notifier = named.child('notifier');
 
+const isEnoughMemory = () => false;
+
+function assertMemory() {
+  if (!isEnoughMemory()) {
+    throw new Error('Out of memory');
+  }
+}
+
+function runSafeInMemoryDatabase() {
+  try {
+    assertMemory();
+  } catch (error) {
+    inmemory.error(error);
+  }
+}
+
 /**
  * Introduction
  */
@@ -30,7 +47,7 @@ named.info('Starting...');
 inmemory.info('Starting in-memory database...');
 notifier.info('Connecting to notification service...');
 inmemory.warn('Low memory, loading can be failed');
-inmemory.error('Out of memory');
+runSafeInMemoryDatabase();
 named.error('Failed to start');
 named.debug('Failure reason: %s', 'Out of memory');
 named.info('Shutting down...');

@@ -1,6 +1,7 @@
 import type { LoggerLevelsConfig, LoggerParamsWithLevels } from './types';
 
-export type DefaultLoggerLevel = keyof typeof DEFAULT_LOGGER_LEVELS;
+export type DefaultLoggerLevel = keyof DefaultLoggerLevelsConfig;
+export type DefaultLoggerLevelsConfig = typeof DEFAULT_LOGGER_LEVELS;
 
 export const LOGGER_SILENT_LEVEL = 'silent' as const;
 export const DEFAULT_LOGGER_LEVELS = {
