@@ -28,11 +28,37 @@ export default defineConfig({
         collapsed: true,
         items: [
           { text: 'Getting started', link: '/log/' },
-          { text: 'Pretty printing', link: '/log/pretty-printing' },
-          { text: 'JSON logs', link: '/log/json' },
+          { text: 'Motivation', link: '/log/motivation' },
           { text: 'Children and forks', link: '/log/child-and-fork' },
-          { text: 'HTTP frameworks', link: '/log/http-frameworks' },
-          { text: 'Creating your own logger', link: '/log/custom' }
+          {
+            text: 'Targets',
+            items: [
+              { text: 'JSON logs', link: '/log/targets/json' },
+              { text: 'Pretty format', link: '/log/targets/pretty' }
+            ]
+          },
+          {
+            text: 'Frameworks',
+            link: '/log/frameworks/',
+            items: [
+              { text: 'Express', link: '/log/frameworks/express' },
+              { text: 'Koa', link: '/log/frameworks/koa' },
+              { text: 'Node.js http', link: '/log/frameworks/http' }
+            ]
+          },
+          { text: 'Creating your own logger', link: '/log/building-your-own-logger' },
+          {
+            text: 'API',
+            collapsed: true,
+            items: [
+              { text: 'createLogger', link: '/log/api/create-logger' },
+              { text: 'createLoggerFactory', link: '/log/api/create-logger-factory' },
+              { text: 'logger', link: '/log/api/logger' },
+              { text: 'printf', link: '/log/api/printf' },
+              { text: 'readArguments', link: '/log/api/read-arguments' },
+              { text: '@neodx/log/http', link: '/log/api/http' }
+            ]
+          }
         ]
       },
       {
