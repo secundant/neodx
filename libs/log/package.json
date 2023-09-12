@@ -72,7 +72,7 @@
     "loglevel": "^1.8.1",
     "pino": "^8.14.1",
     "tmp": "^0.2.1",
-    "tsx": "^3.12.7",
+    "tsx": "^3.12.9",
     "winston": "^3.10.0"
   },
   "peerDependencies": {

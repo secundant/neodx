@@ -76,12 +76,20 @@
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
-    "@swc/helpers": "^0.5.1",
+    "@swc/helpers": "^0.5.2",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@types/svgo": "^3.0.0",
     "clsx": "^2.0.0",
     "prettier": "^2.8.8"
+  },
+  "peerDependencies": {
+    "prettier": "*"
+  },
+  "peerDependenciesMeta": {
+    "prettier": {
+      "optional": true
+    }
   },
   "exports": {
     ".": {

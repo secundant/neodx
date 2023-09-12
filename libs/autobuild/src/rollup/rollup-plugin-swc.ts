@@ -109,8 +109,7 @@ export async function createSwcConfig(
       baseUrl: sourceDir,
       transform,
       experimental: {
-        cacheRoot: resolve(cwd, 'node_modules/.cache/autobuild/swc'),
-        keepImportAssertions: Boolean(tsConfig?.compilerOptions.target === ScriptTarget.ESNext)
+        cacheRoot: resolve(cwd, 'node_modules/.cache/autobuild/swc')
       },
       ...(tsConfig && {
         parser: {

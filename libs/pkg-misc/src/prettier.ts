@@ -59,6 +59,7 @@ export async function tryFormatPrettier(
     return null;
   }
   try {
+    // eslint-disable-next-line @typescript-eslint/return-await
     return prettier.format(content, prettierOptions);
   } catch (error) {
     if (!(error instanceof Error)) {
