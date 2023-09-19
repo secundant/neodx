@@ -41,7 +41,10 @@ export default defineConfig({
         items: [
           { text: 'Getting started', link: '/log/' },
           { text: 'Motivation', link: '/log/motivation' },
-          { text: 'Children and forks', link: '/log/child-and-fork' },
+          { text: 'Formatting', link: '/log/formatting' },
+          { text: 'Metadata', link: '/log/metadata' },
+          { text: 'Forked and child loggers', link: '/log/fork-and-child' },
+          { text: 'Creating your own logger', link: '/log/building-your-own-logger' },
           {
             text: 'Targets',
             items: [
@@ -58,7 +61,6 @@ export default defineConfig({
               { text: 'Node.js http', link: '/log/frameworks/http' }
             ]
           },
-          { text: 'Creating your own logger', link: '/log/building-your-own-logger' },
           {
             text: 'API',
             collapsed: true,
