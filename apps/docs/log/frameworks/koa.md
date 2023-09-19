@@ -1,6 +1,6 @@
 # Add `@neodx/log` to [Koa](https://koajs.com) app
 
-![preview](/log/example-koa-logs.png)
+<img src="/log/example-koa-logs.png" alt="preview" width="1892" height="926" />
 
 ## Getting started
 

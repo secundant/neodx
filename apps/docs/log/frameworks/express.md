@@ -1,6 +1,6 @@
 # Add `@neodx/log` to [Express](https://expressjs.com/) app
 
-![preview](/log/example-express-logs.png)
+<img src="/log/example-express-logs.png" alt="preview" width="1892" height="1078" />
 
 ::: info
 In Express we can't handle errors in the single middleware, so we need to use additional `preserveErrorMiddleware` middleware to handle errors.

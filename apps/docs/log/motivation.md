@@ -26,7 +26,7 @@ In my opinion, - we just don't have a good enough abstraction layer for logging:
 - Configurable
 - Multiple transports support
 - Multiple log levels support
-- Built-in pretty-printing, JSON logging
+- Built-in [pretty-printing](./targets/pretty.md), [JSON logging](./targets/json.md)
 - etc.
 
 Okay, maybe we have some good enough solutions, but they are not perfect:

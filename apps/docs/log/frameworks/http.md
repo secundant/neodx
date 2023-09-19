@@ -1,6 +1,6 @@
 # Add `@neodx/log` to [Node.js HTTP Server](https://nodejs.org/api/http.html)
 
-![preview](/log/example-http-logs.png)
+<img src="/log/example-http-logs.png" alt="preview" width="1892" height="864" />
 
 `@neodx/log/http` is a core module for logging HTTP requests and responses.
 It is used by the [`@neodx/log/express`](./express.md) and [`@neodx/log/koa`](./koa.md) adapters.
