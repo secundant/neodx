@@ -55,14 +55,14 @@
     "nuke": "rm -rf dist"
   },
   "dependencies": {
-    "@neodx/log": "^0.2.1",
-    "@neodx/std": "^0.1.5",
-    "@neodx/vfs": "^0.1.9",
+    "@neodx/log": "0.2.1",
+    "@neodx/std": "0.1.5",
+    "@neodx/vfs": "0.1.9",
     "colord": "2.9.3",
     "commander": "11.0.0",
-    "cosmiconfig": "8.3.5",
+    "cosmiconfig": "8.3.6",
     "pathe": "1.1.1",
-    "svgo": "^3.0.2"
+    "svgo": "3.0.2"
   },
   "devDependencies": {
     "@neodx/autobuild": "*"
