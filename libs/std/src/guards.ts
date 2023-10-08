@@ -7,6 +7,8 @@ const objectString = '[object Object]';
 export type Nil = null | undefined;
 export type AnyKey = keyof any;
 export type AnyObj = Record<AnyKey, unknown>;
+export type AnyFunction = (...args: any[]) => any;
+export type IsTypeOfFn<Type> = <T>(value: T | Type) => value is Type;
 
 export const isEmpty = (target: unknown[]): target is [] => target.length === 0;
 export const isError = (target: unknown): target is Error => target instanceof Error;
@@ -16,6 +18,11 @@ export const negate =
   <R>(fn: (value: unknown) => value is R) =>
   <Value>(value: Value): value is Exclude<Value, R> =>
     !fn(value);
+
+const createTypeof = (type: string) => (value: unknown) => typeof value === type;
+
+export const isTypeOfString = createTypeof('string') as IsTypeOfFn<string>;
+export const isTypeOfFunction = createTypeof('function') as IsTypeOfFn<AnyFunction>;
 
 export const isNull = (value: unknown): value is null => value === null;
 export const isUndefined = (value: unknown): value is undefined => value === undefined;

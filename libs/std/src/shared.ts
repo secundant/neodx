@@ -11,6 +11,8 @@ export const keys = Object.keys as TypedObjectKeysFn;
 export const isTruthy = Boolean as unknown as <T>(value: T | Falsy) => value is T;
 export const toInt = (value: string) => Number.parseInt(value, 10);
 
+// shared types
+
 export type Falsy = false | null | undefined | void | 0 | '';
 
 export type ObjectEntry<T> = {
