@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { isEmpty, isFunction, isString, isTruthy, keys, toArray } from '@neodx/std';
+import { isEmpty, isTruthy, isTypeOfFunction, isTypeOfString, keys, toArray } from '@neodx/std';
 import type { LogArguments } from '../utils';
 import { LOGGER_SILENT_LEVEL } from './shared';
 import type {
@@ -40,7 +40,7 @@ export function createLoggerFactory<LevelsConfig extends LoggerLevelsConfig<stri
     >[];
     const targets = toArray(target)
       .filter(isTruthy)
-      .map(target => (isFunction(target) ? { target } : target))
+      .map(target => (isTypeOfFunction(target) ? { target } : target))
       .map(({ target, level }) => ({
         level: level && getOriginalLevelName(level, levels),
         target: toArray(target).filter(isTruthy)
@@ -109,5 +109,5 @@ const getOriginalLevelName = <Config extends BaseLevelsConfig>(
 ): GetLevelNames<Config> => {
   const value = levels[level] as GetLevelNames<Config> | number;
 
-  return isString(value) ? getOriginalLevelName(value, levels) : level;
+  return isTypeOfString(value) ? getOriginalLevelName(value, levels) : level;
 };

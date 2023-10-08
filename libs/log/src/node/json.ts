@@ -15,7 +15,6 @@ export interface JsonTargetParams {
   errorKey?: string;
   messageKey?: string;
   serializers?: LogSerializers;
-  levelNameKey?: string;
   levelValueKey?: string;
 }
 
