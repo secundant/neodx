@@ -7,9 +7,17 @@
 
 This project is designed to tackle common web development challenges with ease.
 
+Check out our [documentation](https://neodx.pages.dev) to learn more!
+
 > **Warning**
 > Most of the packages are still under development, so API may change.
 > I'll try to keep it stable, but updates still can bring breaking changes.
+
+Packages overview:
+
+- [@neodx/figma](#neodxfigma) | [docs](https://neodx.pages.dev/figma) | [source](./libs/figma)
+- [@neodx/svg](#neodxsvg) | [docs](https://neodx.pages.dev/svg) | [source](./libs/svg)
+- [@neodx/log](#neodxlog) | [docs](https://neodx.pages.dev/log) | [source](./libs/log)
 
 ### [@neodx/figma](./libs/figma)
 
@@ -200,13 +208,39 @@ In other words, it's designed as single API for all file system operations, so y
 
 ## Development and contribution
 
+### Getting started
+
+We're using [Yarn 3 (berry)](https://yarnpkg.com/) as a package manager and [Nx](https://nx.dev/) as a monorepo management tool.
+
+After cloning the repo, to install dependencies, run:
+
+```shell
+yarn
+```
+
+And, optionally, for building all packages, run:
+
+```shell
+yarn nx run-many  --all --target=build
+```
+
+It isn't necessary, you can start working with the codebase right away, but it will boost initial cache whn you run e2e tests (scenarios in examples/\*).
+
 ### Internal scripts
+
+#### Create a new global example
+
+```shell
+yarn neodx example new-example-name
+```
 
 #### Create a new library
 
 ```shell
-yarn neodx lib my-lib-name
+yarn neodx lib new-lib-name
 ```
+
+The source code can be accessed by starting from [tools/scripts/bin.mjs](./tools/scripts/bin.mjs)..
 
 ## License
 
