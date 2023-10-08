@@ -59,7 +59,6 @@ export function App() {
               <h3 className="text-red-800 mb-2">Bad</h3>
               <Icon
                 className="rounded-xl bg-gradient-to-br from-slate-100 to-stone-200 shadow-sm border border-gray-300 p-8 text-8xl text-red-800"
-                bugged
                 name={selected}
               />
             </div>
