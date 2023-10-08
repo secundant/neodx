@@ -19,7 +19,7 @@ exports[`examples > "colors" example should replay same output 1`] = `
   ],
   [
     "generated/sprite-info.ts",
-    "68ee54e6a56a9c10472f3613d7b688b49087d69ca2ad2591318a01138ff5f669",
+    "e90c943544b0deb31f987891a7c4895d28c0bd94b4373696a80ae85074f18c02",
   ],
 ]
 `;
@@ -60,7 +60,7 @@ exports[`examples > "colors-advanced" example should replay same output 1`] = `
   ],
   [
     "generated/sprite-info.ts",
-    "666e8fa9a10d2e5127d31cb8f8604ab36c16aaba9485ceb31aeb18e87e5cddd0",
+    "ba8fc4565b41a227a9cc7372fed0db893a4f52bae852b23bbec89c97ae24623f",
   ],
 ]
 `;
@@ -89,7 +89,7 @@ exports[`examples > "groups-with-root" example should replay same output 1`] = `
   ],
   [
     "generated/sprite-info.ts",
-    "0c82bd5eb1a18ea3337261408254d09db5cee2c8eeb4561ed6bca996b0e0d9c9",
+    "86b30a6c62260f488f7840660677e396f97aeefd2e1377ab0f7603e128257459",
   ],
 ]
 `;
@@ -118,7 +118,7 @@ exports[`examples > "groups-without-root" example should replay same output 1`] 
   ],
   [
     "generated/sprite-info.ts",
-    "6280072f9bbc11d77c987a1ce220c9a70197c7612119b86606025455d3feae97",
+    "ff73fe4f93a997f28451d9096746a470c68939807d28585f137f89397635e1cd",
   ],
 ]
 `;
@@ -147,7 +147,7 @@ exports[`examples > "metadata" example should replay same output 1`] = `
   ],
   [
     "generated/meta.ts",
-    "789b7ca4856d0b2d1b105e8267a5950f77d4928ef1710b4db05438cefd96c27f",
+    "c7f023721dbcde44c77868aa1204555fdef83176f944624c55114967fcf815e8",
   ],
 ]
 `;
@@ -178,7 +178,7 @@ exports[`examples > "react" example should replay same output 1`] = `
   ],
   [
     "generated/sprite-info.ts",
-    "0c82bd5eb1a18ea3337261408254d09db5cee2c8eeb4561ed6bca996b0e0d9c9",
+    "86b30a6c62260f488f7840660677e396f97aeefd2e1377ab0f7603e128257459",
   ],
 ]
 `;
@@ -200,7 +200,7 @@ exports[`examples > "simple" example should replay same output 1`] = `
   ],
   [
     "generated/sprite-info.ts",
-    "528cef17918096f4bec20bf6e16ff1d970c3999eb5b405469661a12b24c7cac4",
+    "1794ca9969cc76ca040786822e6d31b0070af59bc05062d9855ce3e12aae2c06",
   ],
 ]
 `;
