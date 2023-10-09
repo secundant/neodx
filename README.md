@@ -7,22 +7,34 @@
 
 This project is designed to tackle common web development challenges with ease.
 
+Check out our [documentation](https://neodx.pages.dev) to learn more!
+
 > **Warning**
 > Most of the packages are still under development, so API may change.
 > I'll try to keep it stable, but updates still can bring breaking changes.
+
+Packages overview:
+
+- [@neodx/figma](#neodxfigma) | [docs](https://neodx.pages.dev/figma) | [source](./libs/figma)
+- [@neodx/svg](#neodxsvg) | [docs](https://neodx.pages.dev/svg) | [source](./libs/svg)
+- [@neodx/log](#neodxlog) | [docs](https://neodx.pages.dev/log) | [source](./libs/log)
 
 ### [@neodx/figma](./libs/figma)
 
 Figma is a great tool for design collaboration, but we don't have a solid way to use it in our development workflow.
 
+#### But we have a problem!
+
 Probably, you've already tried to write your own integration or use some existing solutions and faced the following problems as me:
 
-- Multiple different not maintained packages with different APIs
-- Bad documentation/usage examples or even no documentation at all
-- Terrible flexibility and solution design, you just can't use it in your project because of the different document structure or workflow
-- No type safety, autocomplete, etc.
+- 🤯 Multiple different not maintained packages with different APIs
+- 🫠 Bad documentation/usage examples or even no documentation at all
+- 💀 Terrible flexibility and solution design, you just can't use it in your project because of the different document structure or workflow
+- 🙅‍♀️ No type safety, autocomplete, etc.
 
 In other words, there is no really well-designed complex solution for Figma integration.
+
+#### Let's solve it!
 
 So, `@neodx/figma` is an attempt to create it. Currently, we have the following features:
 
@@ -30,28 +42,42 @@ So, `@neodx/figma` is an attempt to create it. Currently, we have the following 
 - **Typed Figma API**: All Figma API methods are typed and have autocomplete support.
 - **Built-in document graph API**: Figma API is too low-level for writing any stable solution. We provide an API that allows you work with the document as a simple high-level graph of nodes.
 
+[Visit `@neodx/figma` documentation](https://neodx.pages.dev/svg) to learn more!
+
 See our examples for more details:
 
 - [SVG sprite generation on steroids with Figma export](./examples/svg-magic-with-figma-export) - Integrated showcase of the `@neodx/svg` and `@neodx/figma` packages with real application usage!
 - [Export icons from the Community Weather Icons Kit](./examples/figma-export-file-assets) - A simple step-by-step example of how to use the `@neodx/figma` to export icons.
 
-We have a some ideas for future development, so stay tuned and feel free to request your own! 🚀
+Also, we have some ideas for future development, so stay tuned and feel free to request your own! 🚀
 
 ### [@neodx/svg](./libs/svg)
+
+Supercharge your icons ⚡️
 
 Are you converting every SVG icon to a React component with SVGR or something similar? It's so ease to use!
 
 But wait; did you know that SVG sprites are a native approach for icons? It's even easier to use!
 
 ```typescript jsx
-import { Icon } from '@/shared/ui';
+import { Icon, type AnyIconName } from '@/shared/ui/icon';
 
-export const MyComponent = () => (
+export interface MyComponentProps {
+  icon: AnyIconName;
+}
+
+export const MyComponent = ({ icon }: MyComponentProps) => (
   <>
-    <Icon name="check" />
-    <Icon name="close" className="text-red-500" />
+    {/* Use as is */}
+    <Icon name="common/check" />
+    {/* Change color */}
+    <Icon name="common/close" className="text-red-500" />
+    {/* Change size */}
     <Icon name="text/bold" className="text-lg" />
+    {/* Add any other styles */}
     <Icon name="actions/delete" className="p-2 rounded-md bg-stone-300" />
+    {/* Use simple type-safe names instead of weird components */}
+    <Icon name={icon} />
   </>
 );
 ```
@@ -61,143 +87,15 @@ No runtime overhead, one component for all icons, native browser support, static
 Sounds good? Of course! Native sprites are unfairly deprived technique.
 Probably, you already know about it, but didn't use it because of the lack of tooling.
 
-Here we go! Type safety, autocomplete, runtime access to icon metadata all wrapped in simple plugins for all popular bundlers (thx [unplugin](https://github.com/unjs/unplugin)) and CLI, for example:
+Here we go! Type safety, autocomplete, runtime access to icon metadata all wrapped in simple plugins for all popular bundlers.
 
-<details>
-  <summary>Vite plugin</summary>
+[Visit `@neodx/svg` documentation](https://neodx.pages.dev/svg) to learn more!
 
-```typescript
-import { defineConfig } from 'vite';
-import svg from '@neodx/svg/vite';
-
-export default defineConfig({
-  plugins: [
-    svg({
-      root: 'assets',
-      output: 'public',
-      metadata: 'src/shared/ui/icon/sprite.gen.ts'
-    })
-  ]
-});
-```
-
-</details>
-
-<details>
-  <summary>Webpack plugin</summary>
-
-```typescript
-import svg from '@neodx/svg/webpack';
-
-export default {
-  plugins: [
-    svg({
-      root: 'assets',
-      output: 'public',
-      metadata: 'src/shared/ui/icon/sprite.gen.ts'
-    })
-  ]
-};
-```
-
-</details>
-
-<details>
-  <summary>Rollup plugin</summary>
-
-```typescript
-import svg from '@neodx/svg/rollup';
-
-export default {
-  plugins: [
-    svg({
-      root: 'assets',
-      output: 'public',
-      metadata: 'src/shared/ui/icon/sprite.gen.ts'
-    })
-  ]
-};
-```
-
-</details>
-
-<details>
-  <summary>ESBuild plugin</summary>
-
-```typescript
-import svg from '@neodx/svg/esbuild';
-
-export default {
-  plugins: [
-    svg({
-      root: 'assets',
-      output: 'public',
-      metadata: 'src/shared/ui/icon/sprite.gen.ts'
-    })
-  ]
-};
-```
-
-</details>
-
-<details>
-  <summary>CLI</summary>
-
-```shell
-npx @neodx/svg --group --root assets --output public --definition src/shared/ui/icon/sprite.gen.ts
-# --root - root folder with SVGs
-# --group - group icons by folders (assets/common/add.svg -> common/add, assets/other/cut.svg -> other/cut)
-# --output (-o) - output folder for sprites
-# --definition (-d) - output file for sprite definitions
-```
-
-</details>
-
-<details>
-<summary>Node.JS API (programmatic usage, low-level)</summary>
-
-```typescript
-import { buildSprites } from '@neodx/svg';
-import { createVfs } from '@neodx/vfs';
-
-await buildSprites({
-  vfs: createVfs(process.cwd()),
-  root: 'assets',
-  input: '**/*.svg',
-  output: 'public',
-  metadata: 'src/shared/ui/icon/sprite.gen.ts'
-});
-```
-
-</details>
-
-For the details and real usage see our examples:
+Also, you can check out our examples:
 
 - [React, Vite, TailwindCSS, and multicolored icon](./examples/svg-vite) - A step-by-step tutorial showcasing how to integrate sprite icons into your Vite project.
 - [React, Vite, icons exported by "@neodx/figma"](./examples/svg-magic-with-figma-export) - Integrated showcase of the seamless automation capabilities of `@neodx/svg` and `@neodx/figma` for your icons!
-- [NextJS, webpack and simple flat icons](./examples/svg-next) - An example demonstrating the usage of `@neodx/svg` webpack plugin with NextJS.
-
-In the result, you'll get something like this:
-
-```diff
-...
-src/
-  shared/
-    ui/
-      icon/
-+        sprite.gen.ts // sprite definitions - types, metadata, etc.
-public/
-+  sprite/
-+    common.svg
-+    other.svg
-assets/
-  common/
-    add.svg
-    close.svg
-  other/
-    cut.svg
-    search.svg
-```
+- [Next.js, webpack and simple flat icons](./examples/svg-next) - An example demonstrating the usage of `@neodx/svg` webpack plugin with Next.js.
 
 ### [@neodx/log](./libs/log)
 
@@ -298,25 +196,51 @@ async function doSomethingWithVfs(vfs: Vfs) {
 While it may seem unnecessary at first glance, let's explore the core concepts that make `@neodx/vfs` invaluable:
 
 - Single abstraction - just share `Vfs` instance between all parts of your tool
-- Inversion of control - you can provide any implementation of `Vfs` interface
+- Inversion of control: you can provide any implementation of `Vfs` interface
   - Btw, we already have built-in support in the `createVfs` API
-- Dry-run mode - you can test your tool without any side effects (only in-memory changes, read-only FS access)
-- Virtual mode - you can test your tool without any real file system access, offering in-memory emulation for isolated testing
+- Dry-run mode: you can test your tool without any side effects (only in-memory changes, read-only FS access)
+- Virtual mode: you can test your tool without any real file system access, offering in-memory emulation for isolated testing
 - Attached working directory - you can use clean relative paths in your logic without any additional logic
-- Extensible - you can build your own features on top of `Vfs` interface
+- Extensible: you can build your own features on top of `Vfs` interface
   - Currently, we have built-in support for formatting files, updating JSON files, and package.json dependencies management
 
 In other words, it's designed as single API for all file system operations, so you can focus on your tool logic instead of reinventing the wheel.
 
 ## Development and contribution
 
-### Internal scripts
+### Getting started
 
-#### Create new library
+We're using [Yarn 3 (berry)](https://yarnpkg.com/) as a package manager and [Nx](https://nx.dev/) as a monorepo management tool.
+
+After cloning the repo, to install dependencies, run:
 
 ```shell
-yarn neodx lib my-lib-name
+yarn
 ```
+
+And, optionally, for building all packages, run:
+
+```shell
+yarn nx run-many  --all --target=build
+```
+
+It isn't necessary, you can start working with the codebase right away, but it will boost initial cache whn you run e2e tests (scenarios in examples/\*).
+
+### Internal scripts
+
+#### Create a new global example
+
+```shell
+yarn neodx example new-example-name
+```
+
+#### Create a new library
+
+```shell
+yarn neodx lib new-lib-name
+```
+
+The source code can be accessed by starting from [tools/scripts/bin.mjs](./tools/scripts/bin.mjs)..
 
 ## License
 

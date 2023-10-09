@@ -2,7 +2,19 @@ export interface SpritesMap {
   common: 'close' | 'favourite';
   format: 'align-left' | 'tag';
 }
-export const SPRITES_META = {
+export const SPRITES_META: {
+  [Key in keyof SpritesMap]: {
+    filePath: string;
+    items: Record<
+      SpritesMap[Key],
+      {
+        viewBox: string;
+        width: number;
+        height: number;
+      }
+    >;
+  };
+} = {
   common: {
     filePath: 'common.2eb4b56f.svg',
     items: {
@@ -33,17 +45,4 @@ export const SPRITES_META = {
       }
     }
   }
-} satisfies Record<
-  string,
-  {
-    filePath: string;
-    items: Record<
-      string,
-      {
-        viewBox: string;
-        width: number;
-        height: number;
-      }
-    >;
-  }
->;
+};

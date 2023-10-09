@@ -129,7 +129,7 @@ describe('plugins system', async () => {
       });
       const content = await vfs.read('runtime.ts', 'utf-8');
 
-      expect(content).toContain('export const RuntimeExample = {');
+      expect(content).toContain('export const RuntimeExample');
       expect(content).toMatchSnapshot();
     });
 
@@ -142,7 +142,7 @@ describe('plugins system', async () => {
       const content = await vfs.read('runtime.ts', 'utf-8');
 
       expect(content).toContain('export interface TypesExample {');
-      expect(content).toContain('export const RuntimeExample = {');
+      expect(content).toContain('export const RuntimeExample');
       expect(content).toMatchSnapshot();
     });
 

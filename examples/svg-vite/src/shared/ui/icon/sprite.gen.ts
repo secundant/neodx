@@ -19,7 +19,6 @@ export interface SpritesMap {
     | 'delete'
     | 'double-color'
     | 'down'
-    | 'download'
     | 'edit'
     | 'exit'
     | 'expand-all'
@@ -30,9 +29,7 @@ export interface SpritesMap {
     | 'groups'
     | 'help'
     | 'hide'
-    | 'history'
     | 'ide-update'
-    | 'import'
     | 'layout'
     | 'left';
   flags:
@@ -424,10 +421,23 @@ export interface SpritesMap {
     | 'zm'
     | 'zw';
   logos: 'linkedin' | 'twitter';
+  tool: 'download' | 'history' | 'import';
 }
-export const SPRITES_META = {
+export const SPRITES_META: {
+  [Key in keyof SpritesMap]: {
+    filePath: string;
+    items: Record<
+      SpritesMap[Key],
+      {
+        viewBox: string;
+        width: number;
+        height: number;
+      }
+    >;
+  };
+} = {
   common: {
-    filePath: 'common.7854f9b0.svg',
+    filePath: 'common.4b814dcf.svg',
     items: {
       add: {
         viewBox: '0 0 16 16',
@@ -524,11 +534,6 @@ export const SPRITES_META = {
         width: 16,
         height: 16
       },
-      download: {
-        viewBox: '0 0 16 16',
-        width: 16,
-        height: 16
-      },
       edit: {
         viewBox: '0 0 16 16',
         width: 16,
@@ -579,17 +584,7 @@ export const SPRITES_META = {
         width: 16,
         height: 16
       },
-      history: {
-        viewBox: '0 0 16 16',
-        width: 16,
-        height: 16
-      },
       'ide-update': {
-        viewBox: '0 0 16 16',
-        width: 16,
-        height: 16
-      },
-      import: {
         viewBox: '0 0 16 16',
         width: 16,
         height: 16
@@ -2560,18 +2555,25 @@ export const SPRITES_META = {
         height: 204
       }
     }
-  }
-} satisfies Record<
-  string,
-  {
-    filePath: string;
-    items: Record<
-      string,
-      {
-        viewBox: string;
-        width: number;
-        height: number;
+  },
+  tool: {
+    filePath: 'tool.1f541a98.svg',
+    items: {
+      download: {
+        viewBox: '0 0 16 16',
+        width: 16,
+        height: 16
+      },
+      history: {
+        viewBox: '0 0 16 16',
+        width: 16,
+        height: 16
+      },
+      import: {
+        viewBox: '0 0 16 16',
+        width: 16,
+        height: 16
       }
-    >;
+    }
   }
->;
+};

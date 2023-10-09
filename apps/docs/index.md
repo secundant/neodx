@@ -5,7 +5,6 @@ layout: home
 hero:
   name: 'Neodx'
   text: 'Modern solutions for great DX'
-  tagline: Documentation is under construction...
 
 features:
   - title: '@neodx/log'

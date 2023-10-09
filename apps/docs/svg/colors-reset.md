@@ -1,4 +1,10 @@
+---
+outline: [2, 3]
+---
+
 # Automatically reset colors
+
+A powerful feature to automatically reset colors in SVG icons.
 
 ```typescript
 svg({
@@ -9,7 +15,7 @@ svg({
 });
 ```
 
-Automate your icons and forget about colors management issues.
+- [API Reference](./api/plugins/reset-colors.md)
 
 ## Motivation
 
@@ -32,7 +38,9 @@ To solve these issues, we're introducing a `resetColors` option:
 - Multiple configurations for different colors strategies
 - Granular control with colors and files filters
 
-## Disable colors reset
+## Usage
+
+### Disable colors reset
 
 ```typescript
 svg({
@@ -41,7 +49,7 @@ svg({
 });
 ```
 
-## Filter colors and icons
+### Filter colors and icons
 
 ```typescript
 svg({
@@ -57,7 +65,7 @@ svg({
 });
 ```
 
-## Replace specific colors
+### Replace specific colors
 
 > Without `replaceUnknown` option, all unspecified colors will be kept as is.
 
@@ -86,7 +94,7 @@ svg({
 });
 ```
 
-## All in one
+### All in one
 
 - Replace white color in all flags with `currentColor`
 - For all icons except flags, logos and colored icons:
@@ -125,3 +133,8 @@ svg({
   ]
 });
 ```
+
+## Related
+
+- ["Working with multicolored" guide](./multicolored.md)
+- ["Writing Icon Component" guide](./writing-icon-component.md)

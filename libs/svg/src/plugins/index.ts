@@ -9,4 +9,4 @@ export type {
 } from './reset-colors';
 export { resetColors } from './reset-colors';
 export { setId } from './set-id';
-export { svgo, type SvgoPluginOptions } from './svgo';
+export { svgo, type SvgoPluginParams } from './svgo';

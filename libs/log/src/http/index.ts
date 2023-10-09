@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Colors } from '@neodx/colors';
 import { colors as defaultColors } from '@neodx/colors';
-import { createLogger } from '@neodx/log/node';
 import { identity } from '@neodx/std';
 import type { IncomingMessage, OutgoingMessage } from 'http';
 import type { Logger } from '../core/types';
+import { createLogger } from '../node';
 import {
   createRequestIdGenerator,
   formatIncomingMessage,

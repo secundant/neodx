@@ -1,7 +1,35 @@
 import { assertType, describe, expectTypeOf, test } from 'vitest';
-import { createLogger, type DefaultLoggerLevel, type Logger } from '../index';
+import {
+  type CreateLogger,
+  createLogger,
+  createLoggerFactory,
+  type DefaultLoggerLevel,
+  type Logger
+} from '../index';
+import { printf, readArguments } from '../utils';
 
 describe('logger types', () => {
+  test('should support createLoggerFactory', () => {
+    const baseParams = {
+      readArguments,
+      formatMessage: printf
+    };
+
+    expectTypeOf(
+      createLoggerFactory({
+        ...baseParams,
+        defaultParams: {
+          levels: {
+            error: 10,
+            warn: 20,
+            kek: 200,
+            pek: 'kek'
+          }
+        }
+      })
+    ).toEqualTypeOf<CreateLogger<'error' | 'warn' | 'kek' | 'pek'>>();
+  });
+
   test('should override levels', () => {
     expectTypeOf(createLogger({ level: 'debug' })).toEqualTypeOf<Logger<DefaultLoggerLevel>>();
     expectTypeOf(createLogger({ levels: { a: 1 } })).toEqualTypeOf<Logger<'a'>>();

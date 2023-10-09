@@ -33,7 +33,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Configuration
 
 ```javascript
-// next.config.mjs
+// next.config.js
 import svg from '@neodx/svg/webpack';
 
 /** @type {import('next').NextConfig} */

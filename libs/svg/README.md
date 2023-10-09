@@ -1,34 +1,21 @@
 # @neodx/svg
 
+<div align="left">
+  <a href="https://www.npmjs.com/package/@neodx/svg">
+    <img src="https://img.shields.io/npm/v/@neodx/svg.svg" alt="npm" />
+  </a>
+  <img src="https://img.shields.io/npm/l/@neodx/svg.svg" alt="license"/>
+</div>
+
 Supercharge your icons ⚡️
 
-## Motivation
-
-Sprites are the most effective way to work with your SVG icons,
-but for some reason developers (vision from a React world) prefer
-mostly bloated and ineffective, "compile" SVG to react component with inlined SVG content.
-
-Of course, we can use some external tools like https://svgsprit.es/ or some npm libraries,
-but that's not serious (if you know any alternatives, let me know, and I'll add links), developers need DX.
-
-In a ridiculous, but incredibly popular way, we don't have other solutions with the same DX.
-
-Just think about it a little, you need to "compile" SVG, to embed your secondary static content in JSX
-and get a lot of unwanted issues: additional source code, extra build time, extra bundle size,
-the user's browser will parse and evaluate your **static SVG** as JS code,
-you can never cache it, WOOF, etc., etc.
-
-And yes, developers keep using this insanity because even an incredibly inefficient solution with a good DX
-is better than a super-efficient, but unusable setup with semi-manual generators.
-
-That's why we're here! 🥳
+> We're working on the new documentation, please, visit [neodx.pages.dev](https://neodx.pages.dev/svg) to see the latest version.
 
 - TypeScript support out of box - generated types and [information about your sprites](#-content-based-hashes-and-runtime-metadata-generation)
 - [Built-in integrated plugins](#integrate-with-your-bundler) for all major bundlers: `vite`, `webpack`, `rollup`, `esbuild`, etc.
-- Optional grouping by folders
-- Optimization with svgo
+- Optional [grouping by folders](https://neodx.pages.dev/svg/group-and-hash.html)
+- Optimization with [svgo](https://neodx.pages.dev/svg/api/plugins/svgo.html)
 - [Automatically reset colors](#-automatically-reset-colors)
-- Powerful files selection
 
 ## Installation and usage
 
@@ -41,16 +28,11 @@ yarn add -D @neodx/svg
 pnpm add -D @neodx/svg
 ```
 
-### CLI (Not recommended)
-
-Currently, we don't recommend using CLI mode because it's not flexible enough and requires extra setup
-if you want to use it - see [CLI](#cli) section and [CLI Options API](#cli-options).
-
-```shell
-yarn sprite --help
-```
+We're highly recommended to start with our ["Getting started" guide](https://neodx.pages.dev/svg/).
 
 ### Integrate with your bundler
+
+> For better understanding and to access the latest version, please visit [our documentation](https://neodx.pages.dev/svg/setup/).
 
 Our plugins are built upon [unplugin](https://github.com/unjs/unplugin)
 and provide a consistent interface and working principle across all multiple bundlers and frameworks.
@@ -64,90 +46,20 @@ export default defineConfig({
   plugins: [
     svg({
       root: 'assets',
-      group: true,
-      output: 'public',
-      metadata: 'src/shared/ui/icon/sprite.gen.ts',
-      resetColors: {
-        replaceUnknown: 'currentColor'
-      }
+      output: 'public'
     })
   ]
 });
 ```
 
 It will search for all SVG files in `assets` folder, group them by folders, optimize them with `svgo`,
-reset all colors to `currentColor`
-and generate sprites in `public` folder with TS definitions in `src/shared/ui/icon/sprite.gen.ts`.
+reset all colors to `currentColor` and generate sprites in `public` folder.
 
-For more details, see our [Step-by-step guide](#step-by-step).
-
-> **Note**: If you receive the error `TS2307: Cannot find module '@neodx/svg/vite' or its corresponding type declarations`,
-> it's a common issue that will be fixed in one of the next versions.
->
-> To resolve this issue at present, change `moduleResolution` to `Bundler` in your `tsconfig.json`.
-
-Another plugins:
-
-<details>
-  <summary>Webpack</summary>
-
-```typescript
-import svg from '@neodx/svg/webpack';
-
-export default {
-  plugins: [
-    svg({
-      root: 'assets',
-      output: 'public',
-      metadata: 'src/shared/ui/icon/sprite.gen.ts'
-    })
-  ]
-};
-```
-
-</details>
-
-<details>
-  <summary>Rollup</summary>
-
-```typescript
-import svg from '@neodx/svg/rollup';
-
-export default {
-  plugins: [
-    svg({
-      root: 'assets',
-      output: 'public',
-      metadata: 'src/shared/ui/icon/sprite.gen.ts'
-    })
-  ]
-};
-```
-
-</details>
-
-<details>
-  <summary>ESBuild</summary>
-
-```typescript
-import svg from '@neodx/svg/esbuild';
-
-export default {
-  plugins: [
-    svg({
-      root: 'assets',
-      output: 'public',
-      metadata: 'src/shared/ui/icon/sprite.gen.ts'
-    })
-  ]
-};
-```
-
-</details>
+For more details, see our [Step-by-step guide](https://neodx.pages.dev/svg/).
 
 ## Features
 
-### 🆕 Automatically reset colors
+### 🆕 [Automatically reset colors](https://neodx.pages.dev/svg/colors-reset.html)
 
 Automate your icons and forget about colors management issues.
 
@@ -165,119 +77,16 @@ However, usually, we have different issues with this approach, for example:
 
 #### The solution
 
-To solve these issues, we're introducing a `resetColors` option:
+To solve these issues, we're providing a powerful color reset mechanism (`resetColors` option, enabled by default):
 
 - Automatically detects all colors in all forms (thx [colord](https://github.com/omgovich/colord)) from SVG content
 - Enabled by default to reset all colors (you can disable it with `resetColors: false`)
 - Multiple configurations for different colors strategies
 - Granular control with colors and files filters
 
-###### Features preview
+> Check out [our documentation](https://neodx.pages.dev/svg/colors-reset.html) for more details.
 
-<details>
-  <summary>Disable colors reset</summary>
-
-```typescript
-svg({
-  // disable colors reset
-  resetColors: false
-});
-```
-
-</details>
-
-<details>
-  <summary>Filter colors and icons</summary>
-
-```typescript
-svg({
-  resetColors: {
-    // global files filter (default - all files)
-    exclude: ['path/to/icon.svg', /[a-z]*-colored\.svg$/],
-    include: ['path/to/other-icon.svg' /* ... */],
-    // keep specific colors untouched
-    keep: ['white', '#eee'],
-    // all colors except white and #eee will be replaced with currentColor
-    replaceUnknown: 'currentColor'
-  }
-});
-```
-
-</details>
-
-<details>
-  <summary>Replace specific colors</summary>
-
-> Without `replaceUnknown` option, all unspecified colors will be kept as is.
-
-```typescript
-svg({
-  resetColors: {
-    // if you want to replace specific colors only with currentColor, you can simply pass it as a string or array
-    replace: ['white', '#eee'],
-    // when you need to replace colors with a concrete color, you can pass an object with `from` and `to` properties
-    replace: {
-      from: [legacyBrandColor, legacyBrandColor2],
-      to: brandColor
-    },
-    // you can also pass an array of objects
-    replace: [
-      {
-        from: [legacyBrandColor, legacyBrandColor2],
-        to: brandColor
-      },
-      {
-        from: ['white', '#eee'],
-        to: 'currentColor'
-      }
-    ]
-  }
-});
-```
-
-</details>
-
-###### Complex example
-
-- Replace white color in all flags with `currentColor`
-- For all icons except flags, logos and colored icons:
-  - Keep brand colors untouched
-  - Replace known accent colors with `var(--icon-color)`
-  - Replace known secondary colors with `var(--icon-bg)`
-  - Replace all other colors with `currentColor`
-
-```typescript
-svg({
-  resetColors: [
-    {
-      include: /^flags/,
-      replace: {
-        from: 'white',
-        to: 'currentColor'
-      }
-    },
-    {
-      keep: myTheme.brandColors,
-      exclude: [/^flags/, /^logos/, /-colored\.svg$/],
-      replace: [
-        {
-          from: myTheme.accentIconColors,
-          to: 'var(--icon-color)'
-        },
-        {
-          from: myTheme.secondaryIconColors,
-          to: 'var(--icon-bg)'
-        }
-      ],
-      // if you want to replace colors in specific properties only, you can pass an array of them
-      properties: ['fill', 'stroke'],
-      replaceUnknown: 'currentColor'
-    }
-  ]
-});
-```
-
-### 🆕 Content-based hashes and runtime metadata generation
+### 🆕 [Content-based hashes and runtime metadata generation](https://neodx.pages.dev/svg/group-and-hash.html)
 
 > **Note:** If you used `definitions` or `experimentalRuntime` options before, you need to update your configuration, see [Migration guide](#move-from-definitions-and-experimentalruntime-options-to-metadata-api).
 
@@ -289,8 +98,7 @@ public/
 +  sprite-bar.svg
 ```
 
-But this is not very good for caching,
-because if you change any of the SVG files,
+But this is not very good for caching, because if you change any of the SVG files,
 the sprite filename won't be updated, which could result in an infinite cache.
 
 To solve this issue and achieve content-based hashes in filenames, you need to take three steps:
@@ -305,85 +113,49 @@ To solve this issue and achieve content-based hashes in filenames, you need to t
 export default defineConfig({
   plugins: [
     svg({
+      root: 'assets',
+      output: 'public/sprites',
       fileName: '{name}.{hash:8}.svg',
       metadata: {
-        path: 'src/shared/ui/icon/sprite.gen.ts',
+        path: 'src/sprite.gen.ts',
         runtime: {
-          size: true,
-          viewBox: true
+          // generate runtime metadata (path and other information) for each sprite
+          size: true, // will add `width` and `height` properties
+          viewBox: true // will add `viewBox` property
         }
       }
-      // ...
     })
-    // ...
   ]
-  // ...
 });
 ```
 
-Your output will be:
+In the result, you will get the following sprites in your output:
 
 ```diff
-public/
-+  sprite-foo.12abc678.svg
-+  sprite-bar.87654def.svg
+/
+├── assets
+│   ├── common
+│   │   ├── left.svg
+│   │   └── right.svg
+│   └── actions
+│       └── close.svg
+├── public
++   └── sprites
++       ├── common.12ghS6Uj.svg
++       └── actions.1A34ks78.svg
+└── src
++   └── sprite.gen.ts
 ```
 
-With the following metadata in `src/shared/ui/icon/sprite.gen.ts`:
+To learn how to use it,
+check out [our "Writing an Icon component" guide](https://neodx.pages.dev/svg/group-and-hash.html) or detailed basic tutorials:
 
-```typescript
-export interface SpritesMap {
-  'sprite-foo': 'first' | 'second';
-  'sprite-bar': ' /* ... */ ';
-}
-export const SPRITES_META = {
-  'sprite-foo': {
-    filePath: 'sprite-foo.12abc678.svg',
-    items: {
-      first: {
-        // all items will have `viewBox`, `width` and `height` properties
-        viewBox: '0 0 48 48',
-        width: 48,
-        height: 48
-      },
-      second: {
-        /* ... */
-      }
-    }
-  },
-  'sprite-bar': {
-    filePath: 'sprite-bar.87654def.svg',
-    items: {
-      /* ... */
-    }
-  }
-};
-```
-
-And updates of `Icon` component will be like this:
-
-> This example is based on implementation from [Building Icon component with TailwindCSS](#building-icon-component-with-tailwindcss-see-example) recipe and our [Vite application example (link to GH repo)](https://github.com/secundant/neodx/tree/main/examples/svg-vite)
-
-```diff
-+ import { SPRITES_META, type SpritesMap } from './sprite.gen';
-
-+ export function Icon({ name, /* ... */ }) {
-   const [spriteName, iconName] = name.split('/');
-+  const { filePath, items } = SPRITES_META[spriteName];
-+  const { viewBox } = items[iconName];
-
-   return (
-     <svg
-+      viewBox={viewBox}
-       // ...
-     >
-+      <use href={`/${filePath}#${iconName}`} />
-     </svg>
-   );
-}
-```
+- [Group and hash sprites](https://neodx.pages.dev/svg/group-and-hash.html)
+- [Generate metadata](https://neodx.pages.dev/svg/metadata.html)
 
 ## Step-by-step
+
+It's a simplified tutorial, for detailed one check our ["Getting started" guide](https://neodx.pages.dev/svg/).
 
 Our example stack details:
 
@@ -395,25 +167,25 @@ Our example stack details:
 We'll be working with the following icons in our project:
 
 ```diff
-assets/
-  common/
-    add.svg
-    close.svg
-  other/
-    cut.svg
-    search.svg
+/
+├── assets
+│   ├── common
+│   │   ├── left.svg
+|   |   ... other icons
+│   │   └── right.svg
+│   └── actions
+│       ... other icons
+│       └── close.svg
 ```
 
 We want to generate separate sprites for each folder and use them in our React components.
 
 ### Build icons
 
-Firstly, we adopt configuration from [Integrate with your bundler](#integrate-with-your-bundler) section:
-
 ```typescript
+import { defineConfig } from 'vite';
 import svg from '@neodx/svg/vite';
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
@@ -423,261 +195,43 @@ export default defineConfig({
     svg({
       root: 'assets',
       group: true,
-      output: 'public',
-      metadata: {
-        path: 'src/shared/ui/icon/sprite.gen.ts'
-      },
-      resetColors: {
-        replaceUnknown: 'currentColor'
-      }
+      output: 'public/sprites',
+      metadata: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 });
 ```
 
-<details>
-  <summary>If you decided to use CLI mode:</summary>
-
-Let's run `sprite` with some additional options:
-
-```bash
-yarn sprite --group --root assets -o public/sprite -d src/shared/ui/icon/sprite.gen.ts --reset-unknown-colors
-```
-
-In details:
-
-- The `--group` option group icons by folders (`common` and `other`)
-- The `--root` option sets `assets` as a base path for icons (you can try to remove it and see the difference)
-- The `-o` option sets `public/sprite` as a base path for generated sprites (it's default value, but let's keep it for now)
-- The `-d` option generates TS definitions file with sprite meta information
-
-</details>
-
 Now let's run `vite` (or `vite build`) and see what we have:
 
 ```diff
-...
-shared/
-  ui/
-    icon/
-+      sprite.gen.ts
-public/
-+  sprite/
-+    common.svg
-+    other.svg
+/
+├── assets
+│   ├── common
+│   │   ├── left.svg
+│   │   └── right.svg
+│   └── actions
+│       └── close.svg
+├── public
++   └── sprites
++       ├── common.svg
++       └── actions.svg
+└── src
+    └── shared
+        └── ui
+            └── icon
++               └── sprite.gen.ts
 ```
 
-For each folder in `assets`, a separate sprite is created, along with a TS definitions file containing metadata about all icons.
+Now you could visit our ["Writing an Icon component" guide](https://neodx.pages.dev/svg/writing-icon-component.html) to learn how to use it.
 
-### Look at generated TS definitions
+## Guides
 
-```ts
-export interface SpritesMap {
-  common: 'close' | 'favourite';
-  format: 'align-left' | 'tag';
-}
-
-export const SPRITES_META: { [K in keyof SpritesMap]: SpritesMap[K][] } = {
-  common: ['close', 'favourite'],
-  format: ['align-left', 'tag']
-};
-```
-
-As you can see, we have a map of all sprites and meta information about them.
-
-Now we can use it in our code - for type checking, autocomplete, and other cool stuff.
-
-### Create your Icon component
-
-> It's a **simple** implementation, you can see a real one in the "Recipes" section
-
-```tsx
-// shared/ui/icon/icon.tsx
-import { SpritesMap } from './sprite.gen';
-
-export interface IconProps<Group extends keyof SpritesMap> {
-  name: SpritesMap[Group];
-  type?: Group;
-}
-
-export function Icon<Group extends keyof SpritesMap = 'common'>({ type, name }: IconProps<Group>) {
-  return (
-    <svg className="icon">
-      <use href={`/public/sprite/${type}.svg#${name}`}></use>
-    </svg>
-  );
-}
-```
-
-### Enjoy 👏
-
-```tsx
-import { Icon, TextField } from '@/shared/ui';
-
-export function SomeFeature() {
-  return (
-    <div className="space-y-4">
-      <TextField name="a" startNode={<Icon name="add" />} />
-      <TextField name="b" startNode={<Icon name="close" />} />
-      <TextField name="c" startNode={<Icon type="other" name="search" />} />
-    </div>
-  );
-}
-```
-
-## CLI
-
-> **Warning:**
-> While the CLI mode is currently available,
-> it's not the recommended method of use and might be removed in future major versions.
->
-> Now we're providing built-it bundlers integration, please, use [our plugin](#integrate-with-your-bundler) instead.
-
-To get started, you can try the CLI mode even without any configuration, just run `sprite` command:
-
-```shell
-yarn sprite
-```
-
-This command searches for all SVG files, excluding those in the `public/sprites` folder and generate sprites in `public/sprites`.
-
-By default, it creates a single sprite containing all icons without any grouping or TS definitions. However, this can be customized. See [CLI options](#cli-options) for more information
-
-## Recipes
-
-### Building Icon component with TailwindCSS ([see example](./examples/react))
-
-#### Add base `icon` class
-
-```css
-/* shared/ui/index.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer components {
-  /*
-    Our base class for all icons, includes:
-    - `fill-current` - fill icon with current text color, so we can use `color` to change it
-    - `w-[1em] h-[1em]` - set icon size to 1em, so we can use `font-size` to scale it
-    - `box-content` - it's up to you, I choose it to keep icon size fixed
-   */
-  .icon {
-    @apply select-none fill-current w-[1em] h-[1em] inline-block text-inherit box-content;
-  }
-}
-```
-
-#### Add `Icon` component
-
-```tsx
-// shared/ui/icon/icon.tsx
-import clsx from 'clsx';
-import { SVGProps } from 'react';
-import { SpritesMap } from './sprite.gen';
-
-// Merging all icons as `SPRITE_NAME/SPRITE_ICON_NAME`
-export type IconName = {
-  [Key in keyof SpritesMap]: `${Key}/${SpritesMap[Key]}`;
-}[keyof SpritesMap];
-
-export interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'name' | 'type'> {
-  name: IconName;
-}
-
-export function Icon({ name, className, viewBox, ...props }: IconProps) {
-  const [spriteName, iconName] = name.split('/');
-
-  return (
-    <svg
-      // We recommend to use specific component class for avoid collisions with other styles and simple override it
-      className={clsx('icon', className)}
-      viewBox={viewBox}
-      focusable="false"
-      aria-hidden
-      {...props}
-    >
-      {/* For example, "/common.svg#favourite". Change base path if you don't store sprites under the root. */}
-      <use href={`/${spriteName}.svg#${iconName}`} />
-    </svg>
-  );
-}
-```
-
-#### Usage
-
-```tsx
-import { Icon } from '@/shared/ui';
-
-export function SomeFeature() {
-  return (
-    <div className="space-y-4">
-      <Icon name="common/add" />
-      <Icon name="common/close" className="text-red-500" />
-      <Icon name="text/bold" className="text-lg" />
-      <Icon name="actions/delete" className="p-2 rounded-md bg-stone-300" />
-    </div>
-  );
-}
-```
-
-### Multiple colors
-
-Let's imagine that we have a really different icons with next requirements:
-
-- We have some known list of the accent colors, and we want to specify them in our CSS
-- All other colors should be inherited from the parent (for example, `currentColor`)
-
-#### Configure `resetColors` option
-
-```typescript
-import svg from '@neodx/svg/vite';
-
-svg({
-  // ...
-  resetColors: {
-    // 1. Define known accent colors
-    replace: {
-      from: ['#6C707E', '#A8ADBD', '#818594'],
-      to: 'var(--icon-accent-color)'
-    },
-    // 2. Replace all other colors with `currentColor`
-    replaceUnknown: 'currentColor'
-  }
-});
-```
-
-#### Add CSS variables
-
-```css
-/* shared/ui/index.css */
-
-@layer base {
-  :root {
-    /* make default accent color */
-    --icon-primary-color: #6c707e;
-  }
-}
-```
-
-#### Usage
-
-Dirty but works 🫢
-
-Probably, you can find a better solution 🫠
-
-```tsx
-import { Icon } from '@/shared/ui';
-
-export function SomeFeature() {
-  return (
-    <Icon
-      name="common/add"
-      className="text-red-800 [--icon-primary-color:theme(colors.green.800)]"
-    />
-  );
-}
-```
+- [Getting started](https://neodx.pages.dev/svg)
+- [Group and hash sprites](https://neodx.pages.dev/svg/group-and-hash.html)
+- [Generate metadata](https://neodx.pages.dev/svg/metadata.html)
+- [Writing an Icon component](https://neodx.pages.dev/svg/writing-icon-component.html)
+- [Working with multicolored icons](https://neodx.pages.dev/svg/multicolored.html)
 
 ## Migrations
 
@@ -700,92 +254,4 @@ svg({
 });
 ```
 
-## API
-
-### Node.JS API
-
-```typescript
-import { buildSprites } from '@neodx/svg';
-import { createVfs } from '@neodx/vfs';
-
-await buildSprites({
-  vfs: createVfs(process.cwd()),
-  root: 'assets',
-  input: '**/*.svg',
-  output: 'public',
-  definition: 'src/shared/ui/icon/sprite.gen.ts'
-  // ... options (see below)
-});
-```
-
-#### Options
-
-```typescript
-interface Options {
-  /**
-   * Root folder for inputs, useful for correct groups naming
-   * @default process.cwd()
-   */
-  root?: string;
-  /**
-   * Path to generated sprite/sprites folder
-   * @default public
-   */
-  output?: string;
-  /**
-   * Logger instance (or object with any compatible interface)
-   * @see `@neodx/log`
-   * @default built-in logger
-   */
-  logger?: LoggerMethods<'info' | 'debug' | 'error'>;
-  /**
-   * Should we group icons?
-   * @default false
-   */
-  group?: boolean;
-  /**
-   * Template of sprite file name
-   * @example {name}.svg
-   * @example sprite-{name}.svg
-   * @example {name}-{hash}.svg
-   * @example {name}-{hash:8}.svg
-   * @default {name}.svg
-   */
-  fileName?: string;
-  /**
-   * Should we optimize icons?
-   */
-  optimize?: boolean;
-  /**
-   * Configures metadata generation
-   * @example "src/sprites/meta.ts"
-   * @example { path: "meta.ts", runtime: false } // will generate only types
-   * @example { path: "meta.ts", types: 'TypeName', runtime: 'InfoName' } // will generate "interface TypeName" types and "const InfoName" runtime metadata
-   * @example { path: "meta.ts", runtime: { size: true, viewBox: true } } // will generate runtime metadata with size and viewBox
-   */
-  metadata?: MetadataPluginParams;
-  /**
-   * Reset colors config
-   */
-  resetColors?: ResetColorsPluginParams;
-}
-```
-
-### CLI Options
-
-| option                     | default                         | description                                                                                                                         |
-| -------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `-i`, `--input`            | `"**/*.svg"`                    | Glob paths to icons files (output path will be automatically excluded)                                                              |
-| `-o`, `--output`           | `"public/sprites"`              | Base path to generated sprite/sprites folder                                                                                        |
-| `-d`, `--definitions`      | Not provided (**disabled**)     | Path to generated TS file with sprite meta                                                                                          |
-| `--root`                   | `"."` (same as the current dir) | Base path to your assets, useful for correct groups names<br/>**careful:** `--input` should be relative to `--root`                 |
-| `--group`                  | `false`                         | Should we group icons by folders?                                                                                                   |
-| `--dry-run`                | `false`                         | Print proposal of generated file paths without actually generating it                                                               |
-| `--optimize`               | `true`                          | Should we optimize SVG with [svgo](https://github.com/svg/svgo)?                                                                    |
-| `--reset-color-values`     | `"#000,#000000"`                | An array of colors to replace as `currentColor`                                                                                     |
-| `--reset-unknown-colors`   | `false`                         | Should we set `currentColor` for all colors not defined in `--reset-color-values`, or for all colors if this option isn't provided? |
-| `--reset-color-properties` | `"fill,stroke"`                 | An array of SVG properties that will be replaced with `currentColor` if they're present                                             |
-
-> **Note:** `--reset-color-values` and `--reset-color-properties` are strings with comma-separated values, don't forget to wrap them with quotes:
->
-> `sprite ... --reset-color-values "#000,#000000,#fff"`
+- [API Reference](https://neodx.pages.dev/svg/api/)

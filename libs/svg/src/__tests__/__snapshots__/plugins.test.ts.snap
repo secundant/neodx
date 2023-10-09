@@ -5,15 +5,15 @@ exports[`plugins system > "metadata" plugin > should generate basic runtime info
     'a': 'a' | 'b',
 'b': 'a' | 'b'
   }
-export const RuntimeExample = {
+export const RuntimeExample: {
+        'a': Array<'a' | 'b'>,
+'b': Array<'a' | 'b'>
+      } = {
     'a': ['a',
 'b'],
 'b': ['a',
 'b']
-  } satisfies {
-      'a': Array<'a' | 'b'>,
-'b': Array<'a' | 'b'>
-    };"
+  };"
 `;
 
 exports[`plugins system > "metadata" plugin > should generate runtime with size 1`] = `
@@ -21,7 +21,15 @@ exports[`plugins system > "metadata" plugin > should generate runtime with size 
     'a': 'a' | 'b',
 'b': 'a' | 'b'
   }
-export const SPRITES_META = {
+export const SPRITES_META: {
+           [Key in keyof SpritesMap]: {
+             filePath: string;
+             items: Record<SpritesMap[Key], {
+                
+                width: number, height: number,
+             }>
+           }
+         } = {
     'a': {
     filePath: 'a.svg',
     items: {
@@ -48,13 +56,7 @@ export const SPRITES_META = {
   }
     }
 }
-  } satisfies Record<string, {
-         filePath: string;
-         items: Record<string, {
-            
-            width: number, height: number,
-         }>
-       }>;"
+  };"
 `;
 
 exports[`plugins system > "metadata" plugin > should generate runtime with size, viewBox and custom name 1`] = `
@@ -62,7 +64,15 @@ exports[`plugins system > "metadata" plugin > should generate runtime with size,
     'a': 'a' | 'b',
 'b': 'a' | 'b'
   }
-export const RuntimeExample = {
+export const RuntimeExample: {
+           [Key in keyof SpritesMap]: {
+             filePath: string;
+             items: Record<SpritesMap[Key], {
+                viewBox: string,
+                width: number, height: number,
+             }>
+           }
+         } = {
     'a': {
     filePath: 'a.svg',
     items: {
@@ -89,13 +99,7 @@ export const RuntimeExample = {
   }
     }
 }
-  } satisfies Record<string, {
-         filePath: string;
-         items: Record<string, {
-            viewBox: string,
-            width: number, height: number,
-         }>
-       }>;"
+  };"
 `;
 
 exports[`plugins system > "metadata" plugin > should generate runtime with viewBox 1`] = `
@@ -103,7 +107,15 @@ exports[`plugins system > "metadata" plugin > should generate runtime with viewB
     'a': 'a' | 'b',
 'b': 'a' | 'b'
   }
-export const SPRITES_META = {
+export const SPRITES_META: {
+           [Key in keyof SpritesMap]: {
+             filePath: string;
+             items: Record<SpritesMap[Key], {
+                viewBox: string,
+                
+             }>
+           }
+         } = {
     'a': {
     filePath: 'a.svg',
     items: {
@@ -130,17 +142,19 @@ export const SPRITES_META = {
   }
     }
 }
-  } satisfies Record<string, {
-         filePath: string;
-         items: Record<string, {
-            viewBox: string,
-            
-         }>
-       }>;"
+  };"
 `;
 
 exports[`plugins system > "metadata" plugin > should generate runtime without types 1`] = `
-"export const RuntimeExample = {
+"export const RuntimeExample: {
+           [Key in keyof SpritesMap]: {
+             filePath: string;
+             items: Record<SpritesMap[Key], {
+                viewBox: string,
+                width: number, height: number,
+             }>
+           }
+         } = {
     'a': {
     filePath: 'a.svg',
     items: {
@@ -175,15 +189,15 @@ exports[`plugins system > "metadata" plugin > should generate same default outpu
     'a': 'a' | 'b',
 'b': 'a' | 'b'
   }
-export const SPRITES_META = {
+export const SPRITES_META: {
+        'a': Array<'a' | 'b'>,
+'b': Array<'a' | 'b'>
+      } = {
     'a': ['a',
 'b'],
 'b': ['a',
 'b']
-  } satisfies {
-      'a': Array<'a' | 'b'>,
-'b': Array<'a' | 'b'>
-    };"
+  };"
 `;
 
 exports[`plugins system > "metadata" plugin > should generate types and runtime at the same time 1`] = `
@@ -191,15 +205,15 @@ exports[`plugins system > "metadata" plugin > should generate types and runtime 
     'a': 'a' | 'b',
 'b': 'a' | 'b'
   }
-export const RuntimeExample = {
+export const RuntimeExample: {
+        'a': Array<'a' | 'b'>,
+'b': Array<'a' | 'b'>
+      } = {
     'a': ['a',
 'b'],
 'b': ['a',
 'b']
-  } satisfies {
-      'a': Array<'a' | 'b'>,
-'b': Array<'a' | 'b'>
-    };"
+  };"
 `;
 
 exports[`plugins system > "metadata" plugin > should generate types with metadata.types as interface name 1`] = `
@@ -207,13 +221,13 @@ exports[`plugins system > "metadata" plugin > should generate types with metadat
     'a': 'a' | 'b',
 'b': 'a' | 'b'
   }
-export const SPRITES_META = {
+export const SPRITES_META: {
+        'a': Array<'a' | 'b'>,
+'b': Array<'a' | 'b'>
+      } = {
     'a': ['a',
 'b'],
 'b': ['a',
 'b']
-  } satisfies {
-      'a': Array<'a' | 'b'>,
-'b': Array<'a' | 'b'>
-    };"
+  };"
 `;

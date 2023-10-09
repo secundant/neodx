@@ -59,29 +59,37 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@neodx/fs": "^0.0.9",
-    "@neodx/log": "^0.2.1",
-    "@neodx/std": "^0.1.5",
-    "@neodx/vfs": "^0.1.9",
-    "chokidar": "^3.5.3",
+    "@neodx/fs": "0.0.9",
+    "@neodx/log": "0.2.1",
+    "@neodx/std": "0.1.5",
+    "@neodx/vfs": "0.1.9",
+    "chokidar": "3.5.3",
     "colord": "2.9.3",
     "commander": "11.0.0",
-    "pathe": "^1.1.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "svgo": "^3.0.2",
-    "svgson": "^5.3.1",
-    "unplugin": "^1.4.0",
-    "zod": "^3.21.4"
+    "pathe": "1.1.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "svgo": "3.0.2",
+    "svgson": "5.3.1",
+    "unplugin": "1.5.0",
+    "zod": "3.22.4"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
-    "@swc/helpers": "^0.5.1",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
-    "@types/svgo": "^3.0.0",
-    "clsx": "^2.0.0",
-    "prettier": "^2.8.8"
+    "@swc/helpers": "0.5.3",
+    "@types/react": "18.2.25",
+    "@types/react-dom": "18.2.11",
+    "@types/svgo": "3.0.0",
+    "clsx": "2.0.0",
+    "prettier": "2.8.8"
+  },
+  "peerDependencies": {
+    "prettier": "*"
+  },
+  "peerDependenciesMeta": {
+    "prettier": {
+      "optional": true
+    }
   },
   "exports": {
     ".": {

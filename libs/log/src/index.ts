@@ -1,6 +1,5 @@
-import { identity, isEmpty, keys } from '@neodx/std';
+import { identity, isEmptyObject } from '@neodx/std';
 import { createLoggerFactory } from './core/create-logger-factory';
-import type { DefaultLoggerLevel } from './core/shared';
 import { DEFAULT_LOGGER_PARAMS } from './core/shared';
 import type { LogChunk } from './core/types';
 import { readArguments } from './utils';
@@ -14,7 +13,7 @@ export {
 } from './core/shared';
 export type * from './core/types';
 
-export const createLogger = createLoggerFactory<DefaultLoggerLevel>({
+export const createLogger = createLoggerFactory({
   defaultParams: {
     ...DEFAULT_LOGGER_PARAMS,
     target: createConsoleTarget()
@@ -23,7 +22,7 @@ export const createLogger = createLoggerFactory<DefaultLoggerLevel>({
   readArguments
 });
 
-export function createConsoleTarget() {
+export function createConsoleTarget(console = globalThis.console) {
   return function consoleTarget({
     error,
     meta,
@@ -35,7 +34,7 @@ export function createConsoleTarget() {
       level in console ? console[level as SupportedConsoleMethods] : console.log;
     const args = [msgTemplate, ...msgArgs];
 
-    if (!isEmpty(keys(meta))) args.push(meta);
+    if (!isEmptyObject(meta)) args.push(meta);
     consoleMethod(...args);
 
     if (error) {

@@ -25,6 +25,8 @@ export {
   isObject,
   isObjectLike,
   isPrimitive,
+  isTypeOfFunction,
+  isTypeOfString,
   isUndefined,
   negate
 } from './guards';

@@ -3,7 +3,7 @@ import { createVfs } from '@neodx/vfs';
 import { readdirSync } from 'node:fs';
 import { readdir, readFile, rm } from 'node:fs/promises';
 import { join } from 'node:path';
-import { buildSprites, type GenerateParams } from '../index';
+import { buildSprites, type BuildSpritesParams } from '../index';
 
 export async function readStub(name: string) {
   const root = getStubRoot(name);
@@ -22,7 +22,7 @@ export async function readStub(name: string) {
 export async function generateExample(
   name: string,
   write: boolean,
-  options?: Partial<GenerateParams>
+  options?: Partial<BuildSpritesParams>
 ) {
   const vfs = createVfs(getExampleRoot(name), { dryRun: !write, log: false });
 

@@ -1,6 +1,10 @@
-import { createSpriteBuilder, type CreateSpriteBuilderParams } from './create-sprite-builder';
+import {
+  createSpriteBuilder,
+  type CreateSpriteBuilderParams,
+  defaultVfs
+} from './create-sprite-builder';
 
-export interface GenerateParams extends CreateSpriteBuilderParams {
+export interface BuildSpritesParams extends CreateSpriteBuilderParams {
   /**
    * Globs to icons files
    */
@@ -13,16 +17,16 @@ export interface GenerateParams extends CreateSpriteBuilderParams {
 }
 
 /**
- * Scan files by input globs, parse them and generate sprites.
+ * Scan files by input globs, parse them, and generate sprites.
  * Accepts prepared config and vfs instance.
  */
 export async function buildSprites({
-  vfs,
+  vfs = defaultVfs,
   input,
   logger,
   keepTreeChanges,
   ...builderParams
-}: GenerateParams) {
+}: BuildSpritesParams) {
   const startedAt = Date.now();
   const builder = createSpriteBuilder({
     vfs,

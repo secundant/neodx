@@ -1,11 +1,12 @@
 import { type Config, optimize } from 'svgo';
 import { createPlugin } from './plugin-utils';
 
-export interface SvgoPluginOptions {
+export interface SvgoPluginParams {
   removeAttrs: string[];
+  config?: Exclude<Config, string>;
 }
 
-export const svgo = ({ removeAttrs = [] }: Partial<SvgoPluginOptions> = {}) => {
+export const svgo = ({ removeAttrs = [], config }: Partial<SvgoPluginParams> = {}) => {
   const svgoOptions: Config = {
     plugins: [
       {
@@ -15,9 +16,6 @@ export const svgo = ({ removeAttrs = [] }: Partial<SvgoPluginOptions> = {}) => {
             mergePaths: {},
             removeUselessStrokeAndFill: {},
             removeViewBox: false,
-            removeHiddenElems: false,
-            collapseGroups: false,
-            removeNonInheritableGroupAttrs: false,
             cleanupIds: {
               remove: false
             },
@@ -46,7 +44,8 @@ export const svgo = ({ removeAttrs = [] }: Partial<SvgoPluginOptions> = {}) => {
         }
       }
     ],
-    multipass: true
+    multipass: true,
+    ...config
   };
   const applySvgo = (content: string) => optimize(content, svgoOptions).data;
 

@@ -27,8 +27,8 @@
     "@neodx/fs": "*",
     "@neodx/std": "*",
     "@neodx/vfs": "*",
-    "picocolors": "^1.0.0",
-    "pkg-types": "^1.0.3"
+    "picocolors": "1.0.0",
+    "pkg-types": "1.0.3"
   },
   "devDependencies": {
     "@neodx/autobuild": "*"

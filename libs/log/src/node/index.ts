@@ -33,7 +33,7 @@ export {
 
 export const NODE_LOGGER_SYSTEM_INFO = { pid: process.pid, hostname: hostname() };
 
-export const createLogger = createLoggerFactory<DefaultLoggerLevel>({
+export const createLogger = createLoggerFactory({
   defaultParams: {
     ...DEFAULT_LOGGER_PARAMS,
     meta: NODE_LOGGER_SYSTEM_INFO,

@@ -1,20 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { isEmpty, isTruthy, keys, toArray } from '@neodx/std';
+import { isEmpty, isTruthy, isTypeOfFunction, isTypeOfString, keys, toArray } from '@neodx/std';
 import type { LogArguments } from '../utils';
 import { LOGGER_SILENT_LEVEL } from './shared';
 import type {
+  BaseLevelsConfig,
   CreateLogger,
+  GetLevelNames,
   LogChunk,
   Logger,
   LoggerLevelsConfig,
   LoggerMethods,
-  LoggerParams,
   LoggerParamsWithLevels,
   LoggerTransformer
 } from './types';
 
-export interface CreateLoggerFactoryParams<DefaultLevels extends string> {
-  defaultParams: LoggerParams<DefaultLevels>;
+export interface CreateLoggerFactoryParams<Levels extends LoggerLevelsConfig<string>> {
+  defaultParams: LoggerParamsWithLevels<Levels>;
   readArguments(args: unknown[]): LogArguments;
   /**
    * Formats a message template with replaces.
@@ -24,34 +25,35 @@ export interface CreateLoggerFactoryParams<DefaultLevels extends string> {
   formatMessage(template: string, replaces: unknown[]): string;
 }
 
-export function createLoggerFactory<BaseLevel extends string>({
+export function createLoggerFactory<LevelsConfig extends LoggerLevelsConfig<string>>({
   defaultParams,
   formatMessage,
   readArguments
-}: CreateLoggerFactoryParams<BaseLevel>): CreateLogger<BaseLevel> {
+}: CreateLoggerFactoryParams<LevelsConfig>): CreateLogger<GetLevelNames<LevelsConfig>> {
   function createLogger(userParams: any): Logger<any> {
     const params = { ...defaultParams, ...userParams } as Required<
-      LoggerParamsWithLevels<LoggerLevelsConfig<BaseLevel>>
+      LoggerParamsWithLevels<LevelsConfig>
     >;
     const { meta, target, level: rootLevel, name = '', levels } = params;
-    const transform = toArray(params.transform) as unknown as LoggerTransformer<BaseLevel>[];
+    const transform = toArray(params.transform) as unknown as LoggerTransformer<
+      GetLevelNames<LevelsConfig>
+    >[];
     const targets = toArray(target)
       .filter(isTruthy)
-      .map(target => (typeof target === 'function' ? { target } : target))
-      .map(target => ({
-        ...target,
-        level: target.level ? getOriginalLevelName(target.level, levels) : undefined,
-        target: toArray(target.target)
+      .map(target => (isTypeOfFunction(target) ? { target } : target))
+      .map(({ target, level }) => ({
+        level: level && getOriginalLevelName(level, levels),
+        target: toArray(target).filter(isTruthy)
       }))
       .filter(target => !isEmpty(target.target) && !isSilent(target.level));
 
-    const log = (levelOrAlias: BaseLevel, ...args: unknown[]) => {
+    const log = (levelOrAlias: GetLevelNames<LevelsConfig>, ...args: unknown[]) => {
       const level = getOriginalLevelName(levelOrAlias, levels);
 
       if (isSilent(rootLevel) || (rootLevel && levels[level] > levels[rootLevel])) return;
       const [[unknownMsgTemplate = '', ...msgArgs], additionalFields, error] = readArguments(args);
       const msgTemplate = String(unknownMsgTemplate);
-      const chunk = transform.reduce<LogChunk<BaseLevel>>(
+      const chunk = transform.reduce<LogChunk<GetLevelNames<LevelsConfig>>>(
         (chunk, transformer) => transformer(chunk),
         {
           name,
@@ -67,48 +69,45 @@ export function createLoggerFactory<BaseLevel extends string>({
           msg: isEmpty(msgArgs) ? msgTemplate : formatMessage(msgTemplate, msgArgs),
           __: {
             originalLevel: levelOrAlias,
-            levelsConfig: levels
+            levels: levels as LoggerLevelsConfig<GetLevelNames<LevelsConfig>>
           }
         }
       );
 
       for (const handle of targets) {
-        if (!handle.level || levels[handle.level] <= levels[level]) {
-          for (const target of handle.target) {
-            target(chunk as any);
-          }
-        }
+        if (handle.level && levels[handle.level] > levels[level]) continue;
+        handle.target.forEach(fn => fn(chunk as any));
       }
     };
 
     const methods = Object.fromEntries(
       keys(levels).map(level => [level, log.bind(null, level)])
-    ) as LoggerMethods<BaseLevel>;
+    ) as LoggerMethods<GetLevelNames<LevelsConfig>>;
 
     return {
       ...methods,
       get meta() {
-        return params.meta;
+        return { ...params.meta };
       },
-      fork: (options: any) => createLogger({ ...userParams, ...options }),
-      child: (childName: string, options: any) =>
+      fork: (params: any) => createLogger({ ...userParams, ...params }),
+      child: (childName: string, params: any) =>
         createLogger({
           ...userParams,
-          ...options,
+          ...params,
           name: name ? `${name}:${childName}` : childName
         })
-    } as Logger<BaseLevel>;
+    } as Logger<GetLevelNames<LevelsConfig>>;
   }
 
   return createLogger;
 }
 
 const isSilent = (value?: string): value is 'silent' => value === LOGGER_SILENT_LEVEL;
-const getOriginalLevelName = <Level extends string>(
-  level: Level,
-  levels: LoggerLevelsConfig<Level>
-): Level => {
-  const value = levels[level] as Level | number;
+const getOriginalLevelName = <Config extends BaseLevelsConfig>(
+  level: GetLevelNames<Config>,
+  levels: Config
+): GetLevelNames<Config> => {
+  const value = levels[level] as GetLevelNames<Config> | number;
 
-  return typeof value === 'string' ? getOriginalLevelName(value, levels) : level;
+  return isTypeOfString(value) ? getOriginalLevelName(value, levels) : level;
 };

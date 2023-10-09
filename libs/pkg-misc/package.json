@@ -20,16 +20,16 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@neodx/fs": "^0.0.9",
-    "@neodx/std": "^0.1.5",
-    "@types/prettier": "^2.7.3",
-    "pathe": "^1.1.1",
-    "semver": "^7.5.4"
+    "@neodx/fs": "0.0.9",
+    "@neodx/std": "0.1.5",
+    "@types/prettier": "2.7.3",
+    "pathe": "1.1.1",
+    "semver": "7.5.4"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
-    "@types/semver": "^7.5.0",
-    "prettier": "^2.8.8"
+    "@types/semver": "7.5.3",
+    "prettier": "2.8.8"
   },
   "peerDependencies": {
     "@types/semver": "*",

@@ -1,9 +1,7 @@
-// eslint-disable-next-line import/no-unresolved
-import svg from '@neodx/svg/webpack';
+const svg = require('@neodx/svg/webpack');
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
+module.exports = {
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.plugins.push(
@@ -20,5 +18,3 @@ const nextConfig = {
     return config;
   }
 };
-
-export default nextConfig;

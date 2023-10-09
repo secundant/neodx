@@ -15,7 +15,6 @@ export interface JsonTargetParams {
   errorKey?: string;
   messageKey?: string;
   serializers?: LogSerializers;
-  levelNameKey?: string;
   levelValueKey?: string;
 }
 
@@ -43,11 +42,11 @@ export function json({
     level,
     name,
     date,
-    __: { levelsConfig }
+    __: { levels }
   }: LogChunk<string>) {
     const info = Object.assign(
       {
-        [levelValueKey]: levelsConfig[level],
+        [levelValueKey]: levels[level],
         [dateKey]: date.getTime(),
         [errorKey]: error && serializeError(error),
         [messageKey]: msg

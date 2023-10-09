@@ -1,12 +1,12 @@
 import { deepReadDir } from '@neodx/fs';
 import { getChangesHash } from '@neodx/vfs/testing-utils';
 import { describe, expect, test } from 'vitest';
-import type { GenerateParams } from '..';
+import type { BuildSpritesParams } from '..';
 import { generateExample, getExamplesNames } from './testing-utils';
 
 describe('examples', () => {
   const examples = getExamplesNames();
-  const optionsMap: Record<string, Partial<GenerateParams>> = {
+  const optionsMap: Record<string, Partial<BuildSpritesParams>> = {
     'groups-without-root': {
       group: true
     },

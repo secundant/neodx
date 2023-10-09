@@ -1,4 +1,4 @@
-export { buildSprites, type GenerateParams } from './build-sprites';
+export { buildSprites, type BuildSpritesParams } from './build-sprites';
 export type { CreateSpriteBuilderParams, SpriteBuilder } from './create-sprite-builder';
 export { createSpriteBuilder } from './create-sprite-builder';
 export { createWatcher, type CreateWatcherParams } from './create-watcher';
