@@ -1,5 +1,18 @@
 # @neodx/log
 
+## 0.3.0
+
+### Minor Changes
+
+- [#120](https://github.com/secundant/neodx/pull/120) [`8179bf1`](https://github.com/secundant/neodx/commit/8179bf1162eef832eda03726e2dd79dda094c78b) Thanks [@secundant](https://github.com/secundant)! - Rework `createLoggerFactory` levels types
+
+### Patch Changes
+
+- [#120](https://github.com/secundant/neodx/pull/120) [`2614a03`](https://github.com/secundant/neodx/commit/2614a0345f2a2cd57984c22fc5f3e0446e5e8a77) Thanks [@secundant](https://github.com/secundant)! - New documentation
+
+- Updated dependencies []:
+  - @neodx/colors@0.2.6
+
 ## 0.2.1
 
 ### Patch Changes

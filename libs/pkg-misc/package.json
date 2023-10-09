@@ -1,6 +1,6 @@
 {
   "name": "@neodx/pkg-misc",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Collection of utilities for common cases in package development - smart dependencies updates, simple formatting with auto-detection of prettier config, etc.",
   "type": "module",
   "main": "./dist/cjs/index.cjs",
@@ -20,8 +20,8 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@neodx/fs": "0.0.9",
-    "@neodx/std": "0.1.5",
+    "@neodx/fs": "0.0.10",
+    "@neodx/std": "0.2.0",
     "@types/prettier": "2.7.3",
     "pathe": "1.1.1",
     "semver": "7.5.4"
