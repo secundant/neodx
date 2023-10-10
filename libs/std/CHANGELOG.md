@@ -1,5 +1,11 @@
 # @neodx/std
 
+## 0.2.0
+
+### Minor Changes
+
+- [#120](https://github.com/secundant/neodx/pull/120) [`8179bf1`](https://github.com/secundant/neodx/commit/8179bf1162eef832eda03726e2dd79dda094c78b) Thanks [@secundant](https://github.com/secundant)! - Add first `typeof ...` shortcuts
+
 ## 0.1.5
 
 ### Patch Changes

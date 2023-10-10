@@ -1,6 +1,6 @@
 {
   "name": "@neodx/vfs",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Simple virtual file system - working dir context, lazy changes, different modes, integrations and moreover",
   "type": "module",
   "main": "./dist/cjs/index.cjs",
@@ -56,11 +56,11 @@
     }
   },
   "dependencies": {
-    "@neodx/colors": "0.2.5",
-    "@neodx/fs": "0.0.9",
-    "@neodx/log": "0.2.1",
-    "@neodx/pkg-misc": "0.0.7",
-    "@neodx/std": "0.1.5",
+    "@neodx/colors": "0.2.6",
+    "@neodx/fs": "0.0.10",
+    "@neodx/log": "0.3.0",
+    "@neodx/pkg-misc": "0.0.8",
+    "@neodx/std": "0.2.0",
     "pathe": "1.1.1",
     "picocolors": "1.0.0"
   }

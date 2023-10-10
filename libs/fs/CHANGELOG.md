@@ -1,5 +1,12 @@
 # @neodx/fs
 
+## 0.0.10
+
+### Patch Changes
+
+- Updated dependencies [[`8179bf1`](https://github.com/secundant/neodx/commit/8179bf1162eef832eda03726e2dd79dda094c78b)]:
+  - @neodx/std@0.2.0
+
 ## 0.0.9
 
 ### Patch Changes
