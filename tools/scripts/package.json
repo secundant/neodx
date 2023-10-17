@@ -11,7 +11,7 @@
     "@neodx/std": "*",
     "@neodx/vfs": "*",
     "@nrwl/devkit": "16.10.0",
-    "execa": "7.2.0",
+    "execa": "8.0.1",
     "sade": "1.8.1"
   }
 }

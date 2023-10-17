@@ -48,7 +48,7 @@ export const createMockNodes = (length: number, type: NodeType = 'COMPONENT') =>
           name: `name-${i}`,
           type
         }
-      } as GraphNode<AnyNode>)
+      }) as GraphNode<AnyNode>
   );
 
 export const createMockApi = () => {

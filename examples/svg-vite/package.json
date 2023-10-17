@@ -14,8 +14,8 @@
   },
   "devDependencies": {
     "@neodx/svg": "workspace:*",
-    "@types/react": "18.2.25",
-    "@types/react-dom": "18.2.11",
+    "@types/react": "18.2.28",
+    "@types/react-dom": "18.2.13",
     "@vitejs/plugin-react": "4.1.0",
     "autoprefixer": "10.4.16",
     "postcss": "8.4.31",

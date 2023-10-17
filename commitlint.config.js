@@ -7,11 +7,7 @@ module.exports = {
     'footer-max-line-length': [2, 'always', 100],
     'header-max-length': [2, 'always', 100],
     'scope-case': [2, 'always', 'lower-case'],
-    'subject-case': [
-      2,
-      'never',
-      ['sentence-case', 'start-case', 'pascal-case', 'upper-case'],
-    ],
+    'subject-case': [2, 'never', ['sentence-case', 'start-case', 'pascal-case', 'upper-case']],
     'subject-empty': [2, 'never'],
     'subject-full-stop': [2, 'never', '.'],
     'type-case': [2, 'always', 'lower-case'],
@@ -33,8 +29,8 @@ module.exports = {
         'test',
         'translation',
         'security',
-        'changeset',
-      ],
-    ],
-  },
+        'changeset'
+      ]
+    ]
+  }
 };

@@ -62,7 +62,7 @@
   "devDependencies": {
     "@neodx/autobuild": "*",
     "@types/bunyan": "1.8.9",
-    "@types/express": "4.17.18",
+    "@types/express": "4.17.19",
     "@types/koa": "2.13.9",
     "@types/tmp": "0.2.4",
     "bunyan": "1.8.15",
@@ -70,7 +70,7 @@
     "express": "4.18.2",
     "koa": "2.14.2",
     "loglevel": "1.8.1",
-    "pino": "8.15.6",
+    "pino": "8.16.0",
     "tmp": "0.2.1",
     "tsx": "3.13.0",
     "winston": "3.11.0"
