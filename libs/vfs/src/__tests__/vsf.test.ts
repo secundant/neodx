@@ -93,20 +93,20 @@ describe('Tree', () => {
     test('should ignore equal changes', async () => {
       const vfs = await factory();
 
-      await vfs.write('/parent/parent-file.ts', 'new content');
+      await vfs.write('parent/parent-file.ts', 'new content');
       await vfs.delete('root-file.ts');
-      await vfs.rename('/parent/child/child-file.ts', '/another-dir/file.ts');
+      await vfs.rename('parent/child/child-file.ts', 'another-dir/file.ts');
 
       // Rename === write + delete
       expect(await vfs.getChanges()).toHaveLength(4);
       expectArrayEq(await vfs.readDir(), ['parent', 'another-dir']);
 
       await vfs.write('root-file.ts', Buffer.from('root content'));
-      await vfs.write('/parent/parent-file.ts', 'parent content');
+      await vfs.write('parent/parent-file.ts', 'parent content');
 
       // Instead of rename
-      await vfs.delete('/another-dir/file.ts');
-      await vfs.write('/parent/child/child-file.ts', 'child content');
+      await vfs.delete('another-dir/file.ts');
+      await vfs.write('parent/child/child-file.ts', 'child content');
 
       expect(await vfs.getChanges()).toHaveLength(0);
     });
@@ -231,6 +231,29 @@ describe('Tree', () => {
 `);
       expect(await vfs.read('src/ignored.ejs', 'utf-8')).toBe('<%=foo% > ___');
     });
+  });
+
+  test('should resolve different paths', async () => {
+    const vfs = createVfs('/root/path', {
+      virtual: true,
+      log
+    });
+
+    await vfs.write('relative', 'content');
+    await vfs.write('./relative-dot', 'content');
+    await vfs.write('../path/relative-jump', 'content');
+    await vfs.write('/root/path/absolute', 'content');
+    await vfs.write('/root/other/file-1', 'content');
+    await vfs.write('../other/file-2', 'content');
+
+    await vfs.applyChanges();
+    expectArrayEq(await vfs.readDir('../other'), ['file-1', 'file-2']);
+    expectArrayEq(await vfs.readDir('.'), [
+      'relative',
+      'relative-dot',
+      'relative-jump',
+      'absolute'
+    ]);
   });
 });
 

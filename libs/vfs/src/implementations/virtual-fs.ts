@@ -95,7 +95,7 @@ export class VirtualFs extends AbstractVfs {
     const names = Array.from(this.virtualFs.keys());
 
     if (path === '') {
-      return names.map(name => name.split('/')[0]);
+      return names.map(name => name.split('/')[0]).filter(name => !name.startsWith('.'));
     }
     return names
       .filter(name => name.startsWith(`${path}/`))

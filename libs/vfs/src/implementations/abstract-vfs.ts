@@ -2,7 +2,7 @@ import { colors } from '@neodx/colors';
 import type { LoggerMethods } from '@neodx/log';
 import { createLogger, pretty } from '@neodx/log/node';
 import { compact, uniq } from '@neodx/std';
-import { dirname, join, relative, sep } from 'pathe';
+import { dirname, join, relative, resolve, sep } from 'pathe';
 import type { BaseVFS, ContentLike, FileChange } from '../types';
 import { FileChangeType } from '../types';
 
@@ -129,7 +129,7 @@ export abstract class AbstractVfs implements BaseVFS {
     }
   }
 
-  async readDir(path = '/'): Promise<string[]> {
+  async readDir(path = '.'): Promise<string[]> {
     const normalized = this.normalizePath(path);
     const currentList = await this.readDirImpl(normalized);
 
@@ -185,7 +185,7 @@ export abstract class AbstractVfs implements BaseVFS {
   }
 
   protected normalizePath(path: string) {
-    return relative(this.root, join(this.root, path)).replaceAll(sep, '/');
+    return relative(this.root, resolve(this.root, path)).replaceAll(sep, '/');
   }
 
   protected getNotDeletedChangesStartsFrom(path: string) {
