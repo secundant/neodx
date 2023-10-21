@@ -1,5 +1,11 @@
 # @neodx/vfs
 
+## 0.1.11
+
+### Patch Changes
+
+- [`2f5a58a`](https://github.com/secundant/neodx/commit/2f5a58a2a97329a73f872f3f8a61e3903505ea63) Thanks [@secundant](https://github.com/secundant)! - Fix incorrect resolving absolute paths
+
 ## 0.1.10
 
 ### Patch Changes
