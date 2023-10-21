@@ -36,13 +36,18 @@ export { memoizeWeak } from './memoize';
 export {
   compactObject,
   filterObject,
-  mapObject,
+  fromEntries,
+  fromKeys,
+  mapValues,
   omit,
   pick,
+  pickProps,
+  prop,
   shallowEqual,
   sortObject,
   sortObjectByKeys,
-  sortObjectByOrder
+  sortObjectByOrder,
+  zipObject
 } from './object';
 export type { Falsy, ObjectEntry } from './shared';
 export {
@@ -52,6 +57,7 @@ export {
   identity,
   isTruthy,
   keys,
+  rethrow,
   toArray,
   toInt,
   True,

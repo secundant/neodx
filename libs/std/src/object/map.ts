@@ -1,6 +1,12 @@
 import { entries } from '../shared';
 
-export function mapObject<Input extends Record<keyof any, unknown>, OutputValue>(
+export function mapValues<
+  Input extends Record<keyof any, any>,
+  Result extends {
+    [Key in keyof Input]: any;
+  }
+>(target: Input, fn: <Key extends keyof Input>(value: Input[Key], key: Key) => Result[Key]): Result;
+export function mapValues<Input extends Record<keyof any, any>, OutputValue>(
   target: Input,
   fn: <Key extends keyof Input>(value: Input[Key], key: Key) => OutputValue
 ) {
