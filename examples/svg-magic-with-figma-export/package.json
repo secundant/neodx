@@ -16,14 +16,14 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/react": "18.2.28",
-    "@types/react-dom": "18.2.13",
+    "@types/react": "18.2.33",
+    "@types/react-dom": "18.2.14",
     "@vitejs/plugin-react": "4.1.0",
     "autoprefixer": "10.4.16",
     "postcss": "8.4.31",
-    "tailwindcss": "3.3.3",
+    "tailwindcss": "3.3.5",
     "typescript": "5.2.2",
-    "vite": "4.4.11",
+    "vite": "4.5.0",
     "vite-tsconfig-paths": "4.2.1",
     "vitest": "0.34.6"
   },
@@ -40,7 +40,7 @@
     "targets": {
       "export-icons": {
         "outputs": [
-          "assets/icons"
+          "{workspaceRoot}/assets/icons"
         ],
         "inputs": [
           "{projectRoot}/assets/**/*.svg",
@@ -53,7 +53,7 @@
       },
       "build-sprite": {
         "outputs": [
-          "public/sprites"
+          "{workspaceRoot}/public/sprites"
         ],
         "inputs": [
           "{projectRoot}/assets/**/*.svg",

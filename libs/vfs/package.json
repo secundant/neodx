@@ -39,14 +39,16 @@
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "bench": "vitest bench",
     "build": "autobuild",
     "test": "vitest run",
     "lint": "eslint src"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
-    "@types/tmp": "0.2.4",
-    "tmp": "0.2.1"
+    "@types/tmp": "0.2.5",
+    "tmp": "0.2.1",
+    "tsx": "3.14.0"
   },
   "exports": {
     ".": {
@@ -62,6 +64,7 @@
     "@neodx/pkg-misc": "0.0.8",
     "@neodx/std": "0.2.0",
     "pathe": "1.1.1",
-    "picocolors": "1.0.0"
+    "picocolors": "1.0.0",
+    "ts-pattern": "5.0.5"
   }
 }

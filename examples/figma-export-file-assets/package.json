@@ -18,7 +18,7 @@
     "targets": {
       "export": {
         "outputs": [
-          "assets/icons"
+          "{workspaceRoot}/assets/icons"
         ],
         "inputs": [
           "{projectRoot}/assets/**/*.svg",

@@ -6,3 +6,5 @@
 .yarn/
 node_modules/
 **/.vitepress
+
+/.nx/cache

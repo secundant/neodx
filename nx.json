@@ -1,7 +1,6 @@
 {
   "$schema": "node_modules/nx/schemas/nx-schema.json",
   "extends": "nx/presets/npm.json",
-  "npmScope": "neodx",
   "workspaceLayout": {
     "libsDir": "libs",
     "appsDir": "apps"
@@ -12,14 +11,6 @@
       "devDependencies": "*"
     },
     "nx.json": "*"
-  },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx/tasks-runners/default",
-      "options": {
-        "cacheableOperations": ["typecheck", "build", "lint", "test", "e2e"]
-      }
-    }
   },
   "namedInputs": {
     "shared": ["{workspaceRoot}/tsconfig.base.json", "{workspaceRoot}/package.json"],
@@ -44,27 +35,29 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["{projectRoot}/dist"],
-      "inputs": ["shared", "config", "src", "^src"]
+      "inputs": ["shared", "config", "src", "^src"],
+      "cache": true
     },
     "test": {
-      "inputs": ["shared", "config", "test", "src", "^src"]
+      "inputs": ["shared", "config", "test", "src", "^src"],
+      "cache": true
     },
     "typecheck": {
-      "inputs": ["shared", "config", "test", "src", "^src"]
+      "inputs": ["shared", "config", "test", "src", "^src"],
+      "cache": true
     },
     "lint": {
-      "inputs": ["shared", "config", "test", "src"]
+      "inputs": ["shared", "config", "test", "src"],
+      "cache": true
     },
     "dev": {
       "dependsOn": ["^build", "dev"]
+    },
+    "e2e": {
+      "cache": true
     }
   },
   "affected": {
     "defaultBase": "main"
-  },
-  "pluginsConfig": {
-    "@nrwl/js": {
-      "analyzeSourceFiles": false
-    }
   }
 }
