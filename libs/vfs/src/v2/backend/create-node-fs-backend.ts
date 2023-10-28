@@ -38,6 +38,9 @@ export function createNodeFsBackend() {
     },
     async isFile(path) {
       return await isFile(path);
+    },
+    __: {
+      kind: 'node-fs'
     }
   } satisfies VfsBackend;
 }

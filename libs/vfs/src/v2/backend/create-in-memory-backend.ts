@@ -1,5 +1,5 @@
 import { entries, isTypeOfString, uniq } from '@neodx/std';
-import { join } from 'pathe';
+import { dirname, join } from 'pathe';
 import type { VfsContentLike } from '../core/types';
 import type { VfsBackend } from './shared';
 
@@ -19,10 +19,15 @@ export function createInMemoryBackend(root = '/', initializer: VirtualInitialize
       Buffer.from(content)
     ])
   );
+  const deleted = new Set<string>();
 
   const isFile = (path: string) => store.has(path);
   const isDir = (path: string) =>
-    !isFile(path) && Array.from(store.keys()).some(name => name.startsWith(path));
+    !isFile(path) && Array.from(store.keys()).some(pathStartsBy(path));
+  const deletePath = (path: string) => {
+    store.delete(path);
+    deleted.add(path);
+  };
 
   return {
     read(path: string) {
@@ -38,27 +43,41 @@ export function createInMemoryBackend(root = '/', initializer: VirtualInitialize
     readDir(path: string) {
       return uniq(
         Array.from(store.keys())
-          .filter(name => name.startsWith(withTrailingSlash(path)))
+          .filter(pathStartsBy(path))
           .map(name => name.split(withTrailingSlash(path))[1].split('/')[0])
       );
     },
 
     write(path: string, content: VfsContentLike) {
       store.set(path, Buffer.from(content));
+      while (path !== '/') {
+        deleted.delete(path);
+        path = dirname(path);
+      }
     },
 
     delete(path: string) {
-      store.delete(path);
+      deletePath(path);
       for (const name of store.keys()) {
-        if (name.startsWith(withTrailingSlash(path))) {
-          store.delete(name);
+        if (pathStartsWith(name, path)) {
+          deletePath(name);
         }
       }
+    },
+
+    __: {
+      kind: 'in-memory',
+      getStore: () => new Map(store),
+      getDeleted: () => new Set(deleted)
     }
   } satisfies VfsBackend;
 }
 
-const withTrailingSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);
+export const withTrailingSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);
+export const pathStartsWith = (fullPath: string, basePath: string) =>
+  fullPath.startsWith(withTrailingSlash(basePath));
+export const pathStartsBy = (basePath: string) => (fullPath: string) =>
+  pathStartsWith(fullPath, basePath);
 
 /**
  * @param initializer Virtual files tree

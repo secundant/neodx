@@ -14,4 +14,9 @@ export interface VfsBackend {
 
   isDir: (path: string) => Asyncable<boolean>;
   isFile: (path: string) => Asyncable<boolean>;
+
+  __?: unknown;
 }
+
+export const getVfsBackendKind = (backend: VfsBackend) =>
+  (backend.__ as { kind?: string } | undefined)?.kind ?? 'unknown';
