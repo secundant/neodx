@@ -1,16 +1,49 @@
-import { entries } from '../shared';
+import { type AnyKey, type AnyRecord, entries, fromEntries, type ObjectEntry } from '../shared.ts';
 
-export function mapValues<
-  Input extends Record<keyof any, any>,
-  Result extends {
-    [Key in keyof Input]: any;
-  }
->(target: Input, fn: <Key extends keyof Input>(value: Input[Key], key: Key) => Result[Key]): Result;
-export function mapValues<Input extends Record<keyof any, any>, OutputValue>(
+export function mapValues<Input extends AnyRecord, ResultValue>(
+  target: Input,
+  fn: <Key extends keyof Input>(value: Input[Key], key: Key) => ResultValue
+): Record<keyof Input, ResultValue>;
+export function mapValues<Input extends AnyRecord, OutputValue>(
   target: Input,
   fn: <Key extends keyof Input>(value: Input[Key], key: Key) => OutputValue
 ) {
-  return Object.fromEntries(
-    entries(target).map(([key, value]) => [key, fn(value as any, key as keyof Input)])
-  ) as Record<keyof Input, OutputValue>;
+  return mapEntries(target, ([key, value]) => [key, fn(value, key)]);
+}
+
+export function mapEntries<Input extends AnyRecord, Result extends AnyRecord>(
+  target: Input,
+  fn: <Key extends keyof Input>(entry: [Key, Input[Key]]) => ObjectEntry<Result>
+): Result;
+export function mapEntries<Input extends AnyRecord, ResultValue>(
+  target: Input,
+  fn: <Key extends keyof Input>(entry: [Key, Input[Key]]) => [PropertyKey, ResultValue]
+): Record<string, ResultValue>;
+export function mapEntries<Input extends AnyRecord, OutputValue>(
+  target: Input,
+  fn: <Key extends keyof Input>(entry: [Key, Input[Key]]) => [PropertyKey, OutputValue]
+) {
+  return fromEntries(entries(target).map(fn));
+}
+
+export function mapToObject<Value, Result extends AnyRecord>(
+  target: Iterable<Value>,
+  fn: (value: Value, index: number) => ObjectEntry<Result>
+): Result;
+export function mapToObject<Value, ResultValue>(
+  target: Iterable<Value>,
+  fn: (value: Value, index: number) => [PropertyKey, ResultValue]
+): Record<string, ResultValue>;
+export function mapToObject<Value, OutputValue>(
+  target: Iterable<Value>,
+  fn: (value: Value, index: number) => [PropertyKey, OutputValue]
+) {
+  return fromEntries(Array.from(target, fn));
+}
+
+export function mapKeysToObject<Key extends AnyKey, Value>(
+  target: Iterable<Key>,
+  fn: (key: Key, index: number) => Value
+): Record<Key, Value> {
+  return mapToObject(target, (key, index) => [key, fn(key, index)] as any);
 }

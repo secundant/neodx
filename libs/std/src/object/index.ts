@@ -3,7 +3,7 @@ import { filterObject } from './filter';
 export { fromEntries, fromKeys, zipObject } from './create';
 export { shallowEqual } from './equals';
 export { compactObject, filterObject } from './filter';
-export { mapValues } from './map';
+export { mapEntries, mapKeysToObject, mapToObject, mapValues } from './map';
 export { sortObject, sortObjectByKeys, sortObjectByOrder } from './sort';
 
 export const omit = <T extends object, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> =>
