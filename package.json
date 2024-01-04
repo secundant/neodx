@@ -32,6 +32,7 @@
     "@commitlint/cli": "18.2.0",
     "@commitlint/config-conventional": "18.1.0",
     "@neodx/scripts": "workspace:*",
+    "@nx/vite": "17.2.8",
     "@types/node": "20.8.9",
     "eslint": "8.52.0",
     "eslint-kit": "10.5.2",
@@ -41,11 +42,11 @@
     "nx": "17.0.2",
     "prettier": "3.0.3",
     "tsx": "3.14.0",
-    "typescript": "5.2.2",
-    "vite": "4.5.0",
-    "vite-plugin-dts": "3.6.2",
-    "vite-tsconfig-paths": "4.2.1",
-    "vitest": "0.34.6"
+    "typescript": "5.3.3",
+    "vite": "5.0.10",
+    "vite-plugin-dts": "3.7.0",
+    "vite-tsconfig-paths": "4.2.3",
+    "vitest": "1.1.1"
   },
   "dependenciesMeta": {
     "core-js": {
@@ -54,9 +55,6 @@
     "core-js-pure": {
       "built": false
     }
-  },
-  "resolutions": {
-    "vite": "4.5.0"
   },
   "engines": {
     "node": ">=18.0.0",

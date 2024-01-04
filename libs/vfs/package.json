@@ -63,8 +63,22 @@
     "@neodx/log": "0.3.0",
     "@neodx/pkg-misc": "0.0.8",
     "@neodx/std": "0.2.0",
+    "@types/eslint": "8.56.1",
+    "grammex": "3.1.2",
     "pathe": "1.1.1",
-    "picocolors": "1.0.0",
-    "ts-pattern": "5.0.5"
+    "pkg-types": "1.0.3",
+    "ts-pattern": "5.0.6"
+  },
+  "peerDependencies": {
+    "eslint": "*",
+    "prettier": "*"
+  },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    },
+    "prettier": {
+      "optional": true
+    }
   }
 }

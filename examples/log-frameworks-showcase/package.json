@@ -26,6 +26,6 @@
     "@types/koa": "2.13.10",
     "@types/koa-router": "7.4.6",
     "tsx": "3.14.0",
-    "typescript": "5.2.2"
+    "typescript": "5.3.3"
   }
 }
