@@ -3,16 +3,18 @@ export {
   compact,
   difference,
   fromLength,
+  fromRange,
   groupBy,
   groupReduceBy,
   includesIn,
   sliding,
+  tee,
   uniq,
   uniqBy
 } from './array';
 export { asyncReduce, concurrent, concurrently, deduplicateAsync } from './async';
 export { debounce } from './debounce';
-export type { AnyKey, AnyObj, Nil } from './guards';
+export type { Nil } from './guards';
 export {
   isEmpty,
   isEmptyObject,
@@ -38,6 +40,9 @@ export {
   filterObject,
   fromEntries,
   fromKeys,
+  mapEntries,
+  mapKeysToObject,
+  mapToObject,
   mapValues,
   omit,
   pick,
@@ -49,7 +54,16 @@ export {
   sortObjectByOrder,
   zipObject
 } from './object';
-export type { Falsy, ObjectEntry } from './shared';
+export type {
+  AnyKey,
+  AnyRecord,
+  Falsy,
+  ObjectEntries,
+  ObjectEntry,
+  ObjectHasOwn,
+  ObjectKeys,
+  Truthy
+} from './shared';
 export {
   entries,
   False,
@@ -61,6 +75,7 @@ export {
   toArray,
   toInt,
   True,
+  tryCatch,
   values
 } from './shared';
 export { quickPluralize, truncateString } from './string';

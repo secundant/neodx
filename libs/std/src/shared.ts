@@ -1,46 +1,64 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const toArray = <T>(value: T | T[]) => (Array.isArray(value) ? value : [value]);
-export const identity = <T>(value: T): T => value;
-export const True = () => true;
-export const False = () => false;
 
-export const values = Object.values; // already typed
-export const entries = Object.entries as TypedObjectEntriesFn;
-export const hasOwn = Object.hasOwn as TypedObjectHasOwnFn;
-export const keys = Object.keys as TypedObjectKeysFn;
-export const isTruthy = Boolean as unknown as <T>(value: T | Falsy) => value is T;
+export type Falsy = false | null | undefined | void | 0 | '';
+export type Truthy = Exclude<any, Falsy>;
+export type AnyKey = keyof any;
+export type AnyRecord = Record<AnyKey, any>;
+
+export const toArray = <T>(value: T | T[]) => (Array.isArray(value) ? value : [value]);
 export const toInt = (value: string) => Number.parseInt(value, 10);
+
+export const identity = <T>(value: T): T => value;
+export const isTruthy = Boolean as unknown as <T>(value: T | Falsy) => value is T;
+
+export const True = (): true => true;
+export const False = (): false => false;
 
 export const rethrow = (error: unknown): never => {
   throw error;
 };
+export function tryCatch<T>(fn: () => T): T | undefined;
+export function tryCatch<T>(fn: () => T, fallback: () => T): T;
+export function tryCatch<T, F>(fn: () => T, fallback: () => F): T | F;
+export function tryCatch<T, F>(fn: () => T, fallback?: () => F): T | F {
+  try {
+    return fn();
+  } catch {
+    return fallback?.() as T | F;
+  }
+}
 
-// shared types
+//#region Object
 
-export type Falsy = false | null | undefined | void | 0 | '';
+export const values = Object.values;
+export const fromEntries = Object.fromEntries as {
+  <T>(entries: Iterable<ObjectEntry<T>>): T;
+  <T>(entries: Iterable<readonly [PropertyKey, T]>): Record<string, T>;
+};
+export const entries = Object.entries as ObjectEntries;
+export const hasOwn = Object.hasOwn as ObjectHasOwn;
+export const keys = Object.keys as ObjectKeys;
 
 export type ObjectEntry<T> = {
   [Key in Extract<keyof T, string>]: [Key, Exclude<T[Key], undefined>];
 }[Extract<keyof T, string>];
 
-export interface TypedObjectEntriesFn {
+export interface ObjectEntries {
   <T>(target: T): ObjectEntry<T>[];
 }
 
-export interface TypedObjectKeysFn {
+export interface ObjectKeys {
   <T>(target: T): Array<Extract<keyof T, string>>;
 }
 
-// TODO Probably, remove double types
-export interface TypedObjectHasOwnFn {
-  <Key extends keyof T, T extends Record<keyof any, unknown>>(
+export interface ObjectHasOwn {
+  <Key extends keyof any, T extends AnyRecord>(target: T, key: Key | keyof T): key is keyof T;
+  <Key extends keyof T, T extends AnyRecord>(
     target: T,
     key: Key
   ): target is T & {
     [K in Key]-?: Exclude<T[K], undefined | void | never>;
   };
-  <Key extends keyof any, T extends Record<keyof any, unknown>>(
-    target: T,
-    key: Key
-  ): key is Key & keyof T;
 }
+
+//#endregion
