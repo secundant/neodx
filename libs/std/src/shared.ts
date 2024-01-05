@@ -28,6 +28,12 @@ export function tryCatch<T, F>(fn: () => T, fallback?: () => F): T | F {
   }
 }
 
+export const lazyValue = <T>(fn: () => T): (() => T) => {
+  let value: T | undefined;
+
+  return () => (value ??= fn());
+};
+
 //#region Object
 
 export const values = Object.values;

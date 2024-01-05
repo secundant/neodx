@@ -71,6 +71,7 @@ export {
   identity,
   isTruthy,
   keys,
+  lazyValue,
   rethrow,
   toArray,
   toInt,
