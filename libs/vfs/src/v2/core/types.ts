@@ -1,4 +1,5 @@
 import type { Logger } from '@neodx/log';
+import type { VfsDirent } from '../backend/shared.ts';
 import type { VfsPlugin } from '../create-vfs-plugin';
 import type { PublicVfs } from './scopes';
 
@@ -6,34 +7,80 @@ import type { PublicVfs } from './scopes';
  * Base virtual file system interface.
  */
 export interface BaseVfs {
-  /** Absolute path */
-  readonly path: string;
-  /** Parent directory */
-  readonly dirname: string;
-  readonly virtual: boolean;
-  readonly readonly: boolean;
+  // Common
 
+  /** Apply all changes to the file system */
   apply(): Promise<void>;
 
+  /** Is current VFS virtual? */
+  readonly virtual: boolean;
+  /** Is current VFS readonly? */
+  readonly readonly: boolean;
+
+  // Path API
+
+  /** Absolute path to current dir */
+  readonly path: string;
+  /** Absolute path to parent directory */
+  readonly dirname: string;
+
+  /**
+   * Resolves an absolute path to the current directory.
+   * Uses `path.resolve` internally.
+   *
+   * @example createVfs('/root/path').resolve('subdir') // -> '/root/path/subdir'
+   * @example createVfs('/root/path').resolve('subdir', 'file.txt') // -> '/root/path/subdir/file.txt'
+   * @example createVfs('/root/path').resolve('/other/path') // -> '/other/path'
+   */
   resolve(...to: string[]): string;
+
+  /**
+   * Returns a relative path to the current directory.
+   *
+   * @example createVfs('/root/path').relative('/root/path/subdir') // -> 'subdir'
+   * @example createVfs('/root/path').relative('relative/file.txt') // -> 'relative/file.txt'
+   */
   relative(path: string): string;
 
+  // Operations
+
+  /** Safe file read. Returns null if file doesn't exist or some error occurred. */
   tryRead(path: string): Promise<Buffer | null>;
   tryRead(path: string, encoding: BufferEncoding): Promise<string | null>;
 
-  // Throw error if file not exists
+  /** Read file content. Throws an error if something went wrong. */
   read(path: string): Promise<Buffer>;
   read(path: string, encoding: BufferEncoding): Promise<string>;
 
+  /**
+   * Write file content.
+   * If the file doesn't exist, it will be created, including all parent directories.
+   * Otherwise, the file will be overwritten with new content.
+   */
   write(path: string, content: VfsContentLike): Promise<void>;
+
+  /** Rename file or directory. */
   rename(from: string, ...to: string[]): Promise<void>;
 
+  /**
+   * Read directory children.
+   * @param path Path to directory. If not specified, the current directory will be used.
+   * @param params.withFileTypes If true, returns `VfsDirent[]` instead of `string[]`.
+   */
   readDir(path?: string): Promise<string[]>;
+  readDir(params: { withFileTypes: true }): Promise<VfsDirent[]>;
+  readDir(path: string, params: { withFileTypes: true }): Promise<VfsDirent[]>;
 
+  /** Check if a path exists. */
   exists(path?: string): Promise<boolean>;
+
+  /** Check if a path is a file. */
   isFile(path: string): Promise<boolean>;
+
+  /** Check if a path is a directory. */
   isDir(path: string): Promise<boolean>;
 
+  /** Delete file or directory (recursively). */
   delete(path: string): Promise<void>;
 }
 
@@ -77,5 +124,3 @@ export interface VfsFileMeta {
 export type VfsLogger = Logger<VfsLogMethod>;
 export type VfsLogMethod = 'debug' | 'info' | 'warn' | 'error';
 export type Asyncable<T> = T | Promise<T>;
-
-export const trailingSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);

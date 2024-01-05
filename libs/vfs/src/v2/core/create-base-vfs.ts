@@ -26,8 +26,8 @@ export interface CreateBaseVfsParams {
 }
 
 export function createBaseVfs(ctx: VfsContext) {
-  const backendKind = getVfsBackendKind(ctx.backend);
   const hooks = createHookRegistry();
+  const backendKind = getVfsBackendKind(ctx.backend);
 
   const applyFile = async (action: VfsFileAction) => {
     ctx.log.info('%s %s', labels[action.type], action.relativePath);
@@ -70,7 +70,13 @@ export function createBaseVfs(ctx: VfsContext) {
     isFile: path => isVfsFile(ctx, path),
     exists: path => existsVfsPath(ctx, path),
 
-    readDir: path => readVfsDir(ctx, path),
+    readDir: (async (pathOrParams, params) => {
+      const [path, { withFileTypes } = {} as any] =
+        typeof pathOrParams === 'string' ? [pathOrParams, params] : [undefined, pathOrParams];
+      const entries = await readVfsDir(ctx, path);
+
+      return withFileTypes ? entries : entries.map(dirent => dirent.name);
+    }) as BaseVfs['readDir'],
 
     read: ((path, encoding) => readVfsFile(ctx, path, encoding)) as BaseVfs['read'],
     write: (path, content) => writeVfsFile(ctx, path, content),

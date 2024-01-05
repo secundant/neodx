@@ -45,7 +45,7 @@ export function createInMemoryBackend(root = '/', initializer: VirtualInitialize
         Array.from(store.keys())
           .filter(pathStartsBy(path))
           .map(name => name.split(withTrailingSlash(path))[1].split('/')[0])
-      );
+      ).map(name => createInMemoryDirent(name, isFile(join(path, name))));
     },
 
     write(path: string, content: VfsContentLike) {
@@ -72,6 +72,13 @@ export function createInMemoryBackend(root = '/', initializer: VirtualInitialize
     }
   } satisfies VfsBackend;
 }
+
+export const createInMemoryDirent = (name: string, file: boolean, symlink = false) => ({
+  isFile: () => file,
+  isDirectory: () => !file,
+  isSymbolicLink: () => symlink,
+  name
+});
 
 export const withTrailingSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);
 export const pathStartsWith = (fullPath: string, basePath: string) =>

@@ -10,12 +10,22 @@ export interface VfsBackend {
   exists: (path: string) => Asyncable<boolean>;
   delete: (path: string) => Asyncable<void>;
 
-  readDir: (path: string) => Asyncable<string[]>;
+  readDir: (path: string) => Asyncable<VfsDirent[]>;
 
   isDir: (path: string) => Asyncable<boolean>;
   isFile: (path: string) => Asyncable<boolean>;
 
   __?: unknown;
+}
+
+/**
+ * A `node:fs.Dirent` compatible interface.
+ */
+export interface VfsDirent {
+  isFile(): boolean;
+  isDirectory(): boolean;
+  isSymbolicLink(): boolean;
+  name: string;
 }
 
 export const getVfsBackendKind = (backend: VfsBackend) =>

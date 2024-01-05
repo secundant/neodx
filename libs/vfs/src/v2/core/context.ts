@@ -5,7 +5,6 @@ import { normalize, relative, resolve } from 'pathe';
 import type { VfsBackend } from '../backend';
 import type { VfsPlugin } from '../create-vfs-plugin';
 import type { BaseVfs, VfsContentLike, VfsFileMeta, VfsLogger, VfsLogMethod } from './types';
-import { trailingSlash } from './types';
 
 export interface CreateVfsContextParams {
   log?: VfsLogger;
@@ -68,6 +67,7 @@ export const createVfsContext = ({
           await (fn as any)(ctx.resolve(path), ...args)
     ),
     __: {
+      kind,
       parent,
       plugins: [],
       children: [],
@@ -108,16 +108,6 @@ export const createVfsContext = ({
   }
   return ctx;
 };
-const getAncestors = (ctx: VfsContext): VfsContext[] =>
-  ctx.__.parent ? [ctx.__.parent, ...getAncestors(ctx.__.parent)] : [];
-const getDescendants = (ctx: VfsContext): VfsContext[] =>
-  ctx.__.children.flatMap(child => [child, ...getDescendants(child)]);
-const getAndMergeChanges = (contexts: VfsContext[]): VfsChangeMeta[] =>
-  uniqBy(
-    contexts.flatMap(ctx => Array.from(ctx.__.getStore().values())),
-    meta => meta.path
-  );
-const defaultLogger = createLogger({ name: 'vfs', level: 'info' });
 
 /**
  * Context should not be used by plugins or end users, it's for internal use only.
@@ -154,6 +144,7 @@ export interface VfsContext {
 
   __: {
     vfs?: BaseVfs;
+    kind: typeof kind;
     parent?: VfsContext;
     plugins: VfsPlugin<any>[];
     children: VfsContext[];
@@ -174,3 +165,18 @@ export interface VfsChangeMeta extends VfsFileMeta {
   deleted?: boolean;
   updatedAfterDelete?: boolean;
 }
+
+export const isVfsContext = (ctx: any): ctx is VfsContext => ctx?.__?.kind === kind;
+
+const kind = Symbol('VfsContext');
+const getAncestors = (ctx: VfsContext): VfsContext[] =>
+  ctx.__.parent ? [ctx.__.parent, ...getAncestors(ctx.__.parent)] : [];
+const getDescendants = (ctx: VfsContext): VfsContext[] =>
+  ctx.__.children.flatMap(child => [child, ...getDescendants(child)]);
+const getAndMergeChanges = (contexts: VfsContext[]): VfsChangeMeta[] =>
+  uniqBy(
+    contexts.flatMap(ctx => Array.from(ctx.__.getStore().values())),
+    meta => meta.path
+  );
+const trailingSlash = (path: string) => (path.endsWith('/') ? path : `${path}/`);
+const defaultLogger = createLogger({ name: 'vfs', level: 'info' });

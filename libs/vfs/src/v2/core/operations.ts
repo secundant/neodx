@@ -1,5 +1,6 @@
-import { compact, concurrently, isTruthy, uniq } from '@neodx/std';
+import { compact, concurrently, isTruthy, uniqBy } from '@neodx/std';
 import { basename, dirname, relative } from 'pathe';
+import { createInMemoryDirent } from '../backend/create-in-memory-backend.ts';
 import type { VfsContext } from './context';
 import type { VfsContentLike, VfsFileAction } from './types';
 
@@ -25,21 +26,23 @@ export async function isVfsDir(ctx: VfsContext, path = '.') {
   );
 }
 
+/**
+ * Returns actual children of a directory.
+ */
 export async function readVfsDir(ctx: VfsContext, path = '.') {
   ctx.log.debug('Read dir %s', path);
   const actualChildren = await ctx.backend.readDir(path);
   const changes = ctx.getRelativeChanges(path);
+  const isNotDeleted = (name: string) => !isKnownDeletedPath(ctx, name);
 
-  return uniq(
-    compact(
-      await concurrently(
-        [
-          ...actualChildren.map(name => ctx.resolve(path, name)),
-          ...changes.map(meta => meta.path)
-        ].filter(path => !isKnownDeletedPath(ctx, path)),
-        async path => (await existsVfsPath(ctx, path)) && basename(path)
-      )
-    )
+  return uniqBy(
+    [
+      ...actualChildren.filter(entry => isNotDeleted(ctx.resolve(path, entry.name))),
+      ...changes
+        .filter(meta => isNotDeleted(meta.path))
+        .map(meta => createInMemoryDirent(basename(meta.path), true))
+    ],
+    entry => entry.name
   );
 }
 

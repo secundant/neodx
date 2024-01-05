@@ -1,4 +1,4 @@
-import { uniq } from '@neodx/std';
+import { uniqBy } from '@neodx/std';
 import { resolve } from 'pathe';
 import { createInMemoryBackend, pathStartsWith } from './create-in-memory-backend';
 import type { VfsBackend } from './shared';
@@ -25,8 +25,9 @@ export function createReadonlyBackend(backend: VfsBackend) {
       if (deleted(path)) return [];
       const actual = await backend.readDir(path);
 
-      return uniq(
-        actual.filter(fileName => !deleted(resolve(path, fileName))).concat(inMemory.readDir(path))
+      return uniqBy(
+        actual.filter(entry => !deleted(resolve(path, entry.name))).concat(inMemory.readDir(path)),
+        entry => entry.name
       );
     },
     __: {
