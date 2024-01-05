@@ -2,13 +2,13 @@ import { readdir, readFile } from 'fs/promises';
 import { exists, isDirectory, isFile } from '@neodx/fs';
 import { describe, expect, test } from 'vitest';
 import { createInMemoryBackend, createNodeFsBackend } from '../backend';
-import { createVfsContext } from '../core/context';
+import { createVfsContext, CreateVfsContextParams } from '../core/context';
 import { createBaseVfs } from '../core/create-base-vfs';
 import type { PublicVfs } from '../core/scopes';
 import type { BaseVfs } from '../core/types';
-import { expectArrayEqual, getTmpDir, initializeDir } from '../testing';
+import { expectArrayEqual, expectDirEqual, getTmpDir, initializeDir } from '../testing';
 
-describe('core vfs APIs', () => {
+describe('base vfs', () => {
   const initialFiles = {
     noext: 'text',
     'file.ext': 'text',
@@ -20,11 +20,12 @@ describe('core vfs APIs', () => {
       }
     }
   };
-  async function initTmpVfs() {
+  async function initTmpVfs(params?: Pick<CreateVfsContextParams, 'logLevel'>) {
     const vfs = createBaseVfs(
       createVfsContext({
         path: getTmpDir(),
-        backend: createNodeFsBackend()
+        backend: createNodeFsBackend(),
+        ...params
       })
     );
 
@@ -88,6 +89,8 @@ describe('core vfs APIs', () => {
     expect(await vfs.read('file.ext')).toEqual(Buffer.from('text'));
     expect(await vfs.tryRead('unknown')).toBe(null);
     expect(vfs.read('unknown')).rejects.toThrowError();
+
+    await vfs.readDir('dir', { withFileTypes: true });
   });
 
   test('should give asserts', async () => {
@@ -131,7 +134,9 @@ describe('core vfs APIs', () => {
   });
 
   test('should avoid delete/write conflicts', async () => {
-    const vfs = await initTmpVfs();
+    const vfs = await initTmpVfs({
+      logLevel: 'debug'
+    });
     const runWrite = async () => {
       await vfs.write('file.ext', 'new content');
       expect(await vfs.exists('file.ext')).toBe(true);
@@ -180,32 +185,41 @@ describe('core vfs APIs', () => {
     expect(await vfs.readDir('dir')).toEqual([]);
   });
 
-  describe('applying', () => {
-    test.skip('should write real dir path as file if we deleted it previously', async () => {
-      const vfs = await initTmpVfs();
+  test('should write real dir path as file if we deleted it previously', async () => {
+    const vfs = await initTmpVfs();
 
-      await vfs.delete('dir');
-      await vfs.write('dir', 'new content');
-      await vfs.apply();
+    await vfs.delete('dir');
+    await vfs.write('dir', 'new content');
+    await vfs.apply();
 
-      expect(await readdir(vfs.path)).toEqual(['dir', 'file.ext', 'file.mul.ti.ext']);
-      expect(await vfs.read('dir', 'utf-8')).toBe('new content');
-    });
+    expect(await vfs.readDir()).toEqual(['dir', 'file.ext', 'file.mul.ti.ext', 'noext']);
+    expect(await vfs.read('dir', 'utf-8')).toBe('new content');
+  });
 
-    test('should apply changes', async () => {
-      const vfs = await initTmpVfs();
+  test.skip('should create file under deleted directory', async () => {
+    const vfs = await initTmpVfs();
 
-      await vfs.write('file.ext', 'new content');
-      await vfs.write('new-file.ext', 'new file');
-      await vfs.delete('noext');
-      await vfs.rename('file.mul.ti.ext', 'renamed');
-      await vfs.apply();
+    await vfs.delete('dir');
+    await vfs.write('dir/new-file.ext', 'new content');
+    await vfs.apply();
 
-      expect(await readdir(vfs.path)).toEqual(['dir', 'file.ext', 'new-file.ext', 'renamed']);
-      await assertFileContent(vfs, 'file.ext', 'new content');
-      await assertFileContent(vfs, 'new-file.ext', 'new file');
-      await assertFileContent(vfs, 'renamed', 'text');
-      await assertNotExists(vfs, 'noext');
-    });
+    expect(await readdir(vfs.path)).toEqual(['dir', 'file.ext', 'file.mul.ti.ext', 'noext']);
+    await expectDirEqual(vfs, 'dir', ['new-file.ext']);
+  });
+
+  test('should apply changes', async () => {
+    const vfs = await initTmpVfs();
+
+    await vfs.write('file.ext', 'new content');
+    await vfs.write('new-file.ext', 'new file');
+    await vfs.delete('noext');
+    await vfs.rename('file.mul.ti.ext', 'renamed');
+    await vfs.apply();
+
+    expect(await readdir(vfs.path)).toEqual(['dir', 'file.ext', 'new-file.ext', 'renamed']);
+    await assertFileContent(vfs, 'file.ext', 'new content');
+    await assertFileContent(vfs, 'new-file.ext', 'new file');
+    await assertFileContent(vfs, 'renamed', 'text');
+    await assertNotExists(vfs, 'noext');
   });
 });

@@ -3,6 +3,7 @@ import { resolve } from 'pathe';
 import { describe, expect, test } from 'vitest';
 import { createInMemoryBackend, createNodeFsBackend } from '../backend';
 import { createReadonlyBackend } from '../backend/create-readonly-backend';
+import type { VfsDirent } from '../backend/shared.ts';
 import { expectArrayEqual, getTmpDir, initializeDir } from '../testing';
 
 describe('vfs backends', () => {
@@ -23,6 +24,7 @@ describe('vfs backends', () => {
 
     return (...paths: string[]) => resolve(dir, ...paths);
   };
+  const mapDirEntriesNames = (entries: VfsDirent[]) => entries.map(entry => entry.name);
 
   describe('in-memory', () => {
     test('should be empty', () => {
@@ -35,8 +37,8 @@ describe('vfs backends', () => {
         'foo/baz': 'bar'
       });
 
-      expect(backend.readDir('/')).toEqual(['foo']);
-      expect(backend.readDir('/foo')).toEqual(['bar', 'baz']);
+      expect(mapDirEntriesNames(backend.readDir('/'))).toEqual(['foo']);
+      expect(mapDirEntriesNames(backend.readDir('/foo'))).toEqual(['bar', 'baz']);
     });
 
     test('should read/write files', async () => {
@@ -72,10 +74,18 @@ describe('vfs backends', () => {
       const dir = await createDir();
       const backend = createNodeFsBackend();
 
-      expectArrayEqual(await backend.readDir(dir('')), ['file.ext', 'dir', 'empty.dir']);
-      expectArrayEqual(await backend.readDir(dir('dir')), ['file.1.ext', 'file.2.ext', 'subDir']);
-      expectArrayEqual(await backend.readDir(dir('empty.dir')), []);
-      expect(await backend.readDir(dir('dir/subDir'))).toEqual(['file.3.ext']);
+      expectArrayEqual(mapDirEntriesNames(await backend.readDir(dir(''))), [
+        'file.ext',
+        'dir',
+        'empty.dir'
+      ]);
+      expectArrayEqual(mapDirEntriesNames(await backend.readDir(dir('dir'))), [
+        'file.1.ext',
+        'file.2.ext',
+        'subDir'
+      ]);
+      expectArrayEqual(mapDirEntriesNames(await backend.readDir(dir('empty.dir'))), []);
+      expect(mapDirEntriesNames(await backend.readDir(dir('dir/subDir')))).toEqual(['file.3.ext']);
       expect((await backend.read(dir('file.ext')))?.toString('utf-8')).toEqual('content');
     });
 
@@ -85,7 +95,12 @@ describe('vfs backends', () => {
 
       await backend.write(dir('foo'), 'bar');
       expect((await backend.read(dir('foo')))?.toString('utf-8')).toEqual('bar');
-      expectArrayEqual(await backend.readDir(dir('')), ['file.ext', 'dir', 'empty.dir', 'foo']);
+      expectArrayEqual(mapDirEntriesNames(await backend.readDir(dir(''))), [
+        'file.ext',
+        'dir',
+        'empty.dir',
+        'foo'
+      ]);
     });
 
     test('should delete files', async () => {
@@ -93,7 +108,7 @@ describe('vfs backends', () => {
       const backend = createNodeFsBackend();
 
       await backend.delete(dir('file.ext'));
-      expectArrayEqual(await backend.readDir(dir('')), ['dir', 'empty.dir']);
+      expectArrayEqual(mapDirEntriesNames(await backend.readDir(dir(''))), ['dir', 'empty.dir']);
     });
 
     test('should delete directories', async () => {
@@ -101,7 +116,10 @@ describe('vfs backends', () => {
       const backend = createNodeFsBackend();
 
       await backend.delete(dir('dir'));
-      expectArrayEqual(await backend.readDir(dir('')), ['file.ext', 'empty.dir']);
+      expectArrayEqual(mapDirEntriesNames(await backend.readDir(dir(''))), [
+        'file.ext',
+        'empty.dir'
+      ]);
       expectArrayEqual(await backend.readDir(dir('dir')), []);
     });
   });
@@ -141,9 +159,18 @@ describe('vfs backends', () => {
 
       await backend.write(dir('foo'), 'bar');
       expect((await backend.read(dir('foo')))?.toString('utf-8')).toEqual('bar');
-      expect(await backend.readDir(dir())).toEqual(['dir', 'empty.dir', 'file.ext', 'foo']);
+      expect(mapDirEntriesNames(await backend.readDir(dir()))).toEqual([
+        'dir',
+        'empty.dir',
+        'file.ext',
+        'foo'
+      ]);
       expect(await nodeFsBackend.read(dir('foo'))).toBeNull();
-      expect(await nodeFsBackend.readDir(dir())).toEqual(['dir', 'empty.dir', 'file.ext']);
+      expect(mapDirEntriesNames(await nodeFsBackend.readDir(dir()))).toEqual([
+        'dir',
+        'empty.dir',
+        'file.ext'
+      ]);
     });
 
     test('should write existing files', async () => {
@@ -180,25 +207,37 @@ describe('vfs backends', () => {
       await backend.delete(dir('dir'));
       expect(await backend.readDir(dir('dir'))).toEqual([]);
       expect(await backend.readDir(dir('dir/subDir'))).toEqual([]);
-      expect(await nodeFsBackend.readDir(dir('dir'))).toEqual([
+      expect(mapDirEntriesNames(await nodeFsBackend.readDir(dir('dir')))).toEqual([
         'file.1.ext',
         'file.2.ext',
         'subDir'
       ]);
-      expect(await nodeFsBackend.readDir(dir('dir/subDir'))).toEqual(['file.3.ext']);
+      expect(mapDirEntriesNames(await nodeFsBackend.readDir(dir('dir/subDir')))).toEqual([
+        'file.3.ext'
+      ]);
     });
 
     test('should add directories', async () => {
       const { backend, dir, nodeFsBackend } = await init();
 
       await backend.write(dir('newDir/file.1.ext'), 'bar');
-      expect(await backend.readDir(dir())).toEqual(['dir', 'empty.dir', 'file.ext', 'newDir']);
-      expect(await backend.readDir(dir('newDir'))).toEqual(['file.1.ext']);
+      expect(mapDirEntriesNames(await backend.readDir(dir()))).toEqual([
+        'dir',
+        'empty.dir',
+        'file.ext',
+        'newDir'
+      ]);
+      expect(mapDirEntriesNames(await backend.readDir(dir('newDir')))).toEqual(['file.1.ext']);
       await backend.write(dir('newDir/subDir/file.2.ext'), 'bar');
-      expect(await backend.readDir(dir('newDir'))).toEqual(['file.1.ext', 'subDir']);
-      expect(await backend.readDir(dir('newDir/subDir'))).toEqual(['file.2.ext']);
+      expect(mapDirEntriesNames(await backend.readDir(dir('newDir')))).toEqual([
+        'file.1.ext',
+        'subDir'
+      ]);
+      expect(mapDirEntriesNames(await backend.readDir(dir('newDir/subDir')))).toEqual([
+        'file.2.ext'
+      ]);
 
-      expect(await nodeFsBackend.readDir(dir('newDir'))).toEqual([]);
+      expect(mapDirEntriesNames(await nodeFsBackend.readDir(dir('newDir')))).toEqual([]);
     });
   });
 });

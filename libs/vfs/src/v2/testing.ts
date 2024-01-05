@@ -4,6 +4,7 @@ import { dirSync } from 'tmp';
 import { expect } from 'vitest';
 import type { VirtualInitializer } from './backend';
 import { createInMemoryFilesRecord } from './backend';
+import type { BaseVfs } from './core/types.ts';
 import type { CreateVfsParams } from './create-vfs';
 import { createVfs } from './create-vfs';
 
@@ -33,3 +34,16 @@ export const expectArrayEqual = <T>(received: T[], expected: T[]) => {
   // eslint-disable-next-line @typescript-eslint/require-array-sort-compare
   expect([...received].sort()).toEqual([...expected].sort());
 };
+
+export const expectDirEqual = async (vfs: BaseVfs, path: string, expected: DirentLike[]) => {
+  const children = await vfs.readDir(path, { withFileTypes: true });
+
+  expect(
+    children.map(child => [
+      child.name,
+      child.isDirectory() ? 'dir' : child.isFile() ? 'file' : 'symlink'
+    ])
+  ).toEqual(expected.map(dirent => (typeof dirent === 'string' ? [dirent, 'file'] : dirent)));
+};
+
+export type DirentLike = string | [path: string, type?: 'file' | 'dir' | 'symlink'];

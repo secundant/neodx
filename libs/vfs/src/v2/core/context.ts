@@ -8,6 +8,7 @@ import type { BaseVfs, VfsContentLike, VfsFileMeta, VfsLogger, VfsLogMethod } fr
 
 export interface CreateVfsContextParams {
   log?: VfsLogger;
+  logLevel?: VfsLogMethod;
   path: string;
   backend: VfsBackend;
   parent?: VfsContext;
@@ -15,7 +16,8 @@ export interface CreateVfsContextParams {
 
 export const createVfsContext = ({
   parent,
-  log = defaultLogger,
+  logLevel,
+  log = logLevel ? defaultLogger.fork({ level: logLevel }) : defaultLogger,
   ...params
 }: CreateVfsContextParams): VfsContext => {
   const store = new Map();
@@ -39,11 +41,18 @@ export const createVfsContext = ({
         meta => meta.path
       );
     },
-    registerWrite(path: string, content: VfsContentLike) {
-      ctx.__.register(ctx.resolve(path), content);
+    writePathContent(path: string, content: VfsContentLike) {
+      const resolved = ctx.resolve(path);
+      const currentMeta = ctx.get(resolved);
+
+      ctx.__.register(resolved, {
+        deleted: false,
+        content,
+        updatedAfterDelete: currentMeta?.deleted
+      });
     },
-    registerDelete(path: string, deleted: boolean) {
-      ctx.__.register(ctx.resolve(path), null, deleted);
+    deletePath(path: string) {
+      ctx.__.register(ctx.resolve(path), { content: null, deleted: true });
     },
     unregister(path: string) {
       ctx.__.unregister(ctx.resolve(path));
@@ -78,22 +87,15 @@ export const createVfsContext = ({
       getAncestors: () => getAncestors(ctx),
       getDescendants: () => getDescendants(ctx),
 
-      register: (path: string, content: VfsContentLike | null, deleted?: boolean) => {
+      register: (path, overrides) => {
         const currentMeta = ctx.get(path);
         const meta: VfsChangeMeta = {
           ...currentMeta,
+          ...overrides,
           path,
-          deleted,
-          content: isNull(content) ? content : Buffer.from(content),
+          content: isNull(overrides.content) ? overrides.content : Buffer.from(overrides.content),
           relativePath: ctx.relative(path)
         };
-
-        if (deleted) {
-          meta.updatedAfterDelete = false;
-        } else if (currentMeta?.deleted) {
-          // TODO Implement "Delete /dir + Write /dir as file" case
-          meta.updatedAfterDelete = true;
-        }
 
         ctx.__.getAll().forEach(ctx => ctx.__.getStore().set(path, meta));
       },
@@ -133,9 +135,9 @@ export interface VfsContext {
   /** Remove file from context. */
   unregister(path: string): void;
   /** Set associated file temporal content. */
-  registerWrite(path: string, content: VfsContentLike): void;
+  writePathContent(path: string, content: VfsContentLike): void;
   /** Mark path as deleted. */
-  registerDelete(path: string, deleted: boolean): void;
+  deletePath(path: string, deleted: boolean): void;
 
   // meta
 
@@ -155,14 +157,22 @@ export interface VfsContext {
     getAncestors: () => VfsContext[];
     getDescendants: () => VfsContext[];
 
-    register: (path: string, content: VfsContentLike | null, deleted?: boolean) => void;
+    register: (path: string, meta: RegisteredMeta) => void;
     unregister: (path: string) => void;
   };
+}
+
+interface RegisteredMeta extends Omit<VfsChangeMeta, 'path' | 'relativePath' | 'content'> {
+  content: VfsContentLike | null;
 }
 
 export interface VfsChangeMeta extends VfsFileMeta {
   content: Buffer | null;
   deleted?: boolean;
+  /**
+   * Indicates that the file or directory was updated after deletion.
+   * It could be used to ensure the correct order of operations.
+   */
   updatedAfterDelete?: boolean;
 }
 

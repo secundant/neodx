@@ -22,7 +22,8 @@ export function createVfsPlugin<const Extensions extends Record<keyof any, any>>
   Object.defineProperty(plugin, 'name', { value: name });
 
   return Object.assign(plugin, {
-    __vfs_plugin__: true,
-    __vfs_plugin_name__: name
+    [pluginSymbol]: name
   });
 }
+
+const pluginSymbol = Symbol('vfs-plugin');

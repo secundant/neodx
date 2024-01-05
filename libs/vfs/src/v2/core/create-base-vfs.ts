@@ -1,7 +1,6 @@
 import { colors } from '@neodx/colors';
 import { concurrently } from '@neodx/std';
 import { dirname } from 'pathe';
-import type { VfsBackend } from '../backend';
 import { getVfsBackendKind } from '../backend/shared';
 import type { VfsContext } from './context';
 import {
@@ -17,13 +16,7 @@ import {
   writeVfsFile
 } from './operations';
 import { createHookRegistry, toPublicScope } from './scopes';
-import type { BaseVfs, VfsFileAction, VfsLogger } from './types';
-
-export interface CreateBaseVfsParams {
-  log?: VfsLogger;
-  path: string;
-  backend: VfsBackend;
-}
+import type { BaseVfs, VfsFileAction } from './types';
 
 export function createBaseVfs(ctx: VfsContext) {
   const hooks = createHookRegistry();
@@ -33,9 +26,11 @@ export function createBaseVfs(ctx: VfsContext) {
     ctx.log.info('%s %s', labels[action.type], action.relativePath);
 
     await hooks.run('beforeApplyFile', action, getCurrentVfs());
-    if (action.type === 'delete') {
+    // TODO Deletion is required only for write after directory deletion, probably we can optimize it
+    if (action.type === 'delete' || action.updatedAfterDelete) {
       await ctx.backend.delete(action.path);
-    } else {
+    }
+    if (action.type !== 'delete') {
       await ctx.backend.write(action.path, action.content);
     }
     if (action.type === 'delete') {
@@ -58,7 +53,7 @@ export function createBaseVfs(ctx: VfsContext) {
       return backendKind === 'readonly';
     },
 
-    async apply(): Promise<void> {
+    async apply() {
       await hooks.run('beforeApply', await getVfsActions(ctx), getCurrentVfs());
       await concurrently(await getVfsActions(ctx), applyFile);
     },

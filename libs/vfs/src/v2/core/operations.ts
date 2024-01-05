@@ -1,5 +1,5 @@
 import { compact, concurrently, isTruthy, uniqBy } from '@neodx/std';
-import { basename, dirname, relative } from 'pathe';
+import { basename, dirname } from 'pathe';
 import { createInMemoryDirent } from '../backend/create-in-memory-backend.ts';
 import type { VfsContext } from './context';
 import type { VfsContentLike, VfsFileAction } from './types';
@@ -7,7 +7,7 @@ import type { VfsContentLike, VfsFileAction } from './types';
 export async function existsVfsPath(ctx: VfsContext, path = '.') {
   const meta = ctx.get(path);
 
-  ctx.log.debug('Check exists %s', path);
+  ctx.log.debug('Check exists %s', displayPath(ctx, path));
   if (isKnownDeletedPath(ctx, path)) return false;
   // If we know any non-deleted descendants of this path, then it's exists
   if (meta || getVfsNonDeletedDescendants(ctx, path).length > 0) return true;
@@ -30,7 +30,7 @@ export async function isVfsDir(ctx: VfsContext, path = '.') {
  * Returns actual children of a directory.
  */
 export async function readVfsDir(ctx: VfsContext, path = '.') {
-  ctx.log.debug('Read dir %s', path);
+  ctx.log.debug('Read dir %s', displayPath(ctx, path));
   const actualChildren = await ctx.backend.readDir(path);
   const changes = ctx.getRelativeChanges(path);
   const isNotDeleted = (name: string) => !isKnownDeletedPath(ctx, name);
@@ -57,7 +57,7 @@ export async function tryReadVfsFile(
   path: string,
   encoding?: BufferEncoding
 ): Promise<Buffer | string | null> {
-  ctx.log.debug('Read %s', path);
+  ctx.log.debug('Read %s', displayPath(ctx, path));
   if (!(await isVfsFile(ctx, path))) return null;
   const content = ctx.get(path)?.content ?? (await ctx.backend.read(path));
 
@@ -84,7 +84,7 @@ export async function readVfsFile(
 }
 
 export async function writeVfsFile(ctx: VfsContext, path: string, content: VfsContentLike) {
-  ctx.log.debug('Write %s', path);
+  ctx.log.debug('Write %s', displayPath(ctx, path));
   const actualContent = await tryReadVfsBackendFile(ctx, path);
 
   ensureVfsPath(ctx, ctx.resolve(path));
@@ -92,13 +92,13 @@ export async function writeVfsFile(ctx: VfsContext, path: string, content: VfsCo
     // If content is not changed, then we can just forget about this file
     ctx.unregister(path);
   } else {
-    ctx.registerWrite(path, content);
+    ctx.writePathContent(path, content);
   }
 }
 
 export async function deleteVfsPath(ctx: VfsContext, path: string) {
-  ctx.log.debug('Delete %s', path);
-  ctx.registerDelete(path, true);
+  ctx.log.debug('Delete %s', displayPath(ctx, path));
+  ctx.deletePath(path, true);
   for (const meta of ctx.getRelativeChanges(path)) {
     ctx.unregister(meta.path);
   }
@@ -112,9 +112,13 @@ export async function deleteVfsPath(ctx: VfsContext, path: string) {
 }
 
 export async function renameVfs(ctx: VfsContext, from: string, ...to: string[]) {
-  ctx.log.debug('Rename %s to %s', from, to.join(', '));
+  ctx.log.debug(
+    'Rename %s to %s',
+    displayPath(ctx, from),
+    to.map(path => displayPath(ctx, path)).join(', ')
+  );
   if (!(await existsVfsPath(ctx, from))) {
-    ctx.log.debug('Path %s not exists, rename skipped', from);
+    ctx.log.debug('Path %s not exists, rename skipped', displayPath(ctx, from));
     return;
   }
   const content = await readVfsFile(ctx, from);
@@ -132,7 +136,7 @@ export async function getVfsActions(ctx: VfsContext, types?: VfsFileAction['type
   const changes = await concurrently(
     ctx.getAllDirectChanges(),
     async ({ path, deleted, content, ...meta }): Promise<VfsFileAction | null> => {
-      ctx.log.debug('Resolving action for %s', path);
+      ctx.log.debug('Resolving action for %s', displayPath(ctx, path));
       const exists = await ctx.backend.exists(path);
 
       if (deleted && !exists) {
@@ -175,12 +179,14 @@ export async function tryReadVfsBackendFile(ctx: VfsContext, path: string) {
   return (await ctx.backend.isFile(resolved)) ? await ctx.backend.read(resolved) : null;
 }
 
-// If we have meta of a deleted path or any of its ancestors, then it's deleted
+export const displayPath = (ctx: VfsContext, path: string) => ctx.relative(path) || '.';
+
 const isDirectDeletedPath = (ctx: VfsContext, path: string) => ctx.get(path)?.deleted;
-const getAllPathsBetween = (parent: string, current: string) =>
-  relative(parent, current)
-    .split('/')
-    .filter(path => !path.startsWith('.'));
+/** The directory itself or any of its ancestors is deleted */
 const isKnownDeletedPath = (ctx: VfsContext, path: string) =>
   isDirectDeletedPath(ctx, path) ||
-  getAllPathsBetween(ctx.path, ctx.resolve(path)).some(path => isDirectDeletedPath(ctx, path));
+  ctx
+    .relative(path)
+    .split('/')
+    .filter(path => !path.startsWith('.'))
+    .some(path => isDirectDeletedPath(ctx, path));
