@@ -4,6 +4,7 @@ import { normalize } from './parsers/normalize';
 import { inlineChars } from './shared.ts';
 
 export const matchGlob = (glob: string | string[], path: string) => createGlobMatcher(glob)(path);
+export const globToRegExp = (glob: string) => new RegExp(`^${convert(normalize(glob))}$`, 's');
 
 export function createGlobMatcher(glob: string | string[]) {
   const patterns = toArray(glob);
@@ -40,7 +41,6 @@ const simpleMatchRe = new RegExp(
   `^\\*\\*\\/(\\*)?((?<single>(${inlineChars}+))|((?<prefix>(${inlineChars}*))\\{(?<variants>(${inlineChars}+(?:,${inlineChars}+)*))}))$`
 );
 
-const globToRegExp = (glob: string) => new RegExp(`^${convert(normalize(glob))}$`, 's');
 const isPathSeparator = (char: string) => char === '/' || char === '\\';
 /**
  * "Simple" pattern starts with glob and ends with some static part.
