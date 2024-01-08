@@ -1,3 +1,82 @@
+# API Reference
+
+## `walkGlob(glob: string | string[], options?: WalkGlobParams)`
+
+The low-level API that enables the creation of custom glob-based APIs.
+It extracts static paths from glob patterns and includes all logic for glob matching, filtering, and cancellation handling.
+
+```typescript
+declare async function walkGlob<Item, Result = string>(
+  glob: string | string[],
+  {
+    ignore = False,
+    signal,
+    timeout,
+
+    reader,
+    mapPath = identity,
+    mapResult
+  }?: WalkGlobParams<Item, Result>
+): Promise<Result[]>;
+```
+
+### Simple example
+
+```typescript
+import { walkGlob } from '@neodx/glob';
+
+// returns all the files in the current directory
+await walkGlob('*.ts', {
+  reader: ({ path }) => readdir(path, { recursive: true })
+});
+```
+
+### `WalkGlobParams`
+
+- [WalkGlobCommonParams](#walkglobcommonparams)
+
+```typescript
+export interface WalkGlobParams<Item, Result> extends WalkGlobCommonParams {
+  /**
+   * Reads base path and returns content of that.
+   * By default, expected to return a list of all path's descendants.
+   * @example
+   * walkGlob('**\/*.ts', {
+   *   reader: ({ path }) => readdir(path, { recursive: true })
+   * })
+   */
+  reader: (params: WalkReaderParams) => Item[] | Promise<Item[]>;
+  /**
+   * Should return a path relative to the glob if reader returns a list of something else.
+   * @default identity - returns the item as is, expecting it to be a path
+   * @example
+   * walkGlob('**\/*.ts', {
+   *   reader: ({ path }) => readdir(path, { recursive: true, withFileTypes: true }),
+   *   mapPath: dirent => dirent.name,
+   *   mapResult: (dirent, { path }) => join(path, dirent.name)
+   * });
+   */
+  mapPath?: (item: Item) => string;
+  /**
+   * Converts collected items to the desired result (it could be not just a path).
+   * @default join(path, item) - returns the full relative path
+   */
+  mapResult?: (item: Item, params: WalkReaderParams) => Result;
+}
+```
+
+### `WalkGlobCommonParams`
+
+Common params could be used in top-level APIs around walkGlob.
+
+```typescript
+export interface WalkGlobCommonParams {
+  timeout?: number;
+  ignore?: WalkIgnoreInput;
+  signal?: AbortSignal;
+}
+```
+
 ## `createGlobMatcher(glob: string | string[])`
 
 Returns a function that can be used to match a string against the given glob pattern(s).
@@ -36,8 +115,8 @@ console.log(
 );
 // [
 //   ['', ['*.config.js']],               // no base path
-//   ['src', ['**/*.ts', '*.vendor.js']], // base path is `src`
-//   ['tests', ['**/*.ts']],              // base path is `tests`
+//   ['src', ['**/*.ts', '*.vendor.js']], // base path is `src`, multiple patterns with same base path are grouped
+//   ['tests', ['**/*.ts']],              // base path is `src`, a single pattern with a different base path
 // ]
 ```
 
