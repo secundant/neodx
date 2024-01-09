@@ -11,7 +11,7 @@ export function getPointerOffset(source: string, lineNumber: number, columnNumbe
   }
   const newLineLength = getNewLineLength(source);
 
-  return sum(fromLength(lineNumber - 1, no => lines[no].length + newLineLength)) + columnNumber;
+  return sum(fromLength(lineNumber - 1, no => lines[no]!.length + newLineLength)) + columnNumber;
 }
 
 export const newlineRe = /\r?\n/;

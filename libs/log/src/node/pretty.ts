@@ -74,7 +74,7 @@ export function pretty<const Level extends string>({
   const getLevelSetting = <T>(
     settings: Partial<Record<Level, T>> | null | false,
     level: Level
-  ): T | null => (settings && hasOwn(settings, level) ? settings[level] : null);
+  ): T | null => (settings && hasOwn(settings, level) ? settings[level]! : null);
   const maxBadgesLength = levelBadges
     ? Math.max(...values(levelBadges).map(b => String(b).length))
     : 0;

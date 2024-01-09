@@ -93,7 +93,7 @@ export async function runTestBuild({
       logLevel: 'silent',
       plugins: [tsconfigPaths()]
     })
-  )[0];
+  )[0]!;
 
   if (!('output' in res)) throw new Error('Expected output');
 

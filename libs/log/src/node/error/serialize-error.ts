@@ -9,7 +9,7 @@ export function serializeError(error: unknown) {
     name: error.name,
     stack: error.stack,
     message: error.message,
-    ...getErrorCustomProperties(error)
+    ...(getErrorCustomProperties(error) ?? {})
   };
 
   if (error.cause instanceof Error) {

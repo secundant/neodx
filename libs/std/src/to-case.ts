@@ -42,7 +42,7 @@ export const cases = {
 };
 
 const applyPattern = (str: string, pattern: string) =>
-  apply(pattern[0], str[0]) + apply(pattern[1], str.slice(1));
+  apply(pattern[0]!, str[0]!) + apply(pattern[1]!, str.slice(1));
 
 function matches(str: string, delimiters: string): string[] {
   const regex = new RegExp('([A-Z]?)([^' + delimiters + ']*)', 'g');

@@ -43,7 +43,7 @@ export function parseSingleStack(raw: string): ParsedStack | null {
   // if a location was matched, pass it to extractLocation() otherwise pass all sanitizedLine
   // because this line doesn't have function name
   const [url, lineNumber, columnNumber] = parseTraceLocation(
-    location ? location[1] : sanitizedLine
+    location ? location[1]! : sanitizedLine
   );
   let method = (location && sanitizedLine) || '';
   let file = url && ['eval', '<anonymous>'].includes(url) ? undefined : url;
@@ -66,9 +66,10 @@ export type TraceLocation = [url: string, line?: string, column?: string];
 export function parseTraceLocation(urlLike: string): TraceLocation {
   // Fail-fast but return locations like "(native)"
   if (!urlLike.includes(':')) return [urlLike];
-  const parts = LOCATIONS_RE.exec(urlLike.replace(/^\(|\)$/g, ''));
 
-  return parts ? [parts[1], parts[2] || undefined, parts[3] || undefined] : [urlLike];
+  return (
+    (LOCATIONS_RE.exec(urlLike.replace(/^\(|\)$/g, ''))?.slice(1, 4) as TraceLocation) ?? [urlLike]
+  );
 }
 
 const LOCATIONS_RE = /(.+?)(?::(\d+))?(?::(\d+))?$/;

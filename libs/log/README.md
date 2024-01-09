@@ -19,6 +19,9 @@
   </a>
   <img src="https://img.shields.io/npm/l/@neodx/log.svg" alt="license"/>
 </div>
+<div align="center">
+  <a href="https://neodx.pages.dev/log">Explore documentation</a>
+</div>
 
 > **Warning**
 > This project is still in the development stage, under 0.x.x version breaking changes can be introduced in any release, but I'll try to make them loud.
