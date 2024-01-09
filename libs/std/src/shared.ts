@@ -8,11 +8,15 @@ export type AnyRecord = Record<AnyKey, any>;
 export const toArray = <T>(value: T | T[]) => (Array.isArray(value) ? value : [value]);
 export const toInt = (value: string) => Number.parseInt(value, 10);
 
+export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export const identity = <T>(value: T): T => value;
 export const isTruthy = Boolean as unknown as <T>(value: T | Falsy) => value is T;
 
 export const True = (): true => true;
 export const False = (): false => false;
+
+export const test = (re: RegExp) => (value: string) => re.test(value);
 
 export const rethrow = (error: unknown): never => {
   throw error;
