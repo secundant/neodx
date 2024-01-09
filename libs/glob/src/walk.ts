@@ -1,3 +1,4 @@
+import type { LoggerMethods } from '@neodx/log';
 import {
   combineAbortSignals,
   every,
@@ -5,6 +6,7 @@ import {
   identity,
   isTruthy,
   isTypeOfFunction,
+  not,
   prop,
   uniqBy
 } from '@neodx/std';
@@ -38,9 +40,18 @@ export interface WalkGlobParams<Item, Result> extends WalkGlobCommonParams {
  * Common params could be used in top-level APIs around walkGlob.
  */
 export interface WalkGlobCommonParams {
+  /** Max time to wait for the glob to finish. */
   timeout?: number;
+  /** Glob patterns, RegExp or a function to ignore paths. */
   ignore?: WalkIgnoreInput;
+  /** Abort signal for manual cancellation. */
   signal?: AbortSignal;
+  /**
+   * Logger to debug the glob.
+   * @default No logging
+   * @see `@neodx/log`
+   */
+  log?: LoggerMethods<'debug'>;
 }
 
 /**
@@ -56,22 +67,39 @@ export interface WalkReaderParams {
    * path: 'src'
    * @example Multiple base paths
    * glob: 'src/{foo,bar}/*.ts'
-   * path: 'src/foo', path: 'src/bar'
+   * path: 'src/foo' and 'src/bar'
    * @example Relative glob with no base path
    * glob: '**\/*.ts'
    * path: ''
    */
   path: string;
   /**
-   * Accepts a path relative to the glob.
-   * Returns true if the path matches the glob and not ignored.
+   * Accepts a path relative to the glob and returns true if it matches the glob and not ignored.
+   *
+   * Aggregates `isMatched` and `isIgnored` functions, if you need to get more granular control, use them directly.
+   *
+   * @alias `path => isMatched(path) && !isIgnored(path)`
+   * @see isMatched
+   * @see isIgnored
    */
-  match: WalkIgnore;
+  match: WalkPathChecker;
   signal: AbortSignal;
+  /**
+   * Accepts a path relative to the glob and returns true if it should be ignored.
+   * @see isMatched
+   * @see match
+   */
+  isIgnored: WalkPathChecker;
+  /**
+   * Accepts a path relative to the glob and returns true if it matches the glob.
+   * @see isIgnored
+   * @see match
+   */
+  isMatched: WalkPathChecker;
 }
 
-export type WalkIgnoreInput = WalkIgnore | RegExp | string | string[];
-export type WalkIgnore = (path: string) => boolean;
+export type WalkIgnoreInput = WalkPathChecker | RegExp | string | string[];
+export type WalkPathChecker = (path: string) => boolean;
 
 interface InternalCollectedItem<Item, Result> {
   path: string;
@@ -82,6 +110,7 @@ interface InternalCollectedItem<Item, Result> {
 export async function walkGlob<Item, Result = string>(
   glob: string | string[],
   {
+    log,
     ignore = False,
     signal: customSignal,
     timeout,
@@ -90,18 +119,22 @@ export async function walkGlob<Item, Result = string>(
     mapResult
   }: WalkGlobParams<Item, Result>
 ) {
-  const isIgnored = createIgnoreChecker(ignore);
+  const isIgnoredFullPath = createIgnoreChecker(ignore);
   const collected: InternalCollectedItem<Item, Result>[] = [];
   const signal = combineAbortSignals([customSignal, timeout && AbortSignal.timeout(timeout)]);
 
   for (const [path, patterns] of extractGlobPaths(glob)) {
-    if (isIgnored(path)) continue;
+    if (isIgnoredFullPath(path)) continue;
     signal.throwIfAborted();
+    log?.debug('reading %s at "%s"', new Intl.ListFormat().format(patterns), path || '.');
+
     const toFullPath = (subPath: string) => join(path, subPath);
     const itemToResult = mapResult ?? (item => toFullPath(mapPath(item, params)) as Result);
-    const isNotIgnoredSubPath = (subPath: string) => !isIgnored(toFullPath(subPath));
-    const match = every(isNotIgnoredSubPath, createGlobMatcher(patterns));
-    const params = { path, match, signal };
+    const isIgnored = (subPath: string) => isIgnoredFullPath(toFullPath(subPath));
+    const isMatched = createGlobMatcher(patterns);
+
+    const match = every(isMatched, not(isIgnored as any));
+    const params = { path, match, isIgnored, isMatched, signal };
     const allFoundItems = await reader(params);
 
     collected.push(

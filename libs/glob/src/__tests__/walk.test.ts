@@ -2,7 +2,7 @@ import { identity, sleep } from '@neodx/std';
 import { createTmpVfs } from '@neodx/vfs/testing-utils';
 import { readdir } from 'node:fs/promises';
 import { join, relative, resolve } from 'node:path';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vitest } from 'vitest';
 import { walkGlob, type WalkGlobParams, type WalkIgnoreInput } from '../walk.ts';
 
 describe('walk', () => {
@@ -132,6 +132,28 @@ describe('walk', () => {
     ]);
   });
 
+  test('should extract base paths', async () => {
+    const reader = vitest.fn(() => ['foo.ts']);
+    const expectedParams = (path: string) => ({
+      path,
+      match: expect.any(Function),
+      signal: expect.any(AbortSignal),
+      isIgnored: expect.any(Function),
+      isMatched: expect.any(Function)
+    });
+
+    await walkGlob('src/*.ts', { reader });
+    expect(reader).toHaveBeenCalledWith(expectedParams('src/'));
+    reader.mockClear();
+
+    await walkGlob('src/{foo,bar}/modules/{first,second}/*.ts', { reader });
+    expect(reader).toHaveReturnedTimes(4);
+    expect(reader).toHaveBeenCalledWith(expectedParams('src/foo/modules/first/'));
+    expect(reader).toHaveBeenCalledWith(expectedParams('src/foo/modules/second/'));
+    expect(reader).toHaveBeenCalledWith(expectedParams('src/bar/modules/first/'));
+    expect(reader).toHaveBeenCalledWith(expectedParams('src/bar/modules/second/'));
+  });
+
   describe('should allow to create top-level glob walker', async () => {
     const tmp = await createTmpVfs({
       initialFiles: {
@@ -199,7 +221,7 @@ describe('walk', () => {
       const { glob } = createTestGlob();
 
       expect(
-        await glob(['src/{modules,__tests__}/*.ts', '*.config.*'], {
+        await glob(['src/{modules,__tests__}/*.ts', 'src/__tests__/*.js', '*.config.*'], {
           cwd: tmp.root,
           ignore: ['**/*.ignore-me.ts', '**/__tests__/foo.test.ts']
         })
