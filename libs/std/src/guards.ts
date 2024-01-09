@@ -13,15 +13,26 @@ export const isError = (target: unknown): target is Error => target instanceof E
 export const isEmptyObject = (target: AnyRecord): target is Record<never, never> =>
   isEmpty(keys(target));
 
-export const negate =
+export const not =
   <R>(fn: (value: unknown) => value is R) =>
   <Value>(value: Value): value is Exclude<Value, R> =>
     !fn(value);
+export const some =
+  <Value>(...predicates: [...((value: Value) => boolean)[]]) =>
+  (value: Value): boolean =>
+    predicates.some(predicate => predicate(value));
+export const every =
+  <Value>(...predicates: [...((value: Value) => boolean)[]]) =>
+  (value: Value): boolean =>
+    predicates.every(predicate => predicate(value));
 
-const createTypeof = (type: string) => (value: unknown) => typeof value === type;
+const createTypeof =
+  <T>(type: string) =>
+  (value: unknown): value is T =>
+    typeof value === type;
 
-export const isTypeOfString = createTypeof('string') as IsTypeOfFn<string>;
-export const isTypeOfFunction = createTypeof('function') as IsTypeOfFn<AnyFunction>;
+export const isTypeOfString = createTypeof<string>('string');
+export const isTypeOfFunction = createTypeof<AnyFunction>('function');
 
 export const isNull = (value: unknown): value is null => value === null;
 export const isUndefined = (value: unknown): value is undefined => value === undefined;
@@ -46,6 +57,6 @@ const getLastPrototypeOf = (target: unknown): unknown => {
   return proto === null ? target : getLastPrototypeOf(proto);
 };
 
-export const isNotUndefined = negate(isUndefined);
-export const isNotNull = negate(isNull);
-export const isNotNil = negate(isNil);
+export const isNotUndefined = not(isUndefined);
+export const isNotNull = not(isNull);
+export const isNotNil = not(isNil);

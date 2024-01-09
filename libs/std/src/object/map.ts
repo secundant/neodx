@@ -2,11 +2,15 @@ import { type AnyKey, type AnyRecord, entries, fromEntries, type ObjectEntry } f
 
 export function mapValues<Input extends AnyRecord, ResultValue>(
   target: Input,
+  fn: (value: Input[keyof Input], key: keyof Input) => ResultValue
+): Record<keyof Input, ResultValue>;
+export function mapValues<Input extends AnyRecord, ResultValue>(
+  target: Input,
   fn: <Key extends keyof Input>(value: Input[Key], key: Key) => ResultValue
 ): Record<keyof Input, ResultValue>;
-export function mapValues<Input extends AnyRecord, OutputValue>(
+export function mapValues<Input extends AnyRecord, ResultValue>(
   target: Input,
-  fn: <Key extends keyof Input>(value: Input[Key], key: Key) => OutputValue
+  fn: (value: Input[keyof Input], key: keyof Input) => ResultValue
 ) {
   return mapEntries(target, ([key, value]) => [key, fn(value, key)]);
 }

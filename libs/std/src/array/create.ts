@@ -15,5 +15,6 @@ export function fromRange<T>(
   end: number,
   fn: IteratorFn<T> = identity as IteratorFn<T>
 ) {
+  if (start > end) [start, end] = [end, start];
   return fromLength(end - start + 1, index => fn(index + start));
 }

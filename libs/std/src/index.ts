@@ -12,10 +12,18 @@ export {
   uniq,
   uniqBy
 } from './array';
-export { asyncReduce, concurrent, concurrently, deduplicateAsync } from './async';
+export {
+  anyAbortSignal,
+  asyncReduce,
+  combineAbortSignals,
+  concurrent,
+  concurrently,
+  deduplicateAsync
+} from './async';
 export { debounce } from './debounce';
 export type { Nil } from './guards';
 export {
+  every,
   isEmpty,
   isEmptyObject,
   isError,
@@ -30,11 +38,12 @@ export {
   isTypeOfFunction,
   isTypeOfString,
   isUndefined,
-  negate
+  not,
+  some
 } from './guards';
 export { invariant } from './invariant';
 export { sum } from './math';
-export { memoizeWeak } from './memoize';
+export { memoize, memoizeWeak } from './memoize';
 export {
   compactObject,
   filterObject,
@@ -73,6 +82,8 @@ export {
   keys,
   lazyValue,
   rethrow,
+  sleep,
+  test,
   toArray,
   toInt,
   True,
