@@ -4,6 +4,7 @@ import {
   concurrently,
   False,
   isDefined,
+  isTypeOfString,
   some,
   True,
   tryCreateTimeoutSignal
@@ -11,6 +12,14 @@ import {
 import { join } from 'pathe';
 import type { VfsDirent } from '../backend/shared.ts';
 import type { BaseVfs } from '../core/types.ts';
+import { createVfsPlugin } from '../create-vfs-plugin.ts';
+
+export interface ScanPluginApi {
+  scan(path?: string): Promise<string[]>;
+  scan(params?: ScanVfsParams): Promise<string[]>;
+  scan(path: string, params: ScanVfsParams & { withFileTypes: true }): Promise<ScannedItem[]>;
+  scan(params: ScanVfsParams & { withFileTypes: true }): Promise<ScannedItem[]>;
+}
 
 export interface ScanVfsParams {
   /** Path to scan. */
@@ -49,18 +58,19 @@ export interface ScannedItem {
 export type ScanVfsDirentChecker = (item: ScannedItem) => boolean;
 export type ScanVfsCache = ReturnType<typeof createScanVfsCache>;
 
-export const createScanVfsCache = () => {
-  const visited = {} as Record<string, Promise<VfsDirent[]>>;
-
-  return {
-    visited,
-    clear() {
-      for (const key of Object.keys(visited)) {
-        delete visited[key];
-      }
+export function scan() {
+  return createVfsPlugin<ScanPluginApi>('scan', vfs => {
+    async function scanImpl(pathOrParams?: string | ScanVfsParams, params?: ScanVfsParams) {
+      return await scanVfs(
+        vfs,
+        isTypeOfString(pathOrParams) ? { ...params, path: pathOrParams } : pathOrParams
+      );
     }
-  };
-};
+
+    vfs.scan = scanImpl as ScanPluginApi['scan'];
+    return vfs;
+  });
+}
 
 export async function scanVfs(
   vfs: BaseVfs,
@@ -119,3 +129,16 @@ export async function scanVfs(
   await iterate({ relativePath: path, depth: 0 });
   return withFileTypes ? result : result.map(item => item.relativePath);
 }
+
+export const createScanVfsCache = () => {
+  const visited = {} as Record<string, Promise<VfsDirent[]>>;
+
+  return {
+    visited,
+    clear() {
+      for (const key of Object.keys(visited)) {
+        delete visited[key];
+      }
+    }
+  };
+};

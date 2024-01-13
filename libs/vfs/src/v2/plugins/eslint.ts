@@ -16,7 +16,7 @@ export interface EsLintPluginParams {
   eslintParams?: ESLint.Options;
 }
 
-export function eslintPlugin({
+export function eslint({
   fix = true,
   auto = true,
   logErrors = true,

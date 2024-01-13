@@ -6,12 +6,12 @@ import { createReadonlyBackend } from './backend/create-readonly-backend';
 import { createVfsContext } from './core/context';
 import { createBaseVfs } from './core/create-base-vfs';
 import type { VfsLogger, VfsLogMethod } from './core/types';
-import { eslintPlugin } from './plugins/eslint';
-import { globPlugin } from './plugins/glob/plugin';
+import { eslint } from './plugins/eslint';
 import { json } from './plugins/json';
-import { packageJsonPlugin } from './plugins/package-json';
+import { packageJson } from './plugins/package-json';
 import type { PrettierPluginParams } from './plugins/prettier';
 import { prettier } from './plugins/prettier';
+import { scan } from './plugins/scan.ts';
 
 export interface CreateVfsParams {
   log?: VfsLogger | VfsLogMethod | 'silent';
@@ -39,9 +39,9 @@ export function createVfs(
 
   return createBaseVfs(context).pipe(
     json(),
-    globPlugin(),
-    eslintPlugin(),
+    scan(),
+    eslint(),
     prettier(params.prettier),
-    packageJsonPlugin()
+    packageJson()
   );
 }

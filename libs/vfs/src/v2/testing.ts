@@ -1,7 +1,7 @@
 import { ensureFile, writeFile } from '@neodx/fs';
-import { concurrently, entries } from '@neodx/std';
+import { concurrently, entries, identity } from '@neodx/std';
 import { dirSync } from 'tmp';
-import { expect } from 'vitest';
+import { expect, vitest } from 'vitest';
 import type { VirtualInitializer } from './backend';
 import { createInMemoryFilesRecord } from './backend';
 import type { BaseVfs } from './core/types.ts';
@@ -29,6 +29,19 @@ export const initializeDir = (dir: string, initialize: VirtualInitializer) =>
     },
     10
   );
+
+export const mockReadDir = (
+  vfs: BaseVfs,
+  mock: (
+    original: BaseVfs['readDir']
+  ) => (...args: Parameters<BaseVfs['readDir']>) => any = identity
+) => {
+  const original = vfs.readDir.bind(vfs);
+  const mocked = vitest.fn(mock(original));
+
+  vfs.readDir = mocked as any;
+  return mocked;
+};
 
 export const expectArrayEqual = <T>(received: T[], expected: T[]) => {
   // eslint-disable-next-line @typescript-eslint/require-array-sort-compare
