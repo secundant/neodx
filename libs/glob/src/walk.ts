@@ -8,6 +8,7 @@ import {
   isTypeOfFunction,
   not,
   prop,
+  tryCreateTimeoutSignal,
   uniqBy
 } from '@neodx/std';
 import { join } from 'node:path';
@@ -121,7 +122,7 @@ export async function walkGlob<Item, Result = string>(
 ) {
   const isIgnoredFullPath = createIgnoreChecker(ignore);
   const collected: InternalCollectedItem<Item, Result>[] = [];
-  const signal = combineAbortSignals([customSignal, timeout && AbortSignal.timeout(timeout)]);
+  const signal = combineAbortSignals([customSignal, tryCreateTimeoutSignal(timeout)]);
 
   for (const [path, patterns] of extractGlobPaths(glob)) {
     if (isIgnoredFullPath(path)) continue;
