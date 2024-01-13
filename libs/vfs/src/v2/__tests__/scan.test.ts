@@ -157,4 +157,18 @@ describe('scan', () => {
       })
     ).rejects.toThrowError('This operation was aborted');
   });
+
+  test('should support max depth', async () => {
+    const vfs = await getDeepVfs();
+    const filter = vitest.fn(item => item.name.endsWith('.ts'));
+
+    expect(
+      await scanVfs(vfs, '.', {
+        filter,
+        maxDepth: 1
+      })
+    ).toEqual(['a.ext.ts', 'a.ts', 'b.ts']);
+    expect(filter).toHaveBeenCalledTimes(4);
+    expect(await scanVfs(vfs, '.', { maxDepth: 30 })).toEqual(await scanVfs(vfs));
+  });
 });

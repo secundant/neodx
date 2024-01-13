@@ -1,4 +1,12 @@
-import { combineAbortSignals, concurrently, False, True, tryCreateTimeoutSignal } from '@neodx/std';
+import {
+  combineAbortSignals,
+  compact,
+  concurrently,
+  every,
+  False,
+  True,
+  tryCreateTimeoutSignal
+} from '@neodx/std';
 import { join } from 'pathe';
 import type { VfsDirent } from '../backend/shared.ts';
 import type { BaseVfs } from '../core/types.ts';
@@ -14,8 +22,12 @@ export interface ScanVfsParams {
    * @default True
    */
   filter?: ScanVfsDirentChecker;
+  /** Custom abort signal. */
   signal?: AbortSignal;
+  /** Timeout in milliseconds. */
   timeout?: number;
+  /** Maximum depth to scan. */
+  maxDepth?: number;
 }
 
 export interface ScanVfsIterationParams {
@@ -56,13 +68,18 @@ export function createVfsScanner(vfs: BaseVfs) {
 
   return async function scan(
     path = '.',
-    { filter = True, barrier = False, signal: manualSignal, timeout }: ScanVfsParams = {}
+    { filter = True, barrier = False, signal: manualSignal, timeout, maxDepth }: ScanVfsParams = {}
   ) {
     const context: InternalGlobalContext = {
       signal: combineAbortSignals([manualSignal, tryCreateTimeoutSignal(timeout)]),
       result: [],
       filter,
-      barrier
+      barrier: every(
+        ...compact([
+          barrier,
+          maxDepth && ((_: VfsDirent, params: ScanVfsIterationParams) => params.depth >= maxDepth)
+        ])
+      )
     };
 
     await iterate({ path, depth: 0 }, context);
