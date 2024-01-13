@@ -9,6 +9,9 @@ export const toArray = <T>(value: T | T[]) => (Array.isArray(value) ? value : [v
 export const toInt = (value: string) => Number.parseInt(value, 10);
 
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+export const forEach = <T>(iterable: Iterable<T>, fn: (value: T) => void) => {
+  for (const value of iterable) fn(value);
+};
 
 export const identity = <T>(value: T): T => value;
 export const isTruthy = Boolean as unknown as <T>(value: T | Falsy) => value is T;

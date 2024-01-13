@@ -13,12 +13,12 @@ export {
   uniqBy
 } from './array';
 export {
-  anyAbortSignal,
   asyncReduce,
   combineAbortSignals,
   concurrent,
   concurrently,
-  deduplicateAsync
+  deduplicateAsync,
+  tryCreateTimeoutSignal
 } from './async';
 export { debounce } from './debounce';
 export type { Nil } from './guards';
