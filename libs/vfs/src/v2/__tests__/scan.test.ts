@@ -1,7 +1,7 @@
 import { sleep } from '@neodx/std';
 import { describe, expect, test, vitest } from 'vitest';
-import { scanVfs } from '../plugins/scan.ts';
-import { createTmpVfs, expectArrayEqual } from '../testing.ts';
+import { createScanVfsCache, scanVfs } from '../plugins/scan.ts';
+import { createTmpVfs, expectArrayEqual, mockReadDir } from '../testing.ts';
 
 const createNestedObject = (
   depth: number,
@@ -75,7 +75,7 @@ describe('scan', () => {
   test('should support filter', async () => {
     const vfs = await getSimpleVfs();
 
-    expectArrayEqual(await scanVfs(vfs, '.', { filter: item => item.name.endsWith('.ts') }), [
+    expectArrayEqual(await scanVfs(vfs, { filter: item => item.dirent.name.endsWith('.ts') }), [
       'a.ext.ts',
       'a.ts',
       'b.ts',
@@ -87,10 +87,10 @@ describe('scan', () => {
 
   test('should support filter by depth (inefficient without barrier)', async () => {
     const vfs = await getDeepVfs();
-    const filter = vitest.fn((item, params) => item.name.endsWith('.ts') && params.depth === 0);
+    const filter = vitest.fn(item => item.dirent.name.endsWith('.ts') && item.depth === 1);
 
     expect(
-      await scanVfs(vfs, '.', {
+      await scanVfs(vfs, {
         filter
       })
     ).toEqual(['a.ext.ts', 'a.ts', 'b.ts']);
@@ -99,60 +99,56 @@ describe('scan', () => {
 
   test('should support barrier', async () => {
     const vfs = await getDeepVfs();
-    const filter = vitest.fn(item => item.name.endsWith('.ts'));
-    const barrier = vitest.fn((item, params) => params.depth === 0);
+    const filter = vitest.fn(item => item.dirent.name.endsWith('.ts'));
+    const barrier = vitest.fn(item => item.depth > 0);
 
     expect(
-      await scanVfs(vfs, '.', {
+      await scanVfs(vfs, {
         filter,
         barrier
       })
     ).toEqual(['a.ext.ts', 'a.ts', 'b.ts']);
     expect(filter).toHaveBeenCalledTimes(4);
     expect(barrier).toHaveBeenCalledTimes(1);
-    expect(barrier).toHaveBeenCalledWith(expect.objectContaining({ name: 'dir1' }), {
-      depth: 0,
-      path: '.'
-    });
+    expect(barrier).toHaveBeenCalledWith(
+      expect.objectContaining({ depth: 1, relativePath: 'dir1' })
+    );
   });
 
   test('should support timeout', async () => {
     const vfs = await getDeepVfs();
-    const originalReadDir = vfs.readDir;
-    const readDirMock = vitest.fn(async (...args) => {
+    const readDir = mockReadDir(vfs, fn => async (...args) => {
       await sleep(20);
-      return originalReadDir.apply(vfs, args as any);
+      return fn.apply(vfs, args);
     });
 
-    vfs.readDir = readDirMock as any;
-
-    await expect(scanVfs(vfs, '.', { timeout: 10 })).rejects.toThrowError(
+    await expect(scanVfs(vfs, { timeout: 10 })).rejects.toThrowError(
       'The operation was aborted due to timeout'
     );
-    expect(vfs.readDir).toHaveBeenCalledTimes(1);
-    expect(vfs.readDir).toHaveBeenCalledWith('.', { withFileTypes: true });
+    expect(readDir).toHaveBeenCalledTimes(1);
+    expect(readDir).toHaveBeenCalledWith('.', { withFileTypes: true });
 
-    readDirMock.mockClear();
-    const filter = vitest.fn(item => item.name.endsWith('.ts'));
+    readDir.mockClear();
+    const filter = vitest.fn(item => item.dirent.name.endsWith('.ts'));
 
     await expect(
-      scanVfs(vfs, '.', {
+      scanVfs(vfs, {
         filter,
         timeout: 30
       })
     ).rejects.toThrowError('The operation was aborted due to timeout');
     expect(filter).toHaveBeenCalledTimes(4);
-    expect(vfs.readDir).toHaveBeenCalledTimes(2);
+    expect(readDir).toHaveBeenCalledTimes(2);
   });
 
   test('should support abort signal', async () => {
     const vfs = await getDeepVfs();
     const controller = new AbortController();
 
-    expect(await scanVfs(vfs, '.', { signal: controller.signal })).length(83);
+    expect(await scanVfs(vfs, { signal: controller.signal })).length(83);
     controller.abort();
     await expect(
-      scanVfs(vfs, '.', {
+      scanVfs(vfs, {
         signal: controller.signal
       })
     ).rejects.toThrowError('This operation was aborted');
@@ -160,15 +156,33 @@ describe('scan', () => {
 
   test('should support max depth', async () => {
     const vfs = await getDeepVfs();
-    const filter = vitest.fn(item => item.name.endsWith('.ts'));
+    const filter = vitest.fn(item => item.dirent.name.endsWith('.ts'));
 
     expect(
-      await scanVfs(vfs, '.', {
+      await scanVfs(vfs, {
         filter,
         maxDepth: 1
       })
     ).toEqual(['a.ext.ts', 'a.ts', 'b.ts']);
     expect(filter).toHaveBeenCalledTimes(4);
-    expect(await scanVfs(vfs, '.', { maxDepth: 30 })).toEqual(await scanVfs(vfs));
+    expectArrayEqual(await scanVfs(vfs, { maxDepth: 30 }), await scanVfs(vfs));
+  });
+
+  test('should share cache between calls', async () => {
+    const cache = createScanVfsCache();
+    const vfs = await getDeepVfs();
+    const readDir = mockReadDir(vfs);
+
+    await scanVfs(vfs, { cache, path: 'dir1/dir2/dir3' });
+    expect(readDir).toHaveBeenCalledTimes(36);
+    await scanVfs(vfs, { cache, path: 'dir1/dir2/dir3' });
+    expect(readDir).toHaveBeenCalledTimes(36);
+    await scanVfs(vfs, { cache, path: 'dir1' });
+    expect(readDir).toHaveBeenCalledTimes(40);
+    await scanVfs(vfs, { cache });
+    expect(readDir).toHaveBeenCalledTimes(41);
+    cache.clear();
+    await scanVfs(vfs, { cache });
+    expect(readDir).toHaveBeenCalledTimes(82);
   });
 });

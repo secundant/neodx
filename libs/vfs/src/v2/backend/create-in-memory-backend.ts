@@ -44,7 +44,7 @@ export function createInMemoryBackend(root = '/', initializer: VirtualInitialize
       return uniq(
         Array.from(store.keys())
           .filter(pathStartsBy(path))
-          .map(name => name.split(withTrailingSlash(path))[1].split('/')[0])
+          .map(name => name.split(withTrailingSlash(path))[1]!.split('/')[0]!)
       ).map(name => createInMemoryDirent(name, isFile(join(path, name))));
     },
 
