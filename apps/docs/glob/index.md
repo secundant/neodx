@@ -5,7 +5,7 @@ Simple glob matching low-level APIs inspired by [zeptomatch](https://github.com/
 - Tiny, fast and works similarly to [picomatch](https://github.com/micromatch/picomatch)
 - Lightweight
 - Opinionated for simplicity
-- Provides a [low-level API](./api.md#walkglobglob-string--string-options-walkglobparams) to create your own glob-based APIs
+- Provides a [walkGlob](./api.md#walkglobglob-string--string-params-walkglobparams), which you can use to develop your own glob-based logic
 
 ## Installation
 
@@ -68,7 +68,7 @@ console.log(
 );
 // [
 //   'src/index.ts',
-//   'src/foo.ts',
+//   'tests/common/utils.ts',
 //   'server/app.config.ts',
 // ]
 ```

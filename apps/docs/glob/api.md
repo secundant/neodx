@@ -1,6 +1,10 @@
-# API Reference
+# `@neodx/glob` API Reference
 
-## `walkGlob(glob: string | string[], options?: WalkGlobParams)`
+## `walkGlob(glob: string | string[], params?: WalkGlobParams)`
+
+::: tip
+You can find a step-by-step guide on how to write your own glob API in the [Writing your glob](./writing-your-glob.md) section.
+:::
 
 The low-level API that enables the creation of custom glob-based APIs.
 It extracts static paths from glob patterns and includes all logic for glob matching, filtering, and cancellation handling.
@@ -34,6 +38,7 @@ await walkGlob('*.ts', {
 ### `WalkGlobParams`
 
 - [WalkGlobCommonParams](#walkglobcommonparams)
+- [WalkReaderParams](#walkreaderparams)
 
 ```typescript
 export interface WalkGlobParams<Item, Result> extends WalkGlobCommonParams {
@@ -70,10 +75,65 @@ export interface WalkGlobParams<Item, Result> extends WalkGlobCommonParams {
 Common params could be used in top-level APIs around walkGlob.
 
 ```typescript
-export interface WalkGlobCommonParams {
+interface WalkGlobCommonParams {
+  /** Max time to wait for the glob to finish. */
   timeout?: number;
+  /** Glob patterns, RegExp or a function to ignore paths. */
   ignore?: WalkIgnoreInput;
+  /** Abort signal for manual cancellation. */
   signal?: AbortSignal;
+  /**
+   * Logger to debug the glob.
+   * @default No logging
+   * @see `@neodx/log`
+   */
+  log?: LoggerMethods<'debug'>;
+}
+```
+
+### `WalkReaderParams`
+
+Params for the `reader`, `mapPath`, and `mapResult` functions.
+
+```typescript
+interface WalkReaderParams {
+  /**
+   * One of the base paths extracted for the glob.
+   * Could be empty string if the glob is relative.
+   * @example Single base path
+   * glob: 'src/*.ts'
+   * path: 'src'
+   * @example Multiple base paths
+   * glob: 'src/{foo,bar}/*.ts'
+   * path: 'src/foo' and 'src/bar'
+   * @example Relative glob with no base path
+   * glob: '**\/*.ts'
+   * path: ''
+   */
+  path: string;
+  /**
+   * Accepts a path relative to the glob and returns true if it matches the glob and not ignored.
+   *
+   * Aggregates `isMatched` and `isIgnored` functions, if you need to get more granular control, use them directly.
+   *
+   * @alias `path => isMatched(path) && !isIgnored(path)`
+   * @see isMatched
+   * @see isIgnored
+   */
+  match: WalkPathChecker;
+  signal: AbortSignal;
+  /**
+   * Accepts a path relative to the glob and returns true if it should be ignored.
+   * @see isMatched
+   * @see match
+   */
+  isIgnored: WalkPathChecker;
+  /**
+   * Accepts a path relative to the glob and returns true if it matches the glob.
+   * @see isIgnored
+   * @see match
+   */
+  isMatched: WalkPathChecker;
 }
 ```
 

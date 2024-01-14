@@ -29,7 +29,8 @@ export default defineConfig({
         items: [
           { text: '@neodx/log', link: '/log/', activeMatch: '^/log/' },
           { text: '@neodx/svg', link: '/svg/', activeMatch: '^/svg/' },
-          { text: '@neodx/figma', link: '/figma/', activeMatch: '^/figma/' }
+          { text: '@neodx/figma', link: '/figma/', activeMatch: '^/figma/' },
+          { text: '@neodx/glob', link: '/glob/', activeMatch: '^/glob/' }
         ]
       }
     ],
@@ -200,6 +201,15 @@ export default defineConfig({
               }
             ]
           }
+        ]
+      },
+      {
+        text: '@neodx/glob',
+        collapsed: true,
+        items: [
+          { text: 'Getting started', link: '/glob/' },
+          { text: 'Writing your glob', link: '/glob/writing-your-glob' },
+          { text: 'API', link: '/glob/api' }
         ]
       }
     ]
