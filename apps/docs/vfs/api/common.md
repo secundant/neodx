@@ -12,3 +12,9 @@ interface VfsDirent {
   isSymbolicLink(): boolean;
 }
 ```
+
+## `VfsContentLike`
+
+```typescript
+type VfsContentLike = Buffer | string;
+```
