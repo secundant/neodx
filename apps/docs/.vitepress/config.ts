@@ -213,7 +213,19 @@ export default defineConfig({
             text: 'Plugins',
             items: [
               { text: 'scan', link: '/vfs/plugins/scan' },
-              { text: 'glob', link: '/vfs/plugins/glob' }
+              { text: 'glob', link: '/vfs/plugins/glob' },
+              { text: 'json', link: '/vfs/plugins/json' },
+              { text: 'eslint', link: '/vfs/plugins/eslint' },
+              { text: 'prettier', link: '/vfs/plugins/prettier' },
+              { text: 'package.json', link: '/vfs/plugins/package-json' }
+            ]
+          },
+          {
+            text: 'API',
+            collapsed: true,
+            items: [
+              { text: 'createVfs', link: '/vfs/api/create-vfs' },
+              { text: 'Vfs Backend', link: '/vfs/api/backend' }
             ]
           }
         ]
