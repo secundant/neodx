@@ -30,6 +30,7 @@ export default defineConfig({
           { text: '@neodx/log', link: '/log/', activeMatch: '^/log/' },
           { text: '@neodx/svg', link: '/svg/', activeMatch: '^/svg/' },
           { text: '@neodx/figma', link: '/figma/', activeMatch: '^/figma/' },
+          { text: '@neodx/vfs', link: '/vfs/', activeMatch: '^/vfs/' },
           { text: '@neodx/glob', link: '/glob/', activeMatch: '^/glob/' }
         ]
       }
@@ -199,6 +200,20 @@ export default defineConfig({
                 text: 'writeDownloadedAssets',
                 link: '/figma/api/low-level/write-downloaded-assets'
               }
+            ]
+          }
+        ]
+      },
+      {
+        text: '@neodx/vfs',
+        collapsed: true,
+        items: [
+          { text: 'Getting started', link: '/vfs/' },
+          {
+            text: 'Plugins',
+            items: [
+              { text: 'scan', link: '/vfs/plugins/scan' },
+              { text: 'glob', link: '/vfs/plugins/glob' }
             ]
           }
         ]
