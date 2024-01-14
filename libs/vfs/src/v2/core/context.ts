@@ -112,7 +112,7 @@ export const createVfsContext = ({
 };
 
 /**
- * Context should not be used by plugins or end users, it's for internal use only.
+ * End users should not use context, it's for internal use only.
  * Contains all changes, API for working with them, FS backend, and other useful stuff.
  */
 export interface VfsContext {
@@ -144,6 +144,7 @@ export interface VfsContext {
   readonly log: Logger<VfsLogMethod>;
   readonly backend: VfsBackend;
 
+  /** @internal */
   __: {
     vfs?: BaseVfs;
     kind: typeof kind;
@@ -151,8 +152,8 @@ export interface VfsContext {
     plugins: VfsPlugin<any>[];
     children: VfsContext[];
 
-    getStore: () => Map<string, VfsChangeMeta>;
     getAll: () => VfsContext[];
+    getStore: () => Map<string, VfsChangeMeta>;
     getScoped: () => VfsContext[];
     getAncestors: () => VfsContext[];
     getDescendants: () => VfsContext[];

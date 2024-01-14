@@ -136,7 +136,7 @@ export async function getVfsActions(ctx: VfsContext, types?: VfsFileAction['type
   const changes = await concurrently(
     ctx.getAllDirectChanges(),
     async ({ path, deleted, content, ...meta }): Promise<VfsFileAction | null> => {
-      ctx.log.debug('Resolving action for %s', displayPath(ctx, path));
+      // ctx.log.debug('Resolving required action for %s', displayPath(ctx, path));
       const exists = await ctx.backend.exists(path);
 
       if (deleted && !exists) {
@@ -153,6 +153,8 @@ export async function getVfsActions(ctx: VfsContext, types?: VfsFileAction['type
       };
     }
   );
+
+  // ctx.log.debug('Found %d changes under "%s" working directory', changes.length, ctx.path);
 
   return types
     ? changes.filter(action => isTruthy(action) && types.includes(action.type))

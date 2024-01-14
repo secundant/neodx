@@ -74,11 +74,17 @@ export const toPublicScope = <Vfs extends BaseVfs>(
       const { log, backend } = ctx;
       const childCtx = createVfsContext({
         backend,
+        parent: ctx,
         path: ctx.resolve(path),
         log
       });
 
-      return pipe(createBaseVfs(childCtx), childCtx, hooks, ...ctx.__.plugins) as any;
+      return pipe(
+        createBaseVfs(childCtx),
+        childCtx,
+        createHookRegistry(),
+        ...ctx.__.plugins
+      ) as any;
     },
     pipe(...plugins: VfsPlugin<any>[]) {
       return pipe(vfs, ctx, hooks, ...plugins) as any;

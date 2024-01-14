@@ -9,7 +9,7 @@ import {
   True,
   tryCreateTimeoutSignal
 } from '@neodx/std';
-import { join } from 'pathe';
+import { relative } from 'pathe';
 import type { VfsDirent } from '../backend/shared.ts';
 import type { BaseVfs } from '../core/types.ts';
 import { createVfsPlugin } from '../create-vfs-plugin.ts';
@@ -98,6 +98,7 @@ export async function scanVfs(
     ])
   );
   const result: ScannedItem[] = [];
+  const basePath = vfs.resolve(path);
 
   async function iterate(params: Pick<ScannedItem, 'relativePath' | 'depth'>) {
     signal.throwIfAborted();
@@ -114,7 +115,7 @@ export async function scanVfs(
       async dirent => {
         signal.throwIfAborted();
         const scanned = {
-          relativePath: vfs.relative(join(params.relativePath, dirent.name)),
+          relativePath: relative(basePath, vfs.resolve(params.relativePath, dirent.name)),
           dirent,
           depth: params.depth + 1
         };

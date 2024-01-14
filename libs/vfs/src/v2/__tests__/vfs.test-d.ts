@@ -7,10 +7,11 @@ import type { PublicVfs } from '../core/scopes';
 import type { BaseVfs } from '../core/types';
 import { createVfs } from '../create-vfs';
 import type { EsLintPluginApi } from '../plugins/eslint.ts';
-import { globPlugin, type GlobPluginApi } from '../plugins/glob/plugin';
+import { glob, type GlobPluginApi } from '../plugins/glob.ts';
 import { json, type JsonPluginApi } from '../plugins/json';
-import { packageJsonPlugin, type PackageJsonPluginApi } from '../plugins/package-json';
+import { packageJson, type PackageJsonPluginApi } from '../plugins/package-json';
 import { prettier, type PrettierPluginApi } from '../plugins/prettier';
+import type { ScanPluginApi } from '../plugins/scan.ts';
 
 describe('vfs base api', () => {
   const baseVfs = createBaseVfs(
@@ -23,11 +24,12 @@ describe('vfs base api', () => {
   test('should support params overloading', async () => {
     type ExpectedVfs = PublicVfs<
       BaseVfs &
-        PrettierPluginApi &
         JsonPluginApi &
-        //GlobPluginApi &
-        PackageJsonPluginApi &
-        EsLintPluginApi
+        ScanPluginApi &
+        GlobPluginApi &
+        EsLintPluginApi &
+        PrettierPluginApi &
+        PackageJsonPluginApi
     >;
 
     expectTypeOf(createVfs('/')).toEqualTypeOf<ExpectedVfs>();
@@ -90,13 +92,13 @@ describe('vfs base api', () => {
         baseVfs
           .pipe(json())
           .child('...')
-          .pipe(packageJsonPlugin())
+          .pipe(packageJson())
           .pipe()
           .child('...')
           .pipe(prettier())
-          .pipe(globPlugin())
+          .pipe(glob())
           .child('...')
-          .pipe(globPlugin(), globPlugin(), globPlugin())
+          .pipe(glob(), glob(), glob())
       ).toEqualTypeOf<
         PublicVfs<
           BaseVfs & JsonPluginApi & PackageJsonPluginApi & PrettierPluginApi & GlobPluginApi
@@ -105,15 +107,13 @@ describe('vfs base api', () => {
     });
 
     test('should support multiple plugins', () => {
-      expectTypeOf(baseVfs.pipe(json(), packageJsonPlugin())).toEqualTypeOf<
+      expectTypeOf(baseVfs.pipe(json(), packageJson())).toEqualTypeOf<
         PublicVfs<BaseVfs & JsonPluginApi & PackageJsonPluginApi>
       >();
-      expectTypeOf(
-        baseVfs.pipe(json(), packageJsonPlugin(), prettier(), globPlugin())
-      ).toMatchTypeOf<PublicVfs<BaseVfs & JsonPluginApi & PackageJsonPluginApi>>();
-      expectTypeOf(
-        baseVfs.pipe(json(), packageJsonPlugin(), prettier(), globPlugin())
-      ).toEqualTypeOf<
+      expectTypeOf(baseVfs.pipe(json(), packageJson(), prettier(), glob())).toMatchTypeOf<
+        PublicVfs<BaseVfs & JsonPluginApi & PackageJsonPluginApi>
+      >();
+      expectTypeOf(baseVfs.pipe(json(), packageJson(), prettier(), glob())).toEqualTypeOf<
         PublicVfs<
           BaseVfs & JsonPluginApi & PackageJsonPluginApi & PrettierPluginApi & GlobPluginApi
         >
@@ -162,7 +162,7 @@ describe('vfs base api', () => {
     });
 
     describe('packageJson', () => {
-      const fs = baseVfs.pipe(packageJsonPlugin());
+      const fs = baseVfs.pipe(packageJson());
 
       test('should extend file api', async () => {
         const file = fs.packageJson();

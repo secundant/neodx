@@ -35,7 +35,8 @@ export function eslint({
             node: true
           },
           parserOptions: {
-            ecmaVersion: 2022
+            ecmaVersion: 2022,
+            sourceType: 'module'
           }
         },
         ...eslintParams,
@@ -43,6 +44,7 @@ export function eslint({
         cwd: context.path
       });
     });
+    const log = context.log.child('eslint');
 
     vfs.fix = async (path: string | string[]) => {
       const lint = await getEsLint();
@@ -59,21 +61,21 @@ export function eslint({
       const formatter = await lint.loadFormatter('stylish');
 
       if (fatalErrors.length > 0) {
-        context.log.error('ESLint fatal errors:%s', formatter.format(fatalErrors));
+        log.error('ESLint fatal errors:%s', formatter.format(fatalErrors));
       }
       if (logErrors && errors.length > 0) {
-        context.log.error('ESLint errors:%s', formatter.format(errors));
+        log.error('ESLint errors:%s', formatter.format(errors));
       }
       if (logWarnings && warnings.length > 0) {
-        context.log.warn('ESLint warnings:%s', formatter.format(warnings));
+        log.warn('ESLint warnings:%s', formatter.format(warnings));
       }
 
       await concurrently(
         results,
         async ({ filePath, fixableErrorCount, fixableWarningCount, output }) => {
           if (!isTypeOfString(output)) return;
-          context.log.debug(
-            'ESLint fix %d errors in %s',
+          log.debug(
+            'fix %d ESLint errors in %s',
             fixableErrorCount + fixableWarningCount,
             filePath
           );
@@ -84,7 +86,7 @@ export function eslint({
     };
 
     vfs.fixAll = async () => {
-      context.log.debug('ESLint - Fixing all changed files...');
+      log.debug('Fixing all ESLint issues in changed files...');
       const changes = await getVfsActions(context, ['create', 'update']);
 
       await vfs.fix!(changes.map(change => change.path));

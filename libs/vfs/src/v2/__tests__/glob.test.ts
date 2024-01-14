@@ -36,6 +36,24 @@ describe('glob', async () => {
     );
   });
 
+  test('should ignore concrete paths', async () => {
+    expectArrayEqual(
+      await globVfs(vfs, {
+        glob: '*.txt',
+        ignore: 'file.txt'
+      }),
+      ['file-2.txt', 'file-3.ignore.txt']
+    );
+
+    expectArrayEqual(
+      await globVfs(vfs, {
+        glob: ['file.txt', 'dir/file.txt'],
+        ignore: ['dir/file.txt']
+      }),
+      ['file.txt']
+    );
+  });
+
   test('should find simple root files', async () => {
     expectArrayEqual(
       await globVfs(vfs, {
@@ -111,6 +129,21 @@ describe('glob', async () => {
         ignore: ['**/*.ignore.txt', '**/*-2.*']
       }),
       ['file.txt', 'dir/file.txt', 'dir/subdir/file.txt', 'dir/source-1.ts']
+    );
+  });
+
+  test('should support base paths', async () => {
+    expectArrayEqual(
+      await globVfs(vfs, {
+        glob: ['dir/{subdir}/*.txt', 'dir/*.ts']
+      }),
+      [
+        'dir/subdir/file-2.txt',
+        'dir/subdir/file-3.ignore.txt',
+        'dir/subdir/file.txt',
+        'dir/source-1.ts',
+        'dir/source-2.ts'
+      ]
     );
   });
 
