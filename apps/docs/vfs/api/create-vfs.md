@@ -1,4 +1,20 @@
-# `createVfs`
+# `createVfs` API
+
+Create a new [Vfs](#vfs) instance with a great set of built-in plugins:
+
+- [glob](../plugins/glob.md)
+- [scan](../plugins/scan.md)
+- [json](../plugins/json.md)
+- [eslint](../plugins/eslint.md)
+- [prettier](../plugins/prettier.md)
+- [packageJson](../plugins/package-json.md)
+
+- [Vfs](#headlessvfs)
+- [CreateHeadlessVfsParams](#createheadlessvfsparams)
+
+```typescript
+declare function createVfs(path: string, params?: CreateHeadlessVfsParams): Promise<Vfs>;
+```
 
 ## `createHeadlessVfs`
 
@@ -14,30 +30,44 @@ declare function createHeadlessVfs(
 ): Promise<HeadlessVfs>;
 ```
 
-## `CreateVfsParams`
-
-```typescript
-interface CreateVfsParams {
-  name: string;
-  root: string;
-  type: string;
-  options: object;
-}
-```
-
 ## `Vfs`
 
-Default instance of `vfs` with all built-in plugins.
+Prebuilt instance of `vfs` with [all built-in plugins](#createvfs-api).
+
+List of all methods (simplified, see concrete plugin docs for more details):
 
 ```typescript
 interface Vfs extends HeadlessVfs {
-  // TODO
+  // Json
+  jsonFile(path: string): JsonFileApi;
+  readJson<T>(path: string, options): Promise<T>;
+  writeJson<T>(path: string, json: T, options): Promise<void>;
+  updateJson<T>(path: string, updater: JsonUpdate<T>, options): Promise<void>;
+
+  // Glob
+  glob(pattern: string | string[], options): Promise<string[]>;
+
+  // Scan
+  scan(path: string, options): Promise<ScanResult>;
+
+  // Eslint
+  fix(path: string): Promise<void>;
+  fixAll(): Promise<void>;
+
+  // Prettier
+  format(path: string): Promise<void>;
+  formatAll(): Promise<void>;
+
+  // PackageJson
+  packageJson(path?: string): PackageJsonFileApi;
 }
 ```
 
 ## `HeadlessVfs`
 
 Default ready-to-use instance of `vfs` without any built-in plugins.
+
+You can use it if you want to disable or replace some built-in plugins.
 
 ```typescript
 interface HeadlessVfs {

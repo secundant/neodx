@@ -1,4 +1,4 @@
-# Vfs Backend
+# `@neodx/vfs` - Backend API
 
 "Backend" in Vfs is a concept of a storage provider, implementations for critical base VFS operations.
 We're implementing a few backends for Vfs, but you can implement your own.
