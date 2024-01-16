@@ -4,11 +4,15 @@
 
 By default, it is able to automatically format all changes files if they are supported by prettier.
 
+Works well alongside the [eslint plugin](./eslint.md) (included by default).
+
 ```typescript
 import { createVfs } from '@neodx/vfs';
 
 const vfs = createVfs(process.cwd(), {
-  // prettier: { auto: false } - disable auto formatting, default is true
+  prettier: {
+    /* ... */
+  } // see PrettierPluginParams
 });
 
 // automatically
