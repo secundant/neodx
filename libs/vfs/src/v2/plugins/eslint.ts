@@ -4,15 +4,37 @@ import { getVfsActions } from '../core/operations';
 import { createVfsPlugin } from '../create-vfs-plugin';
 
 export interface EsLintPluginApi {
+  /** Fix ESLint issues in the given path(s) */
   fix(path: string | string[]): Promise<void>;
+  /** Fix ESLint issues in all changed files */
   fixAll(): Promise<void>;
 }
 
 export interface EsLintPluginParams {
+  /**
+   * @see ESLint.Options.fix
+   * @default true
+   */
   fix?: boolean;
+  /**
+   * Should fix all issues on apply?
+   * @default true
+   */
   auto?: boolean;
+  /**
+   * Should log errors to the console?
+   * @default true
+   */
   logErrors?: boolean;
+  /**
+   * Should log warnings to the console?
+   * @default false
+   */
   logWarnings?: boolean;
+  /**
+   * Additional ESLint options
+   * @see ESLint.Options
+   */
   eslintParams?: ESLint.Options;
 }
 
@@ -75,7 +97,7 @@ export function eslint({
         async ({ filePath, fixableErrorCount, fixableWarningCount, output }) => {
           if (!isTypeOfString(output)) return;
           log.debug(
-            'fix %d ESLint errors in %s',
+            'fixing %d ESLint issues in %s',
             fixableErrorCount + fixableWarningCount,
             filePath
           );

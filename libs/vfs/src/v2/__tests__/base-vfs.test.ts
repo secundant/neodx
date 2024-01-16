@@ -2,7 +2,7 @@ import { readdir, readFile } from 'fs/promises';
 import { exists, isDirectory, isFile } from '@neodx/fs';
 import { describe, expect, test } from 'vitest';
 import { createInMemoryBackend, createNodeFsBackend } from '../backend';
-import { createVfsContext, CreateVfsContextParams } from '../core/context';
+import { createVfsContext, type CreateVfsContextParams } from '../core/context';
 import { createBaseVfs } from '../core/create-base-vfs';
 import type { PublicVfs } from '../core/scopes';
 import type { BaseVfs } from '../core/types';

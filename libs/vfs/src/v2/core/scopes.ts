@@ -1,4 +1,4 @@
-import { fromKeys } from '@neodx/std';
+import { asyncReduce, fromKeys } from '@neodx/std';
 import type { VfsPlugin } from '../create-vfs-plugin';
 import type { VfsContext } from './context';
 import { createVfsContext } from './context';
@@ -10,7 +10,20 @@ import type { Asyncable, BaseVfs, Pipe, VfsFileAction } from './types';
 export type PublicVfs<Vfs extends BaseVfs> = Vfs & PublicVfsApi<Vfs>;
 export type NonPublicVfs<Vfs extends BaseVfs> = Omit<Vfs, keyof PublicVfsApi<Vfs>>;
 export interface PublicVfsApi<Vfs extends BaseVfs> {
+  /**
+   * Creates a new vfs instance under the specified path.
+   * All plugins will be inherited.
+   * All changes are two-way synced.
+   */
   child: (path: string) => PublicVfs<Vfs>;
+  /**
+   * Immutable extension of the current vfs instance with the specified plugins.
+   * You can use it in any order and any number of times.
+   * @example
+   * const vfs = createHeadlessVfs('/root/path');
+   * const enhanced = vfs.pipe(glob(), json());
+   * const superEnhanced = vfs.pipe(json()).pipe(glob()).pipe(prettier(), eslint());
+   */
   pipe: Pipe<Vfs>;
 }
 
@@ -51,8 +64,15 @@ export const createHookRegistry = <Vfs extends BaseVfs>() => {
     get<K extends PrivateVfsHookName>(name: K) {
       return (hooks.get(name) as PrivateVfsHooks<Vfs>[K][] | null) ?? [];
     },
-    run<K extends PrivateVfsHookName>(name: K, ...args: Parameters<PrivateVfsHooks<Vfs>[K]>) {
-      return Promise.all(this.get(name).map(async handler => await (handler as any)(...args)));
+    async run<K extends PrivateVfsHookName>(
+      name: K,
+      ...args: Parameters<PrivateVfsHooks<Vfs>[K]>
+    ): Promise<void> {
+      return asyncReduce(
+        this.get(name),
+        async (_, handler) => await (handler as any)(...args),
+        undefined
+      );
     }
   };
 };

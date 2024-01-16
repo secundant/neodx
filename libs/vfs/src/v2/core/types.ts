@@ -9,7 +9,9 @@ import type { PublicVfs } from './scopes';
 export interface BaseVfs {
   // Common
 
-  /** Apply all changes to the file system */
+  /**
+   * Applies all changes to the underlying vfs backend.
+   */
   apply(): Promise<void>;
 
   /** Is current VFS virtual? */

@@ -5,6 +5,7 @@ import type { VfsContentLike } from '../core/types';
 import { createVfsPlugin } from '../create-vfs-plugin';
 
 export interface PrettierPluginParams {
+  /** Pass `false` to disable auto formatting on apply */
   auto?: boolean;
 }
 
@@ -26,6 +27,9 @@ export function prettier({ auto = true }: PrettierPluginParams = {}) {
 
       if (formattedContent !== null) {
         await vfs.write(path, formattedContent);
+        log.debug('Formatted %s', displayPath(context, path));
+      } else {
+        log.debug('Skipped %s', displayPath(context, path));
       }
     }
 
