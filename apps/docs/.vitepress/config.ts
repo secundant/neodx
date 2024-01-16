@@ -209,6 +209,7 @@ export default defineConfig({
         collapsed: true,
         items: [
           { text: 'Getting started', link: '/vfs/' },
+          { text: 'Extending', link: '/vfs/extending' },
           {
             text: 'Plugins',
             items: [
@@ -220,12 +221,15 @@ export default defineConfig({
               { text: 'package.json', link: '/vfs/plugins/package-json' }
             ]
           },
+          { text: 'Limitations', link: '/vfs/limitations' },
           {
             text: 'API',
             collapsed: true,
             items: [
               { text: 'createVfs', link: '/vfs/api/create-vfs' },
-              { text: 'Vfs Backend', link: '/vfs/api/backend' }
+              { text: 'Plugins', link: '/vfs/api/plugins' },
+              { text: 'Context', link: '/vfs/api/context' },
+              { text: 'Backend', link: '/vfs/api/backend' }
             ]
           }
         ]
