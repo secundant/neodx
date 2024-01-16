@@ -9,9 +9,6 @@ Create a new [Vfs](#vfs) instance with a great set of built-in plugins:
 - [prettier](../plugins/prettier.md)
 - [packageJson](../plugins/package-json.md)
 
-- [Vfs](#headlessvfs)
-- [CreateHeadlessVfsParams](#createheadlessvfsparams)
-
 ```typescript
 declare function createVfs(path: string, params?: CreateHeadlessVfsParams): Promise<Vfs>;
 ```
