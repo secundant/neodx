@@ -18,13 +18,13 @@ export const not =
   <Value>(value: Value): value is Exclude<Value, R> =>
     !fn(value);
 export const some =
-  <Value>(...predicates: [...((value: Value) => boolean)[]]) =>
-  (value: Value): boolean =>
-    predicates.some(predicate => predicate(value));
+  <Args extends [...unknown[]]>(...predicates: [...((...args: Args) => boolean)[]]) =>
+  (...args: Args): boolean =>
+    predicates.some(predicate => predicate(...args));
 export const every =
-  <Value>(...predicates: [...((value: Value) => boolean)[]]) =>
-  (value: Value): boolean =>
-    predicates.every(predicate => predicate(value));
+  <Args extends [...unknown[]]>(...predicates: [...((...args: Args) => boolean)[]]) =>
+  (...args: Args): boolean =>
+    predicates.every(predicate => predicate(...args));
 
 const createTypeof =
   <T>(type: string) =>
@@ -32,6 +32,7 @@ const createTypeof =
     typeof value === type;
 
 export const isTypeOfString = createTypeof<string>('string');
+export const isTypeOfBoolean = createTypeof<boolean>('boolean');
 export const isTypeOfFunction = createTypeof<AnyFunction>('function');
 
 export const isNull = (value: unknown): value is null => value === null;
@@ -57,6 +58,6 @@ const getLastPrototypeOf = (target: unknown): unknown => {
   return proto === null ? target : getLastPrototypeOf(proto);
 };
 
-export const isNotUndefined = not(isUndefined);
+export const isDefined = not(isUndefined);
 export const isNotNull = not(isNull);
 export const isNotNil = not(isNil);
