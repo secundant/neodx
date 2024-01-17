@@ -1,4 +1,4 @@
-# `@neodx/vfs` - `json` plugin <Badge type="tip" text="builtin" />
+# @neodx/vfs `json` plugin <Badge type="tip" text="builtin" />
 
 Set of integration for `package.json` files.
 

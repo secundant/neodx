@@ -1,4 +1,4 @@
-# `@neodx/vfs` - `eslint` plugin <Badge type="tip" text="builtin" /> <Badge type="tip" text="auto" />
+# @neodx/vfs `eslint` plugin <Badge type="tip" text="builtin" /> <Badge type="tip" text="auto" />
 
 Simple integration with [ESLint](https://eslint.org/) for `@neodx/vfs`.
 

@@ -1,4 +1,4 @@
-# `@neodx/vfs` - `prettier` plugin <Badge type="tip" text="builtin" /> <Badge type="tip" text="auto" />
+# @neodx/vfs `prettier` plugin <Badge type="tip" text="builtin" /> <Badge type="tip" text="auto" />
 
 `prettier` plugin provides integration with [prettier](https://prettier.io/) code formatter.
 

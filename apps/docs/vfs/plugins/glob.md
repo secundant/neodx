@@ -1,4 +1,4 @@
-# `@neodx/vfs` - `glob` plugin <Badge type="tip" text="builtin" />
+# @neodx/vfs `glob` plugin <Badge type="tip" text="builtin" />
 
 Powered by [@neodx/glob](/glob/) and [scan plugin](./scan).
 

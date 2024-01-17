@@ -1,4 +1,4 @@
-# `@neodx/vfs` - `scan` plugin <Badge type="tip" text="builtin" />
+# @neodx/vfs `scan` plugin <Badge type="tip" text="builtin" />
 
 Advanced file system scanning, extended version of `node:fs.readdir(path)` for granular control.
 

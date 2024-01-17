@@ -1,4 +1,4 @@
-# `@neodx/vfs` - `packageJson` plugin <Badge type="tip" text="builtin" />
+# @neodx/vfs `packageJson` plugin <Badge type="tip" text="builtin" />
 
 This plugin provides a set of helpful methods for working with JSON files.
 
