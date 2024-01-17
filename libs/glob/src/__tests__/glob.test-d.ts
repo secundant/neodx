@@ -1,9 +1,11 @@
 import { identity } from '@neodx/std';
+import { readdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { describe, expectTypeOf, test } from 'vitest';
 import { extractGlobPaths } from '../extract.ts';
 import { createGlobMatcher, globToRegExp, matchGlob } from '../match.ts';
 import { escapeGlob, isStaticGlob, unescapeGlob } from '../shared.ts';
-import { walkGlob } from '../walk.ts';
+import { walkGlob, type WalkGlobCommonParams } from '../walk.ts';
 
 describe('public API types', () => {
   describe('walkGlob', () => {
@@ -46,6 +48,27 @@ describe('public API types', () => {
             type: 'directory';
           }
       >();
+    });
+
+    test('top-level API', () => {
+      interface GlobParams extends WalkGlobCommonParams {
+        cwd?: string;
+      }
+
+      async function glob(
+        glob: string | string[],
+        { cwd = process.cwd(), ...params }: GlobParams = {}
+      ) {
+        return await walkGlob(glob, {
+          reader: async ({ path }) =>
+            await readdir(resolve(cwd, path), {
+              recursive: true
+            }),
+          ...params
+        });
+      }
+
+      expectTypeOf(glob('*.ts')).resolves.toEqualTypeOf<string[]>();
     });
   });
 

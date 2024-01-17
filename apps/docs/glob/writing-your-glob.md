@@ -125,7 +125,9 @@ export async function glob(
       async function next(currentPath: string) {
         // operation could be aborted by timeout or abort signal
         signal.throwIfAborted();
-        for (const dirent of await readdir(resolve(cwd, currentPath), { withFileTypes: true })) {
+        for (const dirent of await readdir(resolve(cwd, path, currentPath), {
+          withFileTypes: true
+        })) {
           const direntPath = join(currentPath, dirent.name);
 
           if (isMatched(direntPath)) result.push(direntPath);
@@ -134,7 +136,8 @@ export async function glob(
         }
       }
 
-      await next(path);
+      // all paths should be relative to the glob pattern base path
+      await next('.');
       return result;
     },
     ...params

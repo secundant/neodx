@@ -127,7 +127,9 @@ export async function walkGlob<Item, Result = string>(
   for (const [path, patterns] of extractGlobPaths(glob)) {
     if (isIgnoredFullPath(path)) continue;
     signal.throwIfAborted();
-    log?.debug('reading %s at "%s"', new Intl.ListFormat().format(patterns), path || '.');
+    const formattedPatterns = new Intl.ListFormat().format(patterns);
+
+    log?.debug('reading %s at "%s"', formattedPatterns, path || '.');
 
     const toFullPath = (subPath: string) => join(path, subPath);
     const itemToResult = mapResult ?? (item => toFullPath(mapPath(item, params)) as Result);
@@ -137,6 +139,14 @@ export async function walkGlob<Item, Result = string>(
     const match = every(isMatched, not(isIgnored as any));
     const params = { path, match, isIgnored, isMatched, signal };
     const allFoundItems = await reader(params);
+
+    log?.debug(
+      'for %s (in "%s") found %d items: $s',
+      formattedPatterns,
+      path || '.',
+      allFoundItems.length,
+      allFoundItems
+    );
 
     collected.push(
       ...allFoundItems

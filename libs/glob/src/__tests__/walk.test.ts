@@ -3,7 +3,12 @@ import { createTmpVfs } from '@neodx/vfs/testing-utils';
 import { readdir } from 'node:fs/promises';
 import { join, relative, resolve } from 'node:path';
 import { describe, expect, test, vitest } from 'vitest';
-import { walkGlob, type WalkGlobParams, type WalkIgnoreInput } from '../walk.ts';
+import {
+  walkGlob,
+  type WalkGlobCommonParams,
+  type WalkGlobParams,
+  type WalkIgnoreInput
+} from '../walk.ts';
 
 describe('walk', () => {
   test('should walk simple tree', async () => {
@@ -250,6 +255,72 @@ describe('walk', () => {
           mapResult: item => join(relative(tmp.root, item.path), item.name)
         })
       ).resolves.toEqual(['src/__tests__', 'src/modules']);
+    });
+
+    test('should support scanning barriers', async () => {
+      const nextFn = vitest.fn();
+      const direntFn = vitest.fn();
+
+      interface GlobParams extends WalkGlobCommonParams {
+        cwd?: string;
+      }
+
+      async function glob(
+        pattern: string | string[],
+        { cwd = tmp.root, ...params }: GlobParams = {}
+      ) {
+        return await walkGlob(pattern, {
+          async reader({ path, isIgnored, isMatched, signal }) {
+            const result: string[] = [];
+
+            async function next(currentPath: string) {
+              nextFn(currentPath);
+              // operation could be aborted by timeout or abort signal
+              signal.throwIfAborted();
+              for (const dirent of await readdir(resolve(cwd, path, currentPath), {
+                withFileTypes: true
+              })) {
+                const direntPath = join(currentPath, dirent.name);
+
+                direntFn(direntPath);
+                if (isMatched(direntPath)) result.push(direntPath);
+                // we don't need to read ignored directories
+                if (dirent.isDirectory() && !isIgnored(direntPath)) await next(direntPath);
+              }
+            }
+
+            await next('.');
+            return result;
+          },
+          ...params
+        });
+      }
+
+      expect(await glob('src/*')).toEqual([
+        'src/__tests__',
+        'src/app.ts',
+        'src/index.ts',
+        'src/modules',
+        'src/other.ignore-me.ts'
+      ]);
+      expect(nextFn).toHaveReturnedTimes(3);
+      expect(nextFn).toHaveBeenCalledWith('.');
+      expect(nextFn).toHaveBeenCalledWith('modules');
+      expect(nextFn).toHaveBeenCalledWith('__tests__');
+      expect(await glob('src/*', { ignore: '**/*.ts' })).toEqual(['src/__tests__', 'src/modules']);
+
+      nextFn.mockClear();
+      direntFn.mockClear();
+      expect(
+        await glob('src/*', {
+          ignore: ['src/__tests__', 'src/*.ignore-me.ts']
+        })
+      ).toEqual(['src/app.ts', 'src/index.ts', 'src/modules']);
+
+      expect(nextFn).toHaveReturnedTimes(2);
+      expect(nextFn).toHaveBeenCalledWith('.');
+      expect(nextFn).toHaveBeenCalledWith('modules');
+      expect(direntFn).toHaveReturnedTimes(7);
     });
   });
 });
