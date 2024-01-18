@@ -11,6 +11,7 @@ export async function deepReadDir(
   { absolute = true }: Params = {}
 ): Promise<string[]> {
   const childrenNames = await readdir(path);
+  console.log('deepReadDir', path, childrenNames);
   const groupedPaths = await Promise.all(
     childrenNames.map(async childName => {
       const childPath = join(path, childName);

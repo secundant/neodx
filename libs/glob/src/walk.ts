@@ -141,11 +141,14 @@ export async function walkGlob<Item, Result = string>(
     const allFoundItems = await reader(params);
 
     log?.debug(
-      'for %s (in "%s") found %d items: $s',
+      'for %s (in "%s") found %d items: %s',
       formattedPatterns,
       path || '.',
       allFoundItems.length,
       allFoundItems
+        .slice(0, 5)
+        .concat(allFoundItems.length > 5 ? ['...' as Item] : [])
+        .join(', ')
     );
 
     collected.push(

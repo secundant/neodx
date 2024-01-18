@@ -105,7 +105,7 @@ export function sortPackageJson<T extends PackageJsonDependencies>(value: T) {
     if (keys(next[type]).length === 0) {
       delete next[type];
     } else {
-      next[type] = sortObjectByKeys(next[type]);
+      next[type] = sortObjectByKeys(next[type]!);
     }
   }
 

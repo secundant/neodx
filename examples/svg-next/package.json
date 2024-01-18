@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/node": "20.8.9",
+    "@types/node": "20.10.7",
     "@types/react": "18.2.33",
     "@types/react-dom": "18.2.14",
     "autoprefixer": "10.4.16",

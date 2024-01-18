@@ -52,7 +52,7 @@ export function getUpgradedDependenciesVersions(
   current: Record<string, string>
 ) {
   const applied = entries(changes).filter(
-    ([name, version]) => hasOwn(current, name) && isGreaterVersion(version, current[name])
+    ([name, version]) => hasOwn(current, name) && isGreaterVersion(version, current[name]!)
   );
 
   return applied.length > 0 ? Object.fromEntries(applied) : null;
