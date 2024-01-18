@@ -6,7 +6,7 @@ import type { VirtualInitializer } from './backend';
 import { createInMemoryFilesRecord } from './backend';
 import { getVfsContext } from './core/create-base-vfs.ts';
 import { getVfsActions } from './core/operations.ts';
-import type { BaseVfs } from './core/types.ts';
+import type { BaseVfs, VfsFileWrite } from './core/types.ts';
 import type { CreateVfsParams, Vfs } from './create-vfs';
 import { createVfs } from './create-vfs';
 
@@ -35,7 +35,19 @@ export const initializeDir = (dir: string, initialize: VirtualInitializer) =>
 export async function getChangesHash(vfs: Vfs) {
   const changes = await getVfsActions(getVfsContext(vfs), ['update', 'create']);
 
-  return changes.map(({ path, content }) => [path, getHash(content)]);
+  return changes
+    .sort((a, b) => a.relativePath.localeCompare(b.relativePath))
+    .map(({ path, content }) => [path, getHash(content)]);
+}
+
+export async function getChangesDump(vfs: Vfs) {
+  const changes = await getVfsActions(getVfsContext(vfs));
+
+  return changes.map(change => [
+    change.type,
+    change.relativePath,
+    (change as Partial<VfsFileWrite>).content?.toString('utf-8')
+  ]);
 }
 
 export const mockReadDir = (

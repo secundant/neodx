@@ -1,6 +1,7 @@
-import { concurrently, isTypeOfString, lazyValue, toArray } from '@neodx/std';
+import { compact, concurrently, isTypeOfString, lazyValue, toArray } from '@neodx/std';
 import type { ESLint } from 'eslint';
-import { getVfsActions } from '../core/operations';
+import { extname } from 'pathe';
+import { displayPath, getVfsActions } from '../core/operations';
 import { createVfsPlugin } from '../create-vfs-plugin';
 
 export interface EsLintPluginApi {
@@ -70,12 +71,22 @@ export function eslint({
 
     vfs.fix = async (path: string | string[]) => {
       const lint = await getEsLint();
-      const allResults = await concurrently(
-        toArray(path),
-        async path =>
-          await lint.lintText(await vfs.read(path, 'utf-8'), { filePath: vfs.resolve(path) })
-      );
-      const results = allResults.flat();
+      const allResults = await concurrently(toArray(path), async path => {
+        if (!(await vfs.isFile(path))) {
+          log.debug('Skipping %s, because it is not a file', displayPath(context, path));
+          return null;
+        }
+        if (await lint.isPathIgnored(path)) {
+          log.debug('Skipping %s, because it is ignored', displayPath(context, path));
+          return null;
+        }
+        if (!allSourceExtensions.includes(extname(path))) {
+          log.debug('Skipping %s, because it is not a source file', displayPath(context, path));
+          return null;
+        }
+        return await lint.lintText(await vfs.read(path, 'utf-8'), { filePath: vfs.resolve(path) });
+      });
+      const results = compact(allResults.flat());
 
       const errors = results.filter(result => result.fatalErrorCount > 0);
       const warnings = results.filter(result => result.fatalErrorCount > 0);
@@ -122,3 +133,10 @@ export function eslint({
     return vfs;
   });
 }
+
+const allSourceExtensions = ['js', 'ts'].flatMap(ext => [
+  `.${ext}`,
+  `.c${ext}`,
+  `.m${ext}`,
+  `.${ext}x`
+]);

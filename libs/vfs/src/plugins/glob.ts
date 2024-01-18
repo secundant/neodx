@@ -15,14 +15,19 @@ export interface GlobVfsParams extends Pick<ScanVfsParams, 'maxDepth'>, WalkGlob
 
 export function glob() {
   return createVfsPlugin<GlobPluginApi>('glob', vfs => {
-    async function globImpl(globOrParams: string | GlobVfsParams, params?: GlobVfsParams) {
+    async function globImpl(
+      globOrParams: string | string[] | GlobVfsParams,
+      params?: GlobVfsParams
+    ) {
       return await globVfs(
         vfs,
-        isTypeOfString(globOrParams) ? { ...params, glob: globOrParams } : globOrParams
+        Array.isArray(globOrParams) || isTypeOfString(globOrParams)
+          ? { ...params, glob: globOrParams }
+          : globOrParams
       );
     }
 
-    vfs.glob = globImpl as GlobPluginApi['glob'];
+    vfs.glob = globImpl;
     return vfs;
   });
 }

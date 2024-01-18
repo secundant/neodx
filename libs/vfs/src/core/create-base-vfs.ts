@@ -1,5 +1,5 @@
 import { colors } from '@neodx/colors';
-import { concurrently } from '@neodx/std';
+import { concurrently, quickPluralize } from '@neodx/std';
 import { dirname } from 'pathe';
 import { getVfsBackendKind } from '../backend/shared';
 import type { VfsContext } from './context';
@@ -61,7 +61,14 @@ export function createBaseVfs(ctx: VfsContext) {
 
     async apply() {
       try {
-        await hooks.run('beforeApply', await getVfsActions(ctx), getCurrentVfs());
+        const changes = await getVfsActions(ctx);
+
+        ctx.log.info(
+          'Applying %d %s...',
+          changes.length,
+          quickPluralize(changes.length, 'change', 'changes')
+        );
+        await hooks.run('beforeApply', changes, getCurrentVfs());
         await concurrently(await getVfsActions(ctx), applyFile);
       } catch (originalError) {
         throw ctx.catch('Failed to apply changes', originalError);

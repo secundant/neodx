@@ -37,10 +37,15 @@ export const createVfsContext = ({
     },
 
     get(path: string) {
-      return store.get(ctx.resolve(path)) ?? null;
+      const resolved = ctx.resolve(path);
+
+      return ctx.getAllChanges().find(meta => meta.path === resolved) ?? null;
+    },
+    getAllChanges() {
+      return getAndMergeChanges(ctx.__.getAll());
     },
     getAllDirectChanges() {
-      return getAndMergeChanges([ctx, ...ctx.__.getDescendants()]);
+      return getAndMergeChanges(ctx.__.getScoped());
     },
     getRelativeChanges(path: string) {
       const resolved = trailingSlash(ctx.resolve(path));
@@ -142,6 +147,10 @@ export interface VfsContext {
    * Changes from ancestors will be ignored.
    */
   getAllDirectChanges(): VfsChangeMeta[];
+  /**
+   * We will sync ALL changes from the current context AND all descendants AND all ancestors.
+   */
+  getAllChanges(): VfsChangeMeta[];
   getRelativeChanges(path: string): VfsChangeMeta[];
   /** Remove file from context. */
   unregister(path: string): void;
