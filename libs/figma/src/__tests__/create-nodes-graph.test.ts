@@ -13,11 +13,11 @@ describe('create-nodes-testGraphs.simple', async () => {
   test('registry should contain children', () => {
     const { registry, children } = testGraphs.simple;
 
-    expect(registry.byId).toContain(children.byId);
-    expect(registry.byId).toContain(children.list[0].children.byId);
-    expect(children.list[0].registry.byId).toContain(children.list[0].children.byId);
-    expect(children.list[0].registry.byId).toContain(
-      children.list[0].children.list[0].children.byId
+    expect(registry.byId).toMatchObject(children.byId);
+    expect(registry.byId).toMatchObject(children.list[0]!.children.byId);
+    expect(children.list[0]!.registry.byId).toMatchObject(children.list[0]!.children.byId);
+    expect(children.list[0]!.registry.byId).toMatchObject(
+      children.list[0]!.children.list[0]!.children.byId
     );
   });
 
@@ -27,17 +27,21 @@ describe('create-nodes-testGraphs.simple', async () => {
       children: { list }
     } = testGraphs.simple;
 
-    expect(registry.byId).toContain(Object.assign({}, ...list.map(node => node.registry.byId)));
+    expect(registry.byId).toMatchObject(Object.assign({}, ...list.map(node => node.registry.byId)));
   });
 
   test('registry should combine styles', () => {
-    expect(testGraphs.simple.registry.styles).toContain(testGraphs.simple.children.list[0].styles);
-    expect(testGraphs.simple.registry.styles).toContain(testGraphs.simple.children.list[1].styles);
-    expect(testGraphs.simple.registry.styles).toContain(
-      testGraphs.simple.children.list[0].registry.styles
+    expect(values(testGraphs.simple.registry.styles)).toEqual(
+      expect.arrayContaining(testGraphs.simple.children.list[0]!.styles)
     );
-    expect(testGraphs.simple.registry.styles).toContain(
-      testGraphs.simple.children.list[1].registry.styles
+    expect(values(testGraphs.simple.registry.styles)).toEqual(
+      expect.arrayContaining(testGraphs.simple.children.list[1]!.styles)
+    );
+    expect(testGraphs.simple.registry.styles).toMatchObject(
+      testGraphs.simple.children.list[0]!.registry.styles
+    );
+    expect(testGraphs.simple.registry.styles).toMatchObject(
+      testGraphs.simple.children.list[1]!.registry.styles
     );
     expect(keys(testGraphs.simple.registry.styles)).toEqual(
       expect.arrayContaining(keys(testFileResults.simple.styles))

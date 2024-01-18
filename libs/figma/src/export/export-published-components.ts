@@ -105,7 +105,7 @@ export async function exportPublishedComponents({
         component.key,
         {
           ...getCacheEntry(component),
-          content: cached[component.key]?.content ?? downloadedAssetByKey[component.key].content
+          content: cached[component.key]?.content ?? downloadedAssetByKey[component.key]!.content
         }
       ])
     )

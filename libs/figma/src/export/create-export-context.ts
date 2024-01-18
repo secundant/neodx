@@ -1,4 +1,4 @@
-import type { VFS } from '@neodx/vfs';
+import type { Vfs } from '@neodx/vfs';
 import type { DocumentNode, FigmaApi, GetFileResult } from '../core';
 import type { GraphNode } from '../graph';
 import { createFileGraph } from '../graph';
@@ -12,7 +12,7 @@ export interface ProcessedFileResult {
 
 export interface CreateExportContextParams {
   api: FigmaApi;
-  vfs: VFS;
+  vfs: Vfs;
   cache?: ExportCache;
   log?: FigmaLogger;
 }

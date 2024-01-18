@@ -14,6 +14,7 @@ export function optimizeDownloadedAssets(
   return optimize(content, svgoConfig).data;
 }
 
+// TODO Take it from @neodx/svg
 const defaultConfig: Config = {
   plugins: [
     {
