@@ -1,5 +1,6 @@
+import { colors } from '@neodx/colors';
 import { compact, concurrently, isTruthy, uniqBy } from '@neodx/std';
-import { basename, dirname } from 'pathe';
+import { dirname, relative, sep } from 'pathe';
 import { createInMemoryDirent } from '../backend/create-in-memory-backend.ts';
 import type { VfsContext } from './context';
 import type { VfsContentLike, VfsFileAction } from './types';
@@ -34,13 +35,16 @@ export async function readVfsDir(ctx: VfsContext, path = '.') {
   const actualChildren = await ctx.backend.readDir(path);
   const changes = ctx.getRelativeChanges(path);
   const isNotDeleted = (name: string) => !isKnownDeletedPath(ctx, name);
+  const basePath = ctx.resolve(path);
+  const getDirentName = (path: string) => relative(basePath, ctx.resolve(path)).split(sep)[0]!;
 
   return uniqBy(
     [
       ...actualChildren.filter(entry => isNotDeleted(ctx.resolve(path, entry.name))),
       ...changes
         .filter(meta => isNotDeleted(meta.path))
-        .map(meta => createInMemoryDirent(basename(meta.path), true))
+        .map(meta => createInMemoryDirent(getDirentName(meta.path), true))
+        .filter(entry => Boolean(entry.name.replaceAll('.', '')))
     ],
     entry => entry.name
   );
@@ -181,7 +185,14 @@ export async function tryReadVfsBackendFile(ctx: VfsContext, path: string) {
   return (await ctx.backend.isFile(resolved)) ? await ctx.backend.read(resolved) : null;
 }
 
-export const displayPath = (ctx: VfsContext, path: string) => ctx.relative(path) || '.';
+export const displayPath = (ctx: VfsContext, path: string) => {
+  const prefix =
+    ctx.path.length > prefixSize
+      ? `${ctx.path.slice(0, prefixSize / 4)}...${ctx.path.slice((-prefixSize * 3) / 4)}`
+      : ctx.path;
+
+  return `${colors.gray(prefix + sep)}${ctx.relative(path)}`;
+};
 
 const isDirectDeletedPath = (ctx: VfsContext, path: string) => ctx.get(path)?.deleted;
 /** The directory itself or any of its ancestors is deleted */
@@ -192,3 +203,4 @@ const isKnownDeletedPath = (ctx: VfsContext, path: string) =>
     .split('/')
     .filter(path => !path.startsWith('.'))
     .some(path => isDirectDeletedPath(ctx, path));
+const prefixSize = 28;

@@ -25,6 +25,17 @@ export const createVfsContext = ({
     log,
     ...params,
 
+    catch(message: string, originalError: unknown) {
+      // TODO Implement generic error handling
+      const error = new Error(`${message} (${originalError})`);
+
+      (error as any).path = ctx.path;
+      error.name = 'VfsError';
+      error.cause = originalError;
+      ctx.log.error(error);
+      return error;
+    },
+
     get(path: string) {
       return store.get(ctx.resolve(path)) ?? null;
     },
@@ -138,6 +149,8 @@ export interface VfsContext {
   writePathContent(path: string, content: VfsContentLike): void;
   /** Mark path as deleted. */
   deletePath(path: string, deleted: boolean): void;
+  /** Handles any vfs errors. */
+  catch(message: string, error: unknown): Error;
 
   // meta
 

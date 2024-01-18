@@ -9,13 +9,13 @@ import {
   True,
   tryCreateTimeoutSignal
 } from '@neodx/std';
-import { relative } from 'pathe';
+import { join } from 'pathe';
 import type { VfsDirent } from '../backend/shared.ts';
 import type { BaseVfs } from '../core/types.ts';
 import { createVfsPlugin } from '../create-vfs-plugin.ts';
 
 export interface ScanPluginApi {
-  scan(path?: string): Promise<string[]>;
+  scan(path?: string, params?: ScanVfsParams): Promise<string[]>;
   scan(params?: ScanVfsParams): Promise<string[]>;
   scan(path: string, params: ScanVfsParams & { withFileTypes: true }): Promise<ScannedItem[]>;
   scan(params: ScanVfsParams & { withFileTypes: true }): Promise<ScannedItem[]>;
@@ -98,24 +98,21 @@ export async function scanVfs(
     ])
   );
   const result: ScannedItem[] = [];
-  const basePath = vfs.resolve(path);
 
   async function iterate(params: Pick<ScannedItem, 'relativePath' | 'depth'>) {
     signal.throwIfAborted();
     Object.freeze(params);
-    const children = await (cache.visited[vfs.resolve(params.relativePath)] ??= vfs.readDir(
-      params.relativePath,
-      {
-        withFileTypes: true
-      }
-    ));
+    const resolved = vfs.resolve(path, params.relativePath);
+    const children = await (cache.visited[resolved] ??= vfs.readDir(resolved, {
+      withFileTypes: true
+    }));
 
     await concurrently(
       children,
       async dirent => {
         signal.throwIfAborted();
         const scanned = {
-          relativePath: relative(basePath, vfs.resolve(params.relativePath, dirent.name)),
+          relativePath: join(params.relativePath, dirent.name),
           dirent,
           depth: params.depth + 1
         };
@@ -127,7 +124,7 @@ export async function scanVfs(
     );
   }
 
-  await iterate({ relativePath: path, depth: 0 });
+  await iterate({ relativePath: '.', depth: 0 });
   return withFileTypes ? result : result.map(item => item.relativePath);
 }
 

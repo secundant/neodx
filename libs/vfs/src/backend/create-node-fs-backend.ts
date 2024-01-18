@@ -27,9 +27,11 @@ export function createNodeFsBackend() {
     },
     async readDir(path) {
       try {
-        return await readdir(path, {
+        const dirents = await readdir(path, {
           withFileTypes: true
         });
+
+        return dirents;
       } catch {
         return [];
       }

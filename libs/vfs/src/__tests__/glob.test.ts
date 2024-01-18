@@ -132,6 +132,16 @@ describe('glob', async () => {
     );
   });
 
+  test('should support concrete ignore', async () => {
+    expectArrayEqual(
+      await globVfs(vfs, {
+        glob: 'dir/*.txt',
+        ignore: 'dir/file.txt'
+      }),
+      ['dir/file-2.txt', 'dir/file-3.ignore.txt']
+    );
+  });
+
   test('should support base paths', async () => {
     expectArrayEqual(
       await globVfs(vfs, {

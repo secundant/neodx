@@ -18,6 +18,8 @@ export interface BaseVfs {
   readonly virtual: boolean;
   /** Is current VFS readonly? */
   readonly readonly: boolean;
+  /** VFS logger */
+  readonly log: Logger<VfsLogMethod>;
 
   // Path API
 

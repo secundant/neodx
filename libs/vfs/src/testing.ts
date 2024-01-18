@@ -1,11 +1,13 @@
-import { ensureFile, writeFile } from '@neodx/fs';
+import { ensureFile, getHash, writeFile } from '@neodx/fs';
 import { concurrently, entries, identity } from '@neodx/std';
 import { dirSync } from 'tmp';
 import { expect, vitest } from 'vitest';
 import type { VirtualInitializer } from './backend';
 import { createInMemoryFilesRecord } from './backend';
+import { getVfsContext } from './core/create-base-vfs.ts';
+import { getVfsActions } from './core/operations.ts';
 import type { BaseVfs } from './core/types.ts';
-import type { CreateVfsParams } from './create-vfs';
+import type { CreateVfsParams, Vfs } from './create-vfs';
 import { createVfs } from './create-vfs';
 
 export interface CreateTmpVfsParams extends Omit<CreateVfsParams, 'virtual'> {
@@ -29,6 +31,12 @@ export const initializeDir = (dir: string, initialize: VirtualInitializer) =>
     },
     10
   );
+
+export async function getChangesHash(vfs: Vfs) {
+  const changes = await getVfsActions(getVfsContext(vfs), ['update', 'create']);
+
+  return changes.map(({ path, content }) => [path, getHash(content)]);
+}
 
 export const mockReadDir = (
   vfs: BaseVfs,

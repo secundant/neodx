@@ -15,8 +15,7 @@ const createPreconfiguredTmpVfs = async ({ files = {} }: { files?: Record<string
         trailingComma: 'none'
       }`,
       ...files
-    },
-    log: 'debug'
+    }
   });
 describe('prettier', () => {
   test('should format all files', async () => {

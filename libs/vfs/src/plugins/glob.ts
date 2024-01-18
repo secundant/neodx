@@ -29,7 +29,7 @@ export function glob() {
 
 export async function globVfs(
   vfs: BaseVfs,
-  { glob, ignore, timeout, signal, log, maxDepth }: GlobVfsParams
+  { glob, ignore, timeout, signal, log = vfs.log.child('glob'), maxDepth }: GlobVfsParams
 ) {
   const cache = createScanVfsCache();
 

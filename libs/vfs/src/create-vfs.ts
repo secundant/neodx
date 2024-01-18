@@ -1,97 +1,89 @@
-import type { ParseJsonParams, SerializeJsonParams } from '@neodx/fs';
-import type { DependencyTypeName, PackageJsonDependencies } from '@neodx/pkg-misc';
-import { sortPackageJson } from '@neodx/pkg-misc';
-import type { AbstractVfsParams } from './implementations/abstract-vfs';
-import { DryRunFs } from './implementations/dry-run-fs';
-import { RealFs } from './implementations/real-fs';
-import { VirtualFs } from './implementations/virtual-fs';
-import { readVfsJson, updateVfsJson, writeVfsJson } from './integrations/json';
-import {
-  addVfsPackageJsonDependencies,
-  removeVfsPackageJsonDependencies
-} from './integrations/package-json';
-import { formatVfsChangedFiles } from './integrations/prettier';
+import { createLogger } from '@neodx/log/node';
+import { isTypeOfBoolean, isTypeOfString } from '@neodx/std';
+import type { VfsBackend, VirtualInitializer } from './backend';
+import { createInMemoryBackend, createNodeFsBackend } from './backend';
+import { createReadonlyBackend } from './backend/create-readonly-backend';
+import { createVfsContext } from './core/context';
+import { createBaseVfs } from './core/create-base-vfs';
+import type { VfsLogger, VfsLogMethod } from './core/types';
+import { eslint, type EsLintPluginParams } from './plugins/eslint';
+import { glob } from './plugins/glob.ts';
+import { json } from './plugins/json.ts';
+import { packageJson } from './plugins/package-json.ts';
+import type { PrettierPluginParams } from './plugins/prettier.ts';
+import { prettier } from './plugins/prettier.ts';
+import { scan } from './plugins/scan.ts';
 
-export type VFS = ReturnType<typeof createVfs>;
-
-export interface CreateVfsParams extends AbstractVfsParams {
+export interface CreateVfsParams extends CreateHeadlessVfsParams {
   /**
-   * If true, the returned VFS will be a DryRunFs (will not write anything to the disk)
+   * Params for the `prettier` plugin.
+   * Pass `false` or `{ auto: false }` to disable auto formatting.
+   * @default true
    */
-  dryRun?: boolean;
+  prettier?: boolean | PrettierPluginParams;
   /**
-   * If true, the returned VFS will be a VirtualFs (emulates a file system in memory)
+   * Params for the `eslint` plugin.
+   * Pass `false` or `{ auto: false }` to disable auto fixing.
+   * @default true
    */
-  virtual?: boolean | Record<string, string>;
+  eslint?: boolean | EsLintPluginParams;
 }
 
-/**
- * Create a specific VFS implementation with common integrated helpers
- * @param root Root folder path
- * @param params VFS implementation options
- * @example
- * // DryRunFs
- * const vfs = createVfs(myRootPath, { dryRun: Boolean(process.env.DRY_RUN) });
- * // VirtualFs
- * const vfs = createVfs(myRootPath, { virtual: true });
- * // VirtualFs with initial state
- * const vfs = createVfs(myRootPath, { virtual: { "package.json": "{...}", "src/foo/bar.ts": "export const a = 1" } });
- * // RealFs (default)
- * const vfs = createVfs(myRootPath);
- * // Error: Cannot use dryRun and virtual at the same time
- * const vfs = createVfs(myRootPath, { dryRun: true, virtual: true });
- */
-export function createVfs(root: string, params?: Omit<CreateVfsParams, 'root'>) {
-  // TODO Probably, add support for URL (for any path-like) in root
-  const vfs = createVfsImpl({ ...params, root });
+export interface CreateHeadlessVfsParams extends CreateDefaultVfsBackendParams {
+  /** @see @neodx/log */
+  log?: VfsLogger | VfsLogMethod | 'silent';
+  /** Pass your own vfs backend. */
+  backend?: VfsBackend;
+}
 
-  // TODO Replace hard-coded methods with pre-configured extensions
-  return Object.assign(vfs, {
-    // TODO Introduce VFS extension protocol: function extension(vfs: VFS, ...args: unknown[]) { ... }
-    // TODO Introduce VFS path scoped extensions: function extension(vfs: VFS, path: string, ...args: unknown[]) { ... }
-    readJson<T>(path: string, options?: ParseJsonParams) {
-      return readVfsJson<T>(vfs, path, options);
-    },
-    writeJson<T>(path: string, value: T, options?: SerializeJsonParams) {
-      return writeVfsJson(vfs, path, value, options);
-    },
-    updateJson<Input, Output = Input>(
-      path: string,
-      updateFn: (input: Input) => Output | Promise<Output>,
-      options?: ParseJsonParams & SerializeJsonParams
-    ) {
-      return updateVfsJson(vfs, path, updateFn, options);
-    },
-    formatChangedFiles() {
-      return formatVfsChangedFiles(vfs);
-    },
-    packageJson(name = 'package.json') {
-      return {
-        sort() {
-          return updateVfsJson<any>(vfs, name, pkg => sortPackageJson(pkg));
-        },
-        addDependencies(dependencies: PackageJsonDependencies) {
-          return addVfsPackageJsonDependencies(vfs, dependencies, name);
-        },
-        removeDependencies(dependencies: Partial<Record<DependencyTypeName, string[]>>) {
-          return removeVfsPackageJsonDependencies(vfs, dependencies, name);
-        }
-      };
-    }
+export interface CreateDefaultVfsBackendParams {
+  /** If not specified, will use `node:fs` backend. */
+  virtual?: boolean | VirtualInitializer;
+  /** If true, all operations will be read-only (if you didn't pass your own backend). */
+  readonly?: boolean;
+}
+
+export type Vfs = ReturnType<typeof createVfs>;
+
+export function createVfs(
+  path: string,
+  { eslint: eslintParams = true, prettier: prettierParams = true, ...params }: CreateVfsParams = {}
+) {
+  return createHeadlessVfs(path, params).pipe(
+    json(),
+    scan(),
+    glob(),
+    eslint(isTypeOfBoolean(eslintParams) ? { auto: eslintParams } : eslintParams),
+    prettier(isTypeOfBoolean(prettierParams) ? { auto: prettierParams } : prettierParams),
+    packageJson()
+  );
+}
+
+export function createHeadlessVfs(
+  path: string,
+  {
+    log = 'error',
+    virtual,
+    readonly,
+    backend = createDefaultVfsBackend(path, { virtual, readonly })
+  }: CreateHeadlessVfsParams = {}
+) {
+  const context = createVfsContext({
+    path,
+    log: isTypeOfString(log) ? createLogger({ name: 'vfs', level: log }) : log,
+    backend
   });
+
+  return createBaseVfs(context);
 }
 
-export function createVfsImpl({ dryRun, virtual, ...params }: CreateVfsParams) {
-  if (virtual && dryRun) {
-    throw new Error('Cannot use dryRun and virtual at the same time');
-  }
-  return virtual
-    ? new VirtualFs({
-        initial: virtual === true ? {} : virtual,
-        ...params
-      })
-    : // eslint-disable-next-line unicorn/no-nested-ternary
-    dryRun
-    ? new DryRunFs(params)
-    : new RealFs(params);
+export function createDefaultVfsBackend(
+  path: string,
+  { virtual, readonly }: CreateDefaultVfsBackendParams
+) {
+  const originalBackend = virtual
+    ? createInMemoryBackend(path, virtual === true ? {} : virtual)
+    : createNodeFsBackend();
+
+  return readonly ? originalBackend : createReadonlyBackend(originalBackend);
 }

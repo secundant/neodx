@@ -40,6 +40,12 @@ export function createBaseVfs(ctx: VfsContext) {
   };
 
   const baseVfs: BaseVfs = {
+    // @ts-expect-error internal
+    [contextSymbol]: ctx,
+
+    get log() {
+      return ctx.log;
+    },
     get path() {
       return ctx.path;
     },
@@ -54,8 +60,12 @@ export function createBaseVfs(ctx: VfsContext) {
     },
 
     async apply() {
-      await hooks.run('beforeApply', await getVfsActions(ctx), getCurrentVfs());
-      await concurrently(await getVfsActions(ctx), applyFile);
+      try {
+        await hooks.run('beforeApply', await getVfsActions(ctx), getCurrentVfs());
+        await concurrently(await getVfsActions(ctx), applyFile);
+      } catch (originalError) {
+        throw ctx.catch('Failed to apply changes', originalError);
+      }
     },
 
     resolve: ctx.resolve,
@@ -84,8 +94,11 @@ export function createBaseVfs(ctx: VfsContext) {
   return toPublicScope(baseVfs, ctx, hooks);
 }
 
+export const getVfsContext = (vfs: BaseVfs) => (vfs as any)[contextSymbol] as VfsContext;
+
 const labels = {
   delete: colors.red('delete'),
   create: colors.green('create'),
   update: colors.yellow('update')
 };
+const contextSymbol = Symbol('context');

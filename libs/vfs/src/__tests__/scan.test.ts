@@ -126,7 +126,8 @@ describe('scan', () => {
       'The operation was aborted due to timeout'
     );
     expect(readDir).toHaveBeenCalledTimes(1);
-    expect(readDir).toHaveBeenCalledWith('.', { withFileTypes: true });
+    // it's implementation details, but it's part of our internal communication
+    expect(readDir).toHaveBeenCalledWith(vfs.path, { withFileTypes: true });
 
     readDir.mockClear();
     const filter = vitest.fn(item => item.dirent.name.endsWith('.ts'));
