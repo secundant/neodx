@@ -33,7 +33,7 @@ describe('plugins system', async () => {
   ) => {
     const map = sprites(spritesConfig);
     const vfs = await createTmpVfs({
-      initialFiles: {
+      files: {
         ...Array.from(map.values())
           .flatMap(({ files }) => files)
           .reduce((acc, { path, content }) => ({ ...acc, [path]: content }), {})
@@ -78,8 +78,6 @@ describe('plugins system', async () => {
         keepTreeChanges: true,
         metadata
       });
-      await vfs.formatChangedFiles();
-
       return { vfs };
     }
 

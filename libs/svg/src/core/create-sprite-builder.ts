@@ -1,7 +1,7 @@
-import { getHash, scan } from '@neodx/fs';
+import { getHash } from '@neodx/fs';
 import type { LoggerMethods } from '@neodx/log';
 import { compact, isTruthy, quickPluralize } from '@neodx/std';
-import type { VFS } from '@neodx/vfs';
+import type { Vfs, VfsLogMethod } from '@neodx/vfs';
 import { createVfs } from '@neodx/vfs';
 import { basename, join } from 'pathe';
 import { parse } from 'svgson';
@@ -27,7 +27,7 @@ export interface CreateSpriteBuilderParams {
    * @see `@neodx/vfs`
    * @default createVfs(process.cwd())
    */
-  vfs?: VFS;
+  vfs?: Vfs;
   /**
    * Root folder for inputs, useful for correct groups naming
    */
@@ -42,7 +42,7 @@ export interface CreateSpriteBuilderParams {
    * @see `@neodx/log`
    * @default built-in logger
    */
-  logger?: LoggerMethods<'info' | 'debug' | 'error'>;
+  logger?: LoggerMethods<VfsLogMethod>;
   /**
    * Should we group icons?
    * @default false
@@ -126,7 +126,7 @@ export function createSpriteBuilder({
       'DEPRECATED: `definitions` and `experimentalRuntime` options will be removed in future versions, use `metadata` instead'
     );
   }
-
+  const rootVfs = vfs.child(root);
   const hooks = combinePlugins(
     compact([
       enableGroup && groupSprites(),
@@ -145,12 +145,12 @@ export function createSpriteBuilder({
   );
   let changed = false;
   const files = new Map<string, SvgFile>();
-  const isAllowedPath = (path: string) => !join(vfs.root, path).startsWith(join(vfs.root, output));
+  const isAllowedPath = (path: string) => !join(vfs.path, path).startsWith(join(vfs.path, output));
 
   const parseFile = async (path: string) => {
     logger?.debug('Parsing %s...', path);
     const name = basename(path, '.svg');
-    const content = await vfs.read(join(root, path), 'utf-8');
+    const content = await rootVfs.read(path, 'utf-8');
     const prevContent = files.get(path)?.content;
 
     if (prevContent === content) {
@@ -205,7 +205,7 @@ export function createSpriteBuilder({
       }
     },
     async load(patterns: string | string[]) {
-      const filePaths = await scan(join(vfs.root, root), patterns);
+      const filePaths = await rootVfs.glob(patterns);
 
       logger?.info('Loaded %d files...', filePaths.length);
       await add(filePaths);
@@ -215,7 +215,15 @@ export function createSpriteBuilder({
         logger?.debug('Nothing to build...');
         return;
       }
-      const unionGroup = new Map([['sprite', { name: 'sprite', files: [...files.values()] }]]);
+      const unionGroup = new Map([
+        [
+          'sprite',
+          {
+            name: 'sprite',
+            files: [...files.values()].sort((a, b) => a.path.localeCompare(b.path))
+          }
+        ]
+      ]);
       const groups = hooks.resolveEntriesMap(unionGroup, { vfs }) as GeneratedSprites;
 
       changed = false;
@@ -252,7 +260,6 @@ export function createSpriteBuilder({
         }
       }
       await hooks.afterWriteAll(groups, { vfs });
-      await vfs.formatChangedFiles();
     }
   };
 }

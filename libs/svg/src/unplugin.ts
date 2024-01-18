@@ -1,5 +1,5 @@
 import { createLogger, pretty } from '@neodx/log/node';
-import { createVfs } from '@neodx/vfs';
+import { createVfs, type VfsLogger, type VfsLogMethod } from '@neodx/vfs';
 import { createUnplugin } from 'unplugin';
 import { createSpriteBuilder, type CreateSpriteBuilderParams, createWatcher } from './core';
 
@@ -8,7 +8,7 @@ export interface SvgPluginParams extends Partial<Omit<CreateSpriteBuilderParams,
    * Globs to icons files
    */
   input?: string | string[];
-  logLevel?: 'debug' | 'info' | 'error' | 'silent';
+  logLevel?: VfsLogMethod | 'silent';
 }
 
 export const unplugin = createUnplugin(
@@ -28,7 +28,7 @@ export const unplugin = createUnplugin(
   ) => {
     const builder = createSpriteBuilder({
       vfs: createVfs(process.cwd(), {
-        log: logger
+        log: logger as VfsLogger
       }),
       root,
       logger,
@@ -55,7 +55,7 @@ export const unplugin = createUnplugin(
         );
         await builder.load(input);
         await builder.build();
-        await builder.vfs.applyChanges();
+        await builder.vfs.apply();
         if (isWatch) {
           createWatcher({
             builder,

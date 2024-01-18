@@ -50,7 +50,7 @@ export function createCli(cwd = process.cwd()) {
               }
             : [],
         logger: createLogger({ level: verbose ? 'debug' : 'info', name: 'svg' }),
-        vfs: createVfs(cwd, { dryRun })
+        vfs: createVfs(cwd, { readonly: dryRun })
       });
     });
 

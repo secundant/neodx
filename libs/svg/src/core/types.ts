@@ -1,7 +1,7 @@
-import type { VFS } from '@neodx/vfs';
+import type { Vfs } from '@neodx/vfs';
 
 export interface Context {
-  vfs: VFS;
+  vfs: Vfs;
 }
 
 export interface SvgSpritePlugin extends Partial<SvgSpritePluginHooks> {

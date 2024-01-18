@@ -1,5 +1,4 @@
-import { deepReadDir } from '@neodx/fs';
-import { getChangesHash } from '@neodx/vfs/testing-utils';
+import { getChangesDump } from '@neodx/vfs/testing';
 import { describe, expect, test } from 'vitest';
 import type { BuildSpritesParams } from '..';
 import { generateExample, getExamplesNames } from './testing-utils';
@@ -70,12 +69,13 @@ describe('examples', () => {
   test.each(examples)(`"%s" example should replay same output`, async name => {
     const { vfs } = await generateExample(name, false, optionsMap[name]);
 
-    expect(await getChangesHash(vfs)).toMatchSnapshot();
+    expect(await getChangesDump(vfs)).toMatchSnapshot();
+    await vfs.apply();
   });
 
   test.each(examples)(`"%s" example should generate files`, async name => {
     const { vfs } = await generateExample(name, true, optionsMap[name]);
 
-    expect(await deepReadDir(vfs.root, { absolute: false })).toMatchSnapshot();
+    expect(await vfs.scan()).toMatchSnapshot();
   });
 });

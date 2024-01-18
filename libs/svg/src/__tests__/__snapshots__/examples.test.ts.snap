@@ -2,205 +2,364 @@
 
 exports[`examples > "colors" example should generate files 1`] = `
 [
+  "assets",
+  "generated",
   "assets/custom.svg",
   "assets/fill.svg",
   "assets/mixed.svg",
   "assets/stroke.svg",
-  "generated/sprite-info.ts",
   "generated/sprite.svg",
+  "generated/sprite-info.ts",
 ]
 `;
 
 exports[`examples > "colors" example should replay same output 1`] = `
 [
   [
+    "create",
     "generated/sprite.svg",
-    "62b41de3545a4350fe7ef5f3cc3adbbb221c82ef0863bf5871361f821b6cd028",
+    "<svg width="0" height="0"><symbol xmlns="http://www.w3.org/2000/svg" id="custom" viewBox="0 0 48 48"><path stroke="#999" d="m12.5 40 2.15-8.5H7l.75-3h7.65l2.25-9H9l.75-3h8.65L20.5 8h2.95l-2.1 8.5h9.05L32.5 8h2.95l-2.1 8.5H41l-.75 3H32.6l-2.25 9H39l-.75 3H29.6L27.5 40h-3l2.15-8.5H17.6L15.5 40Zm5.85-11.5h9.05l2.25-9H20.6Z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="fill" viewBox="0 0 48 48"><path d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="mixed" viewBox="0 0 48 48"><path fill="currentColor" stroke="currentColor" d="M6 42v-3h36v3Zm0-8.25v-3h23.6v3Zm0-8.25v-3h36v3Zm0-8.25v-3h23.6v3ZM6 9V6h36v3Z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="stroke" viewBox="0 0 48 48"><path stroke="currentColor" d="m24 41.95-2.05-1.85q-5.3-4.85-8.75-8.375-3.45-3.525-5.5-6.3T4.825 20.4Q4 18.15 4 15.85q0-4.5 3.025-7.525Q10.05 5.3 14.5 5.3q2.85 0 5.275 1.35Q22.2 8 24 10.55q2.1-2.7 4.45-3.975T33.5 5.3q4.45 0 7.475 3.025Q44 11.35 44 15.85q0 2.3-.825 4.55T40.3 25.425q-2.05 2.775-5.5 6.3T26.05 40.1ZM24 38q5.05-4.65 8.325-7.975 3.275-3.325 5.2-5.825 1.925-2.5 2.7-4.45.775-1.95.775-3.9 0-3.3-2.1-5.425T33.5 8.3q-2.55 0-4.75 1.575T25.2 14.3h-2.45q-1.3-2.8-3.5-4.4-2.2-1.6-4.75-1.6-3.3 0-5.4 2.125Q7 12.55 7 15.85q0 1.95.775 3.925.775 1.975 2.7 4.5Q12.4 26.8 15.7 30.1 19 33.4 24 38Zm0-14.85Z"/></symbol></svg>",
   ],
   [
+    "create",
     "generated/sprite-info.ts",
-    "e90c943544b0deb31f987891a7c4895d28c0bd94b4373696a80ae85074f18c02",
+    "export interface SpritesMap {
+    'sprite': 'custom' | 'fill' | 'mixed' | 'stroke'
+  }
+export const SPRITES_META: {
+        'sprite': Array<'custom' | 'fill' | 'mixed' | 'stroke'>
+      } = {
+    'sprite': ['custom',
+'fill',
+'mixed',
+'stroke']
+  };",
   ],
 ]
 `;
 
 exports[`examples > "colors-advanced" example should generate files 1`] = `
 [
+  "assets",
+  "generated",
   "assets/close.svg",
   "assets/exit.svg",
   "assets/favourite.svg",
+  "assets/flags",
+  "assets/folder-colored.svg",
+  "assets/logos",
+  "assets/sort-by-visibility.svg",
+  "generated/sprite.svg",
+  "generated/flags.svg",
+  "generated/logos.svg",
+  "generated/sprite-info.ts",
   "assets/flags/ac.svg",
   "assets/flags/ad.svg",
   "assets/flags/ae.svg",
   "assets/flags/af.svg",
-  "assets/folder-colored.svg",
   "assets/logos/linkedin.svg",
   "assets/logos/twitter.svg",
-  "assets/sort-by-visibility.svg",
-  "generated/flags.svg",
-  "generated/logos.svg",
-  "generated/sprite-info.ts",
-  "generated/sprite.svg",
 ]
 `;
 
 exports[`examples > "colors-advanced" example should replay same output 1`] = `
 [
   [
+    "create",
     "generated/sprite.svg",
-    "ffef88ad150b16c58a121b4efe656db2159b9a3498efb53067180a88a0bfd711",
+    "<svg width="0" height="0"><symbol xmlns="http://www.w3.org/2000/svg" id="close" viewBox="0 0 48 48"><path d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="exit" fill="none" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M6 2h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-3H4v3a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3h1V3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/><path stroke="#DB3B4B" stroke-linecap="round" stroke-linejoin="round" d="M2.5 8H11m0 0L8.5 5.5M11 8l-2.5 2.5"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="favourite" viewBox="0 0 48 48"><path fill="var(--icon-color)" d="m24 41.95-2.05-1.85q-5.3-4.85-8.75-8.375-3.45-3.525-5.5-6.3T4.825 20.4Q4 18.15 4 15.85q0-4.5 3.025-7.525Q10.05 5.3 14.5 5.3q2.85 0 5.275 1.35Q22.2 8 24 10.55q2.1-2.7 4.45-3.975T33.5 5.3q4.45 0 7.475 3.025Q44 11.35 44 15.85q0 2.3-.825 4.55T40.3 25.425q-2.05 2.775-5.5 6.3T26.05 40.1ZM24 38q5.05-4.65 8.325-7.975 3.275-3.325 5.2-5.825 1.925-2.5 2.7-4.45.775-1.95.775-3.9 0-3.3-2.1-5.425T33.5 8.3q-2.55 0-4.75 1.575T25.2 14.3h-2.45q-1.3-2.8-3.5-4.4-2.2-1.6-4.75-1.6-3.3 0-5.4 2.125Q7 12.55 7 15.85q0 1.95.775 3.925.775 1.975 2.7 4.5Q12.4 26.8 15.7 30.1 19 33.4 24 38Zm0-14.85Z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="folder-colored" fill="none" viewBox="0 0 16 16"><path fill="#6C707E" d="M13 4H8.5L6.736 2.283A1 1 0 0 0 6.038 2H2.75C1.784 2 1 2.836 1 3.867v8.266C1 13.164 1.784 14 2.75 14H8v-1H2.75c-.354 0-.75-.326-.75-.867V3.867c0-.54.396-.867.75-.867h3.288l2.056 2H13a1 1 0 0 1 1 1v1h1V6a2 2 0 0 0-2-2Z"/><path fill="#3574F0" d="M13 12.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2Zm-4 0a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2Zm4-4a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2Z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="sort-by-visibility" fill="none" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M7.854 10.854a.5.5 0 0 0-.708-.708L5 12.293V2.5a.5.5 0 0 0-1 0v9.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3Z" clip-rule="evenodd"/><path fill="#DB3B4B" d="M10 6h4v3h-4z"/><path fill="currentColor" fill-rule="evenodd" d="M14 5V4a2 2 0 1 0-4 0v1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1Zm-3-1a1 1 0 1 1 2 0v1h-2V4Zm-1 5V6h4v3h-4Z" clip-rule="evenodd"/></symbol></svg>",
   ],
   [
+    "create",
     "generated/flags.svg",
-    "f4756b243c9212d40aa8c5484660ff8dfae36f09c777f89555f557382f453857",
+    "<svg width="0" height="0"><symbol xmlns="http://www.w3.org/2000/svg" id="ac" viewBox="0 0 512 512"><mask id="a"><circle cx="256" cy="256" r="256" fill="currentColor"/></mask><g mask="url(#a)"><path fill="#0052b4" d="M256 0h256v512H0V256Z"/><path fill="#eee" d="M0 0v32l32 32L0 96v160h32l32-32 32 32h32v-83l83 83h45l-8-16 8-15v-14l-83-83h83V96l-32-32 32-32V0H96L64 32 32 0Z"/><path fill="#d80027" d="M32 0v32H0v64h32v160h64V96h160V32H96V0Zm96 128 128 128v-31l-97-97z"/><path fill="#6da544" d="m320 144 48-80 48 80z"/><circle cx="368" cy="144" r="48" fill="#acabb1"/><path fill="#338af3" d="M320 144v77c0 36 48 48 48 48s48-12 48-48v-77z"/><rect width="32" height="128" x="288" y="128" fill="#ff9811" rx="16" ry="16"/><rect width="32" height="128" x="416" y="128" fill="#ff9811" rx="16" ry="16"/><path fill="#6da544" d="m368 160-48 67c2 11 9 19 16 26l32-45 32 45c8-7 14-15 16-26z"/></g></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="ad" viewBox="0 0 512 512"><g mask="url(#a)"><path fill="#0052b4" d="M0 0h144.7l36 254.6-36 257.4H0z"/><path fill="#d80027" d="M367.3 0H512v512H367.3l-29.7-257.3z"/><path fill="#ffda44" d="M144.7 0h222.6v512H144.7z"/><path fill="#d80027" d="M256 354.5V256h66.8v47.3zm-66.8-165.3H256V256h-66.8z"/><path fill="#ff9811" d="M289.4 167a22.3 22.3 0 0 0-33.4-19.3 22.1 22.1 0 0 0-11.1-3c-12.3 0-22.3 10-22.3 22.3H167v111.3c0 41.4 32.9 65.4 58.7 77.8a22.1 22.1 0 0 0-3 11.2 22.3 22.3 0 0 0 33.3 19.3 22.1 22.1 0 0 0 11.1 3 22.3 22.3 0 0 0 19.2-33.5c25.8-12.4 58.7-36.4 58.7-77.8V167zm22.3 111.3c0 5.8 0 23.4-27.5 40.9a136.5 136.5 0 0 1-28.2 13.3c-7-2.4-17.8-6.7-28.2-13.3-27.5-17.5-27.5-35.1-27.5-41v-77.9h111.4z"/></g></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="ae" viewBox="0 0 512 512"><g mask="url(#a)"><path fill="#a2001d" d="M0 0h167l52.3 252L167 512H0z"/><path fill="#eee" d="m167 167 170.8-44.6L512 167v178l-173.2 36.9L167 345z"/><path fill="#6da544" d="M167 0h345v167H167z"/><path fill="#333" d="M167 345h345v167H167z"/></g></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="af" viewBox="0 0 512 512"><g mask="url(#a)"><path fill="#d80027" d="M144.7 0h222.6l37 257.7-37 254.3H144.7l-42.4-255.2z"/><path fill="#496e2d" d="M367.3 0H512v512H367.3z"/><path fill="#333" d="M0 0h144.7v512H0z"/><g fill="#ffda44"><path d="M256 167a89 89 0 1 0 0 178 89 89 0 0 0 0-178zm0 144.7a55.7 55.7 0 1 1 0-111.4 55.7 55.7 0 0 1 0 111.4z"/><path d="M256 222.6c-12.3 0-22.3 10-22.3 22.3v33.4h44.6v-33.4c0-12.3-10-22.3-22.3-22.3z"/></g></g></symbol></svg>",
   ],
   [
+    "create",
     "generated/logos.svg",
-    "6c76e8cdf522e8b7cb20f1fb6303584d547ff0f15054b4333c351f4f1fb1d2c6",
+    "<svg width="0" height="0"><symbol xmlns="http://www.w3.org/2000/svg" id="linkedin" fill="none" viewBox="0 0 140 34"><g fill="#0A66C2"><path d="M137.201 31.805a.623.623 0 0 0 .63-.66c0-.469-.283-.692-.862-.692h-.937v2.452h.352v-1.07h.433l.01.014.672 1.056h.376l-.722-1.093.048-.007Zm-.407-.245h-.409v-.83h.518c.267 0 .572.044.572.394 0 .403-.308.436-.683.436M0 4.99h5.198v18.945h9.624v4.8H0V4.99Zm17.12 7.645h4.993v16.09H17.12v-16.09Zm2.496-8A2.896 2.896 0 0 1 22.457 8.1a2.898 2.898 0 0 1-5.25 1.044 2.9 2.9 0 0 1 2.41-4.509Zm23.39.351H48v14.19l5.66-6.548h6.122l-6.554 7.449 6.417 8.655h-6.277l-5.302-7.953h-.065v7.952h-4.994l-.001-23.745Zm-18.123 7.65h4.796v2.2h.068a5.248 5.248 0 0 1 4.728-2.6c5.065 0 5.997 3.334 5.997 7.665v8.824h-4.994V20.9c0-1.867-.035-4.267-2.601-4.267-2.596 0-2.997 2.033-2.997 4.132v7.957h-4.994l-.003-16.087Z"/><path d="M70.298 18.809a2.995 2.995 0 0 0-3.066-3.066 3.332 3.332 0 0 0-3.529 3.066h6.595Zm4.23 7.13A8.795 8.795 0 0 1 67.7 29.14c-4.994 0-8.992-3.335-8.992-8.5 0-5.164 3.998-8.498 8.992-8.498 4.668 0 7.595 3.332 7.595 8.499v1.566h-11.59a3.733 3.733 0 0 0 3.763 3.133 4.26 4.26 0 0 0 3.564-1.966l3.497 2.565Zm11.176-9.415c-2.497 0-3.995 1.668-3.995 4.099 0 2.43 1.498 4.1 3.995 4.1 2.498 0 3.999-1.665 3.999-4.1 0-2.435-1.499-4.099-3.999-4.099Zm8.597 12.198h-4.598V26.59h-.068a6.28 6.28 0 0 1-4.965 2.533c-4.798 0-7.96-3.465-7.96-8.364 0-4.5 2.798-8.632 7.396-8.632 2.067 0 3.997.566 5.13 2.134h.065V4.985H94.3v23.737Zm33.713.01h-4.994v-7.825c0-1.866-.033-4.268-2.598-4.268-2.601 0-2.999 2.033-2.999 4.132v7.96h-4.994v-16.09h4.795v2.198h.067a5.257 5.257 0 0 1 4.73-2.599c5.062 0 5.995 3.331 5.995 7.665l-.002 8.827Zm-21.219-18.29a2.899 2.899 0 1 1-.001-5.799 2.899 2.899 0 0 1 .001 5.798Zm2.497 18.29h-5V12.64h5v16.09ZM130.503.002h-28.72a2.457 2.457 0 0 0-2.487 2.43v28.855a2.463 2.463 0 0 0 2.487 2.433h28.72A2.465 2.465 0 0 0 133 31.287V2.43A2.465 2.465 0 0 0 130.503 0m6.333 29.36a2.299 2.299 0 1 0 .044 0h-.044Zm0 4.336a2.013 2.013 0 0 1-1.883-1.214 2.025 2.025 0 0 1-.134-1.163 2.024 2.024 0 0 1 1.557-1.61 2.013 2.013 0 0 1 2.083.823c.227.327.352.715.358 1.114v.034a1.973 1.973 0 0 1-1.929 2.015h-.052"/></g></symbol><symbol xmlns="http://www.w3.org/2000/svg" xml:space="preserve" id="twitter" viewBox="0 0 248 204"><path fill="#1d9bf0" d="M221.95 51.29c.15 2.17.15 4.34.15 6.53 0 66.73-50.8 143.69-143.69 143.69v-.04c-27.44.04-54.31-7.82-77.41-22.64 3.99.48 8 .72 12.02.73 22.74.02 44.83-7.61 62.72-21.66-21.61-.41-40.56-14.5-47.18-35.07a50.338 50.338 0 0 0 22.8-.87C27.8 117.2 10.85 96.5 10.85 72.46v-.64a50.18 50.18 0 0 0 22.92 6.32C11.58 63.31 4.74 33.79 18.14 10.71a143.333 143.333 0 0 0 104.08 52.76 50.532 50.532 0 0 1 14.61-48.25c20.34-19.12 52.33-18.14 71.45 2.19 11.31-2.23 22.15-6.38 32.07-12.26a50.69 50.69 0 0 1-22.2 27.93c10.01-1.18 19.79-3.86 29-7.95a102.594 102.594 0 0 1-25.2 26.16z"/></symbol></svg>",
   ],
   [
+    "create",
     "generated/sprite-info.ts",
-    "ba8fc4565b41a227a9cc7372fed0db893a4f52bae852b23bbec89c97ae24623f",
+    "export interface SpritesMap {
+    'sprite': 'close' | 'exit' | 'favourite' | 'folder-colored' | 'sort-by-visibility',
+'flags': 'ac' | 'ad' | 'ae' | 'af',
+'logos': 'linkedin' | 'twitter'
+  }
+export const SPRITES_META: {
+        'sprite': Array<'close' | 'exit' | 'favourite' | 'folder-colored' | 'sort-by-visibility'>,
+'flags': Array<'ac' | 'ad' | 'ae' | 'af'>,
+'logos': Array<'linkedin' | 'twitter'>
+      } = {
+    'sprite': ['close',
+'exit',
+'favourite',
+'folder-colored',
+'sort-by-visibility'],
+'flags': ['ac',
+'ad',
+'ae',
+'af'],
+'logos': ['linkedin',
+'twitter']
+  };",
   ],
 ]
 `;
 
 exports[`examples > "groups-with-root" example should generate files 1`] = `
 [
+  "assets",
+  "generated",
+  "assets/common",
+  "assets/format",
+  "generated/common.svg",
+  "generated/format.svg",
+  "generated/sprite-info.ts",
   "assets/common/close.svg",
   "assets/common/favourite.svg",
   "assets/format/align-left.svg",
   "assets/format/tag.svg",
-  "generated/common.svg",
-  "generated/format.svg",
-  "generated/sprite-info.ts",
 ]
 `;
 
 exports[`examples > "groups-with-root" example should replay same output 1`] = `
 [
   [
+    "create",
     "generated/common.svg",
-    "2eb4b56ff266279ca9c0af3b16f7f3114ae35c4555657bb106acbd15ff9d4f52",
+    "<svg width="0" height="0"><symbol xmlns="http://www.w3.org/2000/svg" id="close" viewBox="0 0 48 48"><path d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="favourite" viewBox="0 0 48 48"><path d="m24 41.95-2.05-1.85q-5.3-4.85-8.75-8.375-3.45-3.525-5.5-6.3T4.825 20.4Q4 18.15 4 15.85q0-4.5 3.025-7.525Q10.05 5.3 14.5 5.3q2.85 0 5.275 1.35Q22.2 8 24 10.55q2.1-2.7 4.45-3.975T33.5 5.3q4.45 0 7.475 3.025Q44 11.35 44 15.85q0 2.3-.825 4.55T40.3 25.425q-2.05 2.775-5.5 6.3T26.05 40.1ZM24 38q5.05-4.65 8.325-7.975 3.275-3.325 5.2-5.825 1.925-2.5 2.7-4.45.775-1.95.775-3.9 0-3.3-2.1-5.425T33.5 8.3q-2.55 0-4.75 1.575T25.2 14.3h-2.45q-1.3-2.8-3.5-4.4-2.2-1.6-4.75-1.6-3.3 0-5.4 2.125Q7 12.55 7 15.85q0 1.95.775 3.925.775 1.975 2.7 4.5Q12.4 26.8 15.7 30.1 19 33.4 24 38Zm0-14.85Z"/></symbol></svg>",
   ],
   [
+    "create",
     "generated/format.svg",
-    "c890959d268bf53d6006012438788b4104189d3cfaf997b0b43b2fd4f1a41159",
+    "<svg width="0" height="0"><symbol xmlns="http://www.w3.org/2000/svg" id="align-left" viewBox="0 0 48 48"><path d="M6 42v-3h36v3Zm0-8.25v-3h23.6v3Zm0-8.25v-3h36v3Zm0-8.25v-3h23.6v3ZM6 9V6h36v3Z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="tag" viewBox="0 0 48 48"><path d="m12.5 40 2.15-8.5H7l.75-3h7.65l2.25-9H9l.75-3h8.65L20.5 8h2.95l-2.1 8.5h9.05L32.5 8h2.95l-2.1 8.5H41l-.75 3H32.6l-2.25 9H39l-.75 3H29.6L27.5 40h-3l2.15-8.5H17.6L15.5 40Zm5.85-11.5h9.05l2.25-9H20.6Z"/></symbol></svg>",
   ],
   [
+    "create",
     "generated/sprite-info.ts",
-    "86b30a6c62260f488f7840660677e396f97aeefd2e1377ab0f7603e128257459",
+    "export interface SpritesMap {
+    'common': 'close' | 'favourite',
+'format': 'align-left' | 'tag'
+  }
+export const SPRITES_META: {
+        'common': Array<'close' | 'favourite'>,
+'format': Array<'align-left' | 'tag'>
+      } = {
+    'common': ['close',
+'favourite'],
+'format': ['align-left',
+'tag']
+  };",
   ],
 ]
 `;
 
 exports[`examples > "groups-without-root" example should generate files 1`] = `
 [
+  "assets",
+  "generated",
+  "assets/common",
+  "assets/format",
+  "generated/assets",
+  "generated/sprite-info.ts",
   "assets/common/close.svg",
   "assets/common/favourite.svg",
   "assets/format/align-left.svg",
   "assets/format/tag.svg",
   "generated/assets/common.svg",
   "generated/assets/format.svg",
-  "generated/sprite-info.ts",
 ]
 `;
 
 exports[`examples > "groups-without-root" example should replay same output 1`] = `
 [
   [
+    "create",
     "generated/assets/common.svg",
-    "2eb4b56ff266279ca9c0af3b16f7f3114ae35c4555657bb106acbd15ff9d4f52",
+    "<svg width="0" height="0"><symbol xmlns="http://www.w3.org/2000/svg" id="close" viewBox="0 0 48 48"><path d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="favourite" viewBox="0 0 48 48"><path d="m24 41.95-2.05-1.85q-5.3-4.85-8.75-8.375-3.45-3.525-5.5-6.3T4.825 20.4Q4 18.15 4 15.85q0-4.5 3.025-7.525Q10.05 5.3 14.5 5.3q2.85 0 5.275 1.35Q22.2 8 24 10.55q2.1-2.7 4.45-3.975T33.5 5.3q4.45 0 7.475 3.025Q44 11.35 44 15.85q0 2.3-.825 4.55T40.3 25.425q-2.05 2.775-5.5 6.3T26.05 40.1ZM24 38q5.05-4.65 8.325-7.975 3.275-3.325 5.2-5.825 1.925-2.5 2.7-4.45.775-1.95.775-3.9 0-3.3-2.1-5.425T33.5 8.3q-2.55 0-4.75 1.575T25.2 14.3h-2.45q-1.3-2.8-3.5-4.4-2.2-1.6-4.75-1.6-3.3 0-5.4 2.125Q7 12.55 7 15.85q0 1.95.775 3.925.775 1.975 2.7 4.5Q12.4 26.8 15.7 30.1 19 33.4 24 38Zm0-14.85Z"/></symbol></svg>",
   ],
   [
+    "create",
     "generated/assets/format.svg",
-    "c890959d268bf53d6006012438788b4104189d3cfaf997b0b43b2fd4f1a41159",
+    "<svg width="0" height="0"><symbol xmlns="http://www.w3.org/2000/svg" id="align-left" viewBox="0 0 48 48"><path d="M6 42v-3h36v3Zm0-8.25v-3h23.6v3Zm0-8.25v-3h36v3Zm0-8.25v-3h23.6v3ZM6 9V6h36v3Z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="tag" viewBox="0 0 48 48"><path d="m12.5 40 2.15-8.5H7l.75-3h7.65l2.25-9H9l.75-3h8.65L20.5 8h2.95l-2.1 8.5h9.05L32.5 8h2.95l-2.1 8.5H41l-.75 3H32.6l-2.25 9H39l-.75 3H29.6L27.5 40h-3l2.15-8.5H17.6L15.5 40Zm5.85-11.5h9.05l2.25-9H20.6Z"/></symbol></svg>",
   ],
   [
+    "create",
     "generated/sprite-info.ts",
-    "ff73fe4f93a997f28451d9096746a470c68939807d28585f137f89397635e1cd",
+    "export interface SpritesMap {
+    'assets/common': 'close' | 'favourite',
+'assets/format': 'align-left' | 'tag'
+  }
+export const SPRITES_META: {
+        'assets/common': Array<'close' | 'favourite'>,
+'assets/format': Array<'align-left' | 'tag'>
+      } = {
+    'assets/common': ['close',
+'favourite'],
+'assets/format': ['align-left',
+'tag']
+  };",
   ],
 ]
 `;
 
 exports[`examples > "metadata" example should generate files 1`] = `
 [
+  "assets",
+  "generated",
+  "assets/common",
+  "assets/format",
+  "generated/common.2eb4b56f.svg",
+  "generated/format.c890959d.svg",
+  "generated/meta.ts",
   "assets/common/close.svg",
   "assets/common/favourite.svg",
   "assets/format/align-left.svg",
   "assets/format/tag.svg",
-  "generated/common.2eb4b56f.svg",
-  "generated/format.c890959d.svg",
-  "generated/meta.ts",
 ]
 `;
 
 exports[`examples > "metadata" example should replay same output 1`] = `
 [
   [
+    "create",
     "generated/common.2eb4b56f.svg",
-    "2eb4b56ff266279ca9c0af3b16f7f3114ae35c4555657bb106acbd15ff9d4f52",
+    "<svg width="0" height="0"><symbol xmlns="http://www.w3.org/2000/svg" id="close" viewBox="0 0 48 48"><path d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="favourite" viewBox="0 0 48 48"><path d="m24 41.95-2.05-1.85q-5.3-4.85-8.75-8.375-3.45-3.525-5.5-6.3T4.825 20.4Q4 18.15 4 15.85q0-4.5 3.025-7.525Q10.05 5.3 14.5 5.3q2.85 0 5.275 1.35Q22.2 8 24 10.55q2.1-2.7 4.45-3.975T33.5 5.3q4.45 0 7.475 3.025Q44 11.35 44 15.85q0 2.3-.825 4.55T40.3 25.425q-2.05 2.775-5.5 6.3T26.05 40.1ZM24 38q5.05-4.65 8.325-7.975 3.275-3.325 5.2-5.825 1.925-2.5 2.7-4.45.775-1.95.775-3.9 0-3.3-2.1-5.425T33.5 8.3q-2.55 0-4.75 1.575T25.2 14.3h-2.45q-1.3-2.8-3.5-4.4-2.2-1.6-4.75-1.6-3.3 0-5.4 2.125Q7 12.55 7 15.85q0 1.95.775 3.925.775 1.975 2.7 4.5Q12.4 26.8 15.7 30.1 19 33.4 24 38Zm0-14.85Z"/></symbol></svg>",
   ],
   [
+    "create",
     "generated/format.c890959d.svg",
-    "c890959d268bf53d6006012438788b4104189d3cfaf997b0b43b2fd4f1a41159",
+    "<svg width="0" height="0"><symbol xmlns="http://www.w3.org/2000/svg" id="align-left" viewBox="0 0 48 48"><path d="M6 42v-3h36v3Zm0-8.25v-3h23.6v3Zm0-8.25v-3h36v3Zm0-8.25v-3h23.6v3ZM6 9V6h36v3Z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="tag" viewBox="0 0 48 48"><path d="m12.5 40 2.15-8.5H7l.75-3h7.65l2.25-9H9l.75-3h8.65L20.5 8h2.95l-2.1 8.5h9.05L32.5 8h2.95l-2.1 8.5H41l-.75 3H32.6l-2.25 9H39l-.75 3H29.6L27.5 40h-3l2.15-8.5H17.6L15.5 40Zm5.85-11.5h9.05l2.25-9H20.6Z"/></symbol></svg>",
   ],
   [
+    "create",
     "generated/meta.ts",
-    "c7f023721dbcde44c77868aa1204555fdef83176f944624c55114967fcf815e8",
+    "export interface SpritesMap {
+    'common': 'close' | 'favourite',
+'format': 'align-left' | 'tag'
+  }
+export const SPRITES_META: {
+           [Key in keyof SpritesMap]: {
+             filePath: string;
+             items: Record<SpritesMap[Key], {
+                viewBox: string,
+                width: number, height: number,
+             }>
+           }
+         } = {
+    'common': {
+    filePath: 'common.2eb4b56f.svg',
+    items: {
+      'close': {
+    viewBox: '0 0 48 48',
+    width: 48, height: 48,
+  },
+'favourite': {
+    viewBox: '0 0 48 48',
+    width: 48, height: 48,
+  }
+    }
+},
+'format': {
+    filePath: 'format.c890959d.svg',
+    items: {
+      'align-left': {
+    viewBox: '0 0 48 48',
+    width: 48, height: 48,
+  },
+'tag': {
+    viewBox: '0 0 48 48',
+    width: 48, height: 48,
+  }
+    }
+}
+  };",
   ],
 ]
 `;
 
 exports[`examples > "react" example should generate files 1`] = `
 [
+  "assets",
+  "example.tsx",
+  "icon.tsx",
+  "generated",
+  "assets/common",
+  "assets/format",
+  "generated/common.svg",
+  "generated/format.svg",
+  "generated/sprite-info.ts",
   "assets/common/close.svg",
   "assets/common/favourite.svg",
   "assets/format/align-left.svg",
   "assets/format/tag.svg",
-  "example.tsx",
-  "generated/common.svg",
-  "generated/format.svg",
-  "generated/sprite-info.ts",
-  "icon.tsx",
 ]
 `;
 
 exports[`examples > "react" example should replay same output 1`] = `
 [
   [
+    "create",
     "generated/common.svg",
-    "2eb4b56ff266279ca9c0af3b16f7f3114ae35c4555657bb106acbd15ff9d4f52",
+    "<svg width="0" height="0"><symbol xmlns="http://www.w3.org/2000/svg" id="close" viewBox="0 0 48 48"><path d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="favourite" viewBox="0 0 48 48"><path d="m24 41.95-2.05-1.85q-5.3-4.85-8.75-8.375-3.45-3.525-5.5-6.3T4.825 20.4Q4 18.15 4 15.85q0-4.5 3.025-7.525Q10.05 5.3 14.5 5.3q2.85 0 5.275 1.35Q22.2 8 24 10.55q2.1-2.7 4.45-3.975T33.5 5.3q4.45 0 7.475 3.025Q44 11.35 44 15.85q0 2.3-.825 4.55T40.3 25.425q-2.05 2.775-5.5 6.3T26.05 40.1ZM24 38q5.05-4.65 8.325-7.975 3.275-3.325 5.2-5.825 1.925-2.5 2.7-4.45.775-1.95.775-3.9 0-3.3-2.1-5.425T33.5 8.3q-2.55 0-4.75 1.575T25.2 14.3h-2.45q-1.3-2.8-3.5-4.4-2.2-1.6-4.75-1.6-3.3 0-5.4 2.125Q7 12.55 7 15.85q0 1.95.775 3.925.775 1.975 2.7 4.5Q12.4 26.8 15.7 30.1 19 33.4 24 38Zm0-14.85Z"/></symbol></svg>",
   ],
   [
+    "create",
     "generated/format.svg",
-    "c890959d268bf53d6006012438788b4104189d3cfaf997b0b43b2fd4f1a41159",
+    "<svg width="0" height="0"><symbol xmlns="http://www.w3.org/2000/svg" id="align-left" viewBox="0 0 48 48"><path d="M6 42v-3h36v3Zm0-8.25v-3h23.6v3Zm0-8.25v-3h36v3Zm0-8.25v-3h23.6v3ZM6 9V6h36v3Z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="tag" viewBox="0 0 48 48"><path d="m12.5 40 2.15-8.5H7l.75-3h7.65l2.25-9H9l.75-3h8.65L20.5 8h2.95l-2.1 8.5h9.05L32.5 8h2.95l-2.1 8.5H41l-.75 3H32.6l-2.25 9H39l-.75 3H29.6L27.5 40h-3l2.15-8.5H17.6L15.5 40Zm5.85-11.5h9.05l2.25-9H20.6Z"/></symbol></svg>",
   ],
   [
+    "create",
     "generated/sprite-info.ts",
-    "86b30a6c62260f488f7840660677e396f97aeefd2e1377ab0f7603e128257459",
+    "export interface SpritesMap {
+    'common': 'close' | 'favourite',
+'format': 'align-left' | 'tag'
+  }
+export const SPRITES_META: {
+        'common': Array<'close' | 'favourite'>,
+'format': Array<'align-left' | 'tag'>
+      } = {
+    'common': ['close',
+'favourite'],
+'format': ['align-left',
+'tag']
+  };",
   ],
 ]
 `;
 
 exports[`examples > "simple" example should generate files 1`] = `
 [
+  "assets",
+  "generated",
   "assets/arrow-drop-down.svg",
   "assets/arrow-drop-up.svg",
-  "generated/sprite-info.ts",
   "generated/sprite.svg",
+  "generated/sprite-info.ts",
 ]
 `;
 
 exports[`examples > "simple" example should replay same output 1`] = `
 [
   [
+    "create",
     "generated/sprite.svg",
-    "de338dcd1643d85f1cc9bc1b0fd01e6904bb82b600a1a4914c31577766ead4d2",
+    "<svg width="0" height="0"><symbol xmlns="http://www.w3.org/2000/svg" id="arrow-drop-down" viewBox="0 0 24 24"><path fill="currentColor" d="M0 0h24v24H0V0z"/><path d="m7 10 5 5 5-5H7z"/></symbol><symbol xmlns="http://www.w3.org/2000/svg" id="arrow-drop-up" viewBox="0 0 24 24"><path fill="currentColor" d="M0 0h24v24H0V0z"/><path d="m7 14 5-5 5 5H7z"/></symbol></svg>",
   ],
   [
+    "create",
     "generated/sprite-info.ts",
-    "1794ca9969cc76ca040786822e6d31b0070af59bc05062d9855ce3e12aae2c06",
+    "export interface SpritesMap {
+    'sprite': 'arrow-drop-down' | 'arrow-drop-up'
+  }
+export const SPRITES_META: {
+        'sprite': Array<'arrow-drop-down' | 'arrow-drop-up'>
+      } = {
+    'sprite': ['arrow-drop-down',
+'arrow-drop-up']
+  };",
   ],
 ]
 `;

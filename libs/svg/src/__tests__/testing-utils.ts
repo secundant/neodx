@@ -24,7 +24,7 @@ export async function generateExample(
   write: boolean,
   options?: Partial<BuildSpritesParams>
 ) {
-  const vfs = createVfs(getExampleRoot(name), { dryRun: !write, log: false });
+  const vfs = createVfs(getExampleRoot(name), { readonly: !write, log: 'debug' });
 
   await rm(getExampleOutput(name), { recursive: true, force: true });
   await buildSprites({

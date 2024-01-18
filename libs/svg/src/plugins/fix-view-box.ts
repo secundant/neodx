@@ -35,5 +35,5 @@ export function extractSvgMeta({
 const parseViewBox = (viewBox: string): [number, number] => {
   const [, , width, height] = viewBox.split(' ').map(Number.parseFloat);
 
-  return [width, height];
+  return [width!, height!];
 };

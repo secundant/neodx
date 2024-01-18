@@ -15,7 +15,7 @@ const renderSymbolElement = (node: SvgNode) =>
       ...node,
       name: 'symbol'
     },
-    node.attributes.id
+    node.attributes.id!
   );
 
 const renderNodeToElement = ({ children, name, attributes }: SvgNode, key: string | number) =>

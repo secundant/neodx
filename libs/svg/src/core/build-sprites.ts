@@ -44,7 +44,7 @@ export async function buildSprites({
   await builder.load(input);
   await builder.build();
   if (!keepTreeChanges) {
-    await vfs.applyChanges();
+    await vfs.apply();
   }
   logger?.debug('Done in %dms', Date.now() - startedAt);
 }
