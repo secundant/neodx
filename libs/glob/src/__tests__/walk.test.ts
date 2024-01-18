@@ -1,5 +1,6 @@
 import { identity, sleep } from '@neodx/std';
-import { createTmpVfs } from '@neodx/vfs/testing-utils';
+// eslint-disable-next-line import/no-unresolved
+import { createTmpVfs } from '@neodx/vfs/testing';
 import { readdir } from 'node:fs/promises';
 import { join, relative, resolve } from 'node:path';
 import { describe, expect, test, vitest } from 'vitest';
@@ -161,7 +162,7 @@ describe('walk', () => {
 
   describe('should allow to create top-level glob walker', async () => {
     const tmp = await createTmpVfs({
-      initialFiles: {
+      files: {
         'foo.config.mjs': '',
         'bar.config.cjs': '',
         src: {
@@ -199,12 +200,12 @@ describe('walk', () => {
     test('should find simple files', async () => {
       const { glob } = createTestGlob();
 
-      expect(await glob('src/*.ts', { cwd: tmp.root })).toEqual([
+      expect(await glob('src/*.ts', { cwd: tmp.path })).toEqual([
         'src/app.ts',
         'src/index.ts',
         'src/other.ignore-me.ts'
       ]);
-      expect(await glob('src/**/foo.test.ts', { cwd: tmp.root })).toEqual([
+      expect(await glob('src/**/foo.test.ts', { cwd: tmp.path })).toEqual([
         'src/__tests__/foo.test.ts'
       ]);
     });
@@ -212,7 +213,7 @@ describe('walk', () => {
     test('should ignore files', async () => {
       const { glob } = createTestGlob();
 
-      expect(await glob('src/**/*.ts', { cwd: tmp.root, ignore: ['**/*.ignore-me.ts'] })).toEqual([
+      expect(await glob('src/**/*.ts', { cwd: tmp.path, ignore: ['**/*.ignore-me.ts'] })).toEqual([
         'src/app.ts',
         'src/index.ts',
         'src/modules/bar.ts',
@@ -227,7 +228,7 @@ describe('walk', () => {
 
       expect(
         await glob(['src/{modules,__tests__}/*.ts', 'src/__tests__/*.js', '*.config.*'], {
-          cwd: tmp.root,
+          cwd: tmp.path,
           ignore: ['**/*.ignore-me.ts', '**/__tests__/foo.test.ts']
         })
       ).toEqual([
@@ -243,7 +244,7 @@ describe('walk', () => {
       await expect(
         walkGlob('src/*', {
           reader: async ({ path }) => {
-            const dirents = await readdir(resolve(tmp.root, path), {
+            const dirents = await readdir(resolve(tmp.path, path), {
               recursive: true,
               withFileTypes: true
             });
@@ -251,8 +252,8 @@ describe('walk', () => {
             return dirents.filter(dirent => dirent.isDirectory());
           },
           mapPath: (item, { path }) =>
-            join(relative(resolve(tmp.root, path), item.path), item.name),
-          mapResult: item => join(relative(tmp.root, item.path), item.name)
+            join(relative(resolve(tmp.path, path), item.path), item.name),
+          mapResult: item => join(relative(tmp.path, item.path), item.name)
         })
       ).resolves.toEqual(['src/__tests__', 'src/modules']);
     });
@@ -267,7 +268,7 @@ describe('walk', () => {
 
       async function glob(
         pattern: string | string[],
-        { cwd = tmp.root, ...params }: GlobParams = {}
+        { cwd = tmp.path, ...params }: GlobParams = {}
       ) {
         return await walkGlob(pattern, {
           async reader({ path, isIgnored, isMatched, signal }) {
