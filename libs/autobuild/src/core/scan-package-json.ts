@@ -56,8 +56,8 @@ export function scanPackageJson(
   return {
     cwd,
     deps,
-    outDir: outBase ?? rootDirname(output[0].main),
-    sourceDir: srcBase ?? rootDirname(source[0]),
+    outDir: outBase ?? rootDirname(output[0]!.main),
+    sourceDir: srcBase ?? rootDirname(source[0]!),
     typesFile: types,
     outputFormats: output,
     sourcePatterns: source

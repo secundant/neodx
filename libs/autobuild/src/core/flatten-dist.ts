@@ -1,17 +1,15 @@
-import { deepReadDir } from '@neodx/fs';
-import { compactObject, mapObject } from '@neodx/std';
-import type { VFS } from '@neodx/vfs';
-import { resolve } from 'node:path';
+import { compactObject, mapValues } from '@neodx/std';
+import type { Vfs } from '@neodx/vfs';
 import type { ExportsField, ProjectPackageJSON } from '../types';
 
 export interface FlattenDistParams {
-  vfs: VFS;
+  vfs: Vfs;
   outDir?: string;
 }
 
 export async function flattenDist({ vfs, outDir = 'dist' }: FlattenDistParams) {
-  const files = await deepReadDir(resolve(vfs.root, outDir), {
-    absolute: false
+  const files = await vfs.scan(outDir, {
+    filter: ({ dirent }) => dirent.isFile()
   });
 
   for (const file of files) {
@@ -50,7 +48,7 @@ function flattenExports(exportsValue: ExportsField, outDir: string): ExportsFiel
   if (typeof exportsValue === 'string') {
     return removePrefix(exportsValue, outDir);
   }
-  return mapObject(exportsValue, value => flattenExports(value as any, outDir)) as ExportsField;
+  return mapValues(exportsValue, value => flattenExports(value as any, outDir)) as ExportsField;
 }
 
 const removePrefix = (original: string, outDir: string) =>

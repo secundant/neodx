@@ -1,12 +1,12 @@
 import { deepReadDir } from '@neodx/fs';
 import { cases, hasOwn, toCase, uniq } from '@neodx/std';
-import type { VFS } from '@neodx/vfs';
+import type { Vfs } from '@neodx/vfs';
 import { render } from 'ejs';
 import { readFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
 
 export async function generateFiles(
-  vfs: VFS,
+  vfs: Vfs,
   sourcePath: string,
   outputPath: string,
   variables: Record<string, unknown>
@@ -37,7 +37,7 @@ export async function generateFiles(
 }
 
 export function injectTemplateVariables(template: string, variables: Record<string, unknown>) {
-  const names = uniq(Array.from(template.matchAll(/\[(\w+)]/gi)).map(([_, name]) => name));
+  const names = uniq(Array.from(template.matchAll(/\[(\w+)]/gi)).map(([_, name]) => name!));
   const missed = names.filter(name => !hasOwn(variables, name));
 
   if (missed.length > 0) {

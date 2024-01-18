@@ -90,7 +90,6 @@ export async function createSwcConfig(
     [ScriptTarget.ES2021]: 'es2021',
     [ScriptTarget.ES2022]: 'es2022',
     [ScriptTarget.ESNext]: 'esnext',
-    [ScriptTarget.Latest]: 'es2022',
     // ???
     [ScriptTarget.JSON]: 'es2022'
   };
@@ -128,7 +127,7 @@ export async function createSwcConfig(
           ? Object.fromEntries(
               Object.entries(tsConfig.compilerOptions.paths)
                 .filter(([path]) => !deps.prod.some(depName => path.startsWith(depName)))
-                .map(([path, matches]) => [path, [matches[0]]])
+                .map(([path, matches]) => [path, [matches[0]!]])
             )
           : undefined,
         transform: {

@@ -63,7 +63,7 @@ export async function build(project: Project, { startedAt, flatten }: BuildParam
       outDir: project.outDir
     });
   }
-  await vfs.applyChanges();
+  await vfs.apply();
   if (project.log !== 'fatal') {
     logger.info(`Done at %sms`, Date.now() - buildStartedAt);
   }

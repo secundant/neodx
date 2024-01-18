@@ -6,7 +6,7 @@ describe('examples', () => {
   test('react-hook', async () => {
     const { default: generate } = await import('../examples/react-hook/generate');
     const vfs = createVfs(join(process.cwd(), 'examples/react-hook'), {
-      dryRun: true
+      readonly: true
     });
 
     await generate(vfs, {
@@ -18,7 +18,6 @@ describe('examples', () => {
     await generate(vfs, {
       name: 'item-description'
     });
-    await vfs.formatChangedFiles();
-    await vfs.applyChanges();
+    await vfs.apply();
   });
 });
