@@ -217,3 +217,10 @@ import { readVfsJson, writeVfsJson } from '@neodx/vfs';
 
 await writeVfsJson(vfs, 'foo.json', { ...(await readVfsJson(vfs, 'foo.json')), foo: 'bar' });
 ```
+
+## `glob` plugin
+
+### References
+
+- https://github.com/fabiospampinato/grammex
+- https://github.com/fabiospampinato/tiny-readdir-glob

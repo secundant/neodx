@@ -6,7 +6,10 @@
   "main": "./dist/cjs/index.cjs",
   "types": "./dist/types/index.d.ts",
   "module": "./dist/mjs/index.mjs",
-  "source": "src/index.ts",
+  "source": [
+    "src/index.ts",
+    "src/plugins/*.ts"
+  ],
   "sideEffects": false,
   "author": {
     "name": "Dmitry Remezov",
@@ -60,8 +63,8 @@
   "dependencies": {
     "@neodx/colors": "0.2.6",
     "@neodx/fs": "0.0.10",
-    "@neodx/log": "0.3.0",
     "@neodx/glob": "0.0.1",
+    "@neodx/log": "0.3.0",
     "@neodx/pkg-misc": "0.0.8",
     "@neodx/std": "0.2.0",
     "@types/eslint": "8.56.1",

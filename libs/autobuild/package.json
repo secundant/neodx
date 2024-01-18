@@ -19,7 +19,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "yarn dlx rimraf dist",
     "build": "vite build",
-    "test": "vitest run --no-threads",
+    "test": "vitest run",
     "lint": "eslint"
   },
   "peerDependenciesMeta": {

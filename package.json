@@ -33,20 +33,23 @@
     "@commitlint/config-conventional": "18.1.0",
     "@neodx/scripts": "workspace:*",
     "@nx/vite": "17.2.8",
-    "@types/node": "20.8.9",
+    "@types/node": "20.10.7",
     "eslint": "8.52.0",
     "eslint-kit": "10.5.2",
     "husky": "8.0.3",
     "is-ci": "3.0.1",
     "lint-staged": "15.0.2",
+    "micromatch": "4.0.5",
     "nx": "17.0.2",
+    "picomatch": "3.0.1",
     "prettier": "3.0.3",
     "tsx": "3.14.0",
     "typescript": "5.3.3",
     "vite": "5.0.10",
     "vite-plugin-dts": "3.7.0",
     "vite-tsconfig-paths": "4.2.3",
-    "vitest": "1.1.1"
+    "vitest": "1.1.1",
+    "zeptomatch": "1.2.2"
   },
   "dependenciesMeta": {
     "core-js": {
@@ -61,5 +64,5 @@
     "yarn": ">=4.0.0",
     "npm": "please-use-yarn"
   },
-  "packageManager": "yarn@4.0.0"
+  "packageManager": "yarn@4.0.2"
 }

@@ -39,7 +39,9 @@
     "nuke": "rm -rf dist"
   },
   "dependencies": {
-    "@neodx/std": "^0.2.0",
+    "@neodx/std": "^0.2.0"
+  },
+  "devDependencies": {
     "grammex": "3.1.2"
   },
   "exports": {
