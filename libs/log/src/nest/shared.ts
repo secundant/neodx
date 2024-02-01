@@ -1,5 +1,5 @@
-import type { InternalLogNames } from '@neodx/log/nest/types';
 import { RequestMethod } from '@nestjs/common';
+import type { InternalLogNames } from './types';
 
 export const OPTIONS_PROVIDER_TOKEN = Symbol('neodx-log:options');
 export const TRANSIENT_LOGGER_PROVIDER_TOKEN = Symbol('neodx-log:transient-logger');

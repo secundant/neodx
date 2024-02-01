@@ -1,4 +1,5 @@
-import { hasOwn, isObject } from '@neodx/std';
+import type { Nil } from '@neodx/std';
+import { hasOwn, isObject, keys } from '@neodx/std';
 import { Injectable, Scope } from '@nestjs/common';
 import type { DefaultLoggerLevel, DefaultLoggerLevelsConfig } from '../../core/shared';
 import type { BaseLevelsConfig, GetLevelNames, Logger } from '../../core/types';
@@ -37,7 +38,11 @@ export function createTransientLoggerClass<
     private initializeLogger() {
       if (!params) return createLogger();
 
-      if (isInstanceInParams(params)) return params.logger;
+      assertEitherLoggerOrParams(params.logger, params);
+
+      if (isInstanceInParams(params)) {
+        return params.logger;
+      }
 
       if (isLevelsInParams<LevelsConfig>(params)) {
         return createLogger({
@@ -55,14 +60,32 @@ export function createTransientLoggerClass<
   return TransientLogger as any;
 }
 
-function isInstanceInParams<LevelsConfig extends BaseLevelsConfig>(
+function isInstanceInParams<L extends BaseLevelsConfig>(
   thing: unknown
-): thing is LoggerParamsWithInstance<LevelsConfig> {
+): thing is LoggerParamsWithInstance<L> {
   return isObject(thing) && hasOwn(thing, 'logger');
 }
 
-function isLevelsInParams<LevelsConfig extends BaseLevelsConfig>(
+function isLevelsInParams<L extends BaseLevelsConfig>(
   thing: unknown
-): thing is RequireField<LoggerParamsWithConfig<LevelsConfig>, 'levels'> {
+): thing is RequireField<LoggerParamsWithConfig<L>, 'levels'> {
   return isObject(thing) && hasOwn(thing, 'levels');
+}
+
+function assertEitherLoggerOrParams<L extends BaseLevelsConfig>(
+  logger: Logger<any> | Nil,
+  params: LoggerModuleParams<L> | LoggerModuleParams
+) {
+  if (!logger) return;
+
+  const extraKeys = ['level', 'levels', 'meta'];
+  const hasExtraArguments = keys(params).some(extraKeys.includes, extraKeys);
+
+  if (hasExtraArguments) {
+    throw new Error(
+      `NeodxModule must contain either a logger instance
+      or its options for internal
+      initialization, both are not allowed.`
+    );
+  }
 }

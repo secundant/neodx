@@ -1,15 +1,15 @@
-import type { DefaultLoggerLevel, LoggerParams } from '@neodx/log';
-import { DEFAULT_LOGGER_LEVELS } from '@neodx/log';
-import type { HttpLogLevels } from '@neodx/log/http';
+import { compact, compactObject, isNotUndefined, isUndefined } from '@neodx/std';
+import type { LoggerService } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
+import type { DefaultLoggerLevel } from '../../core/shared';
+import { DEFAULT_LOGGER_LEVELS } from '../../core/shared';
+import type { Logger, LoggerParams } from '../../core/types';
+import type { HttpLogLevels } from '../../http';
 import {
   internalLogNames,
   OPTIONS_PROVIDER_TOKEN,
   TRANSIENT_LOGGER_PROVIDER_TOKEN
-} from '@neodx/log/nest/shared';
-import { compactObject } from '@neodx/std';
-import type { LoggerService } from '@nestjs/common';
-import { Inject } from '@nestjs/common';
-import type { Logger } from '../../core/types';
+} from '../shared';
 import type { LoggerModuleParams } from '../types';
 
 export class SystemLogger implements LoggerService {
@@ -23,7 +23,6 @@ export class SystemLogger implements LoggerService {
     private readonly options: LoggerModuleParams
   ) {
     this.name = this.options.overrideNames?.system ?? internalLogNames.system;
-
     this.logger = forkAndRestoreLevels(this.userLogger, { name: this.name });
   }
 
@@ -52,13 +51,15 @@ export class SystemLogger implements LoggerService {
   }
 
   private call(level: HttpLogLevels, message: string, ...optionalParams: string[]) {
-    const applicationContext = optionalParams.at(0);
+    if (isNotUndefined(message)) {
+      const applicationContext = compact(optionalParams);
 
-    const additionalDetails = compactObject({
-      context: applicationContext
-    });
+      const additionalDetails = compactObject({
+        context: applicationContext.at(0)
+      });
 
-    this.logger[level](additionalDetails, `(${this.logger.meta.pid}) ${message}`);
+      this.logger[level](additionalDetails, `(${this.logger.meta.pid}) ${message}`);
+    }
   }
 }
 

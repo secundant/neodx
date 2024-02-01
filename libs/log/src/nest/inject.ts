@@ -1,7 +1,7 @@
-import { injectedTokenPrefix, TRANSIENT_LOGGER_PROVIDER_TOKEN } from '@neodx/log/nest/shared';
 import type { Provider } from '@nestjs/common';
 import { Inject } from '@nestjs/common';
-import type { BaseLevelsConfig, GetLevelNames, Logger } from '../core/types';
+import type { Logger } from '../core/types';
+import { injectedTokenPrefix, TRANSIENT_LOGGER_PROVIDER_TOKEN } from './shared';
 
 const injectedLoggers = new Set<string>();
 
@@ -11,9 +11,7 @@ export function InjectLogger(context = '') {
   return Inject(getLoggerToken(context));
 }
 
-export function mapProvidersForInjectedLoggers<LevelsConfig extends BaseLevelsConfig>(): Provider<
-  Logger<GetLevelNames<LevelsConfig>>
->[] {
+export function mapProvidersForInjectedLoggers(): Provider[] {
   return [...injectedLoggers.values()].map(makeLoggerProviderWithContext);
 }
 
