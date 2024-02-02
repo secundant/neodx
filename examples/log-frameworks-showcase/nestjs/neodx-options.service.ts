@@ -4,7 +4,9 @@ import type {
   LoggerModuleParams,
   NeodxModuleOptionsFactory
 } from '@neodx/log/nest';
+import { file, pretty } from '@neodx/log/node';
 import { Injectable, RequestMethod } from '@nestjs/common';
+import { resolve } from 'node:path';
 
 const levelsConfig = {
   info: 10,
@@ -21,16 +23,16 @@ type LevelsConfig = typeof levelsConfig;
 
 @Injectable()
 export class NeodxOptionsService implements NeodxModuleOptionsFactory<LevelsConfig> {
-  createNeodxOptions(): LoggerModuleParams<LevelsConfig> | LoggerModuleAsyncParams<LevelsConfig> {
+  public createNeodxOptions():
+    | LoggerModuleParams<LevelsConfig>
+    | LoggerModuleAsyncParams<LevelsConfig> {
     return {
       levels: {
         info: 10,
         debug: 20,
         warn: 30
       },
-      meta: {
-        pid: process.pid
-      },
+      target: [pretty(), file(this.chunkLogPath)],
       level: 'info',
       http: logger => {
         return createExpressLogger({
@@ -44,5 +46,9 @@ export class NeodxOptionsService implements NeodxModuleOptionsFactory<LevelsConf
       },
       exclude: [{ path: 'pek', method: RequestMethod.GET }]
     };
+  }
+
+  private get chunkLogPath() {
+    return resolve(process.cwd(), 'nestjs', 'logs', 'chunk.log');
   }
 }
