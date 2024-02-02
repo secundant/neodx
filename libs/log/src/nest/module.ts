@@ -1,5 +1,5 @@
 import { compact, isEmpty, isTypeOfFunction, toArray } from '@neodx/std';
-import type { DynamicModule, MiddlewareConsumer, NestModule, Provider } from '@nestjs/common';
+import type { DynamicModule, MiddlewareConsumer, NestModule, Provider, Type } from '@nestjs/common';
 import { Global, Inject, Module } from '@nestjs/common';
 import type { DefaultLoggerLevel, DefaultLoggerLevelsConfig } from '../core/shared';
 import type { Logger, LoggerLevelsConfig } from '../core/types';
@@ -50,7 +50,7 @@ export class LoggerModule implements NestModule {
     };
   }
 
-  static forRootAsync<LevelsConfig extends LoggerLevelsConfig<string> = DefaultLoggerLevelsConfig>(
+  static forRootAsync<LevelsConfig extends LoggerLevelsConfig<any> = DefaultLoggerLevelsConfig>(
     params: LoggerModuleAsyncParams<LevelsConfig>
   ): DynamicModule {
     const internalProviders: Provider[] = [
@@ -74,7 +74,7 @@ export class LoggerModule implements NestModule {
     }
 
     if (params.useClass) {
-      const useClass = params.useClass;
+      const useClass = params.useClass as Type<NeodxModuleOptionsFactory>;
 
       internalProviders.push({
         provide: OPTIONS_PROVIDER_TOKEN,

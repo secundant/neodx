@@ -64,7 +64,9 @@ export interface LoggerModuleAsyncParams<
    */
   useFactory?: (...args: any[]) => MaybePromise<LoggerModuleParams<LevelsConfig>>;
   inject?: (InjectionToken | OptionalFactoryDependency)[];
-  useClass?: Type<NeodxModuleOptionsFactory>;
+  useClass?:
+    | Type<NeodxModuleOptionsFactory<LevelsConfig>>
+    | NeodxModuleOptionsFactory<LevelsConfig>;
 }
 
 export interface NeodxModuleOptionsFactory<
