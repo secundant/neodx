@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import { NeodxModule } from '@neodx/log/nest';
-import { Module, RequestMethod } from '@nestjs/common';
+import { RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { log as logger } from './logger';
-import { NeodxOptionsService } from './neodx-options.service';
 import { PekController } from './pek/pek.controller';
-import { PekService } from './pek/pek.service';
 
 // @ts-expect-error
 const usageExamples = [
@@ -64,15 +62,3 @@ const usageExamples = [
     }
   })
 ];
-
-const isSimple = true;
-
-@Module({
-  imports: [
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    isSimple ? NeodxModule.forRoot() : NeodxModule.forRootAsync({ useClass: NeodxOptionsService })
-  ],
-  controllers: [PekController, AppController],
-  providers: [PekService]
-})
-export class AppModule {}

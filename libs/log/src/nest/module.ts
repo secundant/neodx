@@ -1,4 +1,4 @@
-import { isEmpty, isTypeOfFunction, toArray, uniq } from '@neodx/std';
+import { compact, isEmpty, isTypeOfFunction, toArray } from '@neodx/std';
 import type { DynamicModule, MiddlewareConsumer, NestModule, Provider } from '@nestjs/common';
 import { Global, Inject, Module } from '@nestjs/common';
 import type { DefaultLoggerLevel, DefaultLoggerLevelsConfig } from '../core/shared';
@@ -40,7 +40,7 @@ export class LoggerModule implements NestModule {
 
     const injectedProviders = mapProvidersForInjectedLoggers();
 
-    const providers = uniq([moduleOptions, ...injectedProviders, transientLogger, SystemLogger]);
+    const providers = compact([moduleOptions, ...injectedProviders, transientLogger, SystemLogger]);
 
     return {
       module: LoggerModule,
@@ -53,10 +53,20 @@ export class LoggerModule implements NestModule {
   static forRootAsync<LevelsConfig extends LoggerLevelsConfig<string> = DefaultLoggerLevelsConfig>(
     params: LoggerModuleAsyncParams<LevelsConfig>
   ): DynamicModule {
-    const systemProviders: Provider[] = [];
+    const internalProviders: Provider[] = [
+      {
+        provide: TRANSIENT_LOGGER_PROVIDER_TOKEN,
+        useFactory: (opts: LoggerModuleParams<LevelsConfig>) => {
+          const TransientLogger = createTransientLoggerClass(opts);
+
+          return new TransientLogger();
+        },
+        inject: [OPTIONS_PROVIDER_TOKEN]
+      }
+    ];
 
     if (params.useFactory) {
-      systemProviders.push({
+      internalProviders.push({
         provide: OPTIONS_PROVIDER_TOKEN,
         useFactory: params.useFactory,
         inject: params.inject
@@ -64,27 +74,26 @@ export class LoggerModule implements NestModule {
     }
 
     if (params.useClass) {
-      systemProviders.push({
+      const useClass = params.useClass;
+
+      internalProviders.push({
         provide: OPTIONS_PROVIDER_TOKEN,
         useFactory: async (factory: NeodxModuleOptionsFactory) => {
           return factory.createNeodxOptions();
         },
-        inject: [params.useClass]
+        inject: [useClass]
+      });
+
+      internalProviders.push({
+        provide: useClass,
+        useClass
       });
     }
 
-    const transientLogger = {
-      provide: TRANSIENT_LOGGER_PROVIDER_TOKEN,
-      useFactory: (opts: LoggerModuleParams<LevelsConfig>) => createTransientLoggerClass(opts),
-      inject: [OPTIONS_PROVIDER_TOKEN]
-    } satisfies Provider;
-
-    systemProviders.push(transientLogger);
-
     const injectedProviders = mapProvidersForInjectedLoggers();
 
-    const exports = uniq([...systemProviders, ...injectedProviders, SystemLogger]);
-    const providers = uniq([...exports, ...toArray(params.providers as Provider[])]);
+    const exports = compact([...internalProviders, ...injectedProviders, SystemLogger]);
+    const providers = compact([...exports, ...toArray(params.providers as Provider[])]);
 
     return {
       module: LoggerModule,

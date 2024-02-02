@@ -67,8 +67,12 @@ export interface LoggerModuleAsyncParams<
   useClass?: Type<NeodxModuleOptionsFactory>;
 }
 
-export interface NeodxModuleOptionsFactory {
-  createNeodxOptions(): MaybePromise<LoggerModuleParams | LoggerModuleAsyncParams>;
+export interface NeodxModuleOptionsFactory<
+  LevelsConfig extends BaseLevelsConfig = DefaultLoggerLevelsConfig
+> {
+  createNeodxOptions(): MaybePromise<
+    Xor<LoggerModuleParams<LevelsConfig>, LoggerModuleAsyncParams<LevelsConfig>>
+  >;
 }
 
 export interface InternalLogNames {

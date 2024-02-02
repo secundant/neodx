@@ -29,6 +29,12 @@ export class PekController {
     this.log.info('Hello, world!');
     this.log.info({ object: 'property' }, 'Template %s', 'string');
 
+    /**
+     * with a complicated example,
+     * done, success etc. will return an error,
+     * since these overwritten log levels do not exist
+     */
+
     this.log.done('Task completed');
     this.log.success('Alias for done');
 
