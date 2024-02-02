@@ -1,6 +1,6 @@
 import { InjectLogger } from '@neodx/log/nest';
 import { Controller, Get } from '@nestjs/common';
-import type { Logger } from './logger';
+import type { Logger } from '../logger';
 
 /**
  * This controller will be ignored by logger

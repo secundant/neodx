@@ -1,7 +1,7 @@
 import { InjectLogger } from '@neodx/log/nest';
 import { Controller, Get, Inject } from '@nestjs/common';
 import type { Logger } from '../logger';
-import { PekService } from './pek.service';
+import { PekService } from '../services/pek.service';
 
 /**
  * The logger injection is performed

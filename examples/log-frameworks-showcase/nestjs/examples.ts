@@ -2,9 +2,9 @@
 
 import { NeodxModule } from '@neodx/log/nest';
 import { RequestMethod } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { AppController } from './controllers/app.controller';
 import { log as logger } from './logger';
-import { PekController } from './pek/pek.controller';
+import { PekController } from './controllers/pek.controller';
 
 // @ts-expect-error
 const usageExamples = [

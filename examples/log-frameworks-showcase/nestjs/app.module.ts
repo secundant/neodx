@@ -2,15 +2,17 @@
 
 import { NeodxModule } from '@neodx/log/nest';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { PekController } from './pek/pek.controller';
-import { PekService } from './pek/pek.service';
+import { AppController } from './controllers/app.controller';
+import { PekController } from './controllers/pek.controller';
+import { PekService } from './services/pek.service';
 
 @Module({
   imports: [
     NeodxModule.forRoot()
 
-    // Complex configuration.
+    /**
+     * Complex configuration
+     */
     // NeodxModule.forRootAsync({ useClass: NeodxOptionsService })
   ],
   controllers: [PekController, AppController],
