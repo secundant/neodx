@@ -13,8 +13,8 @@ export class PekController {
   constructor(
     /**
      * It is important to note that the Injection Scope
-     * `TRANSIENT` class is injected under the hood, and not the intent itself.
-     * Each provider will receive a new logger instance.
+     * `TRANSIENT` class is injected under the hood, and not the instance itself.
+     * each provider will receive a new logger instance
      * @see https://docs.nestjs.com/fundamentals/injection-scopes
      */
     @InjectLogger(PekController.name) private readonly log: Logger,

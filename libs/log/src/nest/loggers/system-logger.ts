@@ -1,4 +1,4 @@
-import { compact, compactObject, isNotUndefined, isUndefined } from '@neodx/std';
+import { compact, compactObject, isNotUndefined } from '@neodx/std';
 import type { LoggerService } from '@nestjs/common';
 import { Inject } from '@nestjs/common';
 import type { DefaultLoggerLevel } from '../../core/shared';

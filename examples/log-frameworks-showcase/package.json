@@ -10,6 +10,7 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
     "start:koa": "tsx --watch koa/app.ts",
     "start:http": "tsx --watch node-http/app.ts",
     "start:express": "tsx --watch express/app.ts",
