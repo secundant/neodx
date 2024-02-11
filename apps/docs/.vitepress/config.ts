@@ -56,6 +56,7 @@ export default defineConfig({
             text: 'Frameworks',
             link: '/log/frameworks/',
             items: [
+              { text: 'Nest.js', link: '/log/frameworks/nest.md' },
               { text: 'Express', link: '/log/frameworks/express' },
               { text: 'Koa', link: '/log/frameworks/koa' },
               { text: 'Node.js http', link: '/log/frameworks/http' }
