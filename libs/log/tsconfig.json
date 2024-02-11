@@ -5,6 +5,8 @@
     "types": ["node", "vite/client", "vitest"],
     "module": "ESNext",
     "target": "ES2022",
-    "rootDir": "../.."
+    "rootDir": "../..",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   }
 }

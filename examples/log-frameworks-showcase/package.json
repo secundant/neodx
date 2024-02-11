@@ -13,13 +13,19 @@
     "lint": "eslint .",
     "start:koa": "tsx --watch koa/app.ts",
     "start:http": "tsx --watch node-http/app.ts",
-    "start:express": "tsx --watch express/app.ts"
+    "start:express": "tsx --watch express/app.ts",
+    "start:nest": "tsx --watch nestjs/app.ts"
   },
   "dependencies": {
     "@neodx/log": "workspace:*",
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0",
+    "@nestjs/platform-express": "^10.0.0",
     "express": "4.18.2",
     "koa": "2.14.2",
-    "koa-router": "12.0.0"
+    "koa-router": "12.0.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@types/express": "4.17.18",
