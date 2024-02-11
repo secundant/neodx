@@ -6,7 +6,6 @@ export { LoggerInterceptor } from './interceptor';
 export { SystemLogger as Logger } from './loggers/system-logger';
 export { LoggerModule as NeodxModule } from './module';
 export type {
-  InternalLogNames,
   LoggerModuleAsyncParams,
   LoggerModuleParams,
   NeodxModuleOptionsFactory
