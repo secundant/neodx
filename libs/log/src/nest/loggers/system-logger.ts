@@ -58,7 +58,14 @@ export class SystemLogger implements LoggerService {
         context: applicationContext.at(0)
       });
 
-      this.logger[level](additionalDetails, `(${this.logger.meta.pid}) ${message}`);
+      const pid = this.logger.meta.pid;
+
+      if (pid) {
+        this.logger[level](additionalDetails, `(${pid}) ${message}`);
+        return;
+      }
+
+      this.logger[level](additionalDetails, message);
     }
   }
 }

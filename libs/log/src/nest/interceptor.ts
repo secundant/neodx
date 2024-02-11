@@ -16,6 +16,8 @@ export class LoggerInterceptor implements NestInterceptor {
           if (isNil(response.raw)) {
             response.err = error;
           }
+
+          return error;
         });
       })
     );
