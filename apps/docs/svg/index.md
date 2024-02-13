@@ -50,6 +50,8 @@ export default defineConfig({
     svg({
       root: 'assets',
       group: true,
+      // All paths should be relative to cwd or absolute.
+      // For example, 'public/sprites' is an equivalent of `path.resolve(__dirname, 'public/sprites')`
       output: 'public/sprites',
       metadata: 'src/sprite.gen.ts'
     })

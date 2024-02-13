@@ -18,11 +18,9 @@ features:
   - title: '@neodx/figma'
     icon: 🎨
     link: /figma/
-    details: The modern Figma integration tools, typed API, human-friendly files traversing, assets exporter, and more.
+    details: The modern Figma integration tools, typed API, human-friendly files traversing, assets exporter, and more
   - title: '@neodx/vfs'
     icon: 📁
-    details: >
-      Missing virtual file system abstraction that makes working with the file system a breeze
-      <br />
-      <i>Coming soon...</i>
+    link: /vfs/
+    details: A simple and extensible abstraction for convenient and efficient file system operations
 ---
