@@ -1,7 +1,9 @@
 import { getHash } from '@neodx/fs';
-import type { LoggerMethods } from '@neodx/log';
+import type { Logger } from '@neodx/log';
+import { createAutoLogger } from '@neodx/log/node';
+import type { AutoLoggerInput } from '@neodx/log/utils/create-auto-logger-factory';
 import { compact, isTruthy, quickPluralize } from '@neodx/std';
-import type { Vfs, VfsLogMethod } from '@neodx/vfs';
+import type { CreateVfsParams, Vfs, VfsLogMethod } from '@neodx/vfs';
 import { createVfs } from '@neodx/vfs';
 import { basename, join } from 'pathe';
 import { parse } from 'svgson';
@@ -23,6 +25,11 @@ import type { GeneratedSprites, SvgFile, SvgFileMeta, SvgNode } from './types';
 
 export interface CreateSpriteBuilderParams {
   /**
+   * VFS params
+   * @see `@neodx/vfs`
+   */
+  vfsParams?: CreateVfsParams & { cwd?: string };
+  /**
    * VFS instance
    * @see `@neodx/vfs`
    * @default createVfs(process.cwd())
@@ -41,8 +48,15 @@ export interface CreateSpriteBuilderParams {
    * Logger instance (or object with any compatible interface)
    * @see `@neodx/log`
    * @default built-in logger
+   * @deprecated use `log` instead
    */
-  logger?: LoggerMethods<VfsLogMethod>;
+  logger?: Logger<VfsLogMethod>;
+  /**
+   * Logger instance
+   * @see `@neodx/log`
+   * @default built-in logger
+   */
+  log?: AutoLoggerInput<VfsLogMethod>;
   /**
    * Should we group icons?
    * @default false
@@ -106,13 +120,19 @@ export interface CreateSpriteBuilderParams {
 
 export type SpriteBuilder = ReturnType<typeof createSpriteBuilder>;
 
-export const defaultVfs = createVfs(process.cwd());
+export const createDefaultSvgVfs = (cwd: string, { log }: { log: Logger<VfsLogMethod> }) =>
+  createVfs(cwd, {
+    eslint: false,
+    log: log.child('vfs')
+  });
 
 export function createSpriteBuilder({
-  vfs = defaultVfs,
   root = '.',
   output = 'public/sprites',
-  logger,
+  logger: deprecatedLogger,
+  log: logInput,
+  vfs: userVfs,
+  vfsParams = {},
   group: enableGroup,
   metadata,
   fileName: fileNameTemplate = '{name}.svg',
@@ -121,8 +141,11 @@ export function createSpriteBuilder({
   resetColors: resetColorsParams,
   experimentalRuntime
 }: CreateSpriteBuilderParams = {}) {
+  const log = deprecatedLogger || createAutoLogger(logInput ?? 'error', { name: 'svg ' });
+  const vfs = userVfs ?? createDefaultSvgVfs(vfsParams.cwd ?? process.cwd(), { ...vfsParams, log });
+
   if (definitions || experimentalRuntime) {
-    logger?.error(
+    log.error(
       'DEPRECATED: `definitions` and `experimentalRuntime` options will be removed in future versions, use `metadata` instead'
     );
   }
@@ -148,7 +171,7 @@ export function createSpriteBuilder({
   const isAllowedPath = (path: string) => !join(vfs.path, path).startsWith(join(vfs.path, output));
 
   const parseFile = async (path: string) => {
-    logger?.debug('Parsing %s...', path);
+    log.debug('Parsing %s...', path);
     const name = basename(path, '.svg');
     const content = await rootVfs.read(path, 'utf-8');
     const prevContent = files.get(path)?.content;
@@ -174,7 +197,7 @@ export function createSpriteBuilder({
         cause: error
       });
 
-      logger?.error(parseFailedError);
+      log.error(parseFailedError);
       throw parseFailedError;
     }
   };
@@ -185,7 +208,7 @@ export function createSpriteBuilder({
 
     if (additions.length > 0) {
       changed = true;
-      logger?.debug('Adding %d files to sprites generation...', additions.length);
+      log.debug('Adding %d files to sprites generation...', additions.length);
     }
     for (const file of additions) {
       files.set(file.path, file);
@@ -194,7 +217,7 @@ export function createSpriteBuilder({
 
   return {
     vfs,
-    logger,
+    log,
     add,
     remove(paths: string[]) {
       for (const path of paths) {
@@ -207,12 +230,12 @@ export function createSpriteBuilder({
     async load(patterns: string | string[]) {
       const filePaths = await rootVfs.glob(patterns);
 
-      logger?.info('Loaded %d files...', filePaths.length);
+      log.info('Loaded %d files...', filePaths.length);
       await add(filePaths);
     },
     async build() {
       if (!changed) {
-        logger?.debug('Nothing to build...');
+        log.debug('Nothing to build...');
         return;
       }
       const unionGroup = new Map([
@@ -227,7 +250,7 @@ export function createSpriteBuilder({
       const groups = hooks.resolveEntriesMap(unionGroup, { vfs }) as GeneratedSprites;
 
       changed = false;
-      logger?.info(
+      log.info(
         'Generating %d %s...',
         groups.size,
         quickPluralize(groups.size, 'sprite', 'sprites')
@@ -245,7 +268,7 @@ export function createSpriteBuilder({
           const fullFilePath = join(output, filePath);
           const generatedSprite = { name, files, filePath, fullFilePath };
 
-          logger?.info('Writing %s...', filePath);
+          log.info('Writing %s...', filePath);
           await vfs.write(fullFilePath, content);
           await hooks.afterWriteSprite(generatedSprite, { vfs });
           groups.set(name, generatedSprite);
@@ -254,8 +277,8 @@ export function createSpriteBuilder({
             cause: error
           });
 
-          logger?.debug({ files }, 'Failed files');
-          logger?.error(writeFailedError);
+          log.debug({ files }, 'Failed files');
+          log.error(writeFailedError);
           throw writeFailedError;
         }
       }

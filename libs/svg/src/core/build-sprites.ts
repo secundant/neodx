@@ -1,8 +1,4 @@
-import {
-  createSpriteBuilder,
-  type CreateSpriteBuilderParams,
-  defaultVfs
-} from './create-sprite-builder';
+import { createSpriteBuilder, type CreateSpriteBuilderParams } from './create-sprite-builder';
 
 export interface BuildSpritesParams extends CreateSpriteBuilderParams {
   /**
@@ -21,20 +17,14 @@ export interface BuildSpritesParams extends CreateSpriteBuilderParams {
  * Accepts prepared config and vfs instance.
  */
 export async function buildSprites({
-  vfs = defaultVfs,
   input,
-  logger,
   keepTreeChanges,
   ...builderParams
 }: BuildSpritesParams) {
   const startedAt = Date.now();
-  const builder = createSpriteBuilder({
-    vfs,
-    logger,
-    ...builderParams
-  });
+  const builder = createSpriteBuilder(builderParams);
 
-  logger?.debug(
+  builder.log.debug(
     {
       input,
       ...builderParams
@@ -44,7 +34,7 @@ export async function buildSprites({
   await builder.load(input);
   await builder.build();
   if (!keepTreeChanges) {
-    await vfs.apply();
+    await builder.vfs.apply();
   }
-  logger?.debug('Done in %dms', Date.now() - startedAt);
+  builder.log.debug('Done in %dms', Date.now() - startedAt);
 }
