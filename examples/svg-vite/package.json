@@ -13,7 +13,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@neodx/svg": "workspace:*",
+    "@neodx/svg": "*",
     "@types/react": "18.2.33",
     "@types/react-dom": "18.2.14",
     "@vitejs/plugin-react": "4.2.1",

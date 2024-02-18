@@ -7,17 +7,17 @@ export interface SvgPluginParams extends Partial<Omit<CreateSpriteBuilderParams,
    * Globs to icons files
    */
   input?: string | string[];
+  /**
+   * @deprecated Use `log` instead
+   * @see `log`
+   */
   logLevel?: VfsLogMethod | 'silent';
 }
 
 export const unplugin = createUnplugin(
-  (
-    { logLevel, logger, root = '.', input = '**/*.svg', ...params }: SvgPluginParams = {},
-    { watchMode = false }
-  ) => {
+  ({ root = '.', input = '**/*.svg', ...params }: SvgPluginParams = {}, { watchMode = false }) => {
     const builder = createSpriteBuilder({
       root,
-      logger,
       output: 'public',
       ...params
     });
