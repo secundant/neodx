@@ -2,7 +2,7 @@ import { identity, isEmptyObject } from '@neodx/std';
 import { createLoggerFactory } from './core/create-logger-factory';
 import { DEFAULT_LOGGER_PARAMS } from './core/shared';
 import type { LogChunk } from './core/types';
-import { readArguments } from './utils';
+import { createLoggerAutoFactory, readArguments } from './utils';
 
 export { createLoggerFactory, type CreateLoggerFactoryParams } from './core/create-logger-factory';
 export {
@@ -21,6 +21,7 @@ export const createLogger = createLoggerFactory({
   formatMessage: identity,
   readArguments
 });
+export const createAutoLogger = createLoggerAutoFactory(createLogger);
 
 export function createConsoleTarget(console = globalThis.console) {
   return function consoleTarget({
