@@ -8,8 +8,8 @@ exports[`examples > "colors" example should generate files 1`] = `
   "assets/fill.svg",
   "assets/mixed.svg",
   "assets/stroke.svg",
-  "generated/sprite.svg",
   "generated/sprite-info.ts",
+  "generated/sprite.svg",
 ]
 `;
 
@@ -49,10 +49,10 @@ exports[`examples > "colors-advanced" example should generate files 1`] = `
   "assets/folder-colored.svg",
   "assets/logos",
   "assets/sort-by-visibility.svg",
-  "generated/sprite.svg",
   "generated/flags.svg",
   "generated/logos.svg",
   "generated/sprite-info.ts",
+  "generated/sprite.svg",
   "assets/flags/ac.svg",
   "assets/flags/ad.svg",
   "assets/flags/ae.svg",
@@ -284,8 +284,8 @@ exports[`examples > "react" example should generate files 1`] = `
 [
   "assets",
   "example.tsx",
-  "icon.tsx",
   "generated",
+  "icon.tsx",
   "assets/common",
   "assets/format",
   "generated/common.svg",
@@ -336,8 +336,8 @@ exports[`examples > "simple" example should generate files 1`] = `
   "generated",
   "assets/arrow-drop-down.svg",
   "assets/arrow-drop-up.svg",
-  "generated/sprite.svg",
   "generated/sprite-info.ts",
+  "generated/sprite.svg",
 ]
 `;
 
