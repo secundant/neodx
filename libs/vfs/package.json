@@ -58,6 +58,36 @@
       "types": "./dist/types/index.d.ts",
       "import": "./dist/mjs/index.mjs",
       "require": "./dist/cjs/index.cjs"
+    },
+    "./plugins/eslint": {
+      "types": "./dist/types/plugins/eslint.d.ts",
+      "import": "./dist/mjs/plugins/eslint.mjs",
+      "require": "./dist/cjs/plugins/eslint.cjs"
+    },
+    "./plugins/glob": {
+      "types": "./dist/types/plugins/glob.d.ts",
+      "import": "./dist/mjs/plugins/glob.mjs",
+      "require": "./dist/cjs/plugins/glob.cjs"
+    },
+    "./plugins/package-json": {
+      "types": "./dist/types/plugins/package-json.d.ts",
+      "import": "./dist/mjs/plugins/package-json.mjs",
+      "require": "./dist/cjs/plugins/package-json.cjs"
+    },
+    "./plugins/json": {
+      "types": "./dist/types/plugins/json.d.ts",
+      "import": "./dist/mjs/plugins/json.mjs",
+      "require": "./dist/cjs/plugins/json.cjs"
+    },
+    "./plugins/prettier": {
+      "types": "./dist/types/plugins/prettier.d.ts",
+      "import": "./dist/mjs/plugins/prettier.mjs",
+      "require": "./dist/cjs/plugins/prettier.cjs"
+    },
+    "./plugins/scan": {
+      "types": "./dist/types/plugins/scan.d.ts",
+      "import": "./dist/mjs/plugins/scan.mjs",
+      "require": "./dist/cjs/plugins/scan.cjs"
     }
   },
   "dependencies": {

@@ -85,11 +85,10 @@ export const createVfsContext = ({
         : relative(ctx.path, resolve(ctx.path, normalized));
     },
 
-    backend: mapValues(
-      params.backend,
-      fn =>
-        async (path: string, ...args: any[]) =>
-          await (fn as any)(ctx.resolve(path), ...args)
+    backend: mapValues(params.backend, (fn, key) =>
+      key === '__'
+        ? (fn as any)
+        : async (path: string, ...args: any[]) => await (fn as any)(ctx.resolve(path), ...args)
     ),
     __: {
       kind,

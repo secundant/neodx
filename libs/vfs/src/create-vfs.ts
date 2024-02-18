@@ -1,5 +1,5 @@
-import { createLogger } from '@neodx/log/node';
-import { isTypeOfBoolean, isTypeOfString } from '@neodx/std';
+import { createAutoLogger } from '@neodx/log/node';
+import { isTypeOfBoolean } from '@neodx/std';
 import type { VfsBackend, VirtualInitializer } from './backend';
 import { createInMemoryBackend, createNodeFsBackend } from './backend';
 import { createReadonlyBackend } from './backend/create-readonly-backend';
@@ -70,7 +70,7 @@ export function createHeadlessVfs(
 ) {
   const context = createVfsContext({
     path,
-    log: isTypeOfString(log) ? createLogger({ name: 'vfs', level: log }) : log,
+    log: createAutoLogger(log, { name: 'vfs' }),
     backend
   });
 
@@ -85,5 +85,5 @@ export function createDefaultVfsBackend(
     ? createInMemoryBackend(path, virtual === true ? {} : virtual)
     : createNodeFsBackend();
 
-  return readonly ? originalBackend : createReadonlyBackend(originalBackend);
+  return readonly ? createReadonlyBackend(originalBackend) : originalBackend;
 }
