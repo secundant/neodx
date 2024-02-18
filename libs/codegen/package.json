@@ -54,9 +54,9 @@
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
-    "@types/ejs": "3.1.4",
-    "@types/semver": "7.5.4",
-    "@types/tmp": "0.2.5",
+    "@types/ejs": "3.1.5",
+    "@types/semver": "7.5.7",
+    "@types/tmp": "0.2.6",
     "tmp": "0.2.1"
   },
   "dependencies": {
@@ -67,7 +67,7 @@
     "ejs": "3.1.9",
     "jsonc-parser": "3.2.0",
     "picocolors": "1.0.0",
-    "prettier": "3.0.3",
+    "prettier": "3.2.5",
     "semver": "7.5.4"
   },
   "nx": {

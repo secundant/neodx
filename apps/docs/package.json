@@ -4,7 +4,7 @@
   "type": "module",
   "packageManager": "yarn@3.2.0",
   "devDependencies": {
-    "vitepress": "1.0.0-rc.35"
+    "vitepress": "1.0.0-rc.43"
   },
   "scripts": {
     "dev": "vitepress dev",
