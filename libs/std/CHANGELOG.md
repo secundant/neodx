@@ -1,5 +1,17 @@
 # @neodx/std
 
+## 0.3.0
+
+### Minor Changes
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1) Thanks [@secundant](https://github.com/secundant)! - Add `fromRange`, `mapEntries`, `mapToObject`, `tee` and other
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1) Thanks [@secundant](https://github.com/secundant)! - Add `fromEntries`, `fromKeys`, and `zipObject` object helpers
+
+### Patch Changes
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1) Thanks [@secundant](https://github.com/secundant)! - Upgrade dependencies
+
 ## 0.2.0
 
 ### Minor Changes

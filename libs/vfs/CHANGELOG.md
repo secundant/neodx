@@ -1,5 +1,31 @@
 # @neodx/vfs
 
+## 0.2.0
+
+### Minor Changes
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`f29f182`](https://github.com/secundant/neodx/commit/f29f1828962f044ed55e68a36adbe88ba7fab0bf) Thanks [@secundant](https://github.com/secundant)! - Stabilize `prettier` and `eslint` plugins
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`dff46b8`](https://github.com/secundant/neodx/commit/dff46b88eb23041d94e2547747c5784d391f7eb0) Thanks [@secundant](https://github.com/secundant)! - Introduce renewed `@neodx/vfs` with new core, plugins, documentation and integrations
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`f29f182`](https://github.com/secundant/neodx/commit/f29f1828962f044ed55e68a36adbe88ba7fab0bf) Thanks [@secundant](https://github.com/secundant)! - Add `scan` plugin
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`f29f182`](https://github.com/secundant/neodx/commit/f29f1828962f044ed55e68a36adbe88ba7fab0bf) Thanks [@secundant](https://github.com/secundant)! - Add `glob` plugin powered by `@neodx/glob` and `scan` plugin
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`f29f182`](https://github.com/secundant/neodx/commit/f29f1828962f044ed55e68a36adbe88ba7fab0bf) Thanks [@secundant](https://github.com/secundant)! - Rework and simplify public API
+
+### Patch Changes
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1) Thanks [@secundant](https://github.com/secundant)! - Upgrade dependencies
+
+- Updated dependencies [[`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1), [`0378625`](https://github.com/secundant/neodx/commit/0378625b037049bc95bd882fe53ea08ce0ee942d), [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1), [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1), [`0378625`](https://github.com/secundant/neodx/commit/0378625b037049bc95bd882fe53ea08ce0ee942d), [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1), [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1), [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1)]:
+  - @neodx/glob@0.1.0
+  - @neodx/log@0.4.0
+  - @neodx/pkg-misc@0.0.9
+  - @neodx/std@0.3.0
+  - @neodx/fs@0.0.11
+  - @neodx/colors@0.2.7
+
 ## 0.1.11
 
 ### Patch Changes

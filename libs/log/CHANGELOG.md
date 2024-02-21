@@ -1,5 +1,20 @@
 # @neodx/log
 
+## 0.4.0
+
+### Minor Changes
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`0378625`](https://github.com/secundant/neodx/commit/0378625b037049bc95bd882fe53ea08ce0ee942d) Thanks [@secundant](https://github.com/secundant)! - Preserve backend internals, fix readonly mode
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`0378625`](https://github.com/secundant/neodx/commit/0378625b037049bc95bd882fe53ea08ce0ee942d) Thanks [@secundant](https://github.com/secundant)! - Add "createLoggerAutoFactory" API
+
+### Patch Changes
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1) Thanks [@secundant](https://github.com/secundant)! - Upgrade dependencies
+
+- Updated dependencies []:
+  - @neodx/colors@0.2.7
+
 ## 0.3.0
 
 ### Minor Changes

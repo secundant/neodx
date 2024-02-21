@@ -1,5 +1,20 @@
 # @neodx/figma
 
+## 0.5.0
+
+### Minor Changes
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`dff46b8`](https://github.com/secundant/neodx/commit/dff46b88eb23041d94e2547747c5784d391f7eb0) Thanks [@secundant](https://github.com/secundant)! - Adapt new `@neodx/vfs`
+
+### Patch Changes
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1) Thanks [@secundant](https://github.com/secundant)! - Upgrade dependencies
+
+- Updated dependencies [[`f29f182`](https://github.com/secundant/neodx/commit/f29f1828962f044ed55e68a36adbe88ba7fab0bf), [`dff46b8`](https://github.com/secundant/neodx/commit/dff46b88eb23041d94e2547747c5784d391f7eb0), [`0378625`](https://github.com/secundant/neodx/commit/0378625b037049bc95bd882fe53ea08ce0ee942d), [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1), [`f29f182`](https://github.com/secundant/neodx/commit/f29f1828962f044ed55e68a36adbe88ba7fab0bf), [`f29f182`](https://github.com/secundant/neodx/commit/f29f1828962f044ed55e68a36adbe88ba7fab0bf), [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1), [`0378625`](https://github.com/secundant/neodx/commit/0378625b037049bc95bd882fe53ea08ce0ee942d), [`f29f182`](https://github.com/secundant/neodx/commit/f29f1828962f044ed55e68a36adbe88ba7fab0bf), [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1)]:
+  - @neodx/vfs@0.2.0
+  - @neodx/log@0.4.0
+  - @neodx/std@0.3.0
+
 ## 0.4.1
 
 ### Patch Changes

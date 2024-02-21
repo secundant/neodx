@@ -1,5 +1,15 @@
 # @neodx/autobuild
 
+## 0.2.0
+
+### Minor Changes
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`dff46b8`](https://github.com/secundant/neodx/commit/dff46b88eb23041d94e2547747c5784d391f7eb0) Thanks [@secundant](https://github.com/secundant)! - Adapt new `@neodx/vfs`
+
+### Patch Changes
+
+- [#136](https://github.com/secundant/neodx/pull/136) [`6354c63`](https://github.com/secundant/neodx/commit/6354c6328f2a13fdd0228b87d8b91cd0c090bce1) Thanks [@secundant](https://github.com/secundant)! - Upgrade dependencies
+
 ## 0.1.0
 
 ### Minor Changes
