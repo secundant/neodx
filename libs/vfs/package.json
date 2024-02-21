@@ -6,7 +6,10 @@
   "main": "./dist/cjs/index.cjs",
   "types": "./dist/types/index.d.ts",
   "module": "./dist/mjs/index.mjs",
-  "source": "src/index.ts",
+  "source": [
+    "src/index.ts",
+    "src/plugins/*.ts"
+  ],
   "sideEffects": false,
   "author": {
     "name": "Dmitry Remezov",
@@ -39,29 +42,77 @@
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "bench": "vitest bench",
     "build": "autobuild",
     "test": "vitest run",
     "lint": "eslint src"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
-    "@types/tmp": "0.2.4",
-    "tmp": "0.2.1"
+    "@types/tmp": "0.2.6",
+    "tmp": "0.2.1",
+    "tsx": "4.7.1"
   },
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
       "import": "./dist/mjs/index.mjs",
       "require": "./dist/cjs/index.cjs"
+    },
+    "./plugins/eslint": {
+      "types": "./dist/types/plugins/eslint.d.ts",
+      "import": "./dist/mjs/plugins/eslint.mjs",
+      "require": "./dist/cjs/plugins/eslint.cjs"
+    },
+    "./plugins/glob": {
+      "types": "./dist/types/plugins/glob.d.ts",
+      "import": "./dist/mjs/plugins/glob.mjs",
+      "require": "./dist/cjs/plugins/glob.cjs"
+    },
+    "./plugins/package-json": {
+      "types": "./dist/types/plugins/package-json.d.ts",
+      "import": "./dist/mjs/plugins/package-json.mjs",
+      "require": "./dist/cjs/plugins/package-json.cjs"
+    },
+    "./plugins/json": {
+      "types": "./dist/types/plugins/json.d.ts",
+      "import": "./dist/mjs/plugins/json.mjs",
+      "require": "./dist/cjs/plugins/json.cjs"
+    },
+    "./plugins/prettier": {
+      "types": "./dist/types/plugins/prettier.d.ts",
+      "import": "./dist/mjs/plugins/prettier.mjs",
+      "require": "./dist/cjs/plugins/prettier.cjs"
+    },
+    "./plugins/scan": {
+      "types": "./dist/types/plugins/scan.d.ts",
+      "import": "./dist/mjs/plugins/scan.mjs",
+      "require": "./dist/cjs/plugins/scan.cjs"
     }
   },
   "dependencies": {
     "@neodx/colors": "0.2.6",
     "@neodx/fs": "0.0.10",
+    "@neodx/glob": "0.0.1",
     "@neodx/log": "0.3.0",
     "@neodx/pkg-misc": "0.0.8",
     "@neodx/std": "0.2.0",
-    "pathe": "1.1.1",
-    "picocolors": "1.0.0"
+    "@types/eslint": "8.56.2",
+    "grammex": "3.1.2",
+    "pathe": "1.1.2",
+    "pkg-types": "1.0.3",
+    "ts-pattern": "5.0.8"
+  },
+  "peerDependencies": {
+    "eslint": "*",
+    "prettier": "*"
+  },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    },
+    "prettier": {
+      "optional": true
+    }
   }
 }

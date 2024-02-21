@@ -7,6 +7,7 @@ import {
   LOGGER_SILENT_LEVEL
 } from '../core/shared';
 import { printf, readArguments } from '../utils';
+import { createLoggerAutoFactory } from '../utils/create-auto-logger-factory.ts';
 import { file, json } from './json';
 import { pretty } from './pretty';
 
@@ -42,3 +43,4 @@ export const createLogger = createLoggerFactory({
   formatMessage: printf,
   readArguments
 });
+export const createAutoLogger = createLoggerAutoFactory(createLogger);

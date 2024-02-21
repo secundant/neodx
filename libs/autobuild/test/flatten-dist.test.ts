@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/require-array-sort-compare */
-import { createTmpVfs } from '@neodx/vfs/testing-utils';
+// eslint-disable-next-line import/no-unresolved
+import { createTmpVfs } from '@neodx/vfs/testing';
 import { describe, expect, test } from 'vitest';
 import { flattenDist } from '../src/core/flatten-dist';
 import type { ProjectPackageJSON } from '../src/types';
@@ -27,7 +28,7 @@ describe('flatten-dist', async () => {
   });
   const runTestCase = async (pkg: Partial<ProjectPackageJSON>, files: string[]) => {
     const vfs = await createTmpVfs({
-      initialFiles: {
+      files: {
         './package.json': JSON.stringify(createPackageJson(pkg)),
         './README.md': 'readme',
         './dist/index.cjs': 'content',
@@ -41,6 +42,8 @@ describe('flatten-dist', async () => {
       outDir: 'dist',
       vfs
     });
+
+    // await vfs.apply();
     return {
       vfs,
       pkg: await vfs.readJson<ProjectPackageJSON>('package.json')
@@ -160,6 +163,7 @@ describe('flatten-dist', async () => {
         'nested/path/other.mjs'
       ].sort()
     );
+
     expect(await vfs.readDir('nested')).toEqual(['path']);
     expect((await vfs.readDir('nested/path')).sort()).toEqual(
       ['other.cjs', 'other.d.ts', 'other.mjs'].sort()

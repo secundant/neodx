@@ -18,6 +18,7 @@ Packages overview:
 - [@neodx/figma](#neodxfigma) | [docs](https://neodx.pages.dev/figma) | [source](./libs/figma)
 - [@neodx/svg](#neodxsvg) | [docs](https://neodx.pages.dev/svg) | [source](./libs/svg)
 - [@neodx/log](#neodxlog) | [docs](https://neodx.pages.dev/log) | [source](./libs/log)
+- [@neodx/vfs](#neodxvfs) | [docs](https://neodx.pages.dev/vfs) | [source](./libs/vfs)
 
 ### [@neodx/figma](./libs/figma)
 
@@ -172,24 +173,14 @@ Meet `@neodx/vfs`, the missing abstraction layer for file system operations that
 ```typescript
 import { createVfs } from '@neodx/vfs';
 
-// main.ts
-const vfs = createVfs(process.cwd(), {
-  dryRun: process.env.DRY_RUN === 'true'
+const fs = createVfs();
+
+await fs.writeJson('.cache/meta.json', { timestamp: Date.now(), stats });
+await fs.updateJson('package.json', pkg => {
+  pkg.version = '1.0.0';
 });
-
-await doSomethingWithVfs(vfs);
-await vfs.formatChangedFiles(); // Format all changed files
-await vfs.applyChanges(); // Only now changes will be applied to the real file system (if not in dry-run mode)!
-
-// other-file.ts
-async function doSomethingWithVfs(vfs: Vfs) {
-  await vfs.write('file.txt', 'Hello, world!');
-  // ...
-  await vfs.remove('other-file.txt');
-  await vfs.updateJson('manifest.json', manifest => {
-    manifest.version = '1.0.0';
-    return manifest;
-  });
+await fs.write('src/index.ts', 'export const foo = 42;');
+await fs.apply();
 }
 ```
 

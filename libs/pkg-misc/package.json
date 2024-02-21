@@ -22,14 +22,14 @@
   "dependencies": {
     "@neodx/fs": "0.0.10",
     "@neodx/std": "0.2.0",
-    "@types/prettier": "2.7.3",
-    "pathe": "1.1.1",
+    "@types/prettier": "3.0.0",
+    "pathe": "1.1.2",
     "semver": "7.5.4"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
-    "@types/semver": "7.5.3",
-    "prettier": "2.8.8"
+    "@types/semver": "7.5.7",
+    "prettier": "3.2.5"
   },
   "peerDependencies": {
     "@types/semver": "*",

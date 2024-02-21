@@ -2,7 +2,7 @@ import { type Config, optimize } from 'svgo';
 import { createPlugin } from './plugin-utils';
 
 export interface SvgoPluginParams {
-  removeAttrs: string[];
+  removeAttrs?: string[];
   config?: Exclude<Config, string>;
 }
 

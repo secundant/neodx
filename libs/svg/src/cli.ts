@@ -1,6 +1,4 @@
-import { createLogger } from '@neodx/log';
 import { toArray } from '@neodx/std';
-import { createVfs } from '@neodx/vfs';
 import { Command } from 'commander';
 import { z } from 'zod';
 import { buildSprites } from './core/build-sprites';
@@ -49,8 +47,11 @@ export function createCli(cwd = process.cwd()) {
                 replaceUnknown: resetUnknownColors ? 'currentColor' : undefined
               }
             : [],
-        logger: createLogger({ level: verbose ? 'debug' : 'info', name: 'svg' }),
-        vfs: createVfs(cwd, { dryRun })
+        log: verbose ? 'debug' : 'info',
+        vfsParams: {
+          cwd,
+          readonly: dryRun
+        }
       });
     });
 

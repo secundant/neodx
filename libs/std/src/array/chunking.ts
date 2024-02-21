@@ -12,7 +12,7 @@ export function sliding<T>(list: T[], size: number, step = 1) {
 }
 
 export function chunk<T>(list: T[], size: number) {
-  return Array.from({ length: Math.ceil(list.length / size) }, (_, index) =>
+  return fromLength(Math.ceil(list.length / size), index =>
     list.slice(index * size, index * size + size)
   );
 }

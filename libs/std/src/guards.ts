@@ -1,34 +1,45 @@
-import { keys } from './shared';
+import { type AnyRecord, keys } from './shared';
 
 const toString = Object.prototype.toString;
 const getPrototypeOf = Object.getPrototypeOf;
 const objectString = '[object Object]';
 
 export type Nil = null | undefined;
-export type AnyKey = keyof any;
-export type AnyObj = Record<AnyKey, unknown>;
 export type AnyFunction = (...args: any[]) => any;
 export type IsTypeOfFn<Type> = <T>(value: T | Type) => value is Type;
 
 export const isEmpty = (target: unknown[]): target is [] => target.length === 0;
 export const isError = (target: unknown): target is Error => target instanceof Error;
-export const isEmptyObject = (target: AnyObj) => isEmpty(keys(target));
+export const isEmptyObject = (target: AnyRecord): target is Record<never, never> =>
+  isEmpty(keys(target));
 
-export const negate =
+export const not =
   <R>(fn: (value: unknown) => value is R) =>
   <Value>(value: Value): value is Exclude<Value, R> =>
     !fn(value);
+export const some =
+  <Args extends [...unknown[]]>(...predicates: [...((...args: Args) => boolean)[]]) =>
+  (...args: Args): boolean =>
+    predicates.some(predicate => predicate(...args));
+export const every =
+  <Args extends [...unknown[]]>(...predicates: [...((...args: Args) => boolean)[]]) =>
+  (...args: Args): boolean =>
+    predicates.every(predicate => predicate(...args));
 
-const createTypeof = (type: string) => (value: unknown) => typeof value === type;
+const createTypeof =
+  <T>(type: string) =>
+  (value: unknown): value is T =>
+    typeof value === type;
 
-export const isTypeOfString = createTypeof('string') as IsTypeOfFn<string>;
-export const isTypeOfFunction = createTypeof('function') as IsTypeOfFn<AnyFunction>;
+export const isTypeOfString = createTypeof<string>('string');
+export const isTypeOfBoolean = createTypeof<boolean>('boolean');
+export const isTypeOfFunction = createTypeof<AnyFunction>('function');
 
 export const isNull = (value: unknown): value is null => value === null;
 export const isUndefined = (value: unknown): value is undefined => value === undefined;
 export const isPrimitive = (value: unknown) =>
   value === null || (typeof value !== 'function' && typeof value !== 'object');
-export const isObject = (target: unknown): target is AnyObj => {
+export const isObject = (target: unknown): target is AnyRecord => {
   if (isNil(target) || !isObjectLike(target) || toString.call(target) !== objectString) {
     return false;
   }
@@ -47,6 +58,6 @@ const getLastPrototypeOf = (target: unknown): unknown => {
   return proto === null ? target : getLastPrototypeOf(proto);
 };
 
-export const isNotUndefined = negate(isUndefined);
-export const isNotNull = negate(isNull);
-export const isNotNil = negate(isNil);
+export const isDefined = not(isUndefined);
+export const isNotNull = not(isNull);
+export const isNotNil = not(isNil);

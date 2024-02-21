@@ -50,7 +50,7 @@ export function createLoggerFactory<LevelsConfig extends LoggerLevelsConfig<stri
     const log = (levelOrAlias: GetLevelNames<LevelsConfig>, ...args: unknown[]) => {
       const level = getOriginalLevelName(levelOrAlias, levels);
 
-      if (isSilent(rootLevel) || (rootLevel && levels[level] > levels[rootLevel])) return;
+      if (isSilent(rootLevel) || (rootLevel && levels[level]! > levels[rootLevel]!)) return;
       const [[unknownMsgTemplate = '', ...msgArgs], additionalFields, error] = readArguments(args);
       const msgTemplate = String(unknownMsgTemplate);
       const chunk = transform.reduce<LogChunk<GetLevelNames<LevelsConfig>>>(
@@ -75,7 +75,7 @@ export function createLoggerFactory<LevelsConfig extends LoggerLevelsConfig<stri
       );
 
       for (const handle of targets) {
-        if (handle.level && levels[handle.level] > levels[level]) continue;
+        if (handle.level && levels[handle.level]! > levels[level]!) continue;
         handle.target.forEach(fn => fn(chunk as any));
       }
     };

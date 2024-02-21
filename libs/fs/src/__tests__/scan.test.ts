@@ -41,7 +41,7 @@ describe('scan files', () => {
   test.each(Object.entries(cases).map(([key, [params, result]]) => [key, params, result]))(
     '%s',
     async (_, params, expected) => {
-      const actual = await scan(tmpDir.name, params);
+      const actual = await scan(tmpDir.name, params!);
 
       expect(actual.sort()).toEqual((expected as string[]).sort());
     }

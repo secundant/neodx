@@ -1,6 +1,5 @@
 import { debounce } from '@neodx/std';
 import { watch } from 'chokidar';
-import { join } from 'node:path';
 import type { SpriteBuilder } from './create-sprite-builder';
 
 export interface CreateWatcherParams {
@@ -11,7 +10,7 @@ export interface CreateWatcherParams {
 
 export function createWatcher({ root = '.', input, builder }: CreateWatcherParams) {
   const watcher = watch(input, {
-    cwd: join(builder.vfs.root, root),
+    cwd: builder.vfs.resolve(root),
     ignoreInitial: true,
     ignorePermissionErrors: true,
     awaitWriteFinish: {
@@ -21,7 +20,7 @@ export function createWatcher({ root = '.', input, builder }: CreateWatcherParam
   });
   const rebuild = debounce(async () => {
     await builder.build();
-    await builder.vfs.applyChanges();
+    await builder.vfs.apply();
   }, 100);
   const add = async (path: string) => {
     await builder.add([path]);

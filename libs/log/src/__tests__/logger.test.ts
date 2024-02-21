@@ -1,4 +1,4 @@
-import { difference, keys, mapObject } from '@neodx/std';
+import { difference, keys, mapValues } from '@neodx/std';
 import { describe, expect, test, vi } from 'vitest';
 import type { LogChunk, LoggerParams } from '../core/types';
 import { createLogger, DEFAULT_LOGGER_LEVELS, type DefaultLoggerLevel } from '../node';
@@ -156,7 +156,7 @@ describe('logger', () => {
   describe('should support different levels combination', async () => {
     const init = (params?: Partial<LoggerParams<DefaultLoggerLevel>>) => {
       const levels = { ...DEFAULT_LOGGER_LEVELS };
-      const spies = mapObject(levels, () => vi.fn());
+      const spies = mapValues(levels, () => vi.fn());
       const target = keys(levels).map(level => ({
         level,
         target: [spies[level]]

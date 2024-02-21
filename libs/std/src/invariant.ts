@@ -1,3 +1,4 @@
+import { isTypeOfFunction } from './guards';
 import type { Falsy } from './shared';
 
 const label = 'Bad invariant';
@@ -15,7 +16,7 @@ export function invariant(condition: unknown, message?: MessageArg): asserts con
   if (process.env.NODE_ENV === 'production') {
     throw new Error(label);
   }
-  const messageString = typeof message === 'function' ? message() : message;
+  const messageString = isTypeOfFunction(message) ? message() : message;
 
   throw new Error(messageString ? `${label}: ${messageString}` : label);
 }

@@ -29,7 +29,9 @@ export default defineConfig({
         items: [
           { text: '@neodx/log', link: '/log/', activeMatch: '^/log/' },
           { text: '@neodx/svg', link: '/svg/', activeMatch: '^/svg/' },
-          { text: '@neodx/figma', link: '/figma/', activeMatch: '^/figma/' }
+          { text: '@neodx/figma', link: '/figma/', activeMatch: '^/figma/' },
+          { text: '@neodx/vfs', link: '/vfs/', activeMatch: '^/vfs/' },
+          { text: '@neodx/glob', link: '/glob/', activeMatch: '^/glob/' }
         ]
       }
     ],
@@ -200,6 +202,45 @@ export default defineConfig({
               }
             ]
           }
+        ]
+      },
+      {
+        text: '@neodx/vfs',
+        collapsed: true,
+        items: [
+          { text: 'Getting started', link: '/vfs/' },
+          { text: 'Extending', link: '/vfs/extending' },
+          {
+            text: 'Plugins',
+            items: [
+              { text: 'scan', link: '/vfs/plugins/scan' },
+              { text: 'glob', link: '/vfs/plugins/glob' },
+              { text: 'json', link: '/vfs/plugins/json' },
+              { text: 'eslint', link: '/vfs/plugins/eslint' },
+              { text: 'prettier', link: '/vfs/plugins/prettier' },
+              { text: 'package.json', link: '/vfs/plugins/package-json' }
+            ]
+          },
+          { text: 'Limitations', link: '/vfs/limitations' },
+          {
+            text: 'API',
+            collapsed: true,
+            items: [
+              { text: 'createVfs', link: '/vfs/api/create-vfs' },
+              { text: 'Plugins', link: '/vfs/api/plugins' },
+              { text: 'Context', link: '/vfs/api/context' },
+              { text: 'Backend', link: '/vfs/api/backend' }
+            ]
+          }
+        ]
+      },
+      {
+        text: '@neodx/glob',
+        collapsed: true,
+        items: [
+          { text: 'Getting started', link: '/glob/' },
+          { text: 'Writing your glob', link: '/glob/writing-your-glob' },
+          { text: 'API', link: '/glob/api' }
         ]
       }
     ]

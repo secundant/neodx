@@ -12,7 +12,7 @@ export function printf(template: string, replaces: unknown[]) {
   const [leading, ...parts] = template.split('%');
   const result = parts.reduce(
     (acc, part) => {
-      const tokenName = part[0];
+      const tokenName = part[0]!;
       const format = hasOwn(tokenFormatters, tokenName) ? tokenFormatters[tokenName] : null;
 
       acc.push(format ? format(currentReplaces.shift()) : '%');

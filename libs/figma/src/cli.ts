@@ -48,7 +48,7 @@ export function createFigmaCli() {
           const { fileId, type, output } = exportConfig;
           log.info('👉 Starting export file "%s" to "%s"', fileId, output);
           const vfs = createVfs(resolve(cwd, output), {
-            dryRun,
+            readonly: dryRun,
             log: log.child('fs', {
               target: pretty({
                 displayLevel: false
@@ -80,9 +80,7 @@ export function createFigmaCli() {
             default:
               throw new Error(`Unknown export type "${type}"`);
           }
-          log.info('Writing files...');
-          await vfs.formatChangedFiles();
-          await vfs.applyChanges();
+          await vfs.apply();
         }
 
         log.done('👋 All done in %s', formatTimeMs(Date.now() - startedAt));

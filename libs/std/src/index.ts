@@ -3,48 +3,77 @@ export {
   compact,
   difference,
   fromLength,
+  fromRange,
   groupBy,
   groupReduceBy,
   includesIn,
   sliding,
+  tee,
   uniq,
   uniqBy
 } from './array';
-export { asyncReduce, concurrent, concurrently, deduplicateAsync } from './async';
-export { debounce } from './debounce';
-export type { AnyKey, AnyObj, Nil } from './guards';
 export {
+  asyncReduce,
+  combineAbortSignals,
+  concurrent,
+  concurrently,
+  deduplicateAsync,
+  tryCreateTimeoutSignal
+} from './async';
+export { debounce } from './debounce';
+export type { Nil } from './guards';
+export {
+  every,
+  isDefined,
   isEmpty,
   isEmptyObject,
   isError,
   isNil,
   isNotNil,
   isNotNull,
-  isNotUndefined,
   isNull,
   isObject,
   isObjectLike,
   isPrimitive,
+  isTypeOfBoolean,
   isTypeOfFunction,
   isTypeOfString,
   isUndefined,
-  negate
+  not,
+  some
 } from './guards';
 export { invariant } from './invariant';
 export { sum } from './math';
-export { memoizeWeak } from './memoize';
+export { memoize, memoizeWeak } from './memoize';
 export {
   compactObject,
   filterObject,
-  mapObject,
+  fromEntries,
+  fromKeys,
+  mapEntries,
+  mapKeysToObject,
+  mapToObject,
+  mapValues,
   omit,
   pick,
+  pickProps,
+  prop,
   shallowEqual,
   sortObject,
   sortObjectByKeys,
-  sortObjectByOrder
+  sortObjectByOrder,
+  zipObject
 } from './object';
-export type { Falsy, ObjectEntry } from './shared';
+export type {
+  AnyKey,
+  AnyRecord,
+  Falsy,
+  ObjectEntries,
+  ObjectEntry,
+  ObjectHasOwn,
+  ObjectKeys,
+  Truthy
+} from './shared';
 export {
   entries,
   False,
@@ -52,9 +81,14 @@ export {
   identity,
   isTruthy,
   keys,
+  lazyValue,
+  rethrow,
+  sleep,
+  test,
   toArray,
   toInt,
   True,
+  tryCatch,
   values
 } from './shared';
 export { quickPluralize, truncateString } from './string';

@@ -90,7 +90,7 @@ const getSvgNodeResetColorAttributes = (
     if (include && !include(file.path)) continue;
 
     for (const name of properties.filter(name => name in node.attributes)) {
-      const sourceColor = node.attributes[name];
+      const sourceColor = node.attributes[name]!;
 
       if (keep.some(color => color.isEqual(sourceColor))) continue;
 
@@ -98,7 +98,7 @@ const getSvgNodeResetColorAttributes = (
         replace.find(({ from }) => from.some(color => color.isEqual(sourceColor)))?.to ??
         replaceUnknown;
 
-      result[name] = replacement ?? result[name];
+      result[name] = replacement ?? result[name]!;
     }
   }
   return result;

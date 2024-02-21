@@ -1,5 +1,4 @@
-import { createLogger, pretty } from '@neodx/log/node';
-import { createVfs } from '@neodx/vfs';
+import { type VfsLogMethod } from '@neodx/vfs';
 import { createUnplugin } from 'unplugin';
 import { createSpriteBuilder, type CreateSpriteBuilderParams, createWatcher } from './core';
 
@@ -8,30 +7,17 @@ export interface SvgPluginParams extends Partial<Omit<CreateSpriteBuilderParams,
    * Globs to icons files
    */
   input?: string | string[];
-  logLevel?: 'debug' | 'info' | 'error' | 'silent';
+  /**
+   * @deprecated Use `log` instead
+   * @see `log`
+   */
+  logLevel?: VfsLogMethod | 'silent';
 }
 
 export const unplugin = createUnplugin(
-  (
-    {
-      logLevel = 'error',
-      logger = createLogger({
-        name: 'svg',
-        level: logLevel,
-        target: pretty()
-      }),
-      root = '.',
-      input = '**/*.svg',
-      ...params
-    }: SvgPluginParams = {},
-    { watchMode = false }
-  ) => {
+  ({ root = '.', input = '**/*.svg', ...params }: SvgPluginParams = {}, { watchMode = false }) => {
     const builder = createSpriteBuilder({
-      vfs: createVfs(process.cwd(), {
-        log: logger
-      }),
       root,
-      logger,
       output: 'public',
       ...params
     });
@@ -45,7 +31,7 @@ export const unplugin = createUnplugin(
         // Avoid multiple builds, for example, webpack calls buildStart on every change
         if (started) return;
         started = true;
-        logger.debug(
+        builder.log.debug(
           {
             isWatch,
             isBuild,
@@ -55,7 +41,7 @@ export const unplugin = createUnplugin(
         );
         await builder.load(input);
         await builder.build();
-        await builder.vfs.applyChanges();
+        await builder.vfs.apply();
         if (isWatch) {
           createWatcher({
             builder,

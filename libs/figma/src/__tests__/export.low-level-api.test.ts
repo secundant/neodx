@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/require-array-sort-compare */
 import { identity, uniq } from '@neodx/std';
-import { createTmpVfs } from '@neodx/vfs/testing-utils';
+// eslint-disable-next-line import/no-unresolved
+import { createTmpVfs } from '@neodx/vfs/testing';
 import { describe, expect, test } from 'vitest';
 import type { AnyNode, FigmaApi } from '../core';
 import { createExportContext, downloadExportedAssets, resolveExportedAssets } from '../export';
@@ -47,7 +48,7 @@ describe('export low-level API', async () => {
         }
       });
       const parents = exportable.map(
-        exported => testGraphs.weather.registry.byId[exported.parentId!]
+        exported => testGraphs.weather.registry.byId[exported.parentId!]!
       );
       const parentsNames = uniq(parents.map(getGraphNodeName).sort());
       const exportableNames = uniq(exportable.map(getGraphNodeName).sort());
@@ -250,7 +251,7 @@ describe('export low-level API', async () => {
           fetch: createMockFetch(req => {
             const { id, format, scale } = Object.fromEntries(new URL(req.url).searchParams);
 
-            return `content for ${id} - ${format.toLowerCase()} x${scale}`;
+            return `content for ${id} - ${format!.toLowerCase()} x${scale}`;
           }) as any
         },
         async getImage({ ids, format, scale }) {

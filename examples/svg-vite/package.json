@@ -8,21 +8,21 @@
     "access": "restricted"
   },
   "dependencies": {
-    "@fontsource-variable/inter": "5.0.13",
+    "@fontsource-variable/inter": "5.0.15",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@neodx/svg": "workspace:*",
-    "@types/react": "18.2.25",
-    "@types/react-dom": "18.2.11",
-    "@vitejs/plugin-react": "4.1.0",
-    "autoprefixer": "10.4.16",
-    "postcss": "8.4.31",
-    "tailwindcss": "3.3.3",
-    "typescript": "5.2.2",
-    "vite": "4.4.11",
-    "vite-tsconfig-paths": "4.2.1"
+    "@neodx/svg": "*",
+    "@types/react": "18.2.56",
+    "@types/react-dom": "18.2.19",
+    "@vitejs/plugin-react": "4.2.1",
+    "autoprefixer": "10.4.17",
+    "postcss": "8.4.35",
+    "tailwindcss": "3.4.1",
+    "typescript": "5.3.3",
+    "vite": "5.1.3",
+    "vite-tsconfig-paths": "4.3.1"
   },
   "scripts": {
     "dev": "vite",
@@ -41,7 +41,7 @@
       },
       "build": {
         "outputs": [
-          "public/sprites"
+          "{workspaceRoot}/public/sprites"
         ],
         "inputs": [
           "{projectRoot}/assets/**/*.svg",

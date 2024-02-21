@@ -73,7 +73,10 @@ const collectByConditions = (
   conditions: [...SpecifiedCollectTarget[]]
 ): GraphNode<AnyNode>[] => {
   if (isEmpty(conditions)) return [root];
-  const [{ type, filter }, ...nextConditions] = conditions;
+  const [{ type, filter }, ...nextConditions] = conditions as [
+    SpecifiedCollectTarget,
+    ...SpecifiedCollectTarget[]
+  ];
   const nodes: GraphNode<AnyNode>[] = root.registry.types[type] ?? [];
 
   if (!filter) {

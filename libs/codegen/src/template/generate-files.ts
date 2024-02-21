@@ -1,17 +1,18 @@
-import { deepReadDir } from '@neodx/fs';
 import { cases, hasOwn, toCase, uniq } from '@neodx/std';
-import type { VFS } from '@neodx/vfs';
+import type { Vfs } from '@neodx/vfs';
 import { render } from 'ejs';
-import { readFile } from 'node:fs/promises';
-import { extname, join, relative } from 'node:path';
+import { extname, join } from 'node:path';
 
 export async function generateFiles(
-  vfs: VFS,
+  vfs: Vfs,
   sourcePath: string,
   outputPath: string,
   variables: Record<string, unknown>
 ) {
-  const files = await deepReadDir(sourcePath);
+  const sourceVfs = vfs.child(sourcePath);
+  const files = await sourceVfs.scan({
+    filter: ({ dirent }) => dirent.isFile()
+  });
 
   if (files.length === 0) {
     throw new Error(
@@ -21,15 +22,25 @@ export async function generateFiles(
   await Promise.all(
     files.map(async filePath => {
       const keepUntouched = keepFileUntouchedRe.test(filePath);
-      const relativePath = relative(sourcePath, filePath).replace(keepFileUntouchedRe, '');
+      const relativePath = filePath.replace(keepFileUntouchedRe, '');
       const outputFilePath = join(
         outputPath,
         keepUntouched ? relativePath : injectTemplateVariables(relativePath, variables)
       );
       const content =
         keepUntouched || binaryExtensions.has(extname(outputFilePath))
-          ? await readFile(filePath)
-          : await renderTemplateFromFile(filePath, variables);
+          ? await sourceVfs.read(filePath)
+          : await render(
+              await sourceVfs.read(filePath, 'utf-8'),
+              {
+                ...variables,
+                $: {
+                  toCase,
+                  cases
+                }
+              },
+              { async: true }
+            );
 
       await vfs.write(outputFilePath, content);
     })
@@ -37,7 +48,7 @@ export async function generateFiles(
 }
 
 export function injectTemplateVariables(template: string, variables: Record<string, unknown>) {
-  const names = uniq(Array.from(template.matchAll(/\[(\w+)]/gi)).map(([_, name]) => name));
+  const names = uniq(Array.from(template.matchAll(/\[(\w+)]/gi)).map(([_, name]) => name!));
   const missed = names.filter(name => !hasOwn(variables, name));
 
   if (missed.length > 0) {
@@ -52,22 +63,6 @@ export function injectTemplateVariables(template: string, variables: Record<stri
     template.replace(templateExtensionRe, '')
   );
 }
-
-const renderTemplateFromFile = async (path: string, variables: Record<string, unknown>) => {
-  const content = await readFile(path, 'utf-8');
-
-  return render(
-    content,
-    {
-      ...variables,
-      $: {
-        toCase,
-        cases
-      }
-    },
-    { async: true }
-  );
-};
 
 const keepFileUntouchedRe = /(\._keep_$)|(_keep_\.)/i;
 const templateExtensionRe = /\.(ejs|tmpl|template)$/i;

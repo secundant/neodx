@@ -9,23 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/node": "20.8.3",
-    "@types/react": "18.2.25",
-    "@types/react-dom": "18.2.11",
-    "autoprefixer": "10.4.16",
-    "eslint": "8.51.0",
-    "eslint-config-next": "13.5.4",
-    "next": "13.5.4",
-    "postcss": "8.4.31",
+    "@types/node": "20.11.19",
+    "@types/react": "18.2.56",
+    "@types/react-dom": "18.2.19",
+    "autoprefixer": "10.4.17",
+    "eslint": "8.56.0",
+    "eslint-config-next": "14.1.0",
+    "next": "13.5.6",
+    "postcss": "8.4.35",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tailwindcss": "3.3.3",
-    "typescript": "5.2.2"
+    "tailwindcss": "3.4.1",
+    "typescript": "5.3.3"
   },
   "devDependencies": {
     "@neodx/svg": "workspace:*",
-    "@types/react": "18.2.25",
-    "@types/react-dom": "18.2.11"
+    "@types/react": "18.2.56",
+    "@types/react-dom": "18.2.19"
   },
   "nx": {
     "targets": {

@@ -21,8 +21,7 @@ describe('resetColors', async () => {
       ? stub.names.filter(name => only.some(pattern => name.includes(pattern)))
       : stub.names;
     const vfs = await createTmpVfs({
-      initialFiles: Object.fromEntries(included.map(name => [`assets/${name}`, stub.files[name]])),
-      dryRun: false,
+      files: Object.fromEntries(included.map(name => [`assets/${name}`, stub.files[name]!])),
       log: logger
     });
 

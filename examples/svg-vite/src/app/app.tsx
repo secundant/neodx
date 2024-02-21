@@ -46,23 +46,11 @@ export function App() {
             to control second color
           </h3>
         </div>
-        <div className="flex flex-col gap-4">
-          <div className="inline-flex gap-4 flex-row">
-            <div>
-              <h3 className="text-green-800 mb-2">OK</h3>
-              <Icon
-                className="rounded-xl bg-gradient-to-br from-slate-100 to-stone-200 shadow-sm border border-gray-300 p-8 text-8xl text-red-800"
-                name={selected}
-              />
-            </div>
-            <div>
-              <h3 className="text-red-800 mb-2">Bad</h3>
-              <Icon
-                className="rounded-xl bg-gradient-to-br from-slate-100 to-stone-200 shadow-sm border border-gray-300 p-8 text-8xl text-red-800"
-                name={selected}
-              />
-            </div>
-          </div>
+        <div className="flex flex-row items-start gap-4">
+          <Icon
+            className="rounded-xl bg-gradient-to-br from-slate-100 to-stone-200 shadow-sm border border-gray-300 p-8 text-8xl text-red-800"
+            name={selected}
+          />
           <select
             className="rounded-lg bg-gradient-to-br from-slate-100 to-stone-200 shadow-sm border border-gray-300 p-2 text-2xl text-red-800"
             value={selected}

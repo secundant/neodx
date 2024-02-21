@@ -16,7 +16,7 @@ export function serializeMeta(meta: LoggerBaseMeta, serializers?: LogSerializers
   const result = {} as LoggerBaseMeta;
 
   for (const [key, value] of Object.entries(meta)) {
-    result[key] = hasOwn(serializers, key) ? serializers[key](value) : value;
+    result[key] = hasOwn(serializers, key) ? serializers[key]!(value) : value;
   }
   return result;
 }

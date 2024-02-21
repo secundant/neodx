@@ -1,6 +1,6 @@
-import { type AnyObj, isEmpty, isError, isObjectLike } from '@neodx/std';
+import { type AnyRecord, isEmpty, isError, isObjectLike } from '@neodx/std';
 
-export type LogArguments = [messageFragments: unknown[], meta: AnyObj, error?: Error];
+export type LogArguments = [messageFragments: unknown[], meta: AnyRecord, error?: Error];
 
 /**
  * Reads arguments array and extract fields, error and message arguments.

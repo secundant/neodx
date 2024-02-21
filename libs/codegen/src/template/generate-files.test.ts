@@ -1,4 +1,5 @@
-import { createVfs } from '@neodx/vfs';
+// eslint-disable-next-line import/no-unresolved
+import { createTmpVfs } from '@neodx/vfs/testing';
 import { join } from 'node:path';
 import { describe, expect, test } from 'vitest';
 import { generateFiles, injectTemplateVariables } from './generate-files';
@@ -7,8 +8,8 @@ const __dirname = new URL('.', import.meta.url).pathname;
 
 describe('generate-files', () => {
   const getTestFs = async () => {
-    const vfs = createVfs('/root', {
-      virtual: true
+    const vfs = await createTmpVfs({
+      log: 'debug'
     });
 
     await generateFiles(vfs, join(__dirname, 'fixture'), '.', {
@@ -17,6 +18,7 @@ describe('generate-files', () => {
       value: 'bar',
       items: [1, 5, 1020]
     });
+    await vfs.apply();
     return vfs;
   };
 
