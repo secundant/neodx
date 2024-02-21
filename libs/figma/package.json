@@ -1,7 +1,7 @@
 {
   "name": "@neodx/figma",
   "version": "0.5.0",
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@4.1.0",
   "description": "No description",
   "type": "module",
   "main": "./dist/index.cjs",

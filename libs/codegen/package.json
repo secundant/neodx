@@ -2,7 +2,7 @@
   "name": "@neodx/codegen",
   "private": true,
   "description": "Code generation API",
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@4.1.0",
   "version": "0.0.7",
   "type": "module",
   "main": "./dist/index.cjs",

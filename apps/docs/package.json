@@ -2,7 +2,7 @@
   "name": "@neodx/docs",
   "private": true,
   "type": "module",
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@4.1.0",
   "devDependencies": {
     "vitepress": "1.0.0-rc.43"
   },

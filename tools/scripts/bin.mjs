@@ -37,9 +37,9 @@ sade('neodx')
           }
         }
       }));
-      await vfs.applyChanges();
+      await vfs.apply();
       await $$`${commands.install}`;
-      await $$`nx build ${name}`;
+      await $$`nx build @neodx/${name}`;
     } catch (error) {
       log.error(error);
       process.exit(1);
@@ -55,9 +55,9 @@ sade('neodx')
       ...prev,
       scripts: patchScripts(prev.scripts)
     }));
-    await vfs.applyChanges();
+    await vfs.apply();
     await $$`${commands.install}`;
-    await $$`nx build example-${name}`;
+    await $$`nx build @neodx/example-${name}`;
   })
   .parse(process.argv);
 
