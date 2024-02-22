@@ -2798,8 +2798,6 @@ __metadata:
 "@neodx/internal@workspace:libs/internal":
   version: 0.0.0-use.local
   resolution: "@neodx/internal@workspace:libs/internal"
-  dependencies:
-    "@neodx/autobuild": "npm:*"
   languageName: unknown
   linkType: soft
 

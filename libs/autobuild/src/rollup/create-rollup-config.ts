@@ -30,7 +30,8 @@ export async function createRollupConfig(project: Project, exportsGenerator?: Ex
     deps,
     minify,
     typesFile,
-    detectedConfigFiles
+    detectedConfigFiles,
+    tsConfigPath
   } = project;
   const external = createExternal(project);
   const swcConfig = await createSwcConfig(project);
@@ -104,6 +105,7 @@ export async function createRollupConfig(project: Project, exportsGenerator?: Ex
           description: `TypeScript definitions`
         },
         input: entry,
+        onwarn,
         external: id => external(id) || DTS_EXTERNAL.test(id),
         plugins: compact([
           dts({
@@ -117,6 +119,7 @@ export async function createRollupConfig(project: Project, exportsGenerator?: Ex
               skipLibCheck: true,
               skipDefaultLibCheck: true
             },
+            tsconfig: tsConfigPath,
             respectExternal: false
           }),
           log !== 'fatal' && bundleSizePlugin
@@ -180,7 +183,6 @@ function onwarn(warning: RollupLog, fallback: LoggingFunction) {
 }
 
 const ANY_CSS_LIBRARY = ['postcss', 'tailwindcss', 'sass', 'node-sass', 'less', 'stylus'];
-
 const DTS_EXTERNAL = /\.(less|s[ac]ss|css|styl)$/;
 const BUILTIN_MODULES = [
   /node:.*/,

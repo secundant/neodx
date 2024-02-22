@@ -81,6 +81,7 @@ export async function scanProject({
     sourceFiles,
     sourceMap,
     minify,
+    tsConfigPath,
     tsConfigJson: tsConfigPath ? JSON.parse(await readFile(tsConfigPath, 'utf-8')) : null,
     tsConfig,
     env,

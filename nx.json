@@ -5,15 +5,12 @@
     "libsDir": "libs",
     "appsDir": "apps"
   },
-  "implicitDependencies": {
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
-    "nx.json": "*"
-  },
   "namedInputs": {
-    "shared": ["{workspaceRoot}/tsconfig.base.json", "{workspaceRoot}/package.json"],
+    "sharedGlobals": [
+      "{workspaceRoot}/tsconfig.base.json",
+      "{workspaceRoot}/package.json",
+      "{workspaceRoot}/nx.json"
+    ],
     "src": [
       "{projectRoot}/src/**/*",
       "!{projectRoot}/src/*.test.ts",
@@ -25,7 +22,8 @@
       "{projectRoot}/**/*.test.tsx",
       "{projectRoot}/**/*.test-d.ts"
     ],
-    "config": [
+    "shared": [
+      "sharedGlobals",
       "{projectRoot}/package.json",
       "{projectRoot}/tsconfig.json",
       "{projectRoot}/vite.config.ts"
@@ -35,19 +33,19 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["{projectRoot}/dist"],
-      "inputs": ["shared", "config", "src", "^src"],
+      "inputs": ["shared", "src", "^src"],
       "cache": true
     },
     "test": {
-      "inputs": ["shared", "config", "test", "src", "^src"],
+      "inputs": ["shared", "test", "src", "^src"],
       "cache": true
     },
     "typecheck": {
-      "inputs": ["shared", "config", "test", "src", "^src"],
+      "inputs": ["shared", "test", "src", "^src"],
       "cache": true
     },
     "lint": {
-      "inputs": ["shared", "config", "test", "src"],
+      "inputs": ["shared", "test", "src"],
       "cache": true
     },
     "dev": {

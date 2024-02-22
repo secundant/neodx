@@ -17,6 +17,7 @@
       "@neodx/fs": ["libs/fs/src/index.ts"],
       "@neodx/glob": ["libs/glob/src/index.ts"],
       "@neodx/internal": ["libs/internal/src/index.ts"],
+      "@neodx/internal/*": ["libs/internal/src/*.ts", "libs/internal/src/*/index.ts"],
       "@neodx/log": ["libs/log/src/index.ts"],
       "@neodx/log/*": ["libs/log/src/*.ts", "libs/log/src/*/index.ts"],
       "@neodx/pkg-misc": ["libs/pkg-misc/src/index.ts"],

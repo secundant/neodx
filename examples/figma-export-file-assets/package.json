@@ -22,8 +22,7 @@
         ],
         "inputs": [
           "{projectRoot}/assets/**/*.svg",
-          "shared",
-          "config"
+          "shared"
         ],
         "dependsOn": [
           "^build"
