@@ -67,6 +67,7 @@ export {
 export type {
   AnyKey,
   AnyRecord,
+  Awaitable,
   Falsy,
   ObjectEntries,
   ObjectEntry,

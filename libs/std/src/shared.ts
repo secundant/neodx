@@ -4,6 +4,7 @@ export type Falsy = false | null | undefined | void | 0 | '';
 export type Truthy = Exclude<any, Falsy>;
 export type AnyKey = keyof any;
 export type AnyRecord = Record<AnyKey, any>;
+export type Awaitable<T> = T | PromiseLike<T>;
 
 export const toArray = <T>(value: T | T[]) => (Array.isArray(value) ? value : [value]);
 export const toInt = (value: string) => Number.parseInt(value, 10);

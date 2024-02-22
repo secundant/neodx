@@ -10,7 +10,6 @@ import { parse } from 'svgson';
 import {
   fixViewBox,
   groupSprites,
-  legacyTypescript,
   resetColors,
   type ResetColorsPluginParams,
   setId,
@@ -145,9 +144,7 @@ export function createSpriteBuilder({
   const vfs = userVfs ?? createDefaultSvgVfs(vfsParams.cwd ?? process.cwd(), { ...vfsParams, log });
 
   if (definitions || experimentalRuntime) {
-    log.error(
-      'DEPRECATED: `definitions` and `experimentalRuntime` options will be removed in future versions, use `metadata` instead'
-    );
+    throw new Error('`definitions` and `experimentalRuntime` was removed, use `metadata` instead');
   }
   const rootVfs = vfs.child(root);
   const hooks = combinePlugins(
@@ -157,13 +154,7 @@ export function createSpriteBuilder({
       fixViewBox(),
       resetColorsParams !== false && resetColors(resetColorsParams),
       optimize !== false && svgo(optimize === true ? {} : optimize),
-      !definitions && metadataPlugin(metadata),
-      !metadata &&
-        definitions &&
-        legacyTypescript({
-          output: definitions,
-          experimentalRuntime
-        })
+      metadataPlugin(metadata)
     ])
   );
   let changed = false;
