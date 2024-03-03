@@ -39,6 +39,7 @@ export const isNull = (value: unknown): value is null => value === null;
 export const isUndefined = (value: unknown): value is undefined => value === undefined;
 export const isPrimitive = (value: unknown) =>
   value === null || (typeof value !== 'function' && typeof value !== 'object');
+export const isArray = Array.isArray;
 export const isObject = (target: unknown): target is AnyRecord => {
   if (isNil(target) || !isObjectLike(target) || toString.call(target) !== objectString) {
     return false;

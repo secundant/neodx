@@ -2,9 +2,11 @@
 
 export type Falsy = false | null | undefined | void | 0 | '';
 export type Truthy = Exclude<any, Falsy>;
+export type AnyFn = (...args: any[]) => any;
 export type AnyKey = keyof any;
 export type AnyRecord = Record<AnyKey, any>;
 export type Awaitable<T> = T | PromiseLike<T>;
+export type FirstArg<Fn extends AnyFn> = Parameters<Fn>[0];
 
 export const toArray = <T>(value: T | T[]) => (Array.isArray(value) ? value : [value]);
 export const toInt = (value: string) => Number.parseInt(value, 10);
@@ -21,6 +23,18 @@ export const True = (): true => true;
 export const False = (): false => false;
 
 export const test = (re: RegExp) => (value: string) => re.test(value);
+
+export const getOrCreateMapValue = <Key, Value>(
+  map: Pick<Map<Key, Value>, 'has' | 'get' | 'set'>,
+  key: Key,
+  create: () => Value
+) => {
+  if (map.has(key)) return map.get(key)!;
+  const value = create();
+
+  map.set(key, value);
+  return value;
+};
 
 export const rethrow = (error: unknown): never => {
   throw error;

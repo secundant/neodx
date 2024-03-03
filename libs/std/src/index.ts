@@ -62,6 +62,7 @@ export {
   sortObject,
   sortObjectByKeys,
   sortObjectByOrder,
+  transformKeys,
   zipObject
 } from './object';
 export type {
