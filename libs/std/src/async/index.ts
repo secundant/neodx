@@ -1,5 +1,5 @@
 import { compact } from '../array';
-import type { Falsy } from '../shared.ts';
+import type { Awaitable, Falsy } from '../shared.ts';
 
 export { concurrent, concurrently } from './concurrent';
 export { deduplicateAsync } from './deduplicate';
@@ -34,3 +34,14 @@ const anyAbortSignal =
     }
     return controller.signal;
   });
+
+export const intercept = async <Input, Result>(
+  input: Input,
+  handler: (input: Input) => Awaitable<Result>,
+  ...interceptors: Array<
+    (input: Input, next: (input: Input) => Promise<Result>) => Awaitable<Result>
+  >
+) =>
+  await async function next(input: Input) {
+    return await (interceptors.shift()?.(input, next) ?? handler(input));
+  }.call(this, input);

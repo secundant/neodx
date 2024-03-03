@@ -1,15 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { append } from './shared.ts';
 
 export function groupBy<Value, Key extends keyof any>(list: Value[], keyFn: (value: Value) => Key) {
-  return groupReduceBy(
-    list,
-    keyFn,
-    (acc, value) => {
-      acc.push(value);
-      return acc;
-    },
-    () => [] as Value[]
-  );
+  return groupReduceBy(list, keyFn, append, () => [] as Value[]);
 }
 
 export function groupReduceBy<Value, Result, Key extends keyof any>(
@@ -23,8 +16,7 @@ export function groupReduceBy<Value, Result, Key extends keyof any>(
   for (const value of list) {
     const key = keyFn(value);
 
-    result[key] ??= getInitialValue(key);
-    result[key] = reduceFn(result[key], value, key);
+    result[key] = reduceFn(result[key] ?? getInitialValue(key), value, key);
   }
   return result;
 }
