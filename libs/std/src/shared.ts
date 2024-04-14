@@ -56,6 +56,11 @@ export const lazyValue = <T>(fn: () => T): (() => T) => {
   return () => (value ??= fn());
 };
 
+export const redefineName = (target: any, name: string) =>
+  Object.defineProperty(target, 'name', {
+    value: name
+  });
+
 //#region Object
 
 export const values = Object.values;

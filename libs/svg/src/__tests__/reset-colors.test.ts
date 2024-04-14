@@ -1,6 +1,6 @@
 import { createLogger } from '@neodx/log';
 import { toArray } from '@neodx/std';
-import { createTmpVfs } from '@neodx/vfs/testing-utils';
+import { createTmpVfs } from '@neodx/vfs/testing';
 import { describe, expect, test } from 'vitest';
 import { buildSprites } from '../core';
 import type { ResetColorsPluginParams } from '../plugins';

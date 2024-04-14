@@ -1,3 +1,5 @@
+import { getOrCreateMapValue } from './shared.ts';
+
 export function memoizeWeak<Input extends object, Output>(fn: (input: Input) => Output) {
   return memoize(fn, {
     cache: new WeakMap()
@@ -12,14 +14,9 @@ export function memoize<Input, Output>(
     cache?: {
       has(input: Input): boolean;
       get(input: Input): Output | undefined;
-      set(input: Input, value: Output): void;
+      set(input: Input, value: Output): any;
     };
   } = {}
 ) {
-  return (input: Input) => {
-    if (!cache.has(input)) {
-      cache.set(input, fn(input));
-    }
-    return cache.get(input)!;
-  };
+  return (input: Input) => getOrCreateMapValue(cache, input, () => fn(input));
 }

@@ -4,6 +4,7 @@ import { entries, hasOwn } from './shared.ts';
 export const merge = <const Source extends object, const Overrides extends [...object[]]>(
   source: Source,
   ...overrides: [...Overrides]
+  // eslint-disable-next-line
 ): Merge<Source, Overrides> & {} => {
   overrides.forEach(target => mergeObject(source, target));
   return source as any;

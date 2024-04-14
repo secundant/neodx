@@ -1,6 +1,6 @@
 import { concurrently, pick } from '@neodx/std';
 import type { Vfs } from '@neodx/vfs';
-import { createTmpVfs, getChangesDump } from '@neodx/vfs/*';
+import { createTmpVfs, getChangesDump } from '@neodx/vfs/testing';
 import { describe, expect, test } from 'vitest';
 import { buildSprites } from '../core';
 import { readStub } from './testing-utils.ts';
