@@ -126,7 +126,7 @@ describe('export low-level API', async () => {
           };
         }
       } as FigmaApi;
-      const ctx = createExportContext({
+      const ctx = await createExportContext({
         api: mockApi,
         vfs: await createTmpVfs(),
         log: testFigmaLogger
@@ -175,7 +175,7 @@ describe('export low-level API', async () => {
 
   test('should download content for all downloadable nodes and return it in the correct order', async () => {
     const exports = createMockNodes(120, 'COMPONENT');
-    const ctx = createExportContext({
+    const ctx = await createExportContext({
       api: {
         __: {
           fetch: createMockFetch(
@@ -187,7 +187,7 @@ describe('export low-level API', async () => {
             images: Object.fromEntries(ids.map(id => [id, `https://foo.com/download?id=${id}`]))
           };
         }
-      } as FigmaApi,
+      } as Partial<FigmaApi> as FigmaApi,
       vfs: await createTmpVfs(),
       log: testFigmaLogger
     });
@@ -245,7 +245,7 @@ describe('export low-level API', async () => {
         }))
       }
     })) as GraphNode<AnyNode>[];
-    const ctx = createExportContext({
+    const ctx = await createExportContext({
       api: {
         __: {
           fetch: createMockFetch(req => {
@@ -264,7 +264,7 @@ describe('export low-level API', async () => {
             )
           };
         }
-      } as FigmaApi,
+      } as Partial<FigmaApi> as FigmaApi,
       vfs: await createTmpVfs(),
       log: testFigmaLogger
     });
