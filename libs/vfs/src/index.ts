@@ -18,6 +18,7 @@ export type {
   VfsLogger,
   VfsLogMethod
 } from './core/types.ts';
+export { type AutoVfsInput, createAutoVfs } from './create-auto-vfs.ts';
 export type {
   CreateDefaultVfsBackendParams,
   CreateHeadlessVfsParams,
