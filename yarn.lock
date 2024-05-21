@@ -2721,10 +2721,10 @@ __metadata:
   resolution: "@neodx/codegen@workspace:libs/codegen"
   dependencies:
     "@neodx/autobuild": "npm:*"
-    "@neodx/fs": "npm:0.0.11"
-    "@neodx/pkg-misc": "npm:0.0.9"
-    "@neodx/std": "npm:0.3.0"
-    "@neodx/vfs": "npm:0.2.0"
+    "@neodx/fs": "npm:0.0.12"
+    "@neodx/pkg-misc": "npm:0.0.10"
+    "@neodx/std": "npm:0.3.1"
+    "@neodx/vfs": "npm:0.2.1"
     "@types/ejs": "npm:3.1.5"
     "@types/semver": "npm:7.5.7"
     "@types/tmp": "npm:0.2.6"
@@ -2737,12 +2737,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/colors@npm:0.2.7, @neodx/colors@workspace:libs/colors":
+"@neodx/colors@npm:0.2.8, @neodx/colors@workspace:libs/colors":
   version: 0.0.0-use.local
   resolution: "@neodx/colors@workspace:libs/colors"
   dependencies:
     "@neodx/autobuild": "npm:*"
-    "@neodx/std": "npm:0.3.0"
+    "@neodx/std": "npm:0.3.1"
   languageName: unknown
   linkType: soft
 
@@ -2759,9 +2759,9 @@ __metadata:
   resolution: "@neodx/figma@workspace:libs/figma"
   dependencies:
     "@neodx/autobuild": "npm:*"
-    "@neodx/log": "npm:0.4.0"
-    "@neodx/std": "npm:0.3.0"
-    "@neodx/vfs": "npm:0.2.0"
+    "@neodx/log": "npm:0.4.1"
+    "@neodx/std": "npm:0.3.1"
+    "@neodx/vfs": "npm:0.2.1"
     colord: "npm:2.9.3"
     commander: "npm:11.1.0"
     cosmiconfig: "npm:8.3.6"
@@ -2772,12 +2772,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/fs@npm:0.0.11, @neodx/fs@workspace:libs/fs":
+"@neodx/fs@npm:0.0.12, @neodx/fs@workspace:libs/fs":
   version: 0.0.0-use.local
   resolution: "@neodx/fs@workspace:libs/fs"
   dependencies:
     "@neodx/autobuild": "npm:*"
-    "@neodx/std": "npm:0.3.0"
+    "@neodx/std": "npm:0.3.1"
     "@types/tmp": "npm:0.2.6"
     jsonc-parser: "npm:3.2.0"
     tiny-glob: "npm:0.2.9"
@@ -2785,22 +2785,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/glob@npm:0.1.0, @neodx/glob@workspace:libs/glob":
+"@neodx/glob@npm:0.1.1, @neodx/glob@workspace:libs/glob":
   version: 0.0.0-use.local
   resolution: "@neodx/glob@workspace:libs/glob"
   dependencies:
     "@neodx/autobuild": "npm:*"
-    "@neodx/std": "npm:^0.3.0"
+    "@neodx/std": "npm:^0.3.1"
     grammex: "npm:3.1.2"
   languageName: unknown
   linkType: soft
 
-"@neodx/log@npm:*, @neodx/log@npm:0.4.0, @neodx/log@workspace:*, @neodx/log@workspace:libs/log":
+"@neodx/log@npm:*, @neodx/log@npm:0.4.1, @neodx/log@workspace:*, @neodx/log@workspace:libs/log":
   version: 0.0.0-use.local
   resolution: "@neodx/log@workspace:libs/log"
   dependencies:
     "@neodx/autobuild": "npm:*"
-    "@neodx/colors": "npm:0.2.7"
+    "@neodx/colors": "npm:0.2.8"
     "@types/bunyan": "npm:1.8.11"
     "@types/express": "npm:4.17.21"
     "@types/koa": "npm:2.14.0"
@@ -2832,13 +2832,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/pkg-misc@npm:0.0.9, @neodx/pkg-misc@workspace:libs/pkg-misc":
+"@neodx/pkg-misc@npm:0.0.10, @neodx/pkg-misc@workspace:libs/pkg-misc":
   version: 0.0.0-use.local
   resolution: "@neodx/pkg-misc@workspace:libs/pkg-misc"
   dependencies:
     "@neodx/autobuild": "npm:*"
-    "@neodx/fs": "npm:0.0.11"
-    "@neodx/std": "npm:0.3.0"
+    "@neodx/fs": "npm:0.0.12"
+    "@neodx/std": "npm:0.3.1"
     "@types/prettier": "npm:3.0.0"
     "@types/semver": "npm:7.5.7"
     pathe: "npm:1.1.2"
@@ -2905,7 +2905,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/std@npm:*, @neodx/std@npm:0.3.0, @neodx/std@npm:^0.3.0, @neodx/std@workspace:*, @neodx/std@workspace:libs/std":
+"@neodx/std@npm:*, @neodx/std@npm:0.3.1, @neodx/std@npm:^0.3.1, @neodx/std@workspace:*, @neodx/std@workspace:libs/std":
   version: 0.0.0-use.local
   resolution: "@neodx/std@workspace:libs/std"
   dependencies:
@@ -2918,10 +2918,10 @@ __metadata:
   resolution: "@neodx/svg@workspace:libs/svg"
   dependencies:
     "@neodx/autobuild": "npm:*"
-    "@neodx/fs": "npm:0.0.11"
-    "@neodx/log": "npm:0.4.0"
-    "@neodx/std": "npm:0.3.0"
-    "@neodx/vfs": "npm:0.2.0"
+    "@neodx/fs": "npm:0.0.12"
+    "@neodx/log": "npm:0.4.1"
+    "@neodx/std": "npm:0.3.1"
+    "@neodx/vfs": "npm:0.2.1"
     "@swc/helpers": "npm:0.5.6"
     "@types/react": "npm:18.2.56"
     "@types/react-dom": "npm:18.2.19"
@@ -2948,17 +2948,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/vfs@npm:*, @neodx/vfs@npm:0.2.0, @neodx/vfs@workspace:libs/vfs":
+"@neodx/vfs@npm:*, @neodx/vfs@npm:0.2.1, @neodx/vfs@workspace:libs/vfs":
   version: 0.0.0-use.local
   resolution: "@neodx/vfs@workspace:libs/vfs"
   dependencies:
     "@neodx/autobuild": "npm:*"
-    "@neodx/colors": "npm:0.2.7"
-    "@neodx/fs": "npm:0.0.11"
-    "@neodx/glob": "npm:0.1.0"
-    "@neodx/log": "npm:0.4.0"
-    "@neodx/pkg-misc": "npm:0.0.9"
-    "@neodx/std": "npm:0.3.0"
+    "@neodx/colors": "npm:0.2.8"
+    "@neodx/fs": "npm:0.0.12"
+    "@neodx/glob": "npm:0.1.1"
+    "@neodx/log": "npm:0.4.1"
+    "@neodx/pkg-misc": "npm:0.0.10"
+    "@neodx/std": "npm:0.3.1"
     "@types/eslint": "npm:8.56.2"
     "@types/tmp": "npm:0.2.6"
     grammex: "npm:3.1.2"

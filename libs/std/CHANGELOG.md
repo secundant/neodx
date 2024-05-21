@@ -1,5 +1,11 @@
 # @neodx/std
 
+## 0.3.1
+
+### Patch Changes
+
+- [#145](https://github.com/secundant/neodx/pull/145) [`3a04a35`](https://github.com/secundant/neodx/commit/3a04a356465a837608b966770f2f00b179914960) Thanks [@secundant](https://github.com/secundant)! - Add missed license
+
 ## 0.3.0
 
 ### Minor Changes

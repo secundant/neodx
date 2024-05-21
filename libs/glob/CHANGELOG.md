@@ -1,5 +1,12 @@
 # @neodx/glob
 
+## 0.1.1
+
+### Patch Changes
+
+- Updated dependencies [[`3a04a35`](https://github.com/secundant/neodx/commit/3a04a356465a837608b966770f2f00b179914960)]:
+  - @neodx/std@0.3.1
+
 ## 0.1.0
 
 ### Minor Changes
