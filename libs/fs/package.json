@@ -8,6 +8,7 @@
   "module": "./dist/index.mjs",
   "source": "src/index.ts",
   "sideEffects": false,
+  "license": "MIT",
   "files": [
     "dist",
     "README.md",

@@ -4,6 +4,7 @@
   "version": "0.2.0",
   "type": "module",
   "bin": "bin.mjs",
+  "license": "MIT",
   "files": [
     "dist",
     "bin.mjs",

@@ -13,6 +13,7 @@
     "README.md",
     "package.json"
   ],
+  "license": "MIT",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "autobuild",
