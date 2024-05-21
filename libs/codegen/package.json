@@ -60,10 +60,10 @@
     "tmp": "0.2.1"
   },
   "dependencies": {
-    "@neodx/fs": "0.0.11",
-    "@neodx/pkg-misc": "0.0.9",
-    "@neodx/std": "0.3.0",
-    "@neodx/vfs": "0.2.0",
+    "@neodx/fs": "0.0.12",
+    "@neodx/pkg-misc": "0.0.10",
+    "@neodx/std": "0.3.1",
+    "@neodx/vfs": "0.2.1",
     "ejs": "3.1.9",
     "jsonc-parser": "3.2.0",
     "picocolors": "1.0.0",

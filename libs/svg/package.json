@@ -1,7 +1,7 @@
 {
   "name": "@neodx/svg",
   "packageManager": "yarn@3.2.0",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Supercharge your icons ⚡️",
   "author": {
     "name": "Dmitry Remezov",
@@ -59,10 +59,10 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@neodx/fs": "0.0.11",
-    "@neodx/log": "0.4.0",
-    "@neodx/std": "0.3.0",
-    "@neodx/vfs": "0.2.0",
+    "@neodx/fs": "0.0.12",
+    "@neodx/log": "0.4.1",
+    "@neodx/std": "0.3.1",
+    "@neodx/vfs": "0.2.1",
     "chokidar": "3.5.3",
     "colord": "2.9.3",
     "commander": "11.1.0",
