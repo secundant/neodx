@@ -1,3 +1,4 @@
+import type { AnyRecord } from '../shared.ts';
 import { filterObject } from './filter';
 import { mapEntries } from './map.ts';
 
@@ -32,3 +33,16 @@ export const transformKeys =
     mapEntries(mapping, ([originalKey, mappedKey]) => [mappedKey, originalShape[originalKey]]) as {
       [OriginalKey in keyof KeysMapping as KeysMapping[OriginalKey]]: Shape[OriginalKey];
     };
+
+export const renameKeys = <Input extends AnyRecord, const MapFn extends RenameFn<Input>>(
+  input: Input,
+  map: MapFn
+) => mapEntries(input, ([key, value]) => [map(key, value), value]) as RenameKeys<Input, MapFn>;
+
+export type RenameFn<Input extends AnyRecord> = <K extends keyof Input>(
+  key: K,
+  value: Input[K]
+) => string;
+export type RenameKeys<Input extends AnyRecord, MapFn extends RenameFn<Input>> = {
+  [Key in keyof Input as MapFn extends (key: Key) => infer R ? R : never]: Input[Key];
+};

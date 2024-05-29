@@ -58,6 +58,7 @@ export {
   pick,
   pickProps,
   prop,
+  renameKeys,
   shallowEqual,
   sortObject,
   sortObjectByKeys,
