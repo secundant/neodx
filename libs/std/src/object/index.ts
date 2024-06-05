@@ -1,3 +1,4 @@
+import { isObject } from '../guards.ts';
 import type { AnyRecord } from '../shared.ts';
 import { filterObject } from './filter';
 import { mapEntries } from './map.ts';
@@ -26,6 +27,14 @@ export const prop =
   <P extends string>(prop: P) =>
   <T extends { [K in P]?: unknown }>(value: T): T[P] =>
     value[prop];
+
+export const propEq = <PropName extends string, PropValue>(
+  propName: PropName,
+  propValue: PropValue
+) =>
+  ((value: unknown) => isObject(value) && value[propName] === propValue) as {
+    <T>(value: T): value is Extract<T, { [K in PropName]: PropValue }>;
+  };
 
 export const transformKeys =
   <const KeysMapping extends Record<string, string>>(mapping: KeysMapping) =>
