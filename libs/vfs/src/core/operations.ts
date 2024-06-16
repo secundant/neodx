@@ -1,6 +1,8 @@
 import { colors } from '@neodx/colors';
-import { compact, concurrently, isTruthy, uniqBy } from '@neodx/std';
-import { dirname, relative, sep } from 'pathe';
+import { plural } from '@neodx/internal/intl';
+import { formatList } from '@neodx/internal/log';
+import { compact, concurrently, isTruthy, prop, uniqBy } from '@neodx/std';
+import { dirname, join, relative, sep } from 'pathe';
 import { createInMemoryDirent } from '../backend/create-in-memory-backend.ts';
 import type { VfsContext } from './context';
 import type { VfsContentLike, VfsFileAction } from './types';
@@ -27,27 +29,40 @@ export async function isVfsDir(ctx: VfsContext, path = '.') {
   );
 }
 
+const isKnownAsDir = (ctx: VfsContext, path: string) =>
+  ctx.getRelativeChanges(path).some(meta => !meta.deleted);
+
 /**
  * Returns actual children of a directory.
  */
 export async function readVfsDir(ctx: VfsContext, path = '.') {
-  ctx.log.debug('Read dir %s', displayPath(ctx, path));
-  const actualChildren = await ctx.backend.readDir(path);
-  const changes = ctx.getRelativeChanges(path);
+  const originalDirChildren = await ctx.backend.readDir(path);
+  const relativeChanges = ctx.getRelativeChanges(path);
   const isNotDeleted = (name: string) => !isKnownDeletedPath(ctx, name);
   const basePath = ctx.resolve(path);
   const getDirentName = (path: string) => relative(basePath, ctx.resolve(path)).split(sep)[0]!;
+  const childrenFromChanges = relativeChanges
+    .filter(it => isNotDeleted(it.path))
+    .map(it => createInMemoryDirent(getDirentName(it.path), !isKnownAsDir(ctx, it.path)))
+    .filter(it => Boolean(it.name.replaceAll('.', '')));
 
-  return uniqBy(
+  const result = uniqBy(
     [
-      ...actualChildren.filter(entry => isNotDeleted(ctx.resolve(path, entry.name))),
-      ...changes
-        .filter(meta => isNotDeleted(meta.path))
-        .map(meta => createInMemoryDirent(getDirentName(meta.path), true))
-        .filter(entry => Boolean(entry.name.replaceAll('.', '')))
+      ...originalDirChildren
+        .filter(it => isNotDeleted(ctx.resolve(path, it.name)))
+        .filter(it => !childrenFromChanges.some(dirent => dirent.name === it.name)),
+      ...childrenFromChanges
     ],
     entry => entry.name
   );
+
+  ctx.log.debug(
+    'Read %s - %s (%s)',
+    displayPath(ctx, path),
+    plural(result.length, { one: '%d member', other: '%d members' }),
+    formatList(result.map(prop('name')), 3)
+  );
+  return result;
 }
 
 export async function tryReadVfsFile(ctx: VfsContext, path: string): Promise<Buffer | null>;
@@ -82,32 +97,39 @@ export async function readVfsFile(
   const content = await tryReadVfsFile(ctx, path, encoding!);
 
   if (content === null) {
-    throw new Error(`"${path}" is not file`);
+    throw new Error(`"${path}" is not file (full path: ${ctx.resolve(path)})`);
   }
   return content;
 }
 
 export async function writeVfsFile(ctx: VfsContext, path: string, content: VfsContentLike) {
   ctx.log.debug('Write %s', displayPath(ctx, path));
-  const actualContent = await tryReadVfsBackendFile(ctx, path);
+  const pathIsDir = await isVfsDir(ctx, path);
+  const actualContent = pathIsDir ? null : await tryReadVfsBackendFile(ctx, path);
 
   ensureVfsPath(ctx, ctx.resolve(path));
   if (actualContent && Buffer.from(content).equals(actualContent)) {
     // If content is not changed, then we can just forget about this file
     ctx.unregister(path);
   } else {
-    ctx.writePathContent(path, content);
+    ctx.registerPath(path, content, isKnownDeletedPath(ctx, path), pathIsDir);
   }
 }
 
 export async function deleteVfsPath(ctx: VfsContext, path: string) {
   ctx.log.debug('Delete %s', displayPath(ctx, path));
-  ctx.deletePath(path, true);
+  ctx.deletePath(path);
   for (const meta of ctx.getRelativeChanges(path)) {
     ctx.unregister(meta.path);
   }
   const parentDirName = dirname(ctx.resolve(path));
   const children = await readVfsDir(ctx, parentDirName);
+
+  if (ctx.relative(path).startsWith('..')) {
+    ctx.log.warn(
+      "You're trying to delete a file outside of the root directory, we don't support it fully"
+    );
+  }
 
   // TODO SEC-55 add condition
   if (children.length === 0) {
@@ -124,6 +146,9 @@ export async function renameVfs(ctx: VfsContext, from: string, ...to: string[]) 
   if (!(await existsVfsPath(ctx, from))) {
     ctx.log.debug('Path %s not exists, rename skipped', displayPath(ctx, from));
     return;
+  }
+  if (await isVfsDir(ctx, from)) {
+    throw new Error('Renaming a directory is not supported');
   }
   const content = await readVfsFile(ctx, from);
 
@@ -169,10 +194,10 @@ export async function getVfsActions(ctx: VfsContext, types?: VfsFileAction['type
 export function ensureVfsPath(ctx: VfsContext, path: string) {
   const parent = dirname(path);
 
-  if (parent !== path) {
-    ctx.unregister(parent);
-    ensureVfsPath(ctx, parent);
-  }
+  if (ctx.relative(parent).startsWith('..') || parent === path) return;
+  if (isKnownDeletedPath(ctx, parent)) ctx.registerPath(parent, null, true);
+  else if (!ctx.get(parent)?.updatedAfterDelete) ctx.unregister(parent);
+  ensureVfsPath(ctx, parent);
 }
 
 export function getVfsNonDeletedDescendants(ctx: VfsContext, path: string) {
@@ -185,6 +210,7 @@ export async function tryReadVfsBackendFile(ctx: VfsContext, path: string) {
   return (await ctx.backend.isFile(resolved)) ? await ctx.backend.read(resolved) : null;
 }
 
+const prefixSize = 28;
 export const displayPath = (ctx: VfsContext, path: string) => {
   const prefix =
     ctx.path.length > prefixSize
@@ -197,10 +223,13 @@ export const displayPath = (ctx: VfsContext, path: string) => {
 const isDirectDeletedPath = (ctx: VfsContext, path: string) => ctx.get(path)?.deleted;
 /** The directory itself or any of its ancestors is deleted */
 const isKnownDeletedPath = (ctx: VfsContext, path: string) =>
-  isDirectDeletedPath(ctx, path) ||
-  ctx
-    .relative(path)
-    .split('/')
-    .filter(path => !path.startsWith('.'))
-    .some(path => isDirectDeletedPath(ctx, path));
-const prefixSize = 28;
+  isDirectDeletedPath(ctx, path) || Boolean(hasDeletedAncestor(ctx, path) && !ctx.get(path));
+
+const hasDeletedAncestor = (ctx: VfsContext, path: string) => {
+  while (!isOuterPath(ctx, (path = parentPath(ctx, path)))) {
+    if (isDirectDeletedPath(ctx, path) || ctx.get(path)?.updatedAfterDelete) return true;
+  }
+  return false;
+};
+const parentPath = (ctx: VfsContext, path: string) => ctx.resolve(join(path, '..'));
+const isOuterPath = (ctx: VfsContext, path: string) => ctx.relative(path).startsWith('..');

@@ -104,12 +104,14 @@ export type VfsFileAction = VfsFileWrite | VfsFileUpdate | VfsFileDelete;
 
 export interface VfsFileUpdate extends VfsFileMeta {
   type: 'update';
+  overwrittenDir?: boolean;
   updatedAfterDelete?: boolean;
   content: Buffer;
 }
 
 export interface VfsFileWrite extends VfsFileMeta {
   type: 'create';
+  overwrittenDir?: boolean;
   updatedAfterDelete?: boolean;
   content: Buffer;
 }

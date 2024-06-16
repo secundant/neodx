@@ -1,3 +1,4 @@
+import { redefineName } from '@neodx/std/shared';
 import type { PrivateVfsApi } from './core/scopes';
 import type { BaseVfs } from './core/types';
 
@@ -19,8 +20,7 @@ export function createVfsPlugin<const Extensions extends Record<keyof any, any>>
     return handler(vfs as unknown as Vfs & Partial<Extensions>, api) as unknown as Vfs & Extensions;
   }
 
-  Object.defineProperty(plugin, 'name', { value: name });
-
+  redefineName(plugin, name);
   return Object.assign(plugin, {
     [pluginSymbol]: name
   });

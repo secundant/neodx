@@ -25,6 +25,7 @@ describe('base vfs', () => {
       createVfsContext({
         path: getTmpDir(),
         backend: createNodeFsBackend(),
+        logLevel: 'debug',
         ...params
       })
     );
@@ -126,9 +127,9 @@ describe('base vfs', () => {
     expect(await vfs.read('other.ext', 'utf-8')).toBe('new file');
     expect(await vfs.readDir()).toEqual([
       'dir',
-      'file.ext',
       'file.mul.ti.ext',
       'noext',
+      'file.ext',
       'other.ext'
     ]);
   });
@@ -140,7 +141,7 @@ describe('base vfs', () => {
     const runWrite = async () => {
       await vfs.write('file.ext', 'new content');
       expect(await vfs.exists('file.ext')).toBe(true);
-      expect(await vfs.readDir()).toEqual(['dir', 'file.ext', 'file.mul.ti.ext', 'noext']);
+      expect((await vfs.readDir()).sort()).toEqual(['dir', 'file.ext', 'file.mul.ti.ext', 'noext']);
     };
     const runDelete = async () => {
       await vfs.delete('file.ext');
@@ -196,15 +197,34 @@ describe('base vfs', () => {
     expect(await vfs.read('dir', 'utf-8')).toBe('new content');
   });
 
-  test.skip('should create file under deleted directory', async () => {
+  test('should create file under deleted directory', async () => {
     const vfs = await initTmpVfs();
 
+    // 1. pre-validate dir content
+    await expectDirEqual(vfs, 'dir', ['dirFile', ['subDir', 'dir']]);
+    await expectDirEqual(vfs, '.', [['dir', 'dir'], 'file.ext', 'file.mul.ti.ext', 'noext']);
+    // 2. delete parent dir
     await vfs.delete('dir');
+    await expectDirEqual(vfs, 'dir/subDir', []);
+    await expectDirEqual(vfs, 'dir', []);
+    await expectDirEqual(vfs, '.', ['file.ext', 'file.mul.ti.ext', 'noext']);
+    // 3. create new file under deleted dir
     await vfs.write('dir/new-file.ext', 'new content');
-    await vfs.apply();
-
-    expect(await readdir(vfs.path)).toEqual(['dir', 'file.ext', 'file.mul.ti.ext', 'noext']);
     await expectDirEqual(vfs, 'dir', ['new-file.ext']);
+    await expectDirEqual(vfs, '.', ['file.ext', 'file.mul.ti.ext', 'noext', ['dir', 'dir']]);
+    // 4. write subdir as file
+    await vfs.write('dir/subDir', 'new content');
+    await expectDirEqual(vfs, 'dir', ['new-file.ext', 'subDir']);
+    await expectDirEqual(vfs, 'dir/subDir', []);
+    await expectDirEqual(vfs, '.', ['file.ext', 'file.mul.ti.ext', 'noext', ['dir', 'dir']]);
+    expect(await vfs.read('dir/subDir', 'utf-8')).toBe('new content');
+
+    // 5. validate dir content after apply
+    await vfs.apply();
+    await expectDirEqual(vfs, 'dir', ['new-file.ext', 'subDir']);
+    await expectDirEqual(vfs, 'dir/subDir', []);
+    await expectDirEqual(vfs, '.', [['dir', 'dir'], 'file.ext', 'file.mul.ti.ext', 'noext']);
+    expect(await vfs.read('dir/subDir', 'utf-8')).toBe('new content');
   });
 
   test('should apply changes', async () => {
