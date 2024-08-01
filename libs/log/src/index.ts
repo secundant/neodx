@@ -12,6 +12,7 @@ export {
   LOGGER_SILENT_LEVEL
 } from './core/shared';
 export type * from './core/types';
+export { type AutoLoggerInput } from './utils';
 
 export const createLogger = createLoggerFactory({
   defaultParams: {

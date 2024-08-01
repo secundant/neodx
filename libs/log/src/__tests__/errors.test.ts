@@ -52,7 +52,7 @@ describe('errors', () => {
       fixPrintedError(
         printPrettyError(new Error('foo'), {
           colors: createColors(false, true),
-          filterStack: stack => !stack.file.includes('node_modules')
+          filterStack: stack => !/node_modules|node:internal/.test(stack.file)
         })
       )
     ).toMatchInlineSnapshot(`
@@ -63,7 +63,7 @@ describe('errors', () => {
           53|         printPrettyError(new Error('foo'), {
             |                          ^^^^^^^^^^^^^^^^^^^
           54|           colors: createColors(false, true),
-          55|           filterStack: stack => !stack.file.includes('node_modules')"
+          55|           filterStack: stack => !/node_modules|node:internal/.test(stac…"
     `);
   });
 
@@ -76,7 +76,7 @@ describe('errors', () => {
       fixPrintedError(
         printPrettyError(c, {
           colors: createColors(false, true),
-          filterStack: stack => !stack.file.includes('node_modules')
+          filterStack: stack => !/node_modules|node:internal/.test(stack.file)
         })
       )
     ).toMatchInlineSnapshot(`
