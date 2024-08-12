@@ -1,5 +1,5 @@
 import { isObject } from '../guards.ts';
-import type { AnyRecord } from '../shared.ts';
+import type { AnyKey, AnyRecord } from '../shared.ts';
 import { filterObject } from './filter';
 import { mapEntries } from './map.ts';
 
@@ -24,7 +24,7 @@ export const pickProps =
     pick(target, keys);
 
 export const prop =
-  <P extends string>(prop: P) =>
+  <P extends AnyKey>(prop: P) =>
   <T extends { [K in P]?: unknown }>(value: T): T[P] =>
     value[prop];
 

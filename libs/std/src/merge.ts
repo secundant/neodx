@@ -1,11 +1,11 @@
+import type { SimplifyDeep } from 'type-fest/source/simplify-deep';
 import { isArray, isObject } from './guards.ts';
 import { entries, hasOwn } from './shared.ts';
 
 export const merge = <const Source extends object, const Overrides extends [...object[]]>(
   source: Source,
   ...overrides: [...Overrides]
-  // eslint-disable-next-line @typescript-eslint/ban-types
-): Merge<Source, Overrides> & {} => {
+): Merge<Source, Overrides> => {
   overrides.forEach(target => mergeObject(source, target));
   return source as any;
 };
@@ -15,15 +15,15 @@ export type Merge<Source extends object, Overrides extends [...object[]]> = Over
   ...infer Rest extends [...object[]]
 ]
   ? Merge<MergeObject<Source, Target>, Rest>
-  : Source;
+  : SimplifyDeep<Source>;
 
-export type MergeUnknown<Source, Target> = Target extends object
-  ? Source extends object
-    ? MergeObject<Source, Target>
+export type MergeUnknown<Source, Target> = Target extends readonly unknown[]
+  ? Source extends readonly unknown[]
+    ? MergeArray<Source, Target>
     : Target
-  : Target extends unknown[]
-    ? Source extends unknown[]
-      ? MergeArray<Source, Target>
+  : Target extends object
+    ? Source extends object
+      ? MergeObject<Source, Target>
       : Target
     : Target;
 export type MergeObject<Source extends object, Target extends object> = {
@@ -33,7 +33,7 @@ export type MergeObject<Source extends object, Target extends object> = {
 } & {
   [Key in Exclude<keyof Target, keyof Source>]: Target[Key];
 };
-export type MergeArray<Source extends unknown[], Target extends unknown[]> = [
+export type MergeArray<Source extends readonly unknown[], Target extends readonly unknown[]> = [
   ...{
     [Index in keyof Source]: Index extends keyof Target
       ? MergeUnknown<Source[Index], Target[Index]>

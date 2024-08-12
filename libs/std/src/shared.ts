@@ -7,9 +7,14 @@ export type AnyKey = keyof any;
 export type AnyRecord<T = any> = Record<AnyKey, T>;
 export type Awaitable<T> = T | PromiseLike<T>;
 export type FirstArg<Fn extends AnyFn> = Parameters<Fn>[0];
+export type MapLike<Key, Value> = Pick<Map<Key, Value>, 'has' | 'get' | 'set'>;
 
 export const toArray = <T>(value: T | T[]) => (Array.isArray(value) ? value : [value]);
 export const toInt = (value: string) => Number.parseInt(value, 10);
+export const is =
+  <Target>(target: Target) =>
+  (value: unknown): value is Target =>
+    target === (value as any);
 
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export const forEach = <T>(iterable: Iterable<T>, fn: (value: T) => void) => {
@@ -24,29 +29,27 @@ export const False = (): false => false;
 
 export const test = (re: RegExp) => (value: string) => re.test(value);
 
-export const getOrCreateMapValue = <Key, Value>(
-  map: Pick<Map<Key, Value>, 'has' | 'get' | 'set'>,
-  key: Key,
-  create: () => Value
-) => {
-  if (map.has(key)) return map.get(key)!;
-  const value = create();
-
+export const setMapValue = <Key, Value>(map: MapLike<Key, Value>, key: Key, value: Value) => {
   map.set(key, value);
   return value;
 };
+export const getOrCreateMapValue = <Key, Value>(
+  map: MapLike<Key, Value>,
+  key: Key,
+  create: () => Value
+) => (map.has(key) ? map.get(key)! : setMapValue(map, key, create()));
 
 export const rethrow = (error: unknown): never => {
   throw error;
 };
 export function tryCatch<T>(fn: () => T): T | undefined;
-export function tryCatch<T>(fn: () => T, fallback: () => T): T;
-export function tryCatch<T, F>(fn: () => T, fallback: () => F): T | F;
-export function tryCatch<T, F>(fn: () => T, fallback?: () => F): T | F {
+export function tryCatch<T>(fn: () => T, fallback: (error: unknown) => T): T;
+export function tryCatch<T, F>(fn: () => T, fallback: (error: unknown) => F): T | F;
+export function tryCatch<T, F>(fn: () => T, fallback?: (error: unknown) => F): T | F {
   try {
     return fn();
-  } catch {
-    return fallback?.() as T | F;
+  } catch (error) {
+    return fallback?.(error) as T | F;
   }
 }
 

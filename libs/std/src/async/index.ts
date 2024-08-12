@@ -17,9 +17,9 @@ export const tryCreateTimeoutSignal = (timeout?: number | null | false) =>
 
 // Not all browsers support AbortSignal.any, so we need to polyfill it
 const anyAbortSignal =
-  // @ts-expect-error AbortSignal.any is not added to @types/node or global
-  (AbortSignal.any as ((signals: Iterable<AbortSignal>) => AbortSignal) | undefined) ??
-  ((signals: Iterable<AbortSignal>) => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  AbortSignal.any ??
+  (signals => {
     const controller = new AbortController();
     const listeners = new Map<AbortSignal, () => void>();
 

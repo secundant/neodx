@@ -1,4 +1,4 @@
-export function debounce<F extends (this: unknown, ...Args: unknown[]) => unknown>(
+export function debounce<F extends (this: unknown, ...Args: any[]) => unknown>(
   fn: F,
   delay: number
 ) {

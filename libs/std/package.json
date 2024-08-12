@@ -99,5 +99,8 @@
       "import": "./dist/array/index.mjs",
       "require": "./dist/array/index.cjs"
     }
+  },
+  "dependencies": {
+    "type-fest": "4.21.0"
   }
 }

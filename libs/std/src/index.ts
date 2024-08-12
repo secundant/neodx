@@ -82,6 +82,7 @@ export {
   False,
   hasOwn,
   identity,
+  is,
   isTruthy,
   keys,
   lazyValue,
