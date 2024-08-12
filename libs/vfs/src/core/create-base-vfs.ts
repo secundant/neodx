@@ -1,5 +1,5 @@
 import { colors } from '@neodx/colors';
-import { createTask } from '@neodx/internal/experimental';
+import { createTaskRunner } from '@neodx/internal/experimental';
 import { concurrently, not, quickPluralize } from '@neodx/std';
 import { propEq } from '@neodx/std/object';
 import { dirname } from 'pathe';
@@ -8,6 +8,7 @@ import { getVfsBackendKind } from '../backend/shared';
 import type { VfsContext } from './context';
 import {
   deleteVfsPath,
+  displayPath,
   existsVfsPath,
   getVfsActions,
   isVfsDir,
@@ -24,35 +25,36 @@ import type { BaseVfs, VfsFileAction } from './types';
 export function createBaseVfs(ctx: VfsContext) {
   const hooks = createHookRegistry();
   const backendKind = getVfsBackendKind(ctx.backend);
+  const { task } = createTaskRunner({ log: ctx.log });
 
-  const applyDelete = createTask(
+  const applyDelete = task(
+    'delete',
     async (action: VfsFileAction) => {
       const reason = match(action)
         .with({ overwrittenDir: true }, () => 'directory overwrite as file')
         .with({ type: 'delete' }, () => 'direct deletion')
         .otherwise(() => 'force deletion for ensure consistency');
 
-      ctx.log.info('%s %s (%s)', colors.red('delete'), action.relativePath, reason);
+      ctx.log.info('%s %s (%s)', colors.red('delete'), displayPath(ctx, action.path), reason);
       await ctx.backend.delete(action.path);
       await hooks.run('afterDelete', action.path, getCurrentVfs());
     },
     {
-      log: ctx.log,
-      fail: (_, action) => `Failed to delete "${action.relativePath}"`
+      mapError: (_, action) => `failed to delete "${action.relativePath}"`
     }
   );
 
-  const applyFile = createTask(
+  const applyFile = task(
+    'apply file',
     async (action: Exclude<VfsFileAction, { type: 'delete' }>) => {
-      ctx.log.info('%s %s', labels[action.type], action.relativePath);
+      ctx.log.info('%s %s', labels[action.type], displayPath(ctx, action.path));
 
       await hooks.run('beforeApplyFile', action, getCurrentVfs());
       if (action.content) await ctx.backend.write(action.path, action.content);
       ctx.unregister(action.path);
     },
     {
-      log: ctx.log,
-      fail: (_, action) => `Failed to ${action.type} "${action.relativePath}"`
+      mapError: (_, action) => `failed to ${action.type} "${action.relativePath}"`
     }
   );
 
@@ -76,7 +78,8 @@ export function createBaseVfs(ctx: VfsContext) {
       return backendKind === 'readonly';
     },
 
-    apply: createTask(
+    apply: task(
+      'apply',
       async () => {
         const startingChanges = await getVfsActions(ctx);
 
@@ -95,11 +98,12 @@ export function createBaseVfs(ctx: VfsContext) {
         // First, we need to delete all files and directories that were deleted
         await concurrently(deletions, applyDelete);
         await concurrently(changes.filter(not(propEq('type', 'delete'))), applyFile);
+
+        ctx.getAllDirectChanges().forEach(it => ctx.unregister(it.path));
       },
       {
-        fail: () => `Failed to apply changes`,
-        done: () => `Applied changes`,
-        log: ctx.log
+        mapError: () => `failed to apply changes`,
+        mapSuccessMessage: () => `applied changes`
       }
     ),
 

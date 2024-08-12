@@ -14,6 +14,14 @@ const createPreconfiguredTmpVfs = async ({
     files: Object.assign(
       files,
       {
+        'package-lock.json': JSON.stringify({}),
+        'package.json': JSON.stringify({
+          name: 'test',
+          version: '1.0.0',
+          devDependencies: {
+            eslint: 'latest'
+          }
+        }),
         '.eslintrc.js': `
       module.exports = {
         extends: ["eslint:recommended"],

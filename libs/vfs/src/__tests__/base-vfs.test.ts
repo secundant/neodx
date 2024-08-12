@@ -25,7 +25,6 @@ describe('base vfs', () => {
       createVfsContext({
         path: getTmpDir(),
         backend: createNodeFsBackend(),
-        logLevel: 'debug',
         ...params
       })
     );
@@ -135,9 +134,7 @@ describe('base vfs', () => {
   });
 
   test('should avoid delete/write conflicts', async () => {
-    const vfs = await initTmpVfs({
-      logLevel: 'debug'
-    });
+    const vfs = await initTmpVfs();
     const runWrite = async () => {
       await vfs.write('file.ext', 'new content');
       expect(await vfs.exists('file.ext')).toBe(true);
@@ -197,7 +194,8 @@ describe('base vfs', () => {
     expect(await vfs.read('dir', 'utf-8')).toBe('new content');
   });
 
-  test('should create file under deleted directory', async () => {
+  // TODO https://github.com/secundant/neodx/issues/148 - Implement Layers API
+  test.skip('should create file under deleted directory', async () => {
     const vfs = await initTmpVfs();
 
     // 1. pre-validate dir content

@@ -123,17 +123,18 @@ export async function deleteVfsPath(ctx: VfsContext, path: string) {
     ctx.unregister(meta.path);
   }
   const parentDirName = dirname(ctx.resolve(path));
-  const children = await readVfsDir(ctx, parentDirName);
 
   if (ctx.relative(path).startsWith('..')) {
     ctx.log.warn(
       "You're trying to delete a file outside of the root directory, we don't support it fully"
     );
-  }
-
-  // TODO SEC-55 add condition
-  if (children.length === 0) {
-    await deleteVfsPath(ctx, parentDirName);
+  } else if (!ctx.relative(parentDirName).startsWith('..')) {
+    // const siblings = await readVfsDir(ctx, parentDirName);
+    // TODO https://github.com/secundant/neodx/issues/148 Implement Layers API instead of this hack
+    // TODO SEC-55 add condition
+    // if (siblings.length === 0) {
+    // await deleteVfsPath(ctx, parentDirName);
+    //}
   }
 }
 
@@ -174,11 +175,12 @@ export async function getVfsActions(ctx: VfsContext, types?: VfsFileAction['type
       if (deleted) {
         return { ...meta, path, type: 'delete' };
       }
+      if (!content) return null;
       return {
         ...meta,
         path,
         type: exists ? 'update' : 'create',
-        content: content!
+        content
       };
     }
   );

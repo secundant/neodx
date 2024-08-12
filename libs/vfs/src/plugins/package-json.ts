@@ -1,21 +1,17 @@
 import type { PackageJsonDependencies } from '@neodx/pkg-misc';
 import { addPackageJsonDependencies, removePackageJsonDependencies } from '@neodx/pkg-misc';
-import { fromKeys, identity, toArray } from '@neodx/std';
+import { fromKeys, hasOwn, identity, toArray } from '@neodx/std';
 import type { PackageJson } from 'pkg-types';
 import { match, P } from 'ts-pattern';
 import type { BaseVfs } from '../core/types';
 import { createVfsPlugin } from '../create-vfs-plugin';
-import type { JsonFileApi } from './json';
 import { createJsonFileApi } from './json';
 
 export interface PackageJsonPluginApi {
   packageJson(path?: string): PackageJsonApi;
 }
 
-export interface PackageJsonApi extends JsonFileApi<PackageJson> {
-  addDependencies(deps: string | string[] | PackageJsonDependencies): Promise<boolean>;
-  removeDependencies(deps: Record<string, string>): Promise<boolean>;
-}
+export type PackageJsonApi = ReturnType<typeof createVfsPackageJsonFileApi>;
 
 export function packageJson() {
   return createVfsPlugin<PackageJsonPluginApi>('packageJson', vfs => {
@@ -24,7 +20,7 @@ export function packageJson() {
   });
 }
 
-export function createVfsPackageJsonFileApi(vfs: BaseVfs, path: string): PackageJsonApi {
+export function createVfsPackageJsonFileApi(vfs: BaseVfs, path: string) {
   const file = createJsonFileApi(vfs, path);
   const sync = async (content: unknown) => {
     if (content) await file.write(content);
@@ -33,6 +29,11 @@ export function createVfsPackageJsonFileApi(vfs: BaseVfs, path: string): Package
 
   return {
     ...file,
+    async hasDependency(name: string) {
+      const pkg = await file.read<PackageJson>();
+
+      return allDeps.some(type => hasOwn(pkg[type] ?? {}, name));
+    },
     async addDependencies(deps: string | string[] | PackageJsonDependencies) {
       return sync(
         addPackageJsonDependencies(

@@ -1,3 +1,4 @@
+import { createTaskRunner } from '@neodx/internal/experimental';
 import { tryFormatPrettier } from '@neodx/pkg-misc';
 import { concurrently, isTypeOfString } from '@neodx/std';
 import { displayPath, getVfsActions } from '../core/operations';
@@ -10,36 +11,49 @@ export interface PrettierPluginParams {
 }
 
 export interface PrettierPluginApi {
-  format(path: string): Promise<void>;
+  format(path: string): Promise<boolean>;
+  // TODO Return information about formatted files count
   formatAll(): Promise<void>;
 }
 
 export function prettier({ auto = true }: PrettierPluginParams = {}) {
   return createVfsPlugin<PrettierPluginApi>('prettier', (vfs, { context, beforeApply }) => {
     const log = context.log.child('prettier');
+    const { task } = createTaskRunner({ log });
 
-    async function format(path: string, content: VfsContentLike) {
-      log.debug('Formatting %s', displayPath(context, path));
-      const formattedContent = await tryFormatPrettier(
-        path,
-        isTypeOfString(content) ? content : content.toString('utf-8')
-      );
+    const format = task(
+      'format',
+      async (path: string, content: VfsContentLike) => {
+        const formattedContent = await tryFormatPrettier(
+          path,
+          isTypeOfString(content) ? content : content.toString('utf-8')
+        );
 
-      if (formattedContent !== null) {
-        await vfs.write(path, formattedContent);
-        log.debug('Formatted %s', displayPath(context, path));
-      } else {
-        log.debug('Skipped %s', displayPath(context, path));
+        if (formattedContent !== null) {
+          await vfs.write(path, formattedContent);
+        }
+        return formattedContent !== null;
+      },
+      {
+        mapSuccessMessage: (formatted, path) =>
+          `${displayPath(context, path)} ${formatted ? 'formatted' : 'skipped'}`
       }
-    }
+    );
 
     vfs.format = async (path: string) => await format(path, await vfs.read(path, 'utf-8'));
-    vfs.formatAll = async () => {
-      log.debug('Formatting all changed files...');
-      const changes = await getVfsActions(context, ['create', 'update']);
-
-      await concurrently(changes, async ({ path, content }) => format(path, content), 5);
-    };
+    vfs.formatAll = task(
+      'format all',
+      async () => {
+        await concurrently(
+          await getVfsActions(context, ['create', 'update']),
+          async ({ path, content }) => format(path, content),
+          5
+        );
+      },
+      {
+        mapSuccessMessage: () => 'formatted all changed files'
+      }
+    );
 
     if (auto) {
       beforeApply(() => vfs.formatAll!());
