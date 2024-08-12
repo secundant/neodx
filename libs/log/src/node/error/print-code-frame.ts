@@ -57,4 +57,4 @@ export function printCodeFrame({
 
 // to long, maybe it's a minified file, skip for codeframe
 const isMinifiedCodeLike = (code: string) => code.length > 240;
-const fillSpace = (length: number) => ' '.repeat(length);
+const fillSpace = (length: number) => ' '.repeat(Math.max(length, 0));
