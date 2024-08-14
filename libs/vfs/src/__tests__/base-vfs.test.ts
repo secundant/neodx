@@ -126,9 +126,9 @@ describe('base vfs', () => {
     expect(await vfs.read('other.ext', 'utf-8')).toBe('new file');
     expect(await vfs.readDir()).toEqual([
       'dir',
+      'file.ext',
       'file.mul.ti.ext',
       'noext',
-      'file.ext',
       'other.ext'
     ]);
   });

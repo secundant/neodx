@@ -1,5 +1,5 @@
 import { colors } from '@neodx/colors';
-import { plural } from '@neodx/internal/intl';
+import { compare, plural } from '@neodx/internal/intl';
 import { formatList } from '@neodx/internal/log';
 import { compact, concurrently, isTruthy, prop, uniqBy } from '@neodx/std';
 import { dirname, join, relative, sep } from 'pathe';
@@ -54,7 +54,7 @@ export async function readVfsDir(ctx: VfsContext, path = '.') {
       ...childrenFromChanges
     ],
     entry => entry.name
-  );
+  ).sort(compare.by(prop('name'), compare.locale));
 
   ctx.log.debug(
     'Read %s - %s (%s)',
