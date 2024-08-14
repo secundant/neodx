@@ -45,19 +45,30 @@ sade('neodx')
       process.exit(1);
     }
   })
-  .command('example [name]')
+  .command('example [lib] [name]')
+  .option('lib', 'Library name')
   .option('name', 'Example name')
-  .action(async name => {
+  .action(async (lib, name) => {
+    const allLibNames = await vfs.readDir('libs');
+
+    invariant(lib, 'Example lib is required');
+    invariant(
+      allLibNames.includes(lib),
+      `Unknown lib "${lib}", available libs: ${allLibNames.join(', ')}`
+    );
     invariant(name, 'Example name is required');
 
-    await generateFiles(vfs, join(rootDir, 'templates/example'), `examples/${name}`, { name });
-    await vfs.updateJson(`examples/${name}/package.json`, prev => ({
+    await generateFiles(vfs, join(rootDir, 'templates/example'), `apps/examples/${lib}/${name}`, {
+      lib,
+      name
+    });
+    await vfs.updateJson(`apps/examples/${lib}/${name}/package.json`, prev => ({
       ...prev,
       scripts: patchScripts(prev.scripts)
     }));
     await vfs.apply();
     await $$`${commands.install}`;
-    await $$`nx build @neodx/example-${name}`;
+    // await $$`nx build @neodx/example-${lib}-${name}`;
   })
   .parse(process.argv);
 

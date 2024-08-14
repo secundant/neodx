@@ -39,5 +39,11 @@
       "types": "./src/*.ts",
       "import": "./src/*.ts"
     }
+  },
+  "dependencies": {
+    "object-hash": "3.0.0"
+  },
+  "devDependencies": {
+    "@types/object-hash": "3.0.6"
   }
 }
