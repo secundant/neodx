@@ -54,6 +54,7 @@
   "sideEffects": false,
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "bench": "vitest bench",
     "build": "autobuild",
     "test": "vitest run",
     "lint": "eslint src"
@@ -66,13 +67,14 @@
     "chokidar": "3.6.0",
     "colord": "2.9.3",
     "commander": "12.0.0",
+    "fast-xml-parser": "4.4.0",
+    "jiti": "1.21.6",
+    "object-hash": "3.0.0",
     "pathe": "1.1.2",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "svgo": "3.2.0",
-    "svgson": "5.3.1",
-    "unplugin": "1.10.1",
-    "zod": "3.22.4"
+    "svgo": "3.3.2",
+    "ts-pattern": "5.2.0",
+    "unplugin": "1.11.0",
+    "zod": "3.23.8"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
@@ -81,7 +83,10 @@
     "@types/react-dom": "18.2.25",
     "@types/svgo": "3.0.0",
     "clsx": "2.1.0",
-    "prettier": "3.2.5"
+    "prettier": "3.3.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "svgson": "5.3.1"
   },
   "peerDependencies": {
     "prettier": "*"

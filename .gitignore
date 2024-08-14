@@ -47,6 +47,10 @@ yarn-error.log*
 
 .vercel
 
+# Common files
+
+next-env.d.ts
+
 # ========== Yarn ==========
 
 # dependencies

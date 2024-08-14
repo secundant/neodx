@@ -1,6 +1,6 @@
-import { createTaskRunner } from '@neodx/internal/experimental';
 import { formatList } from '@neodx/internal/log';
 import { createVfsNpmApi } from '@neodx/internal/npm';
+import { createTaskRunner } from '@neodx/internal/tasks';
 import { compact, concurrently, isTypeOfString, lazyValue, toArray } from '@neodx/std';
 import type { ESLint } from 'eslint';
 import { extname } from 'pathe';

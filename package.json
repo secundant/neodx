@@ -13,8 +13,9 @@
     "url": "https://github.com/secundant"
   },
   "workspaces": [
-    "examples/*",
     "apps/*",
+    "apps/examples/svg/*",
+    "apps/examples/*",
     "libs/*",
     "tools/*",
     "tools/scripts/templates/*"

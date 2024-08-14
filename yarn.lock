@@ -2480,6 +2480,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@heroicons/react@npm:2.1.5":
+  version: 2.1.5
+  resolution: "@heroicons/react@npm:2.1.5"
+  peerDependencies:
+    react: ">= 16"
+  checksum: 10/dd972f06760e2eec36e32db2edd938e7cc4fd012f6b25e0a31adc3c7fd7122517aa8a55f7b262646c6ef988c42b16fc635b252a4b8aa1bcf8597c97567eaa3d4
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.14":
   version: 0.11.14
   resolution: "@humanwhocodes/config-array@npm:0.11.14"
@@ -2756,6 +2765,96 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@neodx/example-<%=lib%>-<%=name%>@workspace:tools/scripts/templates/example":
+  version: 0.0.0-use.local
+  resolution: "@neodx/example-<%=lib%>-<%=name%>@workspace:tools/scripts/templates/example"
+  languageName: unknown
+  linkType: soft
+
+"@neodx/example-svg-figma@workspace:apps/examples/svg/figma":
+  version: 0.0.0-use.local
+  resolution: "@neodx/example-svg-figma@workspace:apps/examples/svg/figma"
+  dependencies:
+    "@neodx/figma": "workspace:*"
+    "@neodx/std": "workspace:*"
+    "@neodx/svg": "workspace:*"
+    "@types/react": "npm:18.2.78"
+    "@types/react-dom": "npm:18.2.25"
+    "@vitejs/plugin-react": "npm:4.3.1"
+    autoprefixer: "npm:10.4.19"
+    postcss: "npm:8.4.38"
+    react: "npm:18.2.0"
+    react-dom: "npm:18.2.0"
+    tailwindcss: "npm:3.4.3"
+    typescript: "npm:5.4.5"
+    vite: "npm:5.3.3"
+    vite-tsconfig-paths: "npm:4.3.2"
+    vitest: "npm:2.0.2"
+  languageName: unknown
+  linkType: soft
+
+"@neodx/example-svg-heroicons@workspace:apps/examples/svg/heroicons":
+  version: 0.0.0-use.local
+  resolution: "@neodx/example-svg-heroicons@workspace:apps/examples/svg/heroicons"
+  dependencies:
+    "@fontsource-variable/inter": "npm:5.0.17"
+    "@heroicons/react": "npm:2.1.5"
+    "@neodx/svg": "npm:*"
+    "@types/react": "npm:18.2.78"
+    "@types/react-dom": "npm:18.2.25"
+    "@vitejs/plugin-react": "npm:4.3.1"
+    autoprefixer: "npm:10.4.19"
+    heroicons: "npm:2.1.5"
+    postcss: "npm:8.4.38"
+    react: "npm:18.2.0"
+    react-dom: "npm:18.2.0"
+    tailwindcss: "npm:3.4.3"
+    typescript: "npm:5.4.5"
+    vite: "npm:5.3.3"
+    vite-tsconfig-paths: "npm:4.3.2"
+  languageName: unknown
+  linkType: soft
+
+"@neodx/example-svg-next@workspace:apps/examples/svg/next":
+  version: 0.0.0-use.local
+  resolution: "@neodx/example-svg-next@workspace:apps/examples/svg/next"
+  dependencies:
+    "@neodx/svg": "workspace:*"
+    "@types/node": "npm:20.14.10"
+    "@types/react": "npm:18.2.78"
+    "@types/react-dom": "npm:18.2.25"
+    autoprefixer: "npm:10.4.19"
+    eslint: "npm:8.57.0"
+    eslint-config-next: "npm:14.2.1"
+    next: "npm:14.2.5"
+    postcss: "npm:8.4.38"
+    react: "npm:18.2.0"
+    react-dom: "npm:18.2.0"
+    tailwindcss: "npm:3.4.3"
+    typescript: "npm:5.4.5"
+  languageName: unknown
+  linkType: soft
+
+"@neodx/example-svg-vite-react@workspace:apps/examples/svg/vite-react":
+  version: 0.0.0-use.local
+  resolution: "@neodx/example-svg-vite-react@workspace:apps/examples/svg/vite-react"
+  dependencies:
+    "@fontsource-variable/inter": "npm:5.0.17"
+    "@neodx/svg": "npm:*"
+    "@types/react": "npm:18.2.78"
+    "@types/react-dom": "npm:18.2.25"
+    "@vitejs/plugin-react": "npm:4.3.1"
+    autoprefixer: "npm:10.4.19"
+    postcss: "npm:8.4.38"
+    react: "npm:18.2.0"
+    react-dom: "npm:18.2.0"
+    tailwindcss: "npm:3.4.3"
+    typescript: "npm:5.4.5"
+    vite: "npm:5.3.3"
+    vite-tsconfig-paths: "npm:4.3.2"
+  languageName: unknown
+  linkType: soft
+
 "@neodx/figma@workspace:*, @neodx/figma@workspace:libs/figma":
   version: 0.0.0-use.local
   resolution: "@neodx/figma@workspace:libs/figma"
@@ -2806,7 +2905,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@neodx/log@npm:*, @neodx/log@npm:0.4.0, @neodx/log@workspace:*, @neodx/log@workspace:libs/log":
+"@neodx/log@npm:0.4.0, @neodx/log@workspace:libs/log":
   version: 0.0.0-use.local
   resolution: "@neodx/log@workspace:libs/log"
   dependencies:
@@ -2945,6 +3044,7 @@ __metadata:
     commander: "npm:12.0.0"
     fast-xml-parser: "npm:4.4.0"
     jiti: "npm:1.21.6"
+    object-hash: "npm:3.0.0"
     pathe: "npm:1.1.2"
     prettier: "npm:3.3.2"
     react: "npm:18.2.0"
@@ -2994,10 +3094,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@next/env@npm:14.2.1":
-  version: 14.2.1
-  resolution: "@next/env@npm:14.2.1"
-  checksum: 10/b9272d4f75d96cd481a2cd74b07539a6c280585b361b33115ab249ef521ab4fdb289191d19c086cd38f55475a04bf0bd37d60a1f511b8fb0abd115146b570538
+"@next/env@npm:14.2.5":
+  version: 14.2.5
+  resolution: "@next/env@npm:14.2.5"
+  checksum: 10/0462db6a82120220ad518eabbe85144b75cf741cf96f520b1b3dd5978c51c5e7a92ad4bff2b8157f029cdc87ba0f8eeed9f3a30711822fae5195fa5db4e40280
   languageName: node
   linkType: hard
 
@@ -3019,65 +3119,65 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-arm64@npm:14.2.1":
-  version: 14.2.1
-  resolution: "@next/swc-darwin-arm64@npm:14.2.1"
+"@next/swc-darwin-arm64@npm:14.2.5":
+  version: 14.2.5
+  resolution: "@next/swc-darwin-arm64@npm:14.2.5"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-x64@npm:14.2.1":
-  version: 14.2.1
-  resolution: "@next/swc-darwin-x64@npm:14.2.1"
+"@next/swc-darwin-x64@npm:14.2.5":
+  version: 14.2.5
+  resolution: "@next/swc-darwin-x64@npm:14.2.5"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-gnu@npm:14.2.1":
-  version: 14.2.1
-  resolution: "@next/swc-linux-arm64-gnu@npm:14.2.1"
+"@next/swc-linux-arm64-gnu@npm:14.2.5":
+  version: 14.2.5
+  resolution: "@next/swc-linux-arm64-gnu@npm:14.2.5"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-musl@npm:14.2.1":
-  version: 14.2.1
-  resolution: "@next/swc-linux-arm64-musl@npm:14.2.1"
+"@next/swc-linux-arm64-musl@npm:14.2.5":
+  version: 14.2.5
+  resolution: "@next/swc-linux-arm64-musl@npm:14.2.5"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-gnu@npm:14.2.1":
-  version: 14.2.1
-  resolution: "@next/swc-linux-x64-gnu@npm:14.2.1"
+"@next/swc-linux-x64-gnu@npm:14.2.5":
+  version: 14.2.5
+  resolution: "@next/swc-linux-x64-gnu@npm:14.2.5"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-musl@npm:14.2.1":
-  version: 14.2.1
-  resolution: "@next/swc-linux-x64-musl@npm:14.2.1"
+"@next/swc-linux-x64-musl@npm:14.2.5":
+  version: 14.2.5
+  resolution: "@next/swc-linux-x64-musl@npm:14.2.5"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-win32-arm64-msvc@npm:14.2.1":
-  version: 14.2.1
-  resolution: "@next/swc-win32-arm64-msvc@npm:14.2.1"
+"@next/swc-win32-arm64-msvc@npm:14.2.5":
+  version: 14.2.5
+  resolution: "@next/swc-win32-arm64-msvc@npm:14.2.5"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-win32-ia32-msvc@npm:14.2.1":
-  version: 14.2.1
-  resolution: "@next/swc-win32-ia32-msvc@npm:14.2.1"
+"@next/swc-win32-ia32-msvc@npm:14.2.5":
+  version: 14.2.5
+  resolution: "@next/swc-win32-ia32-msvc@npm:14.2.5"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@next/swc-win32-x64-msvc@npm:14.2.1":
-  version: 14.2.1
-  resolution: "@next/swc-win32-x64-msvc@npm:14.2.1"
+"@next/swc-win32-x64-msvc@npm:14.2.5":
+  version: 14.2.5
+  resolution: "@next/swc-win32-x64-msvc@npm:14.2.5"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4041,15 +4141,6 @@ __metadata:
   dependencies:
     "@types/koa": "npm:*"
   checksum: 10/0f46016227c9d17fd4ff5fb1fbec7f658a95dbf36f15e08d4f3aae8f24599c8069cadff6c2d6af5350d56e4c234b634066636bb2eaa216d5c29f453858c1f798
-  languageName: node
-  linkType: hard
-
-"@types/koa-router@npm:7.4.8":
-  version: 7.4.8
-  resolution: "@types/koa-router@npm:7.4.8"
-  dependencies:
-    "@types/koa": "npm:*"
-  checksum: 10/d9bd6c8c8869a5757dd0b8208fdd06402359a5b8f6a40706e89f81b2c0b796ae3561761913b9743dccff5508e04bca88ce14e05c6fdf8b45b1cccec2ed996fe8
   languageName: node
   linkType: hard
 
@@ -7922,114 +8013,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"example-<%=name%>@workspace:tools/scripts/templates/example":
-  version: 0.0.0-use.local
-  resolution: "example-<%=name%>@workspace:tools/scripts/templates/example"
-  languageName: unknown
-  linkType: soft
-
-"example-figma-export-file-assets@workspace:examples/figma-export-published-assets":
-  version: 0.0.0-use.local
-  resolution: "example-figma-export-file-assets@workspace:examples/figma-export-published-assets"
-  dependencies:
-    "@neodx/figma": "workspace:*"
-  languageName: unknown
-  linkType: soft
-
-"example-figma-simple-export@workspace:examples/figma-export-file-assets":
-  version: 0.0.0-use.local
-  resolution: "example-figma-simple-export@workspace:examples/figma-export-file-assets"
-  dependencies:
-    "@neodx/figma": "workspace:*"
-  languageName: unknown
-  linkType: soft
-
-"example-log-frameworks-showcase@workspace:examples/log-frameworks-showcase":
-  version: 0.0.0-use.local
-  resolution: "example-log-frameworks-showcase@workspace:examples/log-frameworks-showcase"
-  dependencies:
-    "@neodx/log": "workspace:*"
-    "@types/express": "npm:4.17.21"
-    "@types/koa": "npm:2.15.0"
-    "@types/koa-router": "npm:7.4.8"
-    express: "npm:4.19.2"
-    koa: "npm:2.15.3"
-    koa-router: "npm:12.0.1"
-    tsx: "npm:4.16.2"
-    typescript: "npm:5.4.5"
-  languageName: unknown
-  linkType: soft
-
-"example-log-simple-client@workspace:examples/log-simple-client":
-  version: 0.0.0-use.local
-  resolution: "example-log-simple-client@workspace:examples/log-simple-client"
-  dependencies:
-    "@neodx/log": "npm:*"
-  languageName: unknown
-  linkType: soft
-
-"example-svg-magic-with-figma-export@workspace:examples/svg-magic-with-figma-export":
-  version: 0.0.0-use.local
-  resolution: "example-svg-magic-with-figma-export@workspace:examples/svg-magic-with-figma-export"
-  dependencies:
-    "@neodx/figma": "workspace:*"
-    "@neodx/std": "workspace:*"
-    "@neodx/svg": "workspace:*"
-    "@types/react": "npm:18.2.78"
-    "@types/react-dom": "npm:18.2.25"
-    "@vitejs/plugin-react": "npm:4.3.1"
-    autoprefixer: "npm:10.4.19"
-    postcss: "npm:8.4.38"
-    react: "npm:18.2.0"
-    react-dom: "npm:18.2.0"
-    tailwindcss: "npm:3.4.3"
-    typescript: "npm:5.4.5"
-    vite: "npm:5.3.3"
-    vite-tsconfig-paths: "npm:4.3.2"
-    vitest: "npm:2.0.2"
-  languageName: unknown
-  linkType: soft
-
-"example-svg-next@workspace:examples/svg-next":
-  version: 0.0.0-use.local
-  resolution: "example-svg-next@workspace:examples/svg-next"
-  dependencies:
-    "@neodx/svg": "workspace:*"
-    "@types/node": "npm:20.14.10"
-    "@types/react": "npm:18.2.78"
-    "@types/react-dom": "npm:18.2.25"
-    autoprefixer: "npm:10.4.19"
-    eslint: "npm:8.57.0"
-    eslint-config-next: "npm:14.2.1"
-    next: "npm:14.2.1"
-    postcss: "npm:8.4.38"
-    react: "npm:18.2.0"
-    react-dom: "npm:18.2.0"
-    tailwindcss: "npm:3.4.3"
-    typescript: "npm:5.4.5"
-  languageName: unknown
-  linkType: soft
-
-"example-svg-vite@workspace:examples/svg-vite":
-  version: 0.0.0-use.local
-  resolution: "example-svg-vite@workspace:examples/svg-vite"
-  dependencies:
-    "@fontsource-variable/inter": "npm:5.0.17"
-    "@neodx/svg": "npm:*"
-    "@types/react": "npm:18.2.78"
-    "@types/react-dom": "npm:18.2.25"
-    "@vitejs/plugin-react": "npm:4.3.1"
-    autoprefixer: "npm:10.4.19"
-    postcss: "npm:8.4.38"
-    react: "npm:18.2.0"
-    react-dom: "npm:18.2.0"
-    tailwindcss: "npm:3.4.3"
-    typescript: "npm:5.4.5"
-    vite: "npm:5.3.3"
-    vite-tsconfig-paths: "npm:4.3.2"
-  languageName: unknown
-  linkType: soft
-
 "execa@npm:8.0.1, execa@npm:^8.0.1":
   version: 8.0.1
   resolution: "execa@npm:8.0.1"
@@ -8908,6 +8891,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"heroicons@npm:2.1.5":
+  version: 2.1.5
+  resolution: "heroicons@npm:2.1.5"
+  checksum: 10/1b15b94c3f4aeaa4b7e0d98d15db82e86013a6783f2bd32e7d366d1076dd6db279dab3b3df5579dfcaa389bda1a63b7985de106a71084a13b5ee62f14e05ad0e
+  languageName: node
+  linkType: hard
+
 "hookable@npm:^5.5.3":
   version: 5.5.3
   resolution: "hookable@npm:5.5.3"
@@ -8962,7 +8952,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-errors@npm:2.0.0, http-errors@npm:^2.0.0":
+"http-errors@npm:2.0.0":
   version: 2.0.0
   resolution: "http-errors@npm:2.0.0"
   dependencies:
@@ -9940,19 +9930,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"koa-router@npm:12.0.1":
-  version: 12.0.1
-  resolution: "koa-router@npm:12.0.1"
-  dependencies:
-    debug: "npm:^4.3.4"
-    http-errors: "npm:^2.0.0"
-    koa-compose: "npm:^4.1.0"
-    methods: "npm:^1.1.2"
-    path-to-regexp: "npm:^6.2.1"
-  checksum: 10/5c733289f58f74c91e5f9c8925fe369325b650038eafea2fde9d9cd5f9d775df0bd308313c6381995668ad428ca50725a13db002256f7f2232ed0f08b4e1f8a9
-  languageName: node
-  linkType: hard
-
 "koa@npm:2.15.3":
   version: 2.15.3
   resolution: "koa@npm:2.15.3"
@@ -10491,7 +10468,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"methods@npm:^1.1.2, methods@npm:~1.1.2":
+"methods@npm:~1.1.2":
   version: 1.1.2
   resolution: "methods@npm:1.1.2"
   checksum: 10/a385dd974faa34b5dd021b2bbf78c722881bf6f003bfe6d391d7da3ea1ed625d1ff10ddd13c57531f628b3e785be38d3eed10ad03cebd90b76932413df9a1820
@@ -10843,20 +10820,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:14.2.1":
-  version: 14.2.1
-  resolution: "next@npm:14.2.1"
+"next@npm:14.2.5":
+  version: 14.2.5
+  resolution: "next@npm:14.2.5"
   dependencies:
-    "@next/env": "npm:14.2.1"
-    "@next/swc-darwin-arm64": "npm:14.2.1"
-    "@next/swc-darwin-x64": "npm:14.2.1"
-    "@next/swc-linux-arm64-gnu": "npm:14.2.1"
-    "@next/swc-linux-arm64-musl": "npm:14.2.1"
-    "@next/swc-linux-x64-gnu": "npm:14.2.1"
-    "@next/swc-linux-x64-musl": "npm:14.2.1"
-    "@next/swc-win32-arm64-msvc": "npm:14.2.1"
-    "@next/swc-win32-ia32-msvc": "npm:14.2.1"
-    "@next/swc-win32-x64-msvc": "npm:14.2.1"
+    "@next/env": "npm:14.2.5"
+    "@next/swc-darwin-arm64": "npm:14.2.5"
+    "@next/swc-darwin-x64": "npm:14.2.5"
+    "@next/swc-linux-arm64-gnu": "npm:14.2.5"
+    "@next/swc-linux-arm64-musl": "npm:14.2.5"
+    "@next/swc-linux-x64-gnu": "npm:14.2.5"
+    "@next/swc-linux-x64-musl": "npm:14.2.5"
+    "@next/swc-win32-arm64-msvc": "npm:14.2.5"
+    "@next/swc-win32-ia32-msvc": "npm:14.2.5"
+    "@next/swc-win32-x64-msvc": "npm:14.2.5"
     "@swc/helpers": "npm:0.5.5"
     busboy: "npm:1.6.0"
     caniuse-lite: "npm:^1.0.30001579"
@@ -10897,7 +10874,7 @@ __metadata:
       optional: true
   bin:
     next: dist/bin/next
-  checksum: 10/d9a5e73513af9094328cb32e45283f0b208efedb85617c698af6dd4740a5aacff9e63be3c7951e00aa85ea76f0602e0464eae8ef6586c327cc09fbc0e7134466
+  checksum: 10/c107b45ffe7b75649618d8b5fc0bfe4936317daf12384d2546603b250ceb4e24aca9862cb062c6302a6bafafe5e682bb83f25f2f30ab7533bf0c4a30b3be6875
   languageName: node
   linkType: hard
 
@@ -11541,13 +11518,6 @@ __metadata:
   version: 0.1.7
   resolution: "path-to-regexp@npm:0.1.7"
   checksum: 10/701c99e1f08e3400bea4d701cf6f03517474bb1b608da71c78b1eb261415b645c5670dfae49808c89e12cea2dccd113b069f040a80de012da0400191c6dbd1c8
-  languageName: node
-  linkType: hard
-
-"path-to-regexp@npm:^6.2.1":
-  version: 6.2.1
-  resolution: "path-to-regexp@npm:6.2.1"
-  checksum: 10/1e266be712d1a08086ee77beab12a1804842ec635dfed44f9ee1ba960a0e01cec8063fb8c92561115cdc0ce73158cdc7766e353ffa039340b4a85b370084c4d4
   languageName: node
   linkType: hard
 

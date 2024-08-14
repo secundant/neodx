@@ -1,4 +1,4 @@
-import { createTaskRunner } from '@neodx/internal/experimental';
+import { createTaskRunner } from '@neodx/internal/tasks';
 import { tryFormatPrettier } from '@neodx/pkg-misc';
 import { concurrently, isTypeOfString } from '@neodx/std';
 import { displayPath, getVfsActions } from '../core/operations';

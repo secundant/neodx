@@ -1,7 +1,8 @@
 import { toArray } from '@neodx/std';
 import { Command } from 'commander';
 import { z } from 'zod';
-import { buildSprites } from './core/build-sprites';
+import { createSvgSpriteBuilder } from './core/builder.ts';
+import { buildSprites } from './tasks/build-sprites';
 
 export function createCli(cwd = process.cwd()) {
   const program = new Command('sprite');
@@ -29,10 +30,9 @@ export function createCli(cwd = process.cwd()) {
       'An array of SVG properties to replace with `currentColor`'
     )
     .action(({ dryRun, verbose, ...options }) => {
-      const { resetColorValues, resetColorProperties, resetUnknownColors, ...other } =
+      const { resetColorValues, resetColorProperties, resetUnknownColors, input, ...other } =
         Options.parse(options);
-
-      return buildSprites({
+      const builder = createSvgSpriteBuilder({
         ...other,
         resetColors:
           resetColorValues || resetUnknownColors
@@ -48,11 +48,23 @@ export function createCli(cwd = process.cwd()) {
               }
             : [],
         log: verbose ? 'debug' : 'info',
-        vfsParams: {
-          cwd,
+        vfs: {
+          path: cwd,
           readonly: dryRun
         }
       });
+
+      builder.__.log
+        .error(`After @neodx/svg@0.8.0 CLI is deprecated and will be removed in the v1.0.0 release.
+
+Too keep your workflow, please use our new programmatic API instead: https://neodx.pages.dev/svg/api/index.html
+Also, you can read more about the migration in https://neodx.pages.dev/svg/migration.html
+`);
+
+      return buildSprites({
+        builder,
+        input
+      }).then(() => undefined);
     });
 
   return program;
