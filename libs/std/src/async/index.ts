@@ -17,9 +17,11 @@ export const tryCreateTimeoutSignal = (timeout?: number | null | false) =>
 
 // Not all browsers support AbortSignal.any, so we need to polyfill it
 const anyAbortSignal =
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  // TODO Actualize types for AbortSignal.any
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition,@typescript-eslint/ban-ts-comment
+  // @ts-ignore
   AbortSignal.any ??
-  (signals => {
+  ((signals: AbortSignal[]) => {
     const controller = new AbortController();
     const listeners = new Map<AbortSignal, () => void>();
 

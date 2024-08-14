@@ -21,7 +21,7 @@ export function packageJson() {
 }
 
 export function createVfsPackageJsonFileApi(vfs: BaseVfs, path: string) {
-  const file = createJsonFileApi(vfs, path);
+  const file = createJsonFileApi<PackageJson>(vfs, path);
   const sync = async (content: unknown) => {
     if (content) await file.write(content);
     return Boolean(content);
