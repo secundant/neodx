@@ -1,0 +1,10 @@
+<svg width="500" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <path id="textPath" d="M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80" />
+  </defs>
+  <text font-family="Verdana" font-size="35" fill="blue">
+    <textPath href="#textPath">
+      We go up and down, then up again
+    </textPath>
+  </text>
+</svg>

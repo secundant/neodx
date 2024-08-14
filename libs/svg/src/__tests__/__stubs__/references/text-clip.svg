@@ -1,0 +1,9 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="textClip">
+      <text x="10" y="100" font-size="100" font-family="Verdana" fill="white">SVG</text>
+    </clipPath>
+  </defs>
+  <rect width="200" height="200" fill="red" clip-path="url(#textClip)" />
+  <text x="10" y="100" font-size="100" font-family="Verdana" fill="blue" opacity="0.5">SVG</text>
+</svg>

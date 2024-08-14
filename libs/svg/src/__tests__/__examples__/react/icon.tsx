@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import { SVGProps } from 'react';
-import { SpritesMap } from './generated/sprite-info';
+import { type SVGProps } from 'react';
+import { type SpritesMeta } from './generated/sprite-info';
 
 export type SpriteKey = {
-  [Key in keyof SpritesMap]: `${Key}/${SpritesMap[Key]}`;
-}[keyof SpritesMap];
+  [Key in keyof SpritesMeta]: `${Key}/${SpritesMeta[Key]}`;
+}[keyof SpritesMeta];
 
 export interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'name' | 'type'> {
   name: SpriteKey;
