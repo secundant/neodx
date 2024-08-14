@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /** Multi-color icons will use this variable as an additional color */
+    --icon-secondary-color: currentColor;
+  }
+}
+
+@layer components {
+  /*
+  Our base class for icons inherits the current text color and applies common styles.
+  We're using a specific component class to prevent potential style conflicts.
+  */
+  .icon,
+  .icon-x,
+  .icon-y {
+    @apply select-none fill-current text-inherit box-content;
+  }
+
+  /* Set icon size to 1em based on its aspect ratio, so we can use `font-size` to scale it */
+  .icon,
+  .icon-x {
+    /* scale horizontally */
+    @apply w-[1em];
+  }
+
+  .icon,
+  .icon-y {
+    /* scale vertically */
+    @apply h-[1em];
+  }
+}
