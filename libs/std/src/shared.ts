@@ -5,7 +5,7 @@ export type Truthy = Exclude<any, Falsy>;
 export type AnyFn = (...args: any[]) => any;
 export type AnyKey = keyof any;
 export type AnyRecord<T = any> = Record<AnyKey, T>;
-export type Awaitable<T> = T | PromiseLike<T>;
+export type Awaitable<T> = Awaited<T> | PromiseLike<Awaited<T>>;
 export type FirstArg<Fn extends AnyFn> = Parameters<Fn>[0];
 export type MapLike<Key, Value> = Pick<Map<Key, Value>, 'has' | 'get' | 'set'>;
 
@@ -53,10 +53,14 @@ export function tryCatch<T, F>(fn: () => T, fallback?: (error: unknown) => F): T
   }
 }
 
-export const lazyValue = <T>(fn: () => T): (() => T) => {
+export const once = <T>(fn: () => T) => {
   let value: T | undefined;
 
-  return () => (value ??= fn());
+  return Object.assign(() => (value ??= fn()), {
+    get called() {
+      return Boolean(value);
+    }
+  });
 };
 
 export const redefineName = <T>(target: T, name: string) =>

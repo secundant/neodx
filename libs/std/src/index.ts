@@ -85,7 +85,7 @@ export {
   is,
   isTruthy,
   keys,
-  lazyValue,
+  once,
   rethrow,
   sleep,
   test,
