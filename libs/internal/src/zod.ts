@@ -1,3 +1,4 @@
+import { toArray } from '@neodx/std';
 import { z } from 'zod';
 
 export const parseAs = <T extends z.ZodTypeAny>(name: string, schema: T, value: unknown) => {
@@ -9,3 +10,5 @@ export const parseAs = <T extends z.ZodTypeAny>(name: string, schema: T, value: 
     });
   }
 };
+
+export const StringListSchema = z.string().transform(toArray).or(z.string().array());
