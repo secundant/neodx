@@ -1,0 +1,75 @@
+.dotPattern {
+  background-size: theme('spacing.4') theme('spacing.4');
+  background-image: radial-gradient(circle, theme('colors.neutral.400') 1px, transparent 1px);
+}
+
+.gridPattern {
+  background-image: linear-gradient(to right, theme('colors.neutral.400') 0.5px, transparent 0.5px),
+    linear-gradient(to bottom, theme('colors.neutral.400') 0.5px, transparent 0.5px);
+
+  &.sm {
+    background-size: theme('spacing.2') theme('spacing.2');
+  }
+
+  &.lg {
+    background-size: theme('spacing.8') theme('spacing.8');
+  }
+}
+
+.fadingCircle {
+  mask-image: radial-gradient(theme('spacing.10') circle at center, #fff, transparent);
+}
+
+.highlightTextBorders {
+  --top: 27%;
+  --bottom: 14.5833%;
+  position: relative;
+  line-height: 1;
+  font-weight: normal;
+  outline: 0.5px dotted theme('colors.blue.600');
+
+  &.relaxed {
+    line-height: 2;
+    --bottom: 32.5%;
+    --top: 37%;
+  }
+
+  &.loose {
+    line-height: 3;
+    --bottom: 38.5%;
+    --top: 42%;
+  }
+}
+
+.highlightTextBorders::before {
+  content: '';
+  position: absolute;
+  top: var(--top);
+  bottom: var(--bottom);
+  left: 0;
+  width: 100%;
+  background-color: theme('colors.orange.500/0.25');
+  z-index: -100;
+}
+
+.highlightTextBorders::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -100;
+  background: linear-gradient(
+    to bottom,
+    theme('colors.blue.300/0.25') 0,
+    theme('colors.blue.300/0.25') var(--top),
+    transparent var(--top),
+    transparent calc(100% - var(--bottom)),
+    theme('colors.blue.300/0.25') calc(100% - var(--bottom)),
+    theme('colors.blue.300/0.25') 100%
+  );
+}
+
+.highlightTextBorders :global(.icon),
+.highlightTextBorders :global(.icon-x),
+.highlightTextBorders :global(.icon-y) {
+  outline: 0.5px solid theme('colors.emerald.600');
+}

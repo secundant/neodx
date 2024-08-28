@@ -1,69 +1,92 @@
 import clsx from 'clsx';
-import { type SVGProps } from 'react';
+import { type ComponentProps, forwardRef, useMemo } from 'react';
 import { sprites, type SpritesMeta } from './sprite.gen';
 
 /** Icon props extending SVG props and requiring specific icon name */
-export interface IconProps extends SVGProps<SVGSVGElement> {
+export interface IconProps extends ComponentProps<'svg'> {
+  /** Icon name, e.g. "common:close" */
   name: IconName;
+  /**
+   * Invert icon dimensions.
+   * By default, it will be scaled by the maximum value of width and height to prevent layout explosion.
+   *
+   * @example
+   * Let's say we have the following conditions:
+   * - our icon is 16x32 (width x height)
+   * - our text is 16px
+   *
+   * Depending on the value of `invert` prop, the icon will be rendered as:
+   * - `false`: 8x16 (height is scaled to fit the text size)
+   * - `true`: 16x32 (width is scaled to fit the text size)
+   *
+   * @default false
+   */
+  invert?: boolean;
 }
 
-/** Represents all possible icon names as the `<sprite name>/<symbol name>` string */
+/** Represents all possible icon names as the "<sprite name>:<symbol name>" string */
 export type IconName = {
-  [Key in keyof SpritesMeta]: `${Key}/${SpritesMeta[Key]}`;
+  [Key in keyof SpritesMeta]: `${Key}:${SpritesMeta[Key]}`;
 }[keyof SpritesMeta];
 
-export function Icon({ name, className, ...props }: IconProps) {
-  const {
-    symbol: { viewBox, width, height },
-    href
-  } = getIconMeta(name);
+export const Icon = forwardRef<SVGSVGElement, IconProps>(
+  ({ name, className, invert, ...props }, ref) => {
+    const {
+      symbol: { viewBox, width, height },
+      href
+    } = useMemo(() => getIconMeta(name), [name]);
+    const scaleX = width > height;
+    const scaleY = width < height;
 
-  return (
-    <svg
-      className={clsx(
-        {
-          /**
-           * We want to control the icon's size based on its aspect ratio because we're scaling it
-           * by the minimum value of width and height to prevent layout explosion.
-           *
-           * Also, different classes were chosen to avoid CSS overrides collisions.
-           *
-           * @see https://github.com/secundant/neodx/issues/92
-           */
-          'icon-x': width > height,
-          'icon-y': width < height,
-          icon: width === height
-        },
-        className
-      )}
-      // pass actual viewBox because of a browser inconsistencies if we don't
-      viewBox={viewBox}
-      // prevent icon from being focused when using keyboard navigation
-      focusable="false"
-      // hide icon from screen readers
-      aria-hidden
-      {...props}
-    >
-      <use href={href} />
-    </svg>
-  );
-}
+    return (
+      <svg
+        className={clsx(
+          {
+            /**
+             * We want to control the icon's size based on its aspect ratio because we're scaling it
+             * by the maximum value of width and height to prevent layout explosion.
+             *
+             * Also, different classes were chosen to avoid CSS overrides collisions.
+             *
+             * @see https://github.com/secundant/neodx/issues/92
+             */
+            'icon-x': invert ? scaleY : scaleX,
+            'icon-y': invert ? scaleX : scaleY,
+            icon: width === height
+          },
+          className
+        )}
+        // pass actual viewBox because of a browser inconsistencies if we don't
+        viewBox={viewBox}
+        // prevent icon from being focused when using keyboard navigation
+        focusable="false"
+        // hide icon from screen readers
+        aria-hidden
+        // pass through ref and other props
+        ref={ref}
+        {...props}
+      >
+        {/* External sprites href will be "<base url>/<file name>#<symbol name>",
+      while the inlined one will be just "#<symbol name>" */}
+        <use href={href} />
+      </svg>
+    );
+  }
+);
 
-/**
- * Safe extraction
- */
+/** Safe wrapper for extracting icon metadata */
 const getIconMeta = (name: IconName) => {
-  const [spriteName, iconName] = name.split('/');
-  const item = sprites.experimental_get(spriteName!, iconName!, config);
+  const [spriteName, iconName] = name.split(':');
+  const item = sprites.experimental_get(spriteName!, iconName!, spritesConfig);
 
   if (!item) {
     // Prevents crashing when icon name is invalid by returning a default icon
     console.error(`Icon "${name}" is not found in "${spriteName}" sprite`);
-    return sprites.experimental_get('common', 'help', config)!;
+    return sprites.experimental_get('general', 'help', spritesConfig)!;
   }
   return item;
 };
 
-const config = {
+const spritesConfig = {
   baseUrl: '/sprites/'
 };
