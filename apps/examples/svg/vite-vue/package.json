@@ -1,0 +1,50 @@
+{
+  "name": "@neodx/example-svg-vite-vue",
+  "version": "0.0.1",
+  "private": true,
+  "packageManager": "yarn@4.1.0",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "scripts": {
+    "typecheck": "vue-tsc --build --force",
+    "build": "vite build",
+    "lint": "eslint src",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "vue": "^3.4.29"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "vue-tsc": "^2.0.21"
+  },
+  "nx": {
+    "targets": {
+      "dev": {
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "build": {
+        "outputs": [
+          "{projectRoot}/public/sprites"
+        ],
+        "inputs": [
+          "{projectRoot}/src/shared/ui/icon/assets/**/*.svg",
+          "shared"
+        ],
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "test": {
+        "dependsOn": [
+          "build"
+        ]
+      }
+    }
+  }
+}
