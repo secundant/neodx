@@ -21,7 +21,7 @@ describe.concurrent('watcher', async () => {
         Array.isArray(stubs) ? mapToObject(stubs, key => [`assets/${key}`, key]) : stubs
       ),
       inline: false,
-      cleanup: 'drop-output-dir',
+      cleanup: 'force',
       inputRoot: 'assets',
       ...params
     });

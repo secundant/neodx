@@ -1,12 +1,12 @@
 import { plural } from '@neodx/internal/intl';
 import { formatList } from '@neodx/internal/log';
 import { createTaskRunner } from '@neodx/internal/tasks';
-import { concurrently, invariant, lazyValue, prop } from '@neodx/std';
+import { concurrently, invariant, once, prop } from '@neodx/std';
 import type { Vfs } from '@neodx/vfs';
 import type { SpritesMetadata } from './metadata.ts';
 import type { SpriteAsset, SvgLogger } from './shared.ts';
 
-export type SpritesCleanupType = 'drop-output-dir' | 'auto';
+export type SpritesCleanupType = 'force' | 'auto';
 
 export const createSpritesCleanup = ({
   log,
@@ -28,10 +28,10 @@ export const createSpritesCleanup = ({
 
   return {
     current: () => [...current.values()],
-    preload: lazyValue(
+    preload: once(
       task('preload', async (): Promise<void> => {
         // We don't need to preload anything if we're dropping output dir
-        if (cleanupType === 'drop-output-dir') return;
+        if (cleanupType === 'force') return;
         if (!metadata) {
           // TODO Write documentation about cleanup
           log.error(
@@ -76,7 +76,7 @@ You can read more about metadata in https://neodx.pages.dev/svg/metadata.html
     actualize: task(
       'cleanup',
       async (assets: SpriteAsset[]) => {
-        if (cleanupType === 'drop-output-dir') {
+        if (cleanupType === 'force') {
           await concurrently(await outputVfs.glob('**/*'), outputVfs.delete);
         }
         if (cleanupType === 'auto') {

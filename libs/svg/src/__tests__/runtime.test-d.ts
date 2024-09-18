@@ -14,13 +14,13 @@ import {
 describe('generated runtime type contracts', () => {
   const sprite = defineSprite('common', [
     defineSpriteAsset(
-      [defineSpriteSymbol('close', 16, 16), defineSpriteSymbol('open-in-tool-window', 16, 16)],
+      [defineSpriteSymbol(['close'], [16]), defineSpriteSymbol(['open-in-tool-window'], [16, 16])],
       defineExternalAssetMeta('path')
     )
   ]);
 
   test("factories' return values should match the type aliases", () => {
-    expectTypeOf(defineSpriteSymbol('inline', 16, 16, '0 0 48 48')).toEqualTypeOf<
+    expectTypeOf(defineSpriteSymbol(['inline'], [16, 16, '0 0 48 48'])).toEqualTypeOf<
       SvgSpriteSymbol<'inline'>
     >();
 
@@ -37,7 +37,7 @@ describe('generated runtime type contracts', () => {
   });
 
   test('should infer symbol type', () => {
-    expectTypeOf(defineSpriteSymbol('name', 16, 16)).toEqualTypeOf<{
+    expectTypeOf(defineSpriteSymbol(['name'], [16, 16])).toEqualTypeOf<{
       id: string;
       name: 'name';
       width: number;
@@ -47,7 +47,7 @@ describe('generated runtime type contracts', () => {
 
     const externalName = 'name';
 
-    expectTypeOf(defineSpriteSymbol(externalName, 16, 16)).toEqualTypeOf<{
+    expectTypeOf(defineSpriteSymbol([externalName], [16, 16])).toEqualTypeOf<{
       id: string;
       name: 'name';
       width: number;
@@ -57,7 +57,7 @@ describe('generated runtime type contracts', () => {
 
     const unknownName = 'unknown' as string;
 
-    expectTypeOf(defineSpriteSymbol(unknownName, 16, 16)).toEqualTypeOf<{
+    expectTypeOf(defineSpriteSymbol([unknownName], [16, 16])).toEqualTypeOf<{
       id: string;
       name: string;
       width: number;
@@ -85,9 +85,9 @@ describe('generated runtime type contracts', () => {
     const left = defineSprite('left', [
       defineSpriteAsset(
         [
-          defineSpriteSymbol('close', 16, 16),
-          defineSpriteSymbol('open-in-tool-window', 16, 16),
-          defineSpriteSymbol('external-name', 16, 16)
+          defineSpriteSymbol(['close'], [16, 16]),
+          defineSpriteSymbol(['open-in-tool-window'], [16, 16]),
+          defineSpriteSymbol(['external-name'], [16, 16])
         ],
         defineExternalAssetMeta('path')
       )
@@ -96,9 +96,9 @@ describe('generated runtime type contracts', () => {
     const right = defineSprite('right', [
       defineSpriteAsset(
         [
-          defineSpriteSymbol('external-name', 16, 16),
-          defineSpriteSymbol('open-in-tool-window', 16, 16),
-          defineSpriteSymbol('close', 16, 16)
+          defineSpriteSymbol(['external-name'], [16, 16]),
+          defineSpriteSymbol(['open-in-tool-window'], [16, 16]),
+          defineSpriteSymbol(['close'], [16, 16])
         ],
         defineExternalAssetMeta('path')
       )
@@ -116,13 +116,16 @@ describe('generated runtime type contracts', () => {
     const map = defineSpriteMap([
       defineSprite('common', [
         defineSpriteAsset(
-          [defineSpriteSymbol('close', 16, 16), defineSpriteSymbol('accept', 16, 16)],
+          [defineSpriteSymbol(['close'], [16, 16]), defineSpriteSymbol(['accept'], [16, 16])],
           defineExternalAssetMeta('path')
         )
       ]),
       defineSprite('editor', [
         defineSpriteAsset(
-          [defineSpriteSymbol('open-in-tool-window', 16, 16), defineSpriteSymbol('test', 16, 16)],
+          [
+            defineSpriteSymbol(['open-in-tool-window'], [16, 16]),
+            defineSpriteSymbol(['test'], [16, 16])
+          ],
           defineExternalAssetMeta('path')
         )
       ])

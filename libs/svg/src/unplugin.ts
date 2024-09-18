@@ -1,4 +1,4 @@
-import { lazyValue } from '@neodx/std';
+import { once } from '@neodx/std';
 import { createUnplugin } from 'unplugin';
 import { createSvgSpriteBuilder, type CreateSvgSpriteBuilderParams } from './core/builder.ts';
 import { buildSprites } from './tasks/build-sprites.ts';
@@ -38,11 +38,11 @@ export const unplugin = createUnplugin(
 
     return {
       name: '@neodx/svg',
-      buildStart: lazyValue(async () => {
+      buildStart: once(async () => {
         await buildSprites(tasksParams);
         if (development) watcher = watchSprites(tasksParams);
       }),
-      buildEnd: lazyValue(async () => {
+      buildEnd: once(async () => {
         builder.clear();
         await watcher?.close();
       }),

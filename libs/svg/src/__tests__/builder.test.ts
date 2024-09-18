@@ -656,8 +656,8 @@ describe('sprites builder', async () => {
 
     const defaultOutputPath = 'public/sprites';
 
-    test('should clean whole dir when "cleanup" is equal to "drop-output-dir"', async () => {
-      const { rebuild, vfs } = await prepare({ cleanup: 'drop-output-dir' });
+    test('should clean whole dir when "cleanup" is equal to "force"', async () => {
+      const { rebuild, vfs } = await prepare({ cleanup: 'force' });
 
       expect(await vfs.readDir(defaultOutputPath)).toEqual(['common.svg', 'flags.svg']);
       await vfs.write('public/sprites/external.svg', '<svg></svg>');

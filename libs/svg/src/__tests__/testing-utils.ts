@@ -1,5 +1,5 @@
 import { createLogger } from '@neodx/log/node';
-import { concurrently, entries, fromEntries, isTypeOfString, lazyValue } from '@neodx/std';
+import { concurrently, entries, fromEntries, isTypeOfString, once } from '@neodx/std';
 import { merge } from '@neodx/std/merge';
 import type { FirstArg } from '@neodx/std/shared';
 import { createVfs, type VirtualInitializer } from '@neodx/vfs';
@@ -18,7 +18,7 @@ export const getExamplesNames = () => examplesVfs.readDir();
  * Stub value is a content of the stub file.
  * @returns { { [stubsGroup: string]: { [stubName: string]: string } } }
  */
-export const getSvgStubs = lazyValue(async () =>
+export const getSvgStubs = once(async () =>
   fromEntries(
     await concurrently(await stubsVfs.readDir(), async group => [
       group,

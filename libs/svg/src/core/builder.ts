@@ -83,7 +83,7 @@ export interface CreateSvgSpriteBuilderParams {
    * Sprite cleanup mode.
    *
    * - `'auto'` - smart cleanup, removes only outdated sprites and requires `metadata` option to identify current sprites
-   * - `'drop-output-dir'` - delete the output directory before building sprites
+   * - `'force'` - delete the entire output directory before building sprites
    * - `false` - no cleanup
    *
    * @default 'auto' if `metadata` option is provided, otherwise `false`
