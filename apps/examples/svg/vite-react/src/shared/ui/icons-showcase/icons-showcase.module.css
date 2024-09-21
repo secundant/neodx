@@ -28,6 +28,10 @@
   font-weight: normal;
   outline: 0.5px dotted theme('colors.blue.600');
 
+  &.unset {
+    line-height: unset;
+  }
+
   &.relaxed {
     line-height: 2;
     --bottom: 32.5%;

@@ -183,7 +183,7 @@ export function App() {
                   </h3>
                   <div className="flex gap-4 items-center">
                     But default the highest side is equal to font size: horizontal icon{' '}
-                    <Icon name="other:linkedin" /> will be smaller than regular square icon{' '}
+                    <Icon name="other:linkedin" /> will be visually smaller than regular square icon{' '}
                     <Icon name="general:settings" />
                   </div>
                   <div className="flex gap-4 items-center">

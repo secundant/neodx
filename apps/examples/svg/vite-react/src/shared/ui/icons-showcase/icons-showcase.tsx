@@ -9,6 +9,22 @@ export const TextAlignmentShowcase = (props: IconProps) => (
     <div className={clsx('text-xs', styles.highlightTextBorders)}>
       Small text with icon "<Icon {...props} />" in the center
     </div>
+    <div className={clsx(styles.highlightTextBorders, styles.unset)}>
+      Medium text with{' '}
+      <Badge type="code" size="sm">
+        line-height: unset
+      </Badge>{' '}
+      and icon <Icon {...props} className="align-baseline" />{' '}
+      <span className="text-red-700">without text alignment fix</span>
+    </div>
+    <div className={clsx(styles.highlightTextBorders)}>
+      Medium text with{' '}
+      <Badge type="code" size="sm">
+        line-height: 1
+      </Badge>{' '}
+      and icon <Icon {...props} className="align-baseline" />{' '}
+      <span className="text-red-700">without text alignment fix</span>
+    </div>
     <div className={styles.highlightTextBorders}>
       Medium text with{' '}
       <Badge type="code" size="sm">

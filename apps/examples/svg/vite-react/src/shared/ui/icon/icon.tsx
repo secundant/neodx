@@ -1,14 +1,15 @@
 import clsx from 'clsx';
 import { type ComponentProps, forwardRef, useMemo } from 'react';
-import { sprites, type SpritesMeta } from './sprite.gen';
+import { type SpritePrepareConfig, sprites, type SpritesMeta } from './sprite.gen';
 
 /** Icon props extending SVG props and requiring specific icon name */
 export interface IconProps extends ComponentProps<'svg'> {
   /** Icon name, e.g. "common:close" */
   name: IconName;
   /**
-   * Invert icon dimensions.
-   * By default, it will be scaled by the maximum value of width and height to prevent layout explosion.
+   * Inverts main scaling axis.
+   * By default, it will be scaled by the maximum value of width and height to prevent layout explosion,
+   * but you can invert it to scale by the minimum value.
    *
    * @example
    * Let's say we have the following conditions:
@@ -87,6 +88,7 @@ const getIconMeta = (name: IconName) => {
   return item;
 };
 
-const spritesConfig = {
+// For demonstration purposes, sprites are placed in the "/sprites" folder, but you can adapt it to your needs
+const spritesConfig: SpritePrepareConfig = {
   baseUrl: '/sprites/'
 };
