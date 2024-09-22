@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import clsx from 'clsx';
-import { computed, type SVGAttributes } from 'vue';
+import { computed } from 'vue';
 import { sprites, type SpritesMeta } from './sprite.gen';
-
-/** Icon props extending SVG props and requiring specific icon name */
-interface IconProps extends /* @vue-ignore */ SVGAttributes {
-  name: IconName;
-}
 
 /** Represents all possible icon names as the `<sprite name>/<symbol name>` string */
 export type IconName = {
   [Key in keyof SpritesMeta]: `${Key}/${SpritesMeta[Key]}`;
 }[keyof SpritesMeta];
 
-const props = defineProps<IconProps>();
+/** Icon props extending SVG props and requiring specific icon name */
+const props = defineProps<{
+  name: IconName;
+  class?: string;
+}>();
 
 /** Safe wrapper for extracting icon metadata */
 const getIconMeta = (name: IconName) => {
