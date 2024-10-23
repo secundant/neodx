@@ -4,15 +4,12 @@ import { invariant, omit } from '@neodx/std';
 import { createVfs } from '@neodx/vfs';
 import devkit from '@nrwl/devkit';
 import { $ } from 'execa';
-import { join } from 'node:path';
 import sade from 'sade';
 
-const log = createLogger({
-  name: 'neodx'
-});
-const rootDir = join(devkit.workspaceRoot, 'tools/scripts');
+const log = createLogger({ name: 'neodx' });
 const commands = devkit.getPackageManagerCommand(devkit.detectPackageManager());
 const vfs = createVfs(devkit.workspaceRoot);
+const selfVfs = vfs.child('tools/scripts');
 const $$ = $({ stdio: 'inherit', cwd: devkit.workspaceRoot, all: true });
 
 sade('neodx')
@@ -22,7 +19,7 @@ sade('neodx')
     try {
       invariant(name, 'Example name is required');
 
-      await generateFiles(vfs, join(rootDir, 'templates/lib'), `libs/${name}`, { name });
+      await generateFiles(vfs, selfVfs.resolve('templates/lib'), `libs/${name}`, { name });
       await vfs.updateJson(`libs/${name}/package.json`, prev => ({
         ...omit(prev, ['private', 'publishConfig']),
         scripts: patchScripts(prev.scripts)
@@ -58,7 +55,7 @@ sade('neodx')
     );
     invariant(name, 'Example name is required');
 
-    await generateFiles(vfs, join(rootDir, 'templates/example'), `apps/examples/${lib}/${name}`, {
+    await generateFiles(vfs, selfVfs.resolve('templates/example'), `apps/examples/${lib}/${name}`, {
       lib,
       name
     });
