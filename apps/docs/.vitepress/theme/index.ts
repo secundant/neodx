@@ -2,6 +2,10 @@
 import { h } from 'vue';
 import Theme from 'vitepress/theme';
 import './style.css';
+import { EnhanceAppContext } from 'vitepress';
+import TwoslashFloatingVue from '@shikijs/vitepress-twoslash/client';
+
+import '@shikijs/vitepress-twoslash/style.css';
 
 export default {
   ...Theme,
@@ -10,7 +14,7 @@ export default {
       // https://vitepress.dev/guide/extending-default-theme#layout-slots
     });
   },
-  enhanceApp({ app, router, siteData }) {
-    // ...
+  enhanceApp({ app }: EnhanceAppContext) {
+    app.use(TwoslashFloatingVue);
   }
 };

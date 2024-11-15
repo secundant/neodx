@@ -4,6 +4,10 @@ outline: [2, 3]
 
 # Automatically reset colors
 
+::: danger
+WIP; TODO UPDATE BEFORE RELEASE
+:::
+
 A powerful feature to automatically reset colors in SVG icons.
 
 ```typescript
@@ -54,11 +58,13 @@ svg({
 ```typescript
 svg({
   resetColors: {
-    // global files filter (default - all files)
+    // global files filter (all files are included by default)
     exclude: ['path/to/icon.svg', /[a-z]*-colored\.svg$/],
     include: ['path/to/other-icon.svg' /* ... */],
+
     // keep specific colors untouched
     keep: ['white', '#eee'],
+
     // all colors except white and #eee will be replaced with currentColor
     replaceUnknown: 'currentColor'
   }
@@ -99,7 +105,7 @@ svg({
 - Replace white color in all flags with `currentColor`
 - For all icons except flags, logos and colored icons:
   - Keep brand colors untouched
-  - Replace known accent colors with `var(--icon-color)`
+  - Replace known accent colors with `var(--icon-secondary-color)`
   - Replace known secondary colors with `var(--icon-bg)`
   - Replace all other colors with `currentColor`
 
@@ -119,11 +125,11 @@ svg({
       replace: [
         {
           from: myTheme.accentIconColors,
-          to: 'var(--icon-color)'
+          to: 'var(--icon-accent-color)'
         },
         {
           from: myTheme.secondaryIconColors,
-          to: 'var(--icon-bg)'
+          to: 'var(--icon-secondary-color)'
         }
       ],
       // if you want to replace colors in specific properties only, you can pass an array of them
@@ -136,5 +142,5 @@ svg({
 
 ## Related
 
-- ["Working with multicolored" guide](./multicolored.md)
-- ["Writing Icon Component" guide](./writing-icon-component.md)
+- [Working with multicolored icons](./multicolored.md)
+- [Writing Icon Component](./writing-icon-component.md)

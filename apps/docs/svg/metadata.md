@@ -1,9 +1,13 @@
 # Generate metadata
 
+::: danger
+WIP; TODO UPDATE BEFORE RELEASE
+:::
+
 To build well-designed work with icons, we need to close next issues:
 
 - Type safety for icon names
-- [Grouping and hashing](./group-and-hash.md)
+- For [grouping and hashing](./group-and-hash.md) purpose,
   - Icons should be grouped in multiple sprites to prevent bloating of a single sprite
   - Generated sprite file names should contain hash to prevent caching issues
 
@@ -13,26 +17,14 @@ To solve these problems, we're generating metadata for runtime usage what could 
 
 ::: code-group
 
-```typescript {13-19} [vite.config.ts]
+```typescript {7} [vite.config.ts]
 import svg from '@neodx/svg/vite';
 
 export default defineConfig({
   plugins: [
     svg({
-      root: 'assets',
-      output: 'public/sprites',
-      // group icons by sprite name
-      group: true,
-      // add hash to sprite file name
-      fileName: '{name}.{hash:8}.svg',
-      // generate metadata (width, height, viewBox, and sprite file path)
-      metadata: {
-        path: 'src/sprite.gen.ts',
-        runtime: {
-          size: true,
-          viewBox: true
-        }
-      }
+      // ...
+      metadata: 'src/sprite.gen.ts'
     })
   ]
 });
@@ -43,35 +35,35 @@ export default defineConfig({
 In the result, we'll get `src/sprite.gen.ts` file with something like this:
 
 ```typescript
-// Name could be changed by `metadata.types.name` option
-export interface SpritesMap {
-  'sprite-name': 'left' | 'right' | 'close';
-}
+// Variable name can be changed by `metadata.name` option
+export const sprites = defineSpriteMap({
+  common: defineSprite('common', [
+    /* generated info... */
+  ]),
+  editor: defineSprite('editor', [
+    /* generated info... */
+  ])
+});
 
-export const SPRITES_META = {
-  'sprite-name': {
-    // `filePath` is a path to sprite file relative to `output` option
-    filePath: 'sprites.12345678.svg',
-    items: {
-      left: {
-        viewBox: '0 0 24 24',
-        width: 24,
-        height: 24
-      },
-      right: {
-        viewBox: '0 0 24 24',
-        width: 24,
-        height: 24
-      },
-      close: {
-        viewBox: '0 0 24 24',
-        width: 24,
-        height: 24
-      }
-    }
-  }
-};
+// Type name can be changed by `metadata.typeName` option
+export interface SpritesMeta {
+  common: 'left' | 'right' | 'close';
+  editor: 'open' | 'save' | 'find';
+}
 ```
+
+Under the hood, we're generating all internal utilities, so in the result you'll use user-friendly API:
+
+```ts
+import { sprites } from './sprite.gen';
+
+sprites.names; // ['common', 'editor']
+sprites.byName.common; // { name: 'common', symbols: { ... } }
+sprites.byName.editor.symbols.names; // ['open', 'save', 'find']
+sprites.byName.editor.symbols.byName.open; // { name: 'open', ... }
+```
+
+Detailed information about the generated metadata can be found in [API Reference](./api/index.md#spritesmeta).
 
 ## Support metadata in your code
 

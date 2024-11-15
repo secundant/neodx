@@ -1,3 +1,4 @@
+import { transformerTwoslash } from '@shikijs/vitepress-twoslash';
 import { defineConfig } from 'vitepress';
 
 // https://vitepress.dev/reference/site-config
@@ -15,6 +16,9 @@ export default defineConfig({
     ['meta', { name: 'msapplication-config', content: '/browserconfig.xml' }],
     ['meta', { name: 'theme-color', content: '#ffffff' }]
   ],
+  markdown: {
+    codeTransformers: [transformerTwoslash()]
+  },
   themeConfig: {
     logo: '/logo.png',
     socialLinks: [{ icon: 'github', link: 'https://github.com/secundant/neodx' }],
@@ -90,6 +94,7 @@ export default defineConfig({
               { text: 'Vite', link: '/svg/setup/vite.md' },
               { text: 'Next', link: '/svg/setup/next.md' },
               { text: 'Webpack', link: '/svg/setup/webpack.md' },
+              { text: 'Pr', link: '/svg/setup/next.md' },
               { text: 'Other', link: '/svg/setup/other' }
             ]
           },
@@ -102,6 +107,18 @@ export default defineConfig({
               { text: 'Automatically reset colors', link: '/svg/colors-reset' },
               { text: 'Working with multicolored', link: '/svg/multicolored' }
             ]
+          },
+          {
+            text: 'Integrations',
+            items: [
+              { text: 'Vue', link: '/svg/integrations/vue' },
+              { text: 'React', link: '/svg/integrations/react' },
+              { text: 'Angular', link: '/svg/integrations/angular' }
+            ]
+          },
+          {
+            text: 'Recipes and ',
+            items: [{ text: 'CDN Compatibility', link: '/svg/limitations/cdn-compatibility' }]
           },
           {
             text: 'API',

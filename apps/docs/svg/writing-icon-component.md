@@ -4,6 +4,10 @@ outline: [2, 3]
 
 # Writing an `Icon` component
 
+::: danger
+WIP; TODO UPDATE BEFORE RELEASE
+:::
+
 We don't provide any pre-made, ready-to-use components.
 Such a solution would be too limited and opinionated for user-specific needs.
 
@@ -213,10 +217,10 @@ It works, but we could see some issues:
 
 Let's fix them!
 
-### Make `name` prop type-safe
+### Use
 
 ::: warning
-In this guide I'll use `spriteName/iconName` format to name icons, but it will be broken if you use `/` in your icon or sprite name (for example, nested names), be careful.
+In this guide I'll use `spriteName:iconName` format to name icons, to
 :::
 
 As we faced in the [metadata generation guide](./metadata.md), we can use the generated `SpritesMap` type, but, we should keep a single `name` property for the DX and simplicity reasons.
@@ -279,7 +283,7 @@ Let's start implementing it:
    }
    ```
 
-### Detect icon major axis for correct scaling
+### Scale non-square icons
 
 How will SVG be scaled if source asset size is non-square? It will be forced to be square!
 

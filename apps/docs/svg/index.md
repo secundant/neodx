@@ -4,9 +4,14 @@ Supercharge your icons ⚡️
 
 - TypeScript support out of box - [generated types and information about your sprites](./metadata.md)
 - [Built-in integration](setup/index.md) for all major bundlers: [Vite](./setup/vite.md), [Next.js](./setup/next.md), [Webpack](./setup/webpack.md), `rollup`, `esbuild` and [another](./setup/other.md) with the power of [unplugin](https://github.com/unjs/unplugin)
-- Optional [grouping by folders](./group-and-hash.md)
+- [Grouping in multiple sprites](./group-and-hash.md)
 - Optimization with [svgo](./api/plugins/svgo.md)
-- [Automatically reset colors](./colors-reset.md)
+- Automated [colors reset](./colors-reset.md) and [cleaning up](./cleanup.md) outdated files
+- Recipes for:
+  - [multiple colors](./multicolored.md)
+  - [text alignment](./recipes/text-alignment.md)
+  - set of major frameworks: [React](./integration/react.md), [Vue](./integration/vue.md), [Angular](./integration/angular.md), [Svelte](./integration/svelte.md)
+  - integration with icon sources: [Figma](./integration/figma.md)
 
 ## Installation
 
@@ -27,6 +32,10 @@ pnpm add -D @neodx/svg
 :::
 
 ## Getting started
+
+::: tip
+If you
+:::
 
 ### 1. Setup your bundler
 

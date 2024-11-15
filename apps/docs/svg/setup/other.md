@@ -1,6 +1,15 @@
-# Setup other
+# Setup `@neodx/svg` with other bundlers
 
-We're using [unplugin](https://github.com/unjs/unplugin), so you can use any plugin that it supports.
+::: danger
+WIP; TODO UPDATE BEFORE RELEASE
+:::
+
+As you could know from sections before, `@neodx/svg` provides two ways to use it:
+
+- [programmatically with node.js](./node.md) for setting up your own build process,
+- or as a plugin for all popular bundlers
+
+To achieve the second option, we're using [unplugin](https://github.com/unjs/unplugin), so you can use any plugin that it supports.
 
 ## Webpack
 
