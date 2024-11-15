@@ -35,7 +35,7 @@ export function tee<T, Left extends T>(source: T[], predicate: (value: T) => boo
   return [left, right];
 }
 
-export function zip<const Inputs extends any[][]>(
+export function zip<const Inputs extends readonly any[][]>(
   ...inputs: [...Inputs]
 ): Inputs[0] extends infer Input
   ? {

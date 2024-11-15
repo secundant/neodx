@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { hashUnknown } from '@neodx/internal/hash';
 import type { LoggerMethods } from '@neodx/log';
 import { addSearchParams, createRelativeUrl, invariant } from '@neodx/std';
 import process from 'process';
@@ -74,7 +75,9 @@ export function createFigmaApi({
   baseUrl = 'https://api.figma.com/v1/',
   fetch = globalThis.fetch
 }: CreateFigmaApiParams = {}) {
-  invariant(personalAccessToken || accessToken, 'accessToken or personalAccessToken is required');
+  const token = accessToken ?? personalAccessToken;
+
+  invariant(token, 'accessToken or personalAccessToken is required');
   async function fetchJson<T>(
     path: string,
     options?: RequestInit & { params?: Record<string, unknown> }
@@ -117,6 +120,7 @@ export function createFigmaApi({
 
   return {
     __: {
+      hash: hashUnknown(`${token}:${baseUrl}`),
       fetch
     },
     /** @api GET /v1/files/:file_key */

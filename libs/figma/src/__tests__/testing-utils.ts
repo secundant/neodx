@@ -51,8 +51,10 @@ export const createMockNodes = (length: number, type: NodeType = 'COMPONENT') =>
       }) as GraphNode<AnyNode>
   );
 
-export const createMockApi = () => {
-  const fetch = createMockFetch();
+export const createMockApi = ({
+  getResponseText
+}: { getResponseText?: Parameters<typeof createMockFetch>[0] } = {}) => {
+  const fetch = createMockFetch(getResponseText);
 
   return {
     fetch,

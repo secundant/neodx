@@ -1,7 +1,7 @@
 import { formatList } from '@neodx/internal/log';
 import { createVfsNpmApi } from '@neodx/internal/npm';
 import { createTaskRunner } from '@neodx/internal/tasks';
-import { compact, concurrently, isTypeOfString, lazyValue, toArray } from '@neodx/std';
+import { compact, concurrently, isTypeOfString, once, toArray } from '@neodx/std';
 import type { ESLint } from 'eslint';
 import { extname } from 'pathe';
 import { displayPath, getVfsActions } from '../core/operations';
@@ -53,7 +53,7 @@ export function eslint({
   return createVfsPlugin<EsLintPluginApi>('eslint', (vfs, { context, beforeApply }) => {
     const { fix: originalFix, fixAll: originalFixAll } = vfs;
     const npm = createVfsNpmApi(vfs);
-    const getEsLint = lazyValue(async () => {
+    const getEsLint = once(async () => {
       const { ESLint } = await import('eslint');
 
       return new ESLint({

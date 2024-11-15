@@ -4,13 +4,13 @@ import { createMockApi, expectFetchCalled } from './testing-utils.ts';
 
 export async function createTestFigmaClient(params: FigmaClientParams = {}) {
   const { api, fetch } = createMockApi();
-  const client = await createFigmaClient({
+  const figma = await createFigmaClient({
     api,
     ...params
   });
 
   return {
-    client,
+    figma,
     fetch,
     api
   };
@@ -18,24 +18,21 @@ export async function createTestFigmaClient(params: FigmaClientParams = {}) {
 
 describe('createFigmaClient', () => {
   test('scoped APIs should give access to client and current context', async () => {
-    const { client } = await createTestFigmaClient();
-    const file = client.file('123');
-    const team = client.team('456');
+    const { figma } = await createTestFigmaClient();
+    const file = figma.file('123');
+    const team = figma.team('456');
 
-    expect(file.client).toBe(client);
-    expect(team.client).toBe(client);
-    expect(file.api).toBe(client.api);
-    expect(team.api).toBe(client.api);
+    expect(file.figma).toBe(figma);
+    expect(team.figma).toBe(figma);
     expect(file.id).toBe('123');
     expect(team.id).toBe('456');
   });
 
   test('should provide team APIs', async () => {
-    const { client, fetch } = await createTestFigmaClient();
-    const team = client.team('456');
+    const { figma, fetch } = await createTestFigmaClient();
+    const team = figma.team('456');
 
-    expect(team.client).toBe(client);
-    expect(team.api).toBe(client.api);
+    expect(team.figma).toBe(figma);
     expect(team.id).toBe('456');
     await team.styles();
     expectFetchCalled(fetch, `teams/${team.id}/styles`);
@@ -50,13 +47,13 @@ describe('createFigmaClient', () => {
   });
 
   test('should provide file APIs', async () => {
-    const { client } = await createTestFigmaClient();
-    const file = client.file('123');
+    const { figma } = await createTestFigmaClient();
+    const file = figma.file('123');
 
     expect(file).toEqual({
-      client,
-      api: client.api,
+      figma,
       id: '123',
+      asGraph: expect.any(Function),
       raw: expect.any(Function),
       nodes: expect.any(Function),
       images: expect.any(Function),
@@ -67,8 +64,7 @@ describe('createFigmaClient', () => {
       componentSets: expect.any(Function),
       styles: expect.any(Function),
       addComment: expect.any(Function),
-      deleteComment: expect.any(Function),
-      __: expect.anything()
+      deleteComment: expect.any(Function)
     });
   });
 
@@ -83,8 +79,8 @@ describe('createFigmaClient', () => {
     ['componentSets', '/files/123/component_sets'],
     ['styles', '/files/123/styles']
   ])('should call file.%s as /files/:id%s', async (method, path) => {
-    const { client, fetch } = await createTestFigmaClient();
-    const file = client.file('123');
+    const { figma, fetch } = await createTestFigmaClient();
+    const file = figma.file('123');
 
     await (file as any)[method]();
     expectFetchCalled(fetch, path);

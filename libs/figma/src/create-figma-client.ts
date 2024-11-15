@@ -1,52 +1,84 @@
-import { cached, createCacheSystem } from '@neodx/internal/cache';
-import { identity, mapValues, prop } from '@neodx/std';
+import { createCache } from '@neodx/internal/cache/cache';
+import { type AutoLoggerInput, createAutoLogger } from '@neodx/log';
+import { identity, mapValues, memoize, prop } from '@neodx/std';
 import { type AnyFn, type FirstArg, redefineName } from '@neodx/std/shared';
-import { createVfs, type Vfs } from '@neodx/vfs';
+import { type AutoVfsInput, createAutoVfs, type VfsLogMethod } from '@neodx/vfs';
 import { createFigmaApi, type FigmaApi } from './core/create-figma-api.ts';
-import type { CommonFigmaResponse } from './core/figma-api.h.ts';
+import type { CommonFigmaResponse, GetFileParams } from './core/figma-api.h.ts';
+import { createFileGraph } from './graph';
 
 export type FigmaClient = Awaited<ReturnType<typeof createFigmaClient>>;
 export type FigmaClientFile = ReturnType<FigmaClient['file']>;
 export type FigmaClientTeam = ReturnType<FigmaClient['team']>;
 
 export interface FigmaClientParams {
-  vfs?: Vfs;
+  vfs?: AutoVfsInput;
+  log?: AutoLoggerInput<VfsLogMethod>;
+  /**
+   * Custom Figma API instance.
+   * @default createFigmaApi()
+   */
   api?: FigmaApi;
+  /** Pass `false` to disable cache */
   cache?: boolean;
+  /** Pass `false` to disable network requests caching */
   cacheNetwork?: boolean;
 }
 
+/**
+ * Experimental Figma Client.
+ * Provides a high-level API for working with Figma files.
+ *
+ * @experimental
+ * @example Simple usage
+ * const figma = await createFigmaClient();
+ * const user = await figma.me();
+ *
+ * console.log('my email is', user.email);
+ *
+ * @example File API
+ * const figma = await createFigmaClient();
+ * const file = figma.file('my-file-id');
+ * const graph = await file.asGraph(); // create a human-friendly file graph
+ *
+ * console.log('components:', graph.registry.types.COMPONENT.map(it => it.source.name));
+ *
+ * console.log('comments:', await file.comments());
+ */
 export async function createFigmaClient({
-  vfs = createVfs(process.cwd()),
+  vfs: vfsInput = process.cwd(),
+  log: logInput = 'info',
   api = createFigmaApi(),
-  cache: enableCache = true,
+  cache: cacheInput = true,
   cacheNetwork = true
 }: FigmaClientParams = {}) {
-  const cache = await createCacheSystem('figma', vfs, !enableCache);
-  const cacheMeta = await cache.meta();
+  const log = createAutoLogger(logInput, { name: 'figma' });
+  const vfs = createAutoVfs(vfsInput, { log: log.child('vfs') });
+  const cache = await createCache({
+    log,
+    vfs,
+    path: '{workspaceRoot}/node_modules/.cache/neodx/figma',
+    input: [`hash:${api.__.hash}`],
+    disabled: Boolean(cacheInput)
+  });
 
-  const client = {
-    api,
-    __: {
-      cache,
-      cacheMeta
+  const figma = {
+    file: (id: string) => {
+      const file = {
+        id,
+        figma,
+        ...mapFileApi(api, { id }, cacheNetwork)
+      };
+
+      return {
+        ...file,
+        asGraph: async (params?: Omit<GetFileParams, 'id'>) =>
+          createFileGraph(id, await file.raw(params))
+      };
     },
-    file: (id: string) => ({
-      id,
-      __: {
-        cacheMeta: cacheMeta.scoped(`file:${id}`)
-      },
-      api,
-      client,
-      ...mapFileApi(api, { id }, cacheNetwork)
-    }),
     team: (id: string) => ({
       id,
-      __: {
-        cacheMeta: cacheMeta.scoped(`team:${id}`)
-      },
-      api,
-      client,
+      figma,
       ...mapTeamApi(api, { team_id: id }, cacheNetwork)
     }),
     me: api.getMe,
@@ -54,10 +86,19 @@ export async function createFigmaClient({
     component: (key: string) => mapFigmaApiResult(api.getComponent({ key }), prop('meta')),
     componentSet: (key: string) => mapFigmaApiResult(api.getComponentSet({ key }), prop('meta')),
     projectFiles: (projectId: string) =>
-      mapFigmaApiResult(api.getProjectFiles({ project_id: projectId }), prop('files'))
+      mapFigmaApiResult(api.getProjectFiles({ project_id: projectId }), prop('files')),
+    /**
+     * @internal
+     */
+    __: {
+      log,
+      vfs,
+      api,
+      cache
+    }
   };
 
-  return client;
+  return figma;
 }
 
 const createMapper =
@@ -86,7 +127,7 @@ const createMapper =
 
       redefineName(handler, `${key as string}(original ${method})`);
       return enableCache && cacheable.includes(key)
-        ? cached(handler, { key: JSON.stringify })
+        ? memoize(handler, { key: JSON.stringify })
         : handler;
     }) as {
       [Key in keyof Shape]: (
@@ -167,6 +208,6 @@ const mapFigmaApiResult = async <Original extends CommonFigmaResponse, Mapped>(
 
 type FigmaApiParams<Name extends FigmaApiKey> = FirstArg<FigmaApi[Name]>;
 type FigmaApiResult<Name extends FigmaApiKey> = Awaited<ReturnType<FigmaApi[Name]>>;
-type FigmaApiKey = keyof FigmaApi;
+type FigmaApiKey = Exclude<keyof FigmaApi, '__'>;
 type MakeOptionalIfShapeIsEmpty<Shape extends object> =
   Record<string, never> extends Shape ? Shape | void : Shape;

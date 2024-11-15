@@ -6,6 +6,7 @@ import type {
   CommonFigmaResponse,
   ComponentMetadata,
   ComponentSetMetadata,
+  DocumentNode,
   FigmaApi,
   GetFileNodesResult,
   GetFileResult,
@@ -24,13 +25,16 @@ import {
   type FigmaClientFile,
   type FigmaClientTeam
 } from '../create-figma-client.ts';
+import type { GraphNode } from '../graph';
 
 describe('createFigmaClient types', async () => {
   const client = await createFigmaClient();
 
   test('root API', () => {
     expectTypeOf(client).toMatchTypeOf<{
-      api: FigmaApi;
+      __: {
+        api: FigmaApi;
+      };
       team: (id: string) => FigmaClientTeam;
       file: (id: string) => FigmaClientFile;
     }>();
@@ -47,10 +51,9 @@ describe('createFigmaClient types', async () => {
     const file = client.file('...');
 
     expectTypeOf(file).toMatchTypeOf<{
-      __: any;
       id: string;
-      api: FigmaApi;
-      client: FigmaClient;
+      figma: FigmaClient;
+      asGraph: () => Promise<GraphNode<DocumentNode>>;
 
       raw: AnyFn;
       nodes: AnyFn;
@@ -91,8 +94,7 @@ describe('createFigmaClient types', async () => {
 
     expectTypeOf(file).toMatchTypeOf<{
       id: string;
-      api: FigmaApi;
-      client: FigmaClient;
+      figma: FigmaClient;
 
       styles: AnyFn;
       projects: AnyFn;

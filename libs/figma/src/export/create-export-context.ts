@@ -1,3 +1,4 @@
+import { memoize } from '@neodx/std';
 import type { Vfs } from '@neodx/vfs';
 import type { DocumentNode, FigmaApi, GetFileResult } from '../core';
 import type { GraphNode } from '../graph';
@@ -18,9 +19,9 @@ export interface CreateExportContextParams {
 }
 
 export type ExportCache = ReturnType<typeof createExportCache>;
-export type ExportContext = ReturnType<typeof createExportContext>;
+export type ExportContext = Awaited<ReturnType<typeof createExportContext>>;
 
-export function createExportContext({
+export async function createExportContext({
   api,
   vfs,
   cache = createExportCache(),
@@ -40,9 +41,8 @@ export function createExportContext({
     api,
     vfs,
     log,
-    getFile(id: string) {
-      return cache.getFileOrElse(id, () => getNewFile(id));
-    },
+    // cache: await createCacheSystem('figma', vfs),
+    getFile: memoize(getNewFile),
     /**
      * @internal
      */
