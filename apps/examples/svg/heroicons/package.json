@@ -43,10 +43,10 @@
       },
       "build": {
         "outputs": [
-          "{workspaceRoot}/public/sprites"
+          "{projectRoot}/public/sprites"
         ],
         "inputs": [
-          "{projectRoot}/assets/**/*.svg",
+          "{projectRoot}/src/shared/ui/icon/assets/**/*.svg",
           "shared"
         ],
         "dependsOn": [

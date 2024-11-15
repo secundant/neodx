@@ -16,6 +16,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@neodx/svg": "*",
     "@types/react": "18.2.78",
     "@types/react-dom": "18.2.25",
     "@vitejs/plugin-react": "4.3.1",

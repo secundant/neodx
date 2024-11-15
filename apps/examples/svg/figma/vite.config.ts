@@ -13,7 +13,7 @@ export default defineConfig({
     svg({
       output: 'public/sprites',
       fileName: '{name}.{hash:8}.svg',
-      inputRoot: 'assets/icons',
+      inputRoot: 'src/shared/ui/icon/assets',
       metadata: 'src/shared/ui/icon/sprite.gen.ts',
       defaultSpriteName: 'global',
       resetColors: {

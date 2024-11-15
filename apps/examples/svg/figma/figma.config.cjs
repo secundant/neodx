@@ -8,7 +8,7 @@ module.exports = {
   export: {
     fileId:
       'https://www.figma.com/file/qjGIOVF6243bClGjQid2Y5/Int-UI-Icons-(Community)?type=design&node-id=955-20814',
-    output: 'assets/icons',
+    output: 'src/shared/ui/icon/assets',
     getExportFileName({ format, node }, root) {
       const componentsSet = root.registry.byId[node.parentId];
       const frame = root.registry.byId[componentsSet.parentId];

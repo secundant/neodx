@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { heroiconsReactScreen } from '../screens/heroicons-react.tsx';
 import { neodxScreen } from '../screens/neodx-svg.tsx';
+import { type IconName } from '../shared/ui/icon';
 import { Input } from '../shared/ui/input.tsx';
 import { Select } from '../shared/ui/select.tsx';
 
@@ -9,6 +10,7 @@ export function App() {
   const [color, setColor] = useState<'currentColor' | string>('#5b21b6');
   const [search, setSearch] = useState('');
   const screen = screens[mode];
+  const [selected, setSelected] = useState<IconName>('16/solid:academic-cap');
 
   return (
     <div className="container mx-auto min-h-screen text-2xl py-8 flex flex-col gap-8">
@@ -37,8 +39,9 @@ export function App() {
           onChange={e => setSearch(e.target.value)}
         />
       </div>
+      {<screen.preview name={selected} />}
       <div className="flex flex-col gap-4" style={{ color }}>
-        {screen && <screen.ui filter={search} />}
+        {<screen.ui search={search} onIconClick={setSelected} />}
       </div>
     </div>
   );

@@ -7,6 +7,10 @@
     /** Multi-color icons will use this variable as an additional color */
     --icon-secondary-color: currentColor;
   }
+
+  a {
+    @apply text-blue-600 hover:text-blue-800 hover:underline visited:text-purple-600 visited:hover:text-purple-800;
+  }
 }
 
 @layer components {
@@ -17,7 +21,9 @@
   .icon,
   .icon-x,
   .icon-y {
-    @apply select-none fill-current text-inherit box-content;
+    @apply select-none fill-current inline-block text-inherit box-content;
+    /** We need to align icons to the baseline, -0.125em is the 1/8 of the icon height */
+    vertical-align: -0.125em;
   }
 
   /* Set icon size to 1em based on its aspect ratio, so we can use `font-size` to scale it */
