@@ -28,6 +28,8 @@ export const createSvgoConfig = ({
   spriteMode,
   config
 }: CreateSvgoConfigParams = {}): Config => ({
+  multipass: true,
+  ...config,
   plugins: [
     {
       name: 'preset-default',
@@ -70,7 +72,5 @@ export const createSvgoConfig = ({
       }
     },
     ...(config?.plugins ?? [])
-  ],
-  multipass: true,
-  ...config
+  ]
 });

@@ -35,7 +35,7 @@ So, you can create a `build.mjs` script to build your sprites:
 import { createSvgBuilder } from '@neodx/svg';
 
 const builder = createSvgBuilder({
-  inputRoot: 'assets',
+  inputRoot: 'src/shared/ui/icon/assets',
   metadata: 'src/sprites.ts',
   fileName: '{name}.{hash:8}.svg',
   output: 'public'

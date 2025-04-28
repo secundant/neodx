@@ -91,10 +91,9 @@ export default defineConfig({
             text: 'Setup',
             link: '/svg/setup/',
             items: [
-              { text: 'Vite', link: '/svg/setup/vite.md' },
-              { text: 'Next', link: '/svg/setup/next.md' },
-              { text: 'Webpack', link: '/svg/setup/webpack.md' },
-              { text: 'Pr', link: '/svg/setup/next.md' },
+              { text: 'Vite', link: '/svg/setup/vite' },
+              { text: 'Next.js', link: '/svg/setup/next' },
+              { text: 'Webpack', link: '/svg/setup/webpack' },
               { text: 'Other', link: '/svg/setup/other' }
             ]
           },
@@ -103,45 +102,40 @@ export default defineConfig({
             items: [
               { text: 'Group and hash sprites', link: '/svg/group-and-hash' },
               { text: 'Generate metadata', link: '/svg/metadata' },
-              { text: '✨ Writing Icon component', link: '/svg/writing-icon-component' },
-              { text: 'Automatically reset colors', link: '/svg/colors-reset' },
-              { text: 'Working with multicolored', link: '/svg/multicolored' }
+              { text: 'Writing Icon component', link: '/svg/writing-icon-component' },
+              { text: 'Colors reset', link: '/svg/colors-reset' },
+              { text: 'Multicolored icons', link: '/svg/multicolored' },
+              { text: 'SVG optimization', link: '/svg/optimization' },
+              { text: 'SVG inlining', link: '/svg/inlining' }
             ]
           },
           {
-            text: 'Integrations',
+            text: 'Integration',
+            link: '/svg/integration/',
             items: [
-              { text: 'Vue', link: '/svg/integrations/vue' },
-              { text: 'React', link: '/svg/integrations/react' },
-              { text: 'Angular', link: '/svg/integrations/angular' }
+              { text: 'Vue', link: '/svg/integration/vue' },
+              { text: 'React', link: '/svg/integration/react' },
+              { text: 'Angular', link: '/svg/integration/angular' }
             ]
           },
           {
-            text: 'Recipes and ',
-            items: [{ text: 'CDN Compatibility', link: '/svg/limitations/cdn-compatibility' }]
+            text: 'Recipes',
+            link: '/svg/recipes/',
+            items: [
+              { text: 'CDN Compatibility', link: '/svg/recipes/cdn-compatibility' }
+            ]
           },
           {
             text: 'API',
             collapsed: true,
             link: '/svg/api/',
             items: [
-              { text: 'createSpritesBuilder', link: '/svg/api/create-sprites-builder' },
-              { text: 'createWatcher', link: '/svg/api/create-watcher' },
-              { text: 'buildSprites', link: '/svg/api/build-sprites' },
-              {
-                text: 'Plugins API',
-                collapsed: true,
-                items: [
-                  { text: 'resetColors', link: '/svg/api/plugins/reset-colors' },
-                  {
-                    text: 'metadata',
-                    link: '/svg/api/plugins/metadata'
-                  },
-                  { text: 'svgo', link: '/svg/api/plugins/svgo' }
-                ]
-              }
+              { text: 'Overview', link: '/svg/api/' },
+              { text: 'Builder', link: '/svg/api/builder' }
             ]
-          }
+          },
+          { text: 'Migration guide', link: '/svg/migration' },
+          { text: 'FAQ', link: '/svg/faq' }
         ]
       },
       {

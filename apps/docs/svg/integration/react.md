@@ -32,7 +32,7 @@ export default defineConfig({
       output: 'public/sprites',
       fileName: '{name}.{hash:8}.svg',
       metadata: 'src/shared/ui/icon/sprite.gen.ts',
-      inputRoot: 'assets',
+      inputRoot: 'src/shared/ui/icon/assets',
       resetColors: {
         // 1. Prevent resetting colors for flags and logos
         exclude: [/^flags/, /^logos/],

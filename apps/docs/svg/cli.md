@@ -1,42 +1,54 @@
 # CLI
 
-Currently, we don't recommend using CLI mode because it's not flexible enough and requires extra setup
-if you want to use it - see [CLI](#cli) section and [CLI Options API](#cli-options).
+::: danger
+The CLI mode is deprecated and will be removed in v1.0.0. Please migrate to the programmatic API.
+:::
+
+> **Warning:**
+> The CLI mode is deprecated and will be removed in v1.0.0. We recommend migrating to the programmatic API for better flexibility, type safety, and integration capabilities.
+>
+> See [Migration Guide](./migration.md#cli-deprecation) for detailed migration steps.
+
+## Migration to Programmatic API
+
+We strongly recommend migrating to the programmatic API. Here's a quick example of how to achieve the same functionality:
+
+```typescript
+import { createSvgSpriteBuilder } from '@neodx/svg';
+
+const builder = createSvgSpriteBuilder({
+  inputRoot: 'src/shared/ui/icon/assets',
+  output: 'public/sprite',
+  metadata: 'src/shared/ui/icon/sprite.gen.ts',
+  group: true,
+  resetColors: {
+    replaceUnknown: 'currentColor'
+  }
+});
+
+await builder.load('**/*.svg');
+await builder.build();
+```
+
+For more details and migration steps, please refer to the [Migration Guide](./migration.md#cli-deprecation).
+
+## Deprecated CLI Usage
+
+::: warning
+The following sections are deprecated and will be removed in v1.0.0.
+:::
+
+### Basic Usage
 
 ```shell
 yarn sprite --help
 ```
 
-Let's run `sprite` with some additional options:
+Example usage:
 
 ```bash
 yarn sprite --group --root assets -o public/sprite -d src/shared/ui/icon/sprite.gen.ts --reset-unknown-colors
 ```
-
-In details:
-
-- The `--group` option group icons by folders (`common` and `other`)
-- The `--root` option sets `assets` as a base path for icons (you can try to remove it and see the difference)
-- The `-o` option sets `public/sprite` as a base path for generated sprites (it's default value, but let's keep it for now)
-- The `-d` option generates TS definitions file with sprite meta information
-
-## CLI
-
-> **Warning:**
-> While the CLI mode is currently available,
-> it's not the recommended method of use and might be removed in future major versions.
->
-> Now we're providing built-it bundlers integration, please, use [our plugin](#integrate-with-your-bundler) instead.
-
-To get started, you can try the CLI mode even without any configuration, just run `sprite` command:
-
-```shell
-yarn sprite
-```
-
-This command searches for all SVG files, excluding those in the `public/sprites` folder and generate sprites in `public/sprites`.
-
-By default, it creates a single sprite containing all icons without any grouping or TS definitions. However, this can be customized. See [CLI options](#cli-options) for more information
 
 ### CLI Options
 

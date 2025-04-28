@@ -2,16 +2,27 @@
 
 Supercharge your icons ⚡️
 
-- TypeScript support out of box - [generated types and information about your sprites](./metadata.md)
-- [Built-in integration](setup/index.md) for all major bundlers: [Vite](./setup/vite.md), [Next.js](./setup/next.md), [Webpack](./setup/webpack.md), `rollup`, `esbuild` and [another](./setup/other.md) with the power of [unplugin](https://github.com/unjs/unplugin)
-- [Grouping in multiple sprites](./group-and-hash.md)
-- Optimization with [svgo](./api/plugins/svgo.md)
-- Automated [colors reset](./colors-reset.md) and [cleaning up](./cleanup.md) outdated files
-- Recipes for:
-  - [multiple colors](./multicolored.md)
-  - [text alignment](./recipes/text-alignment.md)
-  - set of major frameworks: [React](./integration/react.md), [Vue](./integration/vue.md), [Angular](./integration/angular.md), [Svelte](./integration/svelte.md)
-  - integration with icon sources: [Figma](./integration/figma.md)
+@neodx/svg is a modern toolkit for building, optimizing, and integrating SVG icons and icon systems. It provides type safety, color control, advanced optimization, and flexible integration for any frontend stack.
+
+## Key Features
+
+- **Type-safe icons** — [Generated TypeScript types and metadata](./metadata.md) for all your icons and sprites. Autocomplete and catch typos at build time.
+- **Universal integration** — Works with [Vite](./setup/vite.md), [Next.js](./setup/next.md), [Webpack](./setup/webpack.md), `rollup`, `esbuild`, and more. One config for any modern frontend stack.
+- **Smart grouping & cache-busting** — [Group icons](./group-and-hash.md) into multiple sprites, with automatic hashing for cache safety and efficient updates.
+- **SVG optimization** — [SVGO-based](./optimization.md) minification and cleanup, with defaults that work out of the box and full customizability.
+- **CSS-driven color control** — [resetColors](./colors-reset.md) lets you manage icon colors from CSS, support dark mode, and theme icons without editing SVGs.
+- **Multicolored icons** — [Advanced color strategies](./multicolored.md) for icons with multiple colors and CSS variables.
+- **Autoscaling, accessible Icon component** — [Build your own](./writing-icon-component.md) with type safety, correct scaling, and accessibility.
+- **Automatic cleanup** — [Remove outdated sprite files](./cleanup.md) with no manual work.
+- **Recipes & integrations**:
+  - [Multiple color strategies](./multicolored.md)
+  - [Text alignment](./recipes/text-alignment.md)
+  - [React](./integration/react.md), [Vue](./integration/vue.md), [Angular](./integration/angular.md), [Svelte](./integration/svelte.md)
+  - [Figma import](./integration/figma.md) for design-to-code workflows
+
+::: warning
+The CLI mode is deprecated and will be removed in v1.0.0. Please migrate to the programmatic API or plugin integrations.
+:::
 
 ## Installation
 
@@ -33,20 +44,20 @@ pnpm add -D @neodx/svg
 
 ## Getting started
 
-::: tip
-If you
-:::
+### 1. Choose your integration method
 
-### 1. Setup your bundler
+You have two main ways to integrate `@neodx/svg` into your project:
 
-First of all, you need to integrate one of our [plugins](./setup/) into your bundler and configure it:
+#### Option 1: Use a bundler plugin (Recommended)
+
+Integrate one of our [plugins](./setup/) into your bundler and configure it:
 
 - [Vite](./setup/vite.md)
 - [Next.js](./setup/next.md)
 - [Webpack](./setup/webpack.md)
 - [Other](./setup/other.md)
 
-For example, `Vite` configuration will look like this:
+Example Vite configuration:
 
 ```typescript [vite.config.ts]
 import { defineConfig } from 'vite';
@@ -57,10 +68,7 @@ export default defineConfig({
   plugins: [
     react(),
     svg({
-      root: 'assets',
-      group: true,
-      // All paths should be relative to cwd or absolute.
-      // For example, 'public/sprites' is an equivalent of `path.resolve(__dirname, 'public/sprites')`
+      inputRoot: 'src/shared/ui/icon/assets',
       output: 'public/sprites',
       metadata: 'src/sprite.gen.ts'
     })
@@ -68,9 +76,30 @@ export default defineConfig({
 });
 ```
 
-Now, sprites will be built at the start of your `build`/`dev` command and any changes in the source folder(s) will initiate an incremental rebuild in `dev`/`watch` mode.
+#### Option 2: Use the programmatic API
 
-For example, you will get the following structure:
+For custom build processes or advanced control:
+
+```typescript [scripts/build-icons.ts]
+import { createSvgSpriteBuilder } from '@neodx/svg';
+
+const builder = createSvgSpriteBuilder({
+  inputRoot: 'src/shared/ui/icon/assets',
+  output: 'public/sprites',
+  metadata: 'src/sprite.gen.ts'
+});
+
+await builder.load('**/*.svg');
+await builder.build();
+```
+
+::: warning
+For CLI users: the CLI mode is deprecated and will be removed in v1.0.0. Please migrate to one of the above methods.
+:::
+
+### 2. Generated Files Structure
+
+After running the build, you'll get the following structure:
 
 ```diff
 /
@@ -88,11 +117,11 @@ For example, you will get the following structure:
 +   └── sprite.gen.ts
 ```
 
-### 2. Create an Icon component
+### 3. Create an Icon component
 
-Next, you need to create a single component that will be responsible for rendering icons, visit our ["Writing an Icon component"](./writing-icon-component.md) guide for more information.
+Next, create a single component to render icons. See our [Writing an Icon component](./writing-icon-component.md) guide for a robust, type-safe, autoscaling implementation.
 
-At the end, you can use your `Icon` component in any place of your application:
+At the end, you can use your `Icon` component anywhere in your application:
 
 ```tsx [some-component.tsx]
 import { Icon } from './icon';
@@ -126,8 +155,18 @@ export function SomeComponent() {
 }
 ```
 
-In the result of this funny stuff, you will get something like this:
+In the result, you will get something like this:
 
 ![Example of using icons](/crazy-svg-mix.png)
+
+## Explore more
+
+- [Metadata & type safety](./metadata.md)
+- [Color reset & theming](./colors-reset.md)
+- [Multicolored icons](./multicolored.md)
+- [SVG optimization](./optimization.md)
+- [Writing an Icon component](./writing-icon-component.md)
+- [Grouping & hashing](./group-and-hash.md)
+- [API Reference](./api/index.md)
 
 Enjoy! 🎉
