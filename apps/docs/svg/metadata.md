@@ -57,6 +57,8 @@ export interface SpritesMeta {
 
 ## Using generated metadata in your app
 
+> **Icon naming:** We use the `sprite:symbol` format for icon names. See [Recommended Token Naming](./recipes/tokens-naming.md) for details.
+
 You can use the generated metadata to build type-safe icon components. Here is a minimal example:
 
 ```tsx

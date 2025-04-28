@@ -4,6 +4,8 @@ outline: [2, 3]
 
 # Writing an `Icon` component
 
+> **Icon naming:** We use the `sprite:symbol` format for icon names. See [Recommended Token Naming](./recipes/tokens-naming.md) for details.
+
 A custom Icon component gives you full control over how SVG icons are rendered, styled, and integrated into your design system. With @neodx/svg, you get type-safe icon names, autoscaling, and flexible color management out of the box.
 
 We don't provide a pre-made, ready-to-use component—this would be too limited and opinionated for most projects. Instead, this guide shows you how to build your own, step by step.
@@ -22,7 +24,7 @@ This guide uses React, TypeScript, and Tailwind CSS, but the same principles app
 ## Result: A robust, type-safe Icon component
 
 - Supports [grouped sprites with generated file names](./group-and-hash.md)
-- [Type-safe `IconName`](./metadata.md) (format: `spriteName/iconName`) for autocompletion and convenient usage
+- [Type-safe `IconName`](./metadata.md) (format: `sprite:symbol`) for autocompletion and convenient usage ([see naming guide](./recipes/tokens-naming.md))
 - [Autoscaling](#autoscaling-styles) based on the icon's aspect ratio
 - Open to any extension for your needs!
 
@@ -95,7 +97,7 @@ export interface IconProps extends SVGProps<SVGSVGElement> {
   name: AnyIconName;
 }
 export type AnyIconName = { [Key in keyof SpritesMap]: IconName<Key> }[keyof SpritesMap];
-export type IconName<Key extends keyof SpritesMap> = `${Key}/${SpritesMap[Key]}`;
+export type IconName<Key extends keyof SpritesMap> = `${Key}:${SpritesMap[Key]}`;
 
 export function Icon({ name, className, ...props }: IconProps) {
   const { viewBox, filePath, iconName, axis } = getIconMeta(name);
@@ -114,7 +116,7 @@ export function Icon({ name, className, ...props }: IconProps) {
 }
 
 const getIconMeta = <Key extends keyof SpritesMap>(name: IconName<Key>) => {
-  const [spriteName, iconName] = name.split('/') as [Key, SpritesMap[Key]];
+  const [spriteName, iconName] = name.split(':') as [Key, SpritesMap[Key]];
   const {
     filePath,
     items: {

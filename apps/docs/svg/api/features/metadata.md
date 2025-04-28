@@ -262,10 +262,12 @@ const builder = createSvgSpriteBuilder({
 
 ### Using Generated Metadata
 
+> **Icon naming:** We use the `sprite:symbol` format for icon names. See [Recommended Token Naming](../../recipes/tokens-naming.md) for details.
+
 ```tsx
 import { sprites, type SpritesMeta } from './sprite.gen';
 
-// Type for icon names in format "sprite:icon"
+// Type for icon names in format "sprite:symbol"
 type IconName = {
   [Key in keyof SpritesMeta]: `${Key}:${SpritesMeta[Key]}`;
 }[keyof SpritesMeta];
