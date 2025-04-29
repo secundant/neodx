@@ -162,4 +162,4 @@ When processing sprites, the optimization:
 
 - [Sprite Generation](./sprite.md) - Learn about sprite generation
 - [Builder API](../builder.md) - Explore advanced configuration options
-- [Color Reset](../../reset-colors.md) - Learn about color management
+- [Color Reset](../../colors-reset.md) - Learn about color management

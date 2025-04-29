@@ -1,9 +1,5 @@
 # FAQ
 
-::: danger
-WIP
-:::
-
 ## Why do SVG components have bad DX?
 
 ::: tip
@@ -107,10 +103,11 @@ Let's compare the following approaches:
     - Small bundle size
     - Great DX (single import, type safety)
   - Cons:
+    - Content won't be displayed until the sprite is loaded
     - Additional HTTP request
     - Browser compatibility issues:
-      - CORS restrictions when hosted on CDN
-      - ID references (`url(#id)`, `href="#id"`) don't work across domains
+      - CORS restrictions when hosted on CDN (see our [CDN Compatibility Guide](./recipes/cdn-compatibility.md))
+      - ID references (`url(#id)`, `href="#id"`) aren't supported in some browsers (see our [inlining guide](./inlining.md))
     - Requires [inlining](./inlining.md) for complex cases
 
 - Inlined sprites

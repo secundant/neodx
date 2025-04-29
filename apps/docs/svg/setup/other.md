@@ -1,9 +1,5 @@
 # Setup `@neodx/svg` with other bundlers
 
-::: danger
-WIP; TODO UPDATE BEFORE RELEASE
-:::
-
 As you could know from sections before, `@neodx/svg` provides two ways to use it:
 
 - [programmatically with node.js](./node.md) for setting up your own build process,
@@ -18,11 +14,13 @@ To achieve the second option, we're using [unplugin](https://github.com/unjs/unp
 ```typescript [webpack.config.js]
 const svg = require('@neodx/svg/webpack');
 
-modul.exports = {
+module.exports = {
   plugins: [
     svg({
-      root: 'assets',
-      output: 'public'
+      inputRoot: 'src/shared/ui/icon/assets',
+      output: 'public/sprites',
+      fileName: '{name}.{hash:8}.svg',
+      metadata: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 };
@@ -40,8 +38,10 @@ import svg from '@neodx/svg/rollup';
 export default {
   plugins: [
     svg({
-      root: 'assets',
-      output: 'public'
+      inputRoot: 'src/shared/ui/icon/assets',
+      output: 'public/sprites',
+      fileName: '{name}.{hash:8}.svg',
+      metadata: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 };
@@ -60,8 +60,10 @@ import svg from '@neodx/svg/esbuild';
 build({
   plugins: [
     svg({
-      root: 'assets',
-      output: 'public'
+      inputRoot: 'src/shared/ui/icon/assets',
+      output: 'public/sprites',
+      fileName: '{name}.{hash:8}.svg',
+      metadata: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 });
@@ -76,11 +78,13 @@ build({
 ```typescript [rspack.config.js]
 const svg = require('@neodx/svg/rspack');
 
-modul.exports = {
+module.exports = {
   plugins: [
     svg({
-      root: 'assets',
-      output: 'public'
+      inputRoot: 'src/shared/ui/icon/assets',
+      output: 'public/sprites',
+      fileName: '{name}.{hash:8}.svg',
+      metadata: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 };

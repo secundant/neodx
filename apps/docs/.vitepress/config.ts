@@ -94,7 +94,9 @@ export default defineConfig({
               { text: 'Vite', link: '/svg/setup/vite' },
               { text: 'Next.js', link: '/svg/setup/next' },
               { text: 'Webpack', link: '/svg/setup/webpack' },
-              { text: 'Other', link: '/svg/setup/other' }
+              { text: 'Other', link: '/svg/setup/other' },
+              { text: 'Node.js programmatic API', link: '/svg/setup/node' },
+              { text: 'Storybook', link: '/svg/setup/storybook' }
             ]
           },
           {
@@ -113,16 +115,19 @@ export default defineConfig({
             text: 'Integration',
             link: '/svg/integration/',
             items: [
-              { text: 'Vue', link: '/svg/integration/vue' },
               { text: 'React', link: '/svg/integration/react' },
-              { text: 'Angular', link: '/svg/integration/angular' }
+              { text: 'Vue', link: '/svg/integration/vue' },
+              { text: 'Svelte', link: '/svg/integration/svelte' },
+              { text: 'Solid', link: '/svg/integration/solid' },
+              { text: 'Figma', link: '/svg/integration/figma' },
+              { text: 'Heroicons', link: '/svg/integration/heroicons' }
             ]
           },
           {
             text: 'Recipes',
-            link: '/svg/recipes/',
             items: [
-              { text: 'CDN Compatibility', link: '/svg/recipes/cdn-compatibility' }
+              { text: 'CDN Compatibility', link: '/svg/recipes/cdn-compatibility' },
+              { text: 'Text alignment', link: '/svg/recipes/text-alignment' }
             ]
           },
           {

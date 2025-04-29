@@ -1,16 +1,16 @@
 # Setup `@neodx/svg` with [Next.js](https://nextjs.org/)
 
 ::: tip Example repository
-You can visit ["examples/svg-next"](https://github.com/secundant/neodx/tree/main/examples/svg-next) project in our repository to see how it works.
+You can visit [apps/examples/svg/next](https://github.com/secundant/neodx/tree/main/apps/examples/svg/next) project in our repository to see how it works.
 :::
 
 ::: warning
-We don't provide specific adapter for Next.js, [`@neodx/svg/webpack` plugin](./webpack.md) will be used.
+We don't provide a specific adapter for Next.js, so [`@neodx/svg/webpack` plugin](./webpack.md) will be used.
 :::
 
 ## 1. Configure your assets
 
-Add `@neodx/svg/webpack` plugin to `next.config.js` and describe your svg assets location and output.
+Add `@neodx/svg/webpack` plugin to `next.config.js` and describe your SVG assets location and output.
 
 ::: code-group
 
@@ -23,8 +23,11 @@ module.exports = {
     if (!isServer) {
       config.plugins.push(
         svg({
-          root: 'assets',
-          output: 'public'
+          inputRoot: 'src/shared/ui/icon/assets',
+          output: 'public/sprites',
+          fileName: '{name}.{hash:8}.svg',
+          metadata: 'src/shared/ui/icon/sprite.gen.ts',
+          group: true
         })
       );
     }
@@ -37,11 +40,11 @@ module.exports = {
 
 ## 2. Create your `Icon` component
 
-Visit our [Writing `Icon` component](../writing-icon-component) guide to see detailed instructions for creating `Icon` component.
+Visit our [Writing `Icon` component](../writing-icon-component) guide to see detailed instructions for creating an `Icon` component.
 
-The simplest variant of `Icon` component will look like this:
+A simple variant of the `Icon` component will look like this:
 
-```tsx [icon.jsx]
+```tsx [icon.tsx]
 import clsx from 'clsx';
 
 export function Icon({ name, className, ...props }) {
@@ -52,7 +55,7 @@ export function Icon({ name, className, ...props }) {
       aria-hidden
       {...props}
     >
-      <use href={`/sprite.svg#${name}`} />
+      <use href={`/sprites/sprite.svg#${name}`} />
     </svg>
   );
 }
@@ -64,7 +67,7 @@ export function Icon({ name, className, ...props }) {
 import { Icon } from '@/shared/ui/icon';
 
 export function SomeComponent() {
-  return <Icon name="my-icon-name" />;
+  return <Icon name="common:groups" />;
 }
 ```
 

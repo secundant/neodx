@@ -70,7 +70,7 @@ Previously, you could disable types or runtime values generation, but this was s
 
 ### `vfsParams` and `logger` options was removed
 
-::: note
+::: tip
 Mostly for [Node API Usage](./api/index.md)
 :::
 

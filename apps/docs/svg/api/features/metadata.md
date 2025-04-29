@@ -303,6 +303,6 @@ function Icon({ name }: { name: IconName }) {
 
 ## Next Steps
 
-- Learn about [sprite generation](../sprite.md)
-- Check out [icon component examples](../writing-icon-component.md)
-- Explore [advanced configuration options](../api/builder.md)
+- Learn about [sprite generation](./sprite.md)
+- Check out [icon component examples](../../writing-icon-component.md)
+- Explore [advanced configuration options](../builder.md)

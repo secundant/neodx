@@ -1,16 +1,12 @@
 # `@neodx/svg` Integration with frameworks
 
-::: danger
-WIP; TODO UPDATE BEFORE RELEASE
-:::
-
 `@neodx/svg` is a framework-agnostic library, so you can use it in any framework.
 
-We're providing guides for the most popular frameworks:
+We provide production-ready guides for the most popular frameworks and icon sources:
 
 - [React](./react.md)
 - [Vue](./vue.md)
-- [Angular](./angular.md)
+- [Solid](./solid.md)
 - [Svelte](./svelte.md)
 - [Next.js](../setup/next.md)
 

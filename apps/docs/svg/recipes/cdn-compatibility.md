@@ -95,5 +95,5 @@ export default defineConfig({
 ## Related
 
 - [Inlining Guide](../inlining.md)
-- [Sprite Generation](../sprite.md)
+- [Sprite Generation](../api/features/sprite.md)
 - [Metadata Generation](../metadata.md)

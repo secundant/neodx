@@ -23,5 +23,5 @@ await builder.build();
 :::
 
 ::: tip
-See all available options in the [API Reference](./api/index.md)
+See all available options in the [API Reference](/svg/api/index.md)
 :::

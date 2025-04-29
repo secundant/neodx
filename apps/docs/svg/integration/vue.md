@@ -1,9 +1,5 @@
 # Using `@neodx/svg` with [Vue](https://vuejs.org/)
 
-::: danger
-WIP; TODO UPDATE BEFORE RELEASE
-:::
-
 This guide will walk you through the process of integrating `@neodx/svg` with a Vue 3 project using Vite.
 
 <!--@include: @svg/shared/no-built-in-component-disclaimer.md-->
@@ -66,16 +62,16 @@ interface IconProps extends SVGAttributes {
   name: IconName;
 }
 
-/** Represents all possible icon names as the `<sprite name>/<symbol name>` string */
+/** Represents all possible icon names as the `<sprite name>:<symbol name>` string */
 export type IconName = {
-  [Key in keyof SpritesMeta]: `${Key}/${SpritesMeta[Key]}`;
+  [Key in keyof SpritesMeta]: `${Key}:${SpritesMeta[Key]}`;
 }[keyof SpritesMeta];
 
 const props = defineProps<IconProps>();
 
 /** Safe wrapper for extracting icon metadata */
 const getIconMeta = (name: IconName) => {
-  const [spriteName, iconName] = name.split('/');
+  const [spriteName, iconName] = name.split(':');
   const item = sprites.experimental_get(spriteName!, iconName!, config);
 
   if (!item) {
@@ -182,24 +178,24 @@ import Icon from '../shared/ui/icon/icon.vue';
 
 <template>
   <div>
-    <Icon name="common/groups" class="text-xs" />
-    <Icon name="common/groups" />
-    <Icon name="common/groups" class="text-2xl" />
-    <Icon name="common/groups" class="text-4xl" />
-    <Icon name="common/groups" class="text-6xl" />
+    <Icon name="common:groups" class="text-xs" />
+    <Icon name="common:groups" />
+    <Icon name="common:groups" class="text-2xl" />
+    <Icon name="common:groups" class="text-4xl" />
+    <Icon name="common:groups" class="text-6xl" />
 
     <div class="flex gap-4 items-center">
-      <Icon name="common/copy" class="text-xl" />
+      <Icon name="common:copy" class="text-xl" />
       <Icon
-        name="common/edit"
+        name="common:edit"
         class-name="bg-pink-100 text-pink-700 p-2 rounded-full border border-pink-700"
       />
     </div>
 
     <span class="text-sm inline-flex items-center gap-2">
-      <Icon name="common/filter" />
+      <Icon name="common:filter" />
       Small description example
-      <Icon name="tool/history" />
+      <Icon name="tool:history" />
     </span>
   </div>
 </template>

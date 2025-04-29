@@ -1,91 +1,71 @@
-# Run `@neodx/svg` programmatically with [Node.js](https://nodejs.org/)
+# Use `@neodx/svg` programmatically with Node.js
 
-::: danger
-WIP; TODO UPDATE BEFORE RELEASE
-:::
+You can use `@neodx/svg` directly in your Node.js scripts to build SVG sprites and generate metadata—no bundler or plugin required! This is perfect for libraries, design systems, or custom build flows.
 
-Thanks [unplugin](https://github.com/unjs/unplugin) we have a [great support](./index.md) for the most popular bundlers,
-but often you need to build your sprites separately, for example, if you're building a library.
+## Quick start
 
-To solve this problem, we are planning to add CLI support, but for now, you can use the `@neodx/svg` API directly.
+1. **Install** `@neodx/svg`:
 
-Let's imagine we have the following directory structure:
-
-```text
-.
-├── assets
-│   ├── common
-│   │   ├── add.svg
-│   │   ├── close.svg
-│   │   ├── help.svg
-│   │   └── search.svg
-│   └── flags
-│       ├── au.svg
-│       ├── us.svg
-│       └── uk.svg
-├── package.json
-├── src
-│   └── index.ts
-└── tsconfig.json
+```bash
+npm install -D @neodx/svg
 ```
 
-So, you can create a `build.mjs` script to build your sprites:
+2. **Create a build script** (e.g., `build-icons.mjs`):
 
-```js [build.mjs]
-import { createSvgBuilder } from '@neodx/svg';
+```js
+import { createSvgSpriteBuilder } from '@neodx/svg';
 
-const builder = createSvgBuilder({
-  inputRoot: 'src/shared/ui/icon/assets',
-  metadata: 'src/sprites.ts',
-  fileName: '{name}.{hash:8}.svg',
-  output: 'public'
+const builder = createSvgSpriteBuilder({
+  inputRoot: 'src/shared/ui/icon/assets', // Where your SVGs are
+  output: 'public/sprites', // Where to write sprites
+  fileName: '{name}.{hash:8}.svg', // Sprite file naming
+  metadata: 'src/shared/ui/icon/sprite.gen.ts', // TypeScript metadata output
+  group: true // Group sprites by folder
 });
 
-await builder.load('**/*.svg');
-await builder.build();
+await builder.load('**/*.svg'); // Find all SVGs
+await builder.build(); // Build sprites & metadata
 ```
 
-::: code-group
+3. **Add a script to your `package.json`**:
 
-```diff [package.json]
+```json
 {
   "scripts": {
-+    "build": "node build.mjs"
+    "build:icons": "node build-icons.mjs"
   }
 }
 ```
 
-:::
+4. **Run your build!**
 
-After running `npm run build` you will see the following files in the `public` and `src` directories:
-
-```diff
-+ ├── public
-+ │   ├── common.ac97f21k.svg
-+ │   └── flags.d4d2f3f2.svg
-  └── src
-     ├── index.ts
-+    └── sprites.ts
+```bash
+npm run build:icons
 ```
 
-Now you can export your sprites as a module:
+## What happens?
 
-```ts [index.ts]
-import { spritesMetadata } from './sprites.ts';
+- All your SVGs are optimized and grouped into sprites in `public/sprites/`.
+- TypeScript metadata is generated for type-safe icon usage.
+- Colors are reset to `currentColor` by default (configurable).
 
-// re-export generated metadata
-export { spritesMetadata };
+## Need more control?
 
-/**
- * Example of custom logic for working with sprites
- */
-export function defineSprites({
-  /**
-   * Base URL for the sprites
-   * @default '/public'
-   */
-  baseUrl = '/public'
-} = {}) {
-  return {};
-}
+You can customize grouping, color reset, optimization, inlining, and more:
+
+```js
+const builder = createSvgSpriteBuilder({
+  // ...
+  group: ({ path }) => (path.includes('logos') ? 'logos' : 'default'),
+  resetColors: { replace: ['#000'], replaceUnknown: 'var(--icon-secondary-color)' },
+  optimize: false, // or custom SVGO config
+  inline: 'auto', // or 'all', or false
+  cleanup: 'auto' // or 'force', or false
+});
 ```
+
+See the [Builder API reference](../api/builder.md) for all options and advanced usage.
+
+---
+
+**That's it!** You now have a fast, flexible, and type-safe SVG icon pipeline—fully automated with Node.js.
