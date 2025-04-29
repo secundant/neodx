@@ -285,9 +285,9 @@ export const sprites = defineSpriteMap([
       defineExternalAssetMeta('common.5213988b.svg')
     ),
     defineSpriteAsset(
-      [defineSpriteSymbol(['ide-update', 'common-ide-update-86493ec5'], [16])],
+      [defineSpriteSymbol(['ide-update', 'common-ide-update-cb003579'], [16])],
       defineInjectedAssetMeta(
-        '<svg width="0" height="0"><defs><clipPath id="common-ide-update-ref-a-86493ec5"><path fill="var(--icon-secondary-color)" d="M0 0h16v16H0z"/></clipPath></defs><symbol xmlns="http://www.w3.org/2000/svg" id="common-ide-update-86493ec5" fill="none" viewBox="0 0 16 16"><g fill="var(--icon-secondary-color)" clip-path="url(#common-ide-update-ref-a-86493ec5)"><path d="m8.5 5.207 2.646 2.647a.5.5 0 0 0 .708-.708l-3.5-3.5a.5.5 0 0 0-.708 0l-3.5 3.5a.5.5 0 1 0 .708.708L7.5 5.207V12a.5.5 0 0 0 1 0z"/><path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m0-1A7 7 0 1 0 8 1a7 7 0 0 0 0 14" clip-rule="evenodd"/></g></symbol></svg>'
+        '<svg width="0" height="0"><defs><clipPath id="common-ide-update-ref-a-cb003579"><path fill="var(--icon-secondary-color)" d="M0 0h16v16H0z"/></clipPath></defs><symbol xmlns="http://www.w3.org/2000/svg" id="common-ide-update-cb003579" fill="none" viewBox="0 0 16 16"><g fill="var(--icon-secondary-color)" clip-path="url(#common-ide-update-ref-a-cb003579)"><path d="m8.5 5.207 2.646 2.647a.5.5 0 0 0 .708-.708l-3.5-3.5a.5.5 0 0 0-.708 0l-3.5 3.5a.5.5 0 1 0 .708.708L7.5 5.207V12a.5.5 0 0 0 1 0z"/><path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m0-1A7 7 0 1 0 8 1a7 7 0 0 0 0 14" clip-rule="evenodd"/></g></symbol></svg>'
       )
     )
   ]),

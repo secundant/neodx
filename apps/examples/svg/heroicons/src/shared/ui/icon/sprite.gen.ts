@@ -902,9 +902,9 @@ export const sprites = defineSpriteMap([
       defineExternalAssetMeta('20/solid.424d6c1c.svg')
     ),
     defineSpriteAsset(
-      [defineSpriteSymbol(['arrow-left-circle', '20/solid-arrow-left-circle-a2a07959'], [20])],
+      [defineSpriteSymbol(['arrow-left-circle', '20/solid-arrow-left-circle-e19ad9b9'], [20])],
       defineInjectedAssetMeta(
-        '<svg width="0" height="0"><defs><clipPath id="20/solid-arrow-left-circle-ref-a-a2a07959"><path d="M0 0h20v20H0z"/></clipPath></defs><symbol xmlns="http://www.w3.org/2000/svg" id="20/solid-arrow-left-circle-a2a07959" fill="currentColor" viewBox="0 0 20 20"><g clip-path="url(#20/solid-arrow-left-circle-ref-a-a2a07959)"><path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16m3.25-7.25a.75.75 0 0 0 0-1.5H8.66l2.1-1.95a.75.75 0 1 0-1.02-1.1l-3.5 3.25a.75.75 0 0 0 0 1.1l3.5 3.25a.75.75 0 0 0 1.02-1.1l-2.1-1.95z" clip-rule="evenodd"/></g></symbol></svg>'
+        '<svg width="0" height="0"><defs><clipPath id="20/solid-arrow-left-circle-ref-a-e19ad9b9"><path d="M0 0h20v20H0z"/></clipPath></defs><symbol xmlns="http://www.w3.org/2000/svg" id="20/solid-arrow-left-circle-e19ad9b9" fill="currentColor" viewBox="0 0 20 20"><g clip-path="url(#20/solid-arrow-left-circle-ref-a-e19ad9b9)"><path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16m3.25-7.25a.75.75 0 0 0 0-1.5H8.66l2.1-1.95a.75.75 0 1 0-1.02-1.1l-3.5 3.25a.75.75 0 0 0 0 1.1l3.5 3.25a.75.75 0 0 0 1.02-1.1l-2.1-1.95z" clip-rule="evenodd"/></g></symbol></svg>'
       )
     )
   ]),
