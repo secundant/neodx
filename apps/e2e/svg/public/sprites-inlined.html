@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sprites Inlined Test</title>
+    <style>
+      body {
+        font-family: 'Inter', system-ui, sans-serif;
+        background: #f7f9fb;
+        margin: 0;
+        padding: 0 0 3rem 0;
+        color: #222;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 2rem;
+        margin-bottom: 2.5rem;
+        font-size: 2rem;
+        letter-spacing: -0.02em;
+      }
+      .icon-section {
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.04);
+        margin: 2rem auto;
+        max-width: 900px;
+        padding: 2rem 2rem 1.5rem 2rem;
+      }
+      .icon-section h2 {
+        font-size: 1.15rem;
+        margin-bottom: 1.2rem;
+        color: #2d7be5;
+        letter-spacing: 0.01em;
+      }
+      .icon-row {
+        display: flex;
+        gap: 2.5rem;
+        margin-bottom: 1.5rem;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .icon-cell {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 90px;
+        margin-bottom: 1rem;
+        transition: background 0.2s;
+        border-radius: 0.5rem;
+        padding: 0.5rem 0.5rem 0.25rem 0.5rem;
+      }
+      .icon-cell label {
+        margin-top: 0.5rem;
+        font-size: 0.95rem;
+        color: #555;
+        letter-spacing: 0.01em;
+        background: #f1f3f6;
+        border-radius: 0.4rem;
+        padding: 0.15rem 0.6rem;
+        margin-bottom: 0.2rem;
+      }
+      .icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 0.5rem;
+        border: 1px solid #e6eaf0;
+        background: #f9fafb;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.02);
+        display: block;
+        transition:
+          box-shadow 0.2s,
+          background 0.2s;
+      }
+      .icon.colored {
+        fill: currentColor;
+        stroke: currentColor;
+      }
+      @media (max-width: 700px) {
+        .icon-row {
+          gap: 1.2rem;
+        }
+        .icon-section {
+          padding: 1.2rem 0.5rem 1rem 0.5rem;
+        }
+        .icon-cell {
+          min-width: 70px;
+        }
+        .icon {
+          width: 48px;
+          height: 48px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Sprites Inlined Test</h1>
+    <!-- Inline sprite: inject the sprite.svg content here in test setup -->
+    <div id="sprite-inline"></div>
+
+    <!--
+    ---
+    Original symbols without size/color changes
+    ---
+  -->
+    <section class="icon-section">
+      <h2>Original symbols</h2>
+      <div class="icon-row">
+        <div class="icon-cell">
+          <svg class="icon"><use href="#add" /></svg>
+          <label>add</label>
+        </div>
+        <div class="icon-cell">
+          <svg class="icon"><use href="#flag-ad" /></svg>
+          <label>flag-ad</label>
+        </div>
+        <div class="icon-cell">
+          <svg class="icon"><use href="#animated-symbol" /></svg>
+          <label>animated-symbol</label>
+        </div>
+        <div class="icon-cell">
+          <svg class="icon"><use href="#linear-gradient" /></svg>
+          <label>linear-gradient</label>
+        </div>
+      </div>
+    </section>
+
+    <!--
+    ---
+    Change colors
+    ---
+  -->
+    <section class="icon-section">
+      <h2>Change colors</h2>
+      <div class="icon-row">
+        <div class="icon-cell">
+          <svg class="icon colored" style="color: #e74c3c"><use href="#add" /></svg>
+          <label>add (red)</label>
+        </div>
+        <div class="icon-cell">
+          <svg class="icon colored" style="color: #27ae60"><use href="#flag-ad" /></svg>
+          <label>flag-ad (green)</label>
+        </div>
+        <div class="icon-cell">
+          <svg class="icon colored" style="color: #2980b9"><use href="#animated-symbol" /></svg>
+          <label>animated-symbol (blue)</label>
+        </div>
+        <div class="icon-cell">
+          <svg class="icon colored" style="color: #f39c12"><use href="#linear-gradient" /></svg>
+          <label>linear-gradient (orange)</label>
+        </div>
+      </div>
+    </section>
+
+    <!--
+    ---
+    Change size
+    ---
+  -->
+    <section class="icon-section">
+      <h2>Change size</h2>
+      <div class="icon-row">
+        <div class="icon-cell">
+          <svg class="icon" style="width: 32px; height: 32px"><use href="#add" /></svg>
+          <label>add (32px)</label>
+        </div>
+        <div class="icon-cell">
+          <svg class="icon" style="width: 48px; height: 48px"><use href="#flag-ad" /></svg>
+          <label>flag-ad (48px)</label>
+        </div>
+        <div class="icon-cell">
+          <svg class="icon" style="width: 64px; height: 64px"><use href="#animated-symbol" /></svg>
+          <label>animated-symbol (64px)</label>
+        </div>
+        <div class="icon-cell">
+          <svg class="icon" style="width: 96px; height: 96px"><use href="#linear-gradient" /></svg>
+          <label>linear-gradient (96px)</label>
+        </div>
+      </div>
+    </section>
+    <script>
+      // Fetch and inline the sprite SVG content
+      fetch('/sprites/sprite.svg')
+        .then(res => res.text())
+        .then(sprite => {
+          document.getElementById('sprite-inline').innerHTML = sprite;
+        });
+    </script>
+  </body>
+</html>

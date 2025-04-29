@@ -1,0 +1,12 @@
+{
+  "name": "@neodx/e2e-svg",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.52.0",
+    "playwright": "^1.43.0"
+  }
+}
