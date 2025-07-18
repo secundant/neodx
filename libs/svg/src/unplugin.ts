@@ -38,6 +38,7 @@ export const unplugin = createUnplugin(
 
     return {
       name: '@neodx/svg',
+      enforce: 'pre',
       buildStart: once(async () => {
         await buildSprites(tasksParams);
         if (development) watcher = watchSprites(tasksParams);

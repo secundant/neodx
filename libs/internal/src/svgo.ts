@@ -62,7 +62,7 @@ export const createSvgoConfig = ({
       name: 'removeAttrs',
       params: {
         attrs: [
-          '(class|style)',
+          '(class)', //|style)',
           'xlink:href',
           'aria-labelledby',
           'aria-describedby',

@@ -69,7 +69,7 @@ export type AnyColorInput = AnyColor | Colord;
 export const createSvgResetColors = (params: SvgResetColorsParams | boolean = defaults) => {
   if (!params) return fallback;
   const replacements = toArray(
-    params === true ? (defaults as SvgResetColorsParams) : params
+    params === true ? (defaults as SvgResetColorsParams) : { ...defaults, ...params }
   ).map<ColorPropertyReplacement>(input => ({
     properties: toArray(input.properties ?? defaults.properties),
     keep: toArray(input.keep ?? []).map(colord),
