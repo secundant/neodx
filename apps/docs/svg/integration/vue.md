@@ -77,7 +77,7 @@ const getIconMeta = (name: IconName) => {
   if (!item) {
     // Prevents crashing when icon name is invalid by returning a default icon
     console.error(`Icon "${name}" is not found in "${spriteName}" sprite`);
-    return sprites.experimental_get('common', 'help', config)!;
+    return sprites.experimental_get('general', 'help', config)!;
   }
   return item;
 };
@@ -148,6 +148,8 @@ Add the following CSS (example for Tailwind) to your project (e.g., in `index.cs
   .icon-x,
   .icon-y {
     @apply select-none fill-current inline-block text-inherit box-content;
+    /** We need to align icons to the baseline, -0.125em is the 1/8 of the icon height */
+    vertical-align: -0.125em;
   }
 
   /* Set icon size to 1em based on its aspect ratio, so we can use `font-size` to scale it */
@@ -178,22 +180,22 @@ import Icon from '../shared/ui/icon/icon.vue';
 
 <template>
   <div>
-    <Icon name="common:groups" class="text-xs" />
-    <Icon name="common:groups" />
-    <Icon name="common:groups" class="text-2xl" />
-    <Icon name="common:groups" class="text-4xl" />
-    <Icon name="common:groups" class="text-6xl" />
+    <Icon name="general:groups" class="text-xs" />
+    <Icon name="general:groups" />
+    <Icon name="general:groups" class="text-2xl" />
+    <Icon name="general:groups" class="text-4xl" />
+    <Icon name="general:groups" class="text-6xl" />
 
     <div class="flex gap-4 items-center">
-      <Icon name="common:copy" class="text-xl" />
+      <Icon name="general:copy" class="text-xl" />
       <Icon
-        name="common:edit"
-        class-name="bg-pink-100 text-pink-700 p-2 rounded-full border border-pink-700"
+        name="general:edit"
+        class="bg-pink-100 text-pink-700 p-2 rounded-full border border-pink-700"
       />
     </div>
 
     <span class="text-sm inline-flex items-center gap-2">
-      <Icon name="common:filter" />
+      <Icon name="general:filter" />
       Small description example
       <Icon name="tool:history" />
     </span>

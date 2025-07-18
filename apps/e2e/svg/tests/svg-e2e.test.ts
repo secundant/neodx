@@ -2,9 +2,6 @@ import { expect, test } from '@playwright/test';
 
 test.describe('@neodx/svg', () => {
   test('should render all icons correctly (visual regression)', async ({ page }) => {
-    page.on('request', request => console.log('>>', request.method(), request.url()));
-    page.on('response', response => console.log('<<', response.status(), response.url()));
-
     await page.goto('http://localhost:25000/index.html');
     await page.waitForResponse(it => it.url().includes('/sprites') && it.status() === 200);
     await page.waitForSelector('svg symbol', {
@@ -20,11 +17,8 @@ test.describe('@neodx/svg', () => {
       }
     });
 
-    // Screenshot the icon row for visual regression
-    expect(
-      await page.locator('body').screenshot({
-        animations: 'disabled'
-      })
-    ).toMatchSnapshot('sprites-e2e.png');
+    expect(await page.locator('body').screenshot({ animations: 'disabled' })).toMatchSnapshot(
+      'sprites-e2e.png'
+    );
   });
 });

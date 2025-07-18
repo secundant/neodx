@@ -164,7 +164,8 @@ describe('sprites builder', async () => {
         const { result } = await run({
           only: whiteFiles,
           params: {
-            replace: color
+            replace: color,
+            replaceUnknown: false
           }
         });
 
@@ -230,10 +231,12 @@ describe('sprites builder', async () => {
             replace: {
               from: ['#fff', 'red'],
               to: 'currentColor'
-            }
+            },
+            replaceUnknown: false
           },
           {
-            replace: ['#6C707E']
+            replace: ['#6C707E'],
+            replaceUnknown: false
           },
           {
             properties: ['fill'],

@@ -112,6 +112,8 @@ Add the following CSS (e.g., in `index.css`):
   .icon-x,
   .icon-y {
     @apply select-none fill-current inline-block text-inherit box-content;
+    /** We need to align icons to the baseline, -0.125em is the 1/8 of the icon height */
+    vertical-align: -0.125em;
   }
   .icon,
   .icon-x {

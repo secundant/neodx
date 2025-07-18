@@ -81,7 +81,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(
           {
             /**
              * We want to control the icon's size based on its aspect ratio because we're scaling it
-             * by the minimum value of width and height to prevent layout explosion.
+             * by the maximum value of width and height to prevent layout explosion.
              *
              * Also, different classes were chosen to avoid CSS overrides collisions.
              *
@@ -133,7 +133,7 @@ This component:
 
 Add the following CSS (e.g., in `index.css`):
 
-```css
+````css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -154,6 +154,8 @@ Add the following CSS (e.g., in `index.css`):
   .icon-x,
   .icon-y {
     @apply select-none fill-current inline-block text-inherit box-content;
+    /** We need to align icons to the baseline, -0.125em is the 1/8 of the icon height */
+    vertical-align: -0.125em;
   }
 
   /* Set icon size to 1em based on its aspect ratio, so we can use `font-size` to scale it */
@@ -169,7 +171,6 @@ Add the following CSS (e.g., in `index.css`):
     @apply h-[1em];
   }
 }
-```
 
 ## Usage
 
@@ -187,7 +188,7 @@ export function Example() {
     </div>
   );
 }
-```
+````
 
 ## Advanced Usage: Playground
 

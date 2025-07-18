@@ -51,7 +51,7 @@ export interface ColorPropertyReplacementInput {
    * Color to replace unknown (not defined implicitly in "replace.to" option) colors
    * @default 'currentColor'
    */
-  replaceUnknown?: string;
+  replaceUnknown?: string | false;
 }
 
 export type ColorsKeepInput = AnyColorInput | AnyColorInput[];
@@ -69,14 +69,15 @@ export type AnyColorInput = AnyColor | Colord;
 export const createSvgResetColors = (params: SvgResetColorsParams | boolean = defaults) => {
   if (!params) return fallback;
   const replacements = toArray(
-    params === true ? (defaults as SvgResetColorsParams) : { ...defaults, ...params }
+    params === true ? (defaults as SvgResetColorsParams) : params
   ).map<ColorPropertyReplacement>(input => ({
     properties: toArray(input.properties ?? defaults.properties),
     keep: toArray(input.keep ?? []).map(colord),
     exclude: toFileFilterPredicate(input.exclude),
     include: toFileFilterPredicate(input.include),
     replace: toArray(input.replace ?? []).map(anyInputToReplacement),
-    replaceUnknown: input.replaceUnknown
+    // If replace is set, replaceUnknown is false by default, otherwise it's "currentColor"
+    replaceUnknown: input.replaceUnknown ?? (input.replace ? false : defaults.replaceUnknown)
   }));
   const apply = (path: string, node: ParsedSvgNode) => {
     Object.assign(node.props, getSvgNodeResetColorAttributes(path, node, replacements));
@@ -117,7 +118,7 @@ const getSvgNodeResetColorAttributes = (
         replace.find(({ from }) => from.some(color => color.isEqual(sourceColor)))?.to ??
         replaceUnknown;
 
-      result[name] = replacement ?? result[name]!;
+      result[name] = replacement ? replacement : result[name]!;
     }
   }
   return result;
@@ -148,7 +149,7 @@ interface ColorPropertyReplacement {
   include: FileFilter | null;
   exclude: FileFilter | null;
   replace: ColorReplacement[];
-  replaceUnknown?: string;
+  replaceUnknown?: string | false;
 }
 
 interface ColorReplacement {
