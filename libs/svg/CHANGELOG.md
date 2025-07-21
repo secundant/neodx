@@ -1,5 +1,31 @@
 # @neodx/svg
 
+## 0.8.0
+
+### Minor Changes
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd) Thanks [@secundant](https://github.com/secundant)! - (internals) Remove plugins until the complex redesign of extendability
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd) Thanks [@secundant](https://github.com/secundant)! - Add support for injected assets, statically or after fetching external file
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd) Thanks [@secundant](https://github.com/secundant)! - Introduce inlining API
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd) Thanks [@secundant](https://github.com/secundant)! - Enhance metadata generation with common code snippets
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd) Thanks [@secundant](https://github.com/secundant)! - Introduce cleanup API
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd) Thanks [@secundant](https://github.com/secundant)! - Redesign parsing and formatting with "fast-xml-parser" and self-made data structures
+
+### Patch Changes
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`be18044`](https://github.com/secundant/neodx/commit/be18044b869116cc429f646afb11b8e083580407) Thanks [@secundant](https://github.com/secundant)! - Sync svgo options
+
+- Updated dependencies [[`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd), [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd), [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd), [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd), [`be18044`](https://github.com/secundant/neodx/commit/be18044b869116cc429f646afb11b8e083580407), [`be18044`](https://github.com/secundant/neodx/commit/be18044b869116cc429f646afb11b8e083580407), [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd), [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd), [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd), [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd), [`be18044`](https://github.com/secundant/neodx/commit/be18044b869116cc429f646afb11b8e083580407), [`be18044`](https://github.com/secundant/neodx/commit/be18044b869116cc429f646afb11b8e083580407)]:
+  - @neodx/std@0.4.0
+  - @neodx/vfs@0.3.0
+  - @neodx/fs@0.0.13
+  - @neodx/log@0.4.2
+
 ## 0.7.1
 
 ### Patch Changes
