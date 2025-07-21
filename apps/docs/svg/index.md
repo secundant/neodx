@@ -13,7 +13,7 @@ Modern, type-safe, and lightning-fast SVG sprite management for any frontend sta
 - **[Multicolored icons](./multicolored.md)**: Advanced color strategies for icons with multiple colors and CSS variables.
 - **[Autoscaling, accessible Icon component](./writing-icon-component.md)**: Build your own with type safety, correct scaling, and accessibility.
 - **[Automatic cleanup](./cleanup.md)**: Remove outdated sprite files with no manual work.
-- **[Integrations & recipes](#integrations--recipes)**: Out-of-the-box support for Figma, Heroicons, React, Vue, Svelte, Solid, and more.
+- **[Integrations & recipes](./integration/index.md)**: Out-of-the-box support for Figma, Heroicons, React, Vue, Svelte, Solid, and more.
 
 ## Quick Start
 

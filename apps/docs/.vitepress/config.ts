@@ -108,7 +108,8 @@ export default defineConfig({
               { text: 'Colors reset', link: '/svg/colors-reset' },
               { text: 'Multicolored icons', link: '/svg/multicolored' },
               { text: 'SVG optimization', link: '/svg/optimization' },
-              { text: 'SVG inlining', link: '/svg/inlining' }
+              { text: 'SVG inlining', link: '/svg/inlining' },
+              { text: 'Automatic cleanup', link: '/svg/cleanup' }
             ]
           },
           {
