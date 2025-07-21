@@ -1,9 +1,10 @@
 {
   "name": "@neodx/autobuild",
   "packageManager": "yarn@4.1.0",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "bin": "bin.mjs",
+  "license": "MIT",
   "files": [
     "dist",
     "bin.mjs",
