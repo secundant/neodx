@@ -1,0 +1,12 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="pattern2" patternUnits="userSpaceOnUse" width="10" height="10">
+      <rect width="10" height="10" fill="white" />
+      <circle cx="5" cy="5" r="4" fill="black" />
+    </pattern>
+    <mask id="patternMask">
+      <rect x="0" y="0" width="200" height="200" fill="url(#pattern2)" />
+    </mask>
+  </defs>
+  <rect width="200" height="200" fill="blue" mask="url(#patternMask)" />
+</svg>

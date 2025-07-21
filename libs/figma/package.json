@@ -1,7 +1,7 @@
 {
   "name": "@neodx/figma",
   "version": "0.5.1",
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@4.1.0",
   "description": "No description",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -59,10 +59,10 @@
     "@neodx/std": "0.3.1",
     "@neodx/vfs": "0.2.1",
     "colord": "2.9.3",
-    "commander": "11.1.0",
-    "cosmiconfig": "8.3.6",
+    "commander": "12.0.0",
+    "cosmiconfig": "9.0.0",
     "pathe": "1.1.2",
-    "svgo": "3.0.2"
+    "svgo": "3.3.2"
   },
   "devDependencies": {
     "@neodx/autobuild": "*"

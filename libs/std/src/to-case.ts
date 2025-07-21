@@ -1,3 +1,5 @@
+import { mapValues } from './object';
+
 const createCase =
   (pattern: string) =>
   (input: string, delimiters = DEFAULT_DELIMITERS) =>
@@ -30,16 +32,19 @@ export function toCase(input: string, pattern: string, delimiters = DEFAULT_DELI
 /**
  * Presets for common cases.
  */
-export const cases = {
-  camel: createCase('caSe'),
-  kebab: createCase('ca-se'),
-  snake: createCase('ca_se'),
-  upper: createCase('CASE'),
-  lower: createCase('case'),
-  pascal: createCase('CaSe'),
-  capital: createCase('Case'),
-  screamingSnake: createCase('CA_SE')
-};
+export const cases = mapValues(
+  {
+    camel: 'caSe',
+    kebab: 'ca-se',
+    snake: 'ca_se',
+    upper: 'CASE',
+    lower: 'case',
+    pascal: 'CaSe',
+    capital: 'Case',
+    screamingSnake: 'CA_SE'
+  },
+  createCase
+);
 
 const applyPattern = (str: string, pattern: string) =>
   apply(pattern[0]!, str[0]!) + apply(pattern[1]!, str.slice(1));

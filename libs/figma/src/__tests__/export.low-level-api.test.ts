@@ -1,17 +1,20 @@
 /* eslint-disable @typescript-eslint/require-array-sort-compare */
-import { identity, uniq } from '@neodx/std';
+import { type Awaitable, fromEntries, identity, mapValues, uniq } from '@neodx/std';
 // eslint-disable-next-line import/no-unresolved
 import { createTmpVfs } from '@neodx/vfs/testing';
 import { describe, expect, test } from 'vitest';
 import type { AnyNode, FigmaApi } from '../core';
-import { createExportContext, downloadExportedAssets, resolveExportedAssets } from '../export';
-import { fileGraphResolversMap, getGraphNodeDownloadableMeta } from '../export/export-file-assets';
+import { createFigmaClient } from '../create-figma-client.ts';
+import { downloadExportedAssets, resolveExportedAssets } from '../export';
+import {
+  fileGraphResolversMap,
+  getGraphNodeDownloadableMeta
+} from '../export/export-file-assets.ts';
 import type { GraphNode } from '../graph';
 import { collectNodes } from '../graph';
 import { getGraphNodeName } from '../utils';
 import {
   createMockApi,
-  createMockFetch,
   createMockNodes,
   getNodesIds,
   testFigmaLogger,
@@ -19,6 +22,38 @@ import {
 } from './testing-utils';
 
 describe('export low-level API', async () => {
+  const createTestContext = async ({
+    mocks = {},
+    getResponseText
+  }: {
+    mocks?: Partial<{
+      [Key in keyof Omit<FigmaApi, '__'>]: (
+        params: Parameters<FigmaApi[Key]>[0]
+      ) => Awaitable<ReturnType<FigmaApi[Key]>>;
+    }>;
+  } & Parameters<typeof createMockApi>[0] = {}) => {
+    const { api, fetch } = createMockApi({ getResponseText });
+    const mockApi = {
+      ...api,
+      ...mapValues(mocks, (fn, key) => async (params: any) => {
+        await api[key](params);
+        return (fn as any)(params);
+      })
+    } as FigmaApi;
+    const figma = await createFigmaClient({
+      api: mockApi,
+      vfs: await createTmpVfs(),
+      log: testFigmaLogger,
+      cache: false
+    });
+
+    return {
+      figma,
+      fetch,
+      api: mockApi
+    };
+  };
+
   describe('collect exportable', () => {
     test('should collect all components by default', () => {
       const exportable = collectNodes(testGraphs.weather, {});
@@ -115,35 +150,17 @@ describe('export low-level API', async () => {
   });
 
   describe('get image urls', async () => {
-    const createImagesMockApi = async () => {
-      const { api, fetch } = createMockApi();
-      const mockApi = {
-        ...api,
-        getImage: async params => {
-          await api.getImage(params);
-          return {
-            images: {}
-          };
-        }
-      } as FigmaApi;
-      const ctx = createExportContext({
-        api: mockApi,
-        vfs: await createTmpVfs(),
-        log: testFigmaLogger
-      });
-
-      return {
-        fetch,
-        api: mockApi,
-        ctx
-      };
-    };
-
     test('should return image urls', async () => {
-      const { ctx, fetch } = await createImagesMockApi();
+      const { figma, fetch } = await createTestContext({
+        mocks: {
+          getImage: () => ({
+            images: {}
+          })
+        }
+      });
       const exports = collectNodes(testGraphs.weather);
       const items = await resolveExportedAssets({
-        ctx,
+        figma,
         items: exports,
         batching: 10,
         getItemMeta: getGraphNodeDownloadableMeta
@@ -158,10 +175,16 @@ describe('export low-level API', async () => {
       [90, 20, 5],
       [90, 1, 90]
     ])(`should batch %i items by %i in %i requests`, async (length, batching, expected) => {
-      const { ctx, fetch } = await createImagesMockApi();
+      const { figma, fetch } = await createTestContext({
+        mocks: {
+          getImage: () => ({
+            images: {}
+          })
+        }
+      });
       const exports = createMockNodes(length, 'COMPONENT');
       const items = await resolveExportedAssets({
-        ctx,
+        figma,
         items: exports,
         getItemMeta: getGraphNodeDownloadableMeta,
         batching
@@ -175,31 +198,23 @@ describe('export low-level API', async () => {
 
   test('should download content for all downloadable nodes and return it in the correct order', async () => {
     const exports = createMockNodes(120, 'COMPONENT');
-    const ctx = createExportContext({
-      api: {
-        __: {
-          fetch: createMockFetch(
-            req => `content for ${new URL(req.url).searchParams.get('id')}`
-          ) as any
-        },
-        async getImage({ ids }) {
-          return {
-            images: Object.fromEntries(ids.map(id => [id, `https://foo.com/download?id=${id}`]))
-          };
-        }
-      } as FigmaApi,
-      vfs: await createTmpVfs(),
-      log: testFigmaLogger
+    const { figma } = await createTestContext({
+      getResponseText: req => `{"id":"${new URL(req.url).searchParams.get('id')}"}`,
+      mocks: {
+        getImage: ({ ids }) => ({
+          images: fromEntries(ids.map(id => [id, `https://foo.com/download?id=${id}`]))
+        })
+      }
     });
     const items = await resolveExportedAssets({
-      ctx,
+      figma,
       items: exports,
       getItemMeta: getGraphNodeDownloadableMeta,
       batching: 50,
       concurrency: 10
     });
     const downloaded = await downloadExportedAssets({
-      ctx,
+      figma,
       items,
       concurrency: 10
     });
@@ -216,7 +231,7 @@ describe('export low-level API', async () => {
       items.map(item =>
         expect.objectContaining({
           value: item.value,
-          content: `content for ${item.value.id}`
+          content: `{"id":"${item.value.id}"}`
         })
       )
     );
@@ -245,31 +260,22 @@ describe('export low-level API', async () => {
         }))
       }
     })) as GraphNode<AnyNode>[];
-    const ctx = createExportContext({
-      api: {
-        __: {
-          fetch: createMockFetch(req => {
-            const { id, format, scale } = Object.fromEntries(new URL(req.url).searchParams);
+    const { figma } = await createTestContext({
+      getResponseText: req => {
+        const { id, format, scale } = Object.fromEntries(new URL(req.url).searchParams);
 
-            return `content for ${id} - ${format!.toLowerCase()} x${scale}`;
-          }) as any
-        },
-        async getImage({ ids, format, scale }) {
-          return {
-            images: Object.fromEntries(
-              ids.map(id => [
-                id,
-                `https://foo.com/download?id=${id}&format=${format}&scale=${scale}`
-              ])
-            )
-          };
-        }
-      } as FigmaApi,
-      vfs: await createTmpVfs(),
-      log: testFigmaLogger
+        return JSON.stringify({ id, format: format?.toLowerCase(), scale });
+      },
+      mocks: {
+        getImage: ({ ids, format, scale }) => ({
+          images: Object.fromEntries(
+            ids.map(id => [id, `https://foo.com/download?id=${id}&format=${format}&scale=${scale}`])
+          )
+        })
+      }
     });
     const items = await resolveExportedAssets({
-      ctx,
+      figma,
       items: exportNodes,
       exportAs: 'export',
       resolversMap: fileGraphResolversMap,
@@ -278,7 +284,7 @@ describe('export low-level API', async () => {
       concurrency: 5
     });
     const downloaded = await downloadExportedAssets({
-      ctx,
+      figma,
       items,
       concurrency: 10
     });
@@ -286,8 +292,8 @@ describe('export low-level API', async () => {
     expect(downloaded.map(item => item.content).sort()).toEqual(
       exportNodes
         .flatMap(node =>
-          exportsSchema.map(
-            ([format, scale]) => `content for ${node.id} - ${format.toLowerCase()} x${scale}`
+          exportsSchema.map(([format, scale]) =>
+            JSON.stringify({ id: node.id, format: format.toLowerCase(), scale: scale.toString() })
           )
         )
         .sort()

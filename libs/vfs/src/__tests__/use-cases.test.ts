@@ -42,4 +42,21 @@ describe('vfs use cases', async () => {
       export * from './ui/index.tsx';"
     `);
   });
+
+  test.skip('[not supported] should support directory renaming', async () => {
+    const vfs = await createTmpVfs({
+      files: {
+        dir: {
+          a: 'a content',
+          b: 'b content'
+        }
+      }
+    });
+
+    await vfs.rename('dir', 'dir2');
+    expect(await vfs.exists('dir2')).toBe(true);
+    expect(await vfs.exists('dir')).toBe(false);
+    expect(await vfs.read('dir2/a')).toBe('a content');
+    expect(await vfs.read('dir2/b')).toBe('b content');
+  });
 });

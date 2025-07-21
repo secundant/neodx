@@ -4,9 +4,11 @@ export type {
   ProcessedFileResult
 } from './create-export-context';
 export { createExportContext } from './create-export-context';
-export type { ExportFileAssetsParams } from './export-file-assets';
-export { exportFileAssets } from './export-file-assets';
-export { exportPublishedComponents } from './export-published-components';
+export { exportFileAssets, type ExportFileAssetsParams } from './export-file-assets.ts';
+export {
+  exportPublishedComponents,
+  type ExportPublishedComponentsParams
+} from './export-published-components.ts';
 export type {
   DownloadedAsset,
   DownloadExportedAssetsParams

@@ -1,4 +1,4 @@
-import { type AnyRecord, keys } from './shared';
+import { type AnyFn, type AnyRecord, keys } from './shared';
 
 const toString = Object.prototype.toString;
 const getPrototypeOf = Object.getPrototypeOf;
@@ -13,10 +13,12 @@ export const isError = (target: unknown): target is Error => target instanceof E
 export const isEmptyObject = (target: AnyRecord): target is Record<never, never> =>
   isEmpty(keys(target));
 
-export const not =
-  <R>(fn: (value: unknown) => value is R) =>
-  <Value>(value: Value): value is Exclude<Value, R> =>
-    !fn(value);
+export const not = ((fn: AnyFn) => (value: any) => !fn(value)) as {
+  <CheckedValue>(
+    fn: (value: any) => value is CheckedValue
+  ): <Value>(value: Value) => value is Exclude<Value, CheckedValue>;
+  (fn: (value: any) => boolean): (value: any) => boolean;
+};
 export const some =
   <Args extends [...unknown[]]>(...predicates: [...((...args: Args) => boolean)[]]) =>
   (...args: Args): boolean =>
@@ -39,6 +41,7 @@ export const isNull = (value: unknown): value is null => value === null;
 export const isUndefined = (value: unknown): value is undefined => value === undefined;
 export const isPrimitive = (value: unknown) =>
   value === null || (typeof value !== 'function' && typeof value !== 'object');
+export const isArray = Array.isArray;
 export const isObject = (target: unknown): target is AnyRecord => {
   if (isNil(target) || !isObjectLike(target) || toString.call(target) !== objectString) {
     return false;

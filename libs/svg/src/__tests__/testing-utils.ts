@@ -1,51 +1,61 @@
-import { concurrently } from '@neodx/std';
-import { createVfs } from '@neodx/vfs';
-import { readdirSync } from 'node:fs';
-import { readdir, readFile, rm } from 'node:fs/promises';
-import { join } from 'node:path';
-import { buildSprites, type BuildSpritesParams } from '../index';
+import { createLogger } from '@neodx/log/node';
+import { concurrently, entries, fromEntries, isTypeOfString, once } from '@neodx/std';
+import { merge } from '@neodx/std/merge';
+import type { FirstArg } from '@neodx/std/shared';
+import { createVfs, type VirtualInitializer } from '@neodx/vfs';
+import { createTmpVfs } from '@neodx/vfs/testing';
+import { fileURLToPath } from 'url';
 
-export async function readStub(name: string) {
-  const root = getStubRoot(name);
-  const names = await readdir(root);
-  const files = Object.fromEntries(
-    await concurrently(names, async name => [name, await readFile(join(root, name), 'utf-8')], 10)
-  );
+const testVfs = createVfs(fileURLToPath(import.meta.url)).child('..');
+const stubsVfs = testVfs.child('__stubs__');
+export const examplesVfs = testVfs.child('__examples__');
 
-  return {
-    root,
-    names,
-    files
-  };
-}
+export const svgTestLog = createLogger({ level: 'error' });
 
-export async function generateExample(
-  name: string,
-  write: boolean,
-  options?: Partial<BuildSpritesParams>
-) {
-  const vfs = createVfs(getExampleRoot(name), { readonly: !write, log: 'debug' });
+export const getExamplesNames = () => examplesVfs.readDir();
+/**
+ * Returns a map of all stubs in the `__stubs__` directory.
+ * Stub value is a content of the stub file.
+ * @returns { { [stubsGroup: string]: { [stubName: string]: string } } }
+ */
+export const getSvgStubs = once(async () =>
+  fromEntries(
+    await concurrently(await stubsVfs.readDir(), async group => [
+      group,
+      fromEntries(
+        await concurrently(await stubsVfs.readDir(group), async name => [
+          name,
+          await stubsVfs.child(group).read(name, 'utf-8')
+        ])
+      )
+    ])
+  )
+);
 
-  await rm(getExampleOutput(name), { recursive: true, force: true });
-  await buildSprites({
-    vfs,
-    input: ['**/*.svg'],
-    output: 'generated',
-    optimize: true,
-    metadata: 'generated/sprite-info.ts',
-    keepTreeChanges: !write,
-    ...options
+export const readStubFile = async (name: string) => await stubsVfs.read(fixSvgExt(name), 'utf-8');
+export const createSvgTestVfs = async (
+  stubs: VirtualInitializer = {},
+  params?: FirstArg<typeof createTmpVfs>
+) =>
+  await createTmpVfs({
+    ...params,
+    files: merge(await mapStubs(stubs), params?.files ?? {})
   });
 
-  return { vfs };
-}
+/**
+ * @example
+ * mapStubs({ 'my/file.svg': 'mask/flag-uk' })
+ */
+const mapStubs = async (stubs: VirtualInitializer): Promise<VirtualInitializer> =>
+  fromEntries(
+    await concurrently(
+      entries(stubs),
+      async ([name, stub]) =>
+        [fixSvgExt(name), isTypeOfString(stub) ? await readStubFile(stub) : mapStubs(stub)] as [
+          string,
+          string | VirtualInitializer
+        ]
+    )
+  );
 
-export const getExamplesNames = () => readdirSync(examplesRoot);
-
-export const getExampleOutput = (name: string) => join(examplesRoot, name, 'generated');
-export const getExampleRoot = (name: string) => join(examplesRoot, name);
-
-export const getStubRoot = (name: string) => join(stubsRoot, name);
-
-const examplesRoot = new URL('../../examples', import.meta.url).pathname;
-const stubsRoot = new URL('./stubs', import.meta.url).pathname;
+const fixSvgExt = (path: string) => (path.endsWith('.svg') ? path : `${path}.svg`);

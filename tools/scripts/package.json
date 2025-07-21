@@ -2,7 +2,7 @@
   "name": "@neodx/scripts",
   "type": "module",
   "private": true,
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@4.1.0",
   "bin": {
     "neodx": "bin.mjs"
   },
@@ -10,7 +10,7 @@
     "@neodx/autobuild": "*",
     "@neodx/std": "*",
     "@neodx/vfs": "*",
-    "@nrwl/devkit": "18.0.4",
+    "@nrwl/devkit": "18.2.4",
     "execa": "8.0.1",
     "sade": "1.8.1"
   }

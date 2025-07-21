@@ -4,6 +4,7 @@ import {
   serializeJson,
   type SerializeJsonParams
 } from '@neodx/fs';
+import { createFileApi, type FileApi } from '../core/file-api.ts';
 import type { BaseVfs } from '../core/types';
 import { createVfsPlugin } from '../create-vfs-plugin';
 
@@ -27,7 +28,9 @@ export interface JsonPluginApi {
   ): Promise<void>;
 }
 
-export interface JsonFileApi<FileContents extends JSONValue | unknown = unknown> {
+export interface JsonFileApi<FileContents extends JSONValue | unknown = unknown>
+  extends Omit<FileApi, 'read' | 'write' | 'tryRead'> {
+  tryRead<T extends FileContents = FileContents>(options?: ParseJsonParams): Promise<T | null>;
   read<T extends FileContents = FileContents>(options?: ParseJsonParams): Promise<T>;
   write<T extends FileContents = FileContents>(
     json: T,
@@ -37,6 +40,14 @@ export interface JsonFileApi<FileContents extends JSONValue | unknown = unknown>
     updater: JsonUpdate<T>,
     options?: ParseJsonParams & SerializeJsonParams
   ): Promise<void>;
+  /**
+   * @todo Implement "resources" and streaming APIs
+   * @deprecated Unstable API
+   */
+  experimental_toResource(
+    defaultValue: FileContents,
+    options?: ParseJsonParams & SerializeJsonParams
+  ): Promise<{ data: FileContents } & AsyncDisposable>;
 }
 
 export type JsonUpdate<T> = (json: T) => T | void | Promise<T | void>;
@@ -56,9 +67,22 @@ export function createJsonFileApi<FileContents extends JSONValue | unknown = unk
   path: string
 ): JsonFileApi<FileContents> {
   return {
+    ...createFileApi(vfs, path),
     read: options => readVfsJson(vfs, path, options),
+    tryRead: options => readVfsJson(vfs, path, options).catch(() => null) as any,
     write: (json, options) => writeVfsJson(vfs, path, json, options),
-    update: (updater, options) => updateVfsJson(vfs, path, updater, options)
+    update: (updater, options) => updateVfsJson(vfs, path, updater, options),
+    experimental_toResource: async (
+      defaultValue: FileContents,
+      options?: ParseJsonParams & SerializeJsonParams
+    ) => {
+      const data = (await readVfsJson<FileContents>(vfs, path, options)) ?? defaultValue;
+
+      return {
+        data,
+        [Symbol.asyncDispose]: async () => await writeVfsJson(vfs, path, data, options)
+      };
+    }
   };
 }
 

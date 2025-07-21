@@ -1,88 +1,153 @@
-# Group and hash sprites
+# Group and Hash
 
-## Missed features of SVG in JS
+The Group and Hash feature provides sprite organization and content-based hashing capabilities. It allows you to group sprites by directory structure and generate unique filenames based on content.
 
-Despite the all disadvantages of SVG in JS, it has some design features:
+## Usage
 
-- Bundlers will chunk icon components by their usage, so we'll have a lot of on-demand chunks instead of one big sprite.
-- Components will be tree-shaken, so we'll have only used icons in the final bundle.
-- As we're getting JS bundle, we're always seeing up-to-date icons
+Configure grouping and hashing in your builder:
 
-## Solving problems
-
-To solve these problems at least partially, we're providing next features:
-
-- Grouping icons into multiple sprites by directory name
-- Adding hash to sprite file name to prevent caching issues
-- [Generating metadata](./metadata.md) (width, height, viewBox, and sprite file path) for runtime usage
-
-Imagine that we already have the following sprites in your output with regular configuration:
-
-```diff
-/
-├── assets
-│   ├── common
-│   │   ├── left.svg
-│   │   └── right.svg
-│   └── actions
-│       └── close.svg
-├── public
-+   └── sprites
-+       ├── common.svg
-+       └── actions.svg
-```
-
-But this is not very good for caching, because if you change any of the SVG files,
-the sprite filename won't be updated, which could result in an infinite cache.
-
-To solve this issue and achieve content-based hashes in filenames, you need to take three steps:
-
-1. Provide the `fileName` option with a `hash` variable (e.g. `fileName: "{name}.{hash:8}.svg"`)
-2. Configure the `metadata` option to get additional information about the file path by sprite name during runtime
-3. Update your `Icon` component (or whatever you use) to support the new runtime information
-
-::: code-group
-
-```typescript {9,11} [vite.config.ts]
-import svg from '@neodx/svg/vite';
-
-export default defineConfig({
-  plugins: [
-    svg({
-      root: 'assets',
-      output: 'public/sprites',
-      // group icons by sprite name
-      group: true,
-      // add hash to sprite file name
-      fileName: '{name}.{hash:8}.svg'
-    })
-  ]
+```typescript
+svg({
+  inputRoot: 'src/shared/ui/icon/assets',
+  output: 'public/sprites',
+  group: true,
+  fileName: '{name}.{hash:8}.svg',
+  defaultSpriteName: 'sprite'
 });
 ```
 
-:::
+## Configuration
 
-Now you will get the following output:
+### Grouping Options
 
-```diff
-/
-├── assets
-│   ├── common
-│   │   ├── left.svg
-│   │   └── right.svg
-│   └── actions
-│       └── close.svg
-├── public
-+   └── sprites
-+       ├── common.12ghS6Uj.svg
-+       └── actions.1A34ks78.svg
+```typescript
+interface CreateSvgSpriteBuilderParams {
+  /**
+   * Sprite grouping mode
+   * - `true` - use dirname as sprite name
+   * - `false` - don't group sprites, use defaultSpriteName
+   * - Function - custom grouping logic
+   * @default true
+   */
+  group?: boolean | ((file: SymbolMeta) => string);
+  /**
+   * Template of sprite file name
+   * @example {name}.svg
+   * @example sprite-{name}.svg
+   * @example {name}-{hash}.svg
+   * @example {name}-{hash:8}.svg
+   * @default {name}.svg
+   */
+  fileName?: string;
+  /**
+   * Default sprite name for root-level files
+   * @default 'sprite'
+   */
+  defaultSpriteName?: string;
+  /**
+   * Resolves symbol name for the given file path
+   * @default path => cases.kebab(basename(path, '.svg'))
+   */
+  getSymbolName?: (path: string) => string;
+}
 ```
 
-In the result, we will solve the following problems:
+### FileName Template
 
-- Now all icons are grouped into multiple sprites which will be loaded on-demand
-- Sprite file names contain hash to prevent caching issues
+The `fileName` option supports the following variables:
 
-But now we don't know actual file names in runtime! 🙀
+- `{name}` - sprite name (directory name when grouped)
+- `{hash}` - full content hash
+- `{hash:N}` - truncated hash of N characters
 
-Let's close this gap by learning about [metadata](./metadata.md) and [writing well-featured `Icon` component](./writing-icon-component.md)!
+## Examples
+
+### Basic Usage
+
+```typescript
+// Group by directory and use content hash
+svg({
+  inputRoot: 'src/shared/ui/icon/assets',
+  output: 'public/sprites',
+  group: true,
+  fileName: '{name}.{hash:8}.svg'
+});
+```
+
+### Single Sprite
+
+```typescript
+// Don't group sprites, use default name
+svg({
+  inputRoot: 'src/shared/ui/icon/assets',
+  output: 'public/sprites',
+  group: false,
+  defaultSpriteName: 'icons',
+  fileName: '{name}.{hash:8}.svg'
+});
+```
+
+### Custom Grouping
+
+```typescript
+// Group by custom logic
+svg({
+  inputRoot: 'src/shared/ui/icon/assets',
+  output: 'public/sprites',
+  group: ({ node, path }) => `${dirname(path)}/${node.props['data-category']}`,
+  fileName: '{name}.{hash:8}.svg'
+});
+```
+
+### Custom Symbol Names
+
+```typescript
+// Customize symbol naming
+svg({
+  inputRoot: 'src/shared/ui/icon/assets',
+  output: 'public/sprites',
+  group: true,
+  fileName: '{name}.{hash:8}.svg',
+  getSymbolName: path => basename(path, '.svg') // don't force any case
+});
+```
+
+## Best Practices
+
+1. **Grouping Strategy**
+
+   - Use meaningful directory names
+   - Consider custom grouping for complex structures
+   - Use defaultSpriteName for root-level icons
+
+2. **File Naming**
+
+   - Always use content-based hashing
+   - Use shorter hashes (8 chars) for development
+   - Use longer hashes (12+ chars) for production
+
+3. **Symbol Names**
+
+   - Use kebab-case by default
+   - Customize naming strategy if needed
+   - Keep names consistent across sprites
+
+4. **Integration**
+   - Use metadata for type-safe sprite access
+   - Configure proper base URL for external assets
+   - Handle sprite loading errors appropriately
+
+## Sprite Mode
+
+When processing sprites, the feature:
+
+1. Groups symbols based on configuration
+2. Generates unique filenames
+3. Maintains sprite structure
+4. Preserves symbol relationships
+
+## Next Steps
+
+- Learn about [sprite generation](./api/features/sprite.md)
+- Check out [metadata generation](./metadata.md)
+- Explore [advanced configuration options](./api/builder.md)

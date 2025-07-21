@@ -1,6 +1,6 @@
 {
   "name": "@neodx/autobuild",
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@4.1.0",
   "version": "0.2.1",
   "type": "module",
   "bin": "bin.mjs",
@@ -50,30 +50,30 @@
     "stylus": "*"
   },
   "devDependencies": {
-    "@swc/helpers": "0.5.6",
+    "@swc/helpers": "0.5.9",
     "@types/babel__core": "7.20.5",
-    "@types/react": "18.2.56",
-    "postcss": "8.4.35",
+    "@types/react": "18.2.78",
+    "postcss": "8.4.38",
     "react": "18.2.0",
-    "sass": "1.69.5"
+    "sass": "1.75.0"
   },
   "dependencies": {
-    "@babel/core": "7.23.9",
+    "@babel/core": "7.24.4",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-commonjs": "25.0.7",
     "@rollup/plugin-node-resolve": "15.2.3",
     "@rollup/pluginutils": "5.1.0",
-    "@swc/core": "1.4.1",
-    "jsonc-parser": "3.2.0",
-    "lilconfig": "2.1.0",
+    "@swc/core": "1.4.13",
+    "jsonc-parser": "3.2.1",
+    "lilconfig": "3.1.1",
     "maxmin": "4.0.0",
     "picocolors": "1.0.0",
-    "rollup": "4.12.0",
-    "rollup-plugin-dts": "6.1.0",
+    "rollup": "4.18.1",
+    "rollup-plugin-dts": "6.1.1",
     "rollup-plugin-postcss": "4.0.2",
     "sade": "1.8.1",
     "tiny-glob": "0.2.9",
-    "tsconfck": "3.0.2",
-    "typescript": "5.3.3"
+    "tsconfck": "3.1.1",
+    "typescript": "5.4.5"
   }
 }

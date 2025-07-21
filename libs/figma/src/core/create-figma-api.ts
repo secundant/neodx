@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { hashUnknown } from '@neodx/internal/hash';
 import type { LoggerMethods } from '@neodx/log';
 import { addSearchParams, createRelativeUrl, invariant } from '@neodx/std';
 import process from 'process';
@@ -6,6 +7,7 @@ import { figmaLogger, logRequest } from '../shared';
 import type { AnyNode } from './figma.h';
 import type {
   DeleteCommentsParams,
+  DeleteCommentsResult,
   GetCommentsParams,
   GetCommentsResult,
   GetComponentParams,
@@ -73,7 +75,9 @@ export function createFigmaApi({
   baseUrl = 'https://api.figma.com/v1/',
   fetch = globalThis.fetch
 }: CreateFigmaApiParams = {}) {
-  invariant(personalAccessToken || accessToken, 'accessToken or personalAccessToken is required');
+  const token = accessToken ?? personalAccessToken;
+
+  invariant(token, 'accessToken or personalAccessToken is required');
   async function fetchJson<T>(
     path: string,
     options?: RequestInit & { params?: Record<string, unknown> }
@@ -105,9 +109,10 @@ export function createFigmaApi({
       response.status < 400,
       `Wrong response, status: ${response.status} ${response.statusText}`
     );
-    const contentType = response.headers.get('content-type');
-
-    invariant(contentType?.includes('application/json'), 'Content-Type must be application/json');
+    invariant(
+      response.headers.get('content-type')?.includes('application/json'),
+      'Content-Type must be application/json'
+    );
     logRequest(log, options?.method ?? 'GET', url, Date.now() - startTime);
 
     return (await response.json()) as Promise<T>;
@@ -115,15 +120,16 @@ export function createFigmaApi({
 
   return {
     __: {
+      hash: hashUnknown(`${token}:${baseUrl}`),
       fetch
     },
-    /** @api GET /v1/files/:key */
+    /** @api GET /v1/files/:file_key */
     async getFile({ id, ...params }: GetFileParams) {
       return fetchJson<GetFileResult>(`/files/${id}`, { params });
     },
     /**
      * The `name`, `lastModified`, `thumbnailUrl`, and `version` attributes are all metadata of the specified file.
-     * @api GET /v1/files/:key/nodes
+     * @api GET /v1/files/:file_key/nodes
      */
     async getFileNodes<Node extends AnyNode>({ id, ...params }: GetFileNodesParams) {
       return fetchJson<GetFileNodesResult<Node>>(`/files/${id}/nodes`, {
@@ -134,11 +140,11 @@ export function createFigmaApi({
     async getImage({ id, ...params }: GetImageParams) {
       return fetchJson<GetImageResult>(`/images/${id}`, { params });
     },
-    /** @api GET/v1/files/:key/images */
+    /** @api GET/v1/files/:file_key/images */
     async getImageFills({ id }: GetImageFillsParams) {
       return fetchJson<GetImageFillsResult>(`/files/${id}/images`);
     },
-    /** @api GET/v1/files/:key/comments */
+    /** @api GET/v1/files/:file_key/comments */
     async getComments({ id }: GetCommentsParams) {
       return fetchJson<GetCommentsResult>(`/files/${id}/comments`);
     },
@@ -159,7 +165,7 @@ export function createFigmaApi({
      * @api DELETE/v1/files/:file_key/comments/:comment_id
      */
     async deleteComments({ id, comment_id }: DeleteCommentsParams) {
-      return fetchJson(`/files/${id}/comments/${comment_id}`, {
+      return fetchJson<DeleteCommentsResult>(`/files/${id}/comments/${comment_id}`, {
         method: 'DELETE'
       });
     },
@@ -167,7 +173,7 @@ export function createFigmaApi({
     async getMe() {
       return fetchJson<GetUserMeResult>('/me');
     },
-    /** @api GET/v1/files/:key/versions */
+    /** @api GET/v1/files/:file_key/versions */
     async getVersions({ id }: GetVersionsParams) {
       return fetchJson<GetVersionsResult>(`/files/${id}/versions`);
     },
@@ -180,8 +186,8 @@ export function createFigmaApi({
       return fetchJson<GetProjectFilesResult>(`/projects/${project_id}/files`);
     },
     /** @api GET/v1/teams/:team_id/components */
-    async getTeamComponents({ team_id }: GetTeamComponentsParams) {
-      return fetchJson<GetTeamComponentsResult>(`/teams/${team_id}/components`);
+    async getTeamComponents({ team_id, ...params }: GetTeamComponentsParams) {
+      return fetchJson<GetTeamComponentsResult>(`/teams/${team_id}/components`, { params });
     },
     /** @api GET/v1/files/:file_key/components */
     async getFileComponents({ id }: GetFileComponentsParams) {
@@ -192,8 +198,8 @@ export function createFigmaApi({
       return fetchJson<GetComponentResult>(`/components/${key}`);
     },
     /** @api GET/v1/teams/:team_id/component_sets */
-    async getTeamComponentSets({ team_id }: GetTeamComponentSetsParams) {
-      return fetchJson<GetTeamComponentSetsResult>(`/teams/${team_id}/component_sets`);
+    async getTeamComponentSets({ team_id, ...params }: GetTeamComponentSetsParams) {
+      return fetchJson<GetTeamComponentSetsResult>(`/teams/${team_id}/component_sets`, { params });
     },
     /** @api GET/v1/files/:file_key/component_sets */
     async getFileComponentSets({ id }: GetFileComponentSetsParams) {
@@ -204,8 +210,8 @@ export function createFigmaApi({
       return fetchJson<GetComponentSetResult>(`/component_sets/${key}`);
     },
     /** @api GET/v1/teams/:team_id/styles */
-    async getTeamStyles({ team_id }: GetTeamStylesParams) {
-      return fetchJson<GetTeamStylesResult>(`/teams/${team_id}/styles`);
+    async getTeamStyles({ team_id, ...params }: GetTeamStylesParams) {
+      return fetchJson<GetTeamStylesResult>(`/teams/${team_id}/styles`, { params });
     },
     /** @api GET/v1/files/:file_key/styles */
     async getFileStyles({ id }: GetFileStylesParams) {

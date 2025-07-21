@@ -1,118 +1,72 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import { pick, shallowEqual, True } from '@neodx/std';
+import { timeDisplay } from '@neodx/internal/log';
+import { every, fromEntries, transformKeys, True } from '@neodx/std';
 import type { ComponentMetadata } from '../core';
-import { formatTimeMs } from '../shared';
-import type { ExportContext } from './create-export-context';
+import type { FigmaClientFile } from '../create-figma-client.ts';
 import {
   downloadExportedAssets,
   type DownloadExportedAssetsConfig
-} from './images/download-exported-assets';
+} from './images/download-exported-assets.ts';
 import {
   resolveExportedAssets,
   type ResolveExportedAssetsConfig
-} from './images/resolve-exported-assets';
+} from './images/resolve-exported-assets.ts';
 import {
   writeDownloadedAssets,
   type WriteDownloadedAssetsConfig
-} from './images/write-downloaded-assets';
+} from './images/write-downloaded-assets.ts';
 
 export interface ExportPublishedComponentsParams {
-  ctx: ExportContext;
-  cache?: string | false;
+  file: FigmaClientFile;
   write?: WriteDownloadedAssetsConfig<ComponentMetadata, { fileId: string }>;
-  fileId: string;
   filter?: (component: ComponentMetadata) => boolean;
   resolve?: ResolveExportedAssetsConfig<ComponentMetadata>;
   download?: DownloadExportedAssetsConfig;
 }
 
-export interface ExportPublishedComponentsState {
-  ctx: ExportContext;
-  components: {
-    all: ComponentMetadata[];
-    changed: ComponentMetadata[];
-    included: ComponentMetadata[];
-  };
-}
-
-export type ExportedCache = Partial<Record<string, CachedComponent>>;
-export interface CachedComponent extends ReturnType<typeof getCacheEntry> {
-  content: string;
-}
-
 export async function exportPublishedComponents({
-  fileId,
-  ctx,
+  file,
+  file: {
+    figma,
+    figma: {
+      __: { log, cache }
+    }
+  },
   write,
-  cache: cacheFile = '.cache.json',
   filter = True,
   resolve,
   download
 }: ExportPublishedComponentsParams) {
-  ctx.log.info('Exporting published components from file "%s"...', fileId);
-  const startedAt = Date.now();
-  const { meta: { components = [] } = {} } = await ctx.api.getFileComponents({ id: fileId });
-  const cache = await ctx.createCache(cacheFile);
-  const cached = await cache.get<ExportedCache>(`published-components:${fileId}`, () => ({}));
+  log.info('Exporting published components from file "%s"...', file.id);
+  const printAllTime = timeDisplay();
+  const components = await file.components();
+  const cachedDownloadsFile = cache.vfs.jsonFile<
+    Record<string, Pick<ComponentMetadata, 'name' | 'node_id' | 'created_at' | 'updated_at'>>
+  >(`${cache.hash}/published-components.json`);
+  const cachedDownloads = (await cachedDownloadsFile.read()) ?? {};
 
-  ctx.log.info('Found %d components', components.length);
-
-  const included = components.filter(filter);
-  const changed = included.filter(component => {
-    const cachedComponent = cached[component.key];
-
-    return (
-      !cachedComponent || !shallowEqual(getCacheEntry(cachedComponent), getCacheEntry(component))
-    );
-  });
-
-  ctx.log.debug(
-    `%d components are included, only %d will be exported`,
-    components.length,
-    changed.length
-  );
-
-  const resolvedAssets = await resolveExportedAssets({
-    ctx,
-    items: changed,
-    getItemMeta: component => ({
-      fileId: component.file_key,
-      name: component.name,
-      id: component.node_id
-    }),
+  const resolved = await resolveExportedAssets({
+    figma,
+    items: components.filter(every(filter, it => !cachedDownloads[it.node_id])),
+    getItemMeta,
     ...resolve
   });
-  const downloadedAssets = await downloadExportedAssets({
-    ctx,
-    items: resolvedAssets,
+  const downloaded = await downloadExportedAssets({
+    figma,
+    items: resolved,
     ...download
   });
-  const downloadedAssetByKey = Object.fromEntries(
-    downloadedAssets.map(asset => [asset.value.key, asset])
-  );
 
   await writeDownloadedAssets({
-    ctx,
-    items: downloadedAssets,
-    getFileNameCtx: () => ({ fileId }),
+    figma,
+    items: downloaded,
+    getFileNameCtx: () => ({ fileId: file.id }),
     ...write
   });
-
-  await cache.set(
-    `published-components:${fileId}`,
-    Object.fromEntries(
-      included.map(component => [
-        component.key,
-        {
-          ...getCacheEntry(component),
-          content: cached[component.key]?.content ?? downloadedAssetByKey[component.key]!.content
-        }
-      ])
-    )
-  );
-  ctx.log.info('Exported successfully in %s', formatTimeMs(Date.now() - startedAt));
+  await cachedDownloadsFile.write({
+    ...cachedDownloads,
+    ...fromEntries(downloaded.map(asset => [asset.value.node_id, asset.value]))
+  });
+  log.info('Exported successfully in %s', printAllTime());
 }
 
-const getCacheEntry = (
-  component: Pick<ComponentMetadata, 'name' | 'node_id' | 'created_at' | 'updated_at'>
-) => pick(component, ['name', 'node_id', 'created_at', 'updated_at']);
+const getItemMeta = transformKeys({ name: 'name', node_id: 'id', file_key: 'fileId' });

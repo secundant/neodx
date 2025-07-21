@@ -4,27 +4,32 @@ outline: [2, 3]
 
 # Writing an `Icon` component
 
-We don't provide any pre-made, ready-to-use components.
-Such a solution would be too limited and opinionated for user-specific needs.
+> **Icon naming:** We use the `sprite:symbol` format for icon names. See [Recommended Token Naming](./recipes/tokens-naming.md) for details.
 
-Instead, we offer a detailed yet simple guide on how to create your own components.
+A custom Icon component gives you full control over how SVG icons are rendered, styled, and integrated into your design system. With @neodx/svg, you get type-safe icon names, autoscaling, and flexible color management out of the box.
+
+We don't provide a pre-made, ready-to-use component—this would be too limited and opinionated for most projects. Instead, this guide shows you how to build your own, step by step.
 
 ::: info
-
-In this guide, we will use React, TypeScript, and Tailwind CSS.
-
+This guide uses React, TypeScript, and Tailwind CSS, but the same principles apply to any framework or styling system.
 :::
 
-## Result component
+## Why build your own Icon component?
 
-From the start, I will show you the final result of this guide to give you a better understanding of what we are going to achieve.
+- **Type safety**: Autocompletion and validation for icon names
+- **Autoscaling**: Icons scale based on their aspect ratio, not just a fixed square
+- **Flexible colors**: Use [resetColors](./colors-reset.md) and [multicolored icons](./multicolored.md) for dynamic theming
+- **Customizable**: Add accessibility, animation, or any other features you need
+
+## Result: A robust, type-safe Icon component
 
 - Supports [grouped sprites with generated file names](./group-and-hash.md)
-- [Type-safe `IconName`](#make-name-prop-type-safe) (format: `spriteName/iconName`) for autocompletion and convenient usage
-- [Autoscaling](#detect-icon-major-axis-for-correct-scaling) based on the icon's aspect ratio
+- [Type-safe `IconName`](./metadata.md) (format: `sprite:symbol`) for autocompletion and convenient usage ([see naming guide](./recipes/tokens-naming.md))
+- [Autoscaling](#autoscaling-styles) based on the icon's aspect ratio with optional invert behavior
+- Error handling with fallback icons
 - Open to any extension for your needs!
 
-::: details We will work with grouped hashed sprites with generated types and metadata
+::: details Example project structure
 
 ```diff
 /
@@ -44,125 +49,11 @@ From the start, I will show you the final result of this guide to give you a bet
 
 :::
 
-::: code-group
+## Minimal Icon component
 
-```tsx [icon.tsx]
-import clsx from 'clsx';
-import type { SVGProps } from 'react';
-import { SPRITES_META, type SpritesMap } from './sprite.gen';
+A minimal Icon component can be as simple as:
 
-// Our icon will extend an SVG element and accept all its props
-export interface IconProps extends SVGProps<SVGSVGElement> {
-  name: AnyIconName;
-}
-// Merging all possible icon names as `sprite/icon` string
-export type AnyIconName = { [Key in keyof SpritesMap]: IconName<Key> }[keyof SpritesMap];
-// Icon name for a specific sprite, e.g. "common/left"
-export type IconName<Key extends keyof SpritesMap> = `${Key}/${SpritesMap[Key]}`;
-
-export function Icon({ name, className, ...props }: IconProps) {
-  const { viewBox, filePath, iconName, axis } = getIconMeta(name);
-
-  return (
-    <svg
-      // "icon" isn't inlined because of data-axis attribute
-      className={clsx('icon', className)}
-      viewBox={viewBox}
-      /**
-       * This prop is used by the "icon" class to set the icon's scaled size
-       * @see https://github.com/secundant/neodx/issues/92
-       */
-      data-axis={axis}
-      // prevent icon from being focused when using keyboard navigation
-      focusable="false"
-      // hide icon from screen readers
-      aria-hidden
-      {...props}
-    >
-      {/* For example, "/sprites/common.svg#favourite". Change a base path if you don't store sprites under the "/sprites". */}
-      <use href={`/sprites/${filePath}#${iconName}`} />
-    </svg>
-  );
-}
-
-/**
- * A function to get and process icon metadata.
- * It was moved out of the Icon component to prevent type inference issues.
- */
-const getIconMeta = <Key extends keyof SpritesMap>(name: IconName<Key>) => {
-  const [spriteName, iconName] = name.split('/') as [Key, SpritesMap[Key]];
-  const {
-    filePath,
-    items: {
-      [iconName]: { viewBox, width, height }
-    }
-  } = SPRITES_META[spriteName];
-  const axis = width === height ? 'xy' : width > height ? 'x' : 'y';
-
-  return { filePath, iconName, viewBox, axis };
-};
-```
-
-```css [styles.css]
-@layer components {
-  /*
-  Our base class for icons inherits the current text color and applies common styles.
-  We're using a specific component class to prevent potential style conflicts and utilize the [data-axis] attribute.
-  */
-  .icon {
-    @apply select-none fill-current inline-block text-inherit box-content;
-  }
-
-  /* Set icon size to 1em based on its aspect ratio, so we can use `font-size` to scale it */
-  .icon[data-axis*='x'] {
-    /* scale horizontally */
-    @apply w-[1em];
-  }
-
-  .icon[data-axis*='y'] {
-    /* scale vertically */
-    @apply h-[1em];
-  }
-}
-```
-
-```typescript [vite.config.ts]
-import svg from '@neodx/svg/vite';
-import { defineConfig } from 'vite';
-
-export default defineConfig({
-  plugins: [
-    svg({
-      root: 'assets',
-      // group icons by sprite name
-      group: true,
-      output: 'public/sprites',
-      // add hash to sprite file name
-      fileName: '{name}.{hash:8}.svg',
-      metadata: {
-        path: 'src/sprite.gen.ts',
-        // generate metadata
-        runtime: {
-          size: true,
-          viewBox: true
-        }
-      }
-    })
-  ]
-});
-```
-
-:::
-
-## Step by step
-
-### Create a minimal working component
-
-In the minimal approach, our component will accept only the `name` (any string) prop and render the icon using the `<use>` element.
-
-::: code-group
-
-```tsx [icon.tsx]
+```tsx
 import clsx from 'clsx';
 import type { SVGProps } from 'react';
 
@@ -178,9 +69,7 @@ export function Icon({ name, className, viewBox, ...props }: IconProps) {
         className
       )}
       viewBox={viewBox}
-      // prevent icon from being focused when using keyboard navigation
       focusable="false"
-      // hide icon from screen readers
       aria-hidden
       {...props}
     >
@@ -190,158 +79,227 @@ export function Icon({ name, className, viewBox, ...props }: IconProps) {
 }
 ```
 
-```tsx [some-component.tsx]
-import { Icon } from './icon';
+But this approach has limitations:
 
-export function SomeComponent() {
-  return (
-    <div>
-      <Icon name="icon-name" />
-    </div>
-  );
+- No type safety for icon names
+- No autoscaling for non-square icons
+- Hardcoded sprite path
+- No error handling
+
+## Type-safe, autoscaling Icon component
+
+With @neodx/svg metadata, you can generate a type-safe, autoscaling Icon component:
+
+```tsx
+import clsx from 'clsx';
+import { type ComponentProps, forwardRef, useMemo } from 'react';
+import { type SpritePrepareConfig, sprites, type SpritesMeta } from './sprite.gen';
+
+/** Icon props extending SVG props and requiring specific icon name */
+export interface IconProps extends ComponentProps<'svg'> {
+  /** Icon name, e.g. "common:close" */
+  name: IconName;
+  /**
+   * Inverts main scaling axis.
+   * By default, it will be scaled by the maximum value of width and height to prevent layout explosion,
+   * but you can invert it to scale by the minimum value.
+   *
+   * @example
+   * Let's say we have the following conditions:
+   * - our icon is 16x32 (width x height)
+   * - our text is 16px
+   *
+   * Depending on the value of `invert` prop, the icon will be rendered as:
+   * - `false`: 8x16 (height is scaled to fit the text size)
+   * - `true`: 16x32 (width is scaled to fit the text size)
+   *
+   * @default false
+   */
+  invert?: boolean;
 }
+
+/** Represents all possible icon names as the "<sprite name>:<symbol name>" string */
+export type IconName = {
+  [Key in keyof SpritesMeta]: `${Key}:${SpritesMeta[Key]}`;
+}[keyof SpritesMeta];
+
+export const Icon = forwardRef<SVGSVGElement, IconProps>(
+  ({ name, className, invert, ...props }, ref) => {
+    const {
+      symbol: { viewBox, width, height },
+      href
+    } = useMemo(() => getIconMeta(name), [name]);
+    const scaleX = width > height;
+    const scaleY = width < height;
+
+    return (
+      <svg
+        className={clsx(
+          {
+            /**
+             * We want to control the icon's size based on its aspect ratio because we're scaling it
+             * by the maximum value of width and height to prevent layout explosion.
+             *
+             * Also, different classes were chosen to avoid CSS overrides collisions.
+             *
+             * @see https://github.com/secundant/neodx/issues/92
+             */
+            'icon-x': invert ? scaleY : scaleX,
+            'icon-y': invert ? scaleX : scaleY,
+            icon: width === height
+          },
+          className
+        )}
+        // pass actual viewBox because of a browser inconsistencies if we don't
+        viewBox={viewBox}
+        // prevent icon from being focused when using keyboard navigation
+        focusable="false"
+        // hide icon from screen readers
+        aria-hidden
+        // pass through ref and other props
+        ref={ref}
+        {...props}
+      >
+        {/* External sprites href will be "<base url>/<file name>#<symbol name>",
+      while the inlined one will be just "#<symbol name>" */}
+        <use href={href} />
+      </svg>
+    );
+  }
+);
+
+/** Safe wrapper for extracting icon metadata */
+const getIconMeta = (name: IconName) => {
+  const [spriteName, iconName] = name.split(':');
+  const item = sprites.experimental_get(spriteName!, iconName!, spritesConfig);
+
+  if (!item) {
+    // Prevents crashing when icon name is invalid by returning a default icon
+    console.error(`Icon "${name}" is not found in "${spriteName}" sprite`);
+    return sprites.experimental_get('general', 'help', spritesConfig)!;
+  }
+  return item;
+};
+
+// For demonstration purposes, sprites are placed in the "/sprites" folder, but you can adapt it to your needs
+const spritesConfig: SpritePrepareConfig = {
+  baseUrl: '/sprites/'
+};
 ```
 
-:::
+### Key features explained
 
-It works, but we could see some issues:
+#### Type Safety
 
-- `name` prop is not type-safe, we can pass any string
-- `viewBox` is missing, some icons may be rendered incorrectly
-- `/sprite.svg` is hardcoded, we can't use hashed file names or grouped sprites
-- `classNames` contain `w-[1em] h-[1em]` styles, we can't use non-square icons (for example, logos)
+The `IconName` type generates all valid icon combinations in the format `sprite:symbol`, providing autocompletion and compile-time validation.
 
-Let's fix them!
+#### Error Handling
 
-### Make `name` prop type-safe
+The `getIconMeta` function includes fallback logic—if an icon isn't found, it logs an error and returns a default icon (like `general:help`) to prevent crashes.
 
-::: warning
-In this guide I'll use `spriteName/iconName` format to name icons, but it will be broken if you use `/` in your icon or sprite name (for example, nested names), be careful.
-:::
+#### Invert Scaling
 
-As we faced in the [metadata generation guide](./metadata.md), we can use the generated `SpritesMap` type, but, we should keep a single `name` property for the DX and simplicity reasons.
+The `invert` prop lets you control which dimension drives scaling:
 
-Let's start implementing it:
+- `false` (default): Scale by the larger dimension to prevent layout explosion
+- `true`: Scale by the smaller dimension to preserve icon proportions
 
-1. Declare `IconName` type
+#### Configuration
 
-   ```ts
-   import { type SpritesMap } from './sprite.gen';
+The `SpritePrepareConfig` allows you to customize:
 
-   // Icon name for a specific sprite
-   export type IconName<Key extends keyof SpritesMap> = `${Key}/${SpritesMap[Key]}`;
-   ```
+- `baseUrl`: Where your sprite files are served from
+- `parent`: DOM element for sprite injection (for inline sprites)
+- `loadSvgSprite`: Custom sprite loading function
 
-2. Write a function to get and process icon metadata
+### Autoscaling styles
 
-   ```ts
-   import { type SpritesMap, SPRITES_META } from './sprite.gen';
-
-   const getIconMeta = <Key extends keyof SpritesMap>(name: IconName<Key>) => {
-     const [spriteName, iconName] = name.split('/') as [Key, SpritesMap[Key]];
-     const {
-       filePath,
-       items: {
-         [iconName]: { viewBox }
-       }
-     } = SPRITES_META[spriteName];
-
-     return { filePath, iconName, viewBox };
-   };
-   ```
-
-3. Update `Icon` component
-
-   ```tsx {3,5-7,9,14,18,21}
-   import clsx from 'clsx';
-   import type { SVGProps } from 'react';
-   import { SPRITES_META, type SpritesMap } from './sprite.gen';
-
-   export interface IconProps extends SVGProps<SVGSVGElement> {
-     name: AnyIconName;
-   }
-   // All possible icon names
-   export type AnyIconName = { [Key in keyof SpritesMap]: IconName<Key> }[keyof SpritesMap];
-   // Icon name for a specific sprite
-   export type IconName<Key extends keyof SpritesMap> = `${Key}/${SpritesMap[Key]}`;
-
-   export function Icon({ name /* ... */ }: IconProps) {
-     const { viewBox, filePath, iconName, axis } = getIconMeta(name);
-
-     return (
-       <svg
-         viewBox={viewBox}
-         // ...
-       >
-         <use href={`/sprites/${filePath}#${iconName}`} />
-       </svg>
-     );
-   }
-   ```
-
-### Detect icon major axis for correct scaling
-
-How will SVG be scaled if source asset size is non-square? It will be forced to be square!
-
-![wrong size](/wrong-svg-size.png)
-
-In the screenshot above, we can see that the right icon container is filled as a square, but the icon itself is not.
-
-We're expecting the left icon behavior, let's fix it!
-
-We already know `width` and `height` of the icon, so we can compare them and detect the major axis (or scale both axes if they are equal).
-I'll extract icon styles to the global `@layer components` to use `[data-axis*=]` selector and make `Icon` component open for extension.
-
-::: code-group
-
-```css [styles.css]
+```css
 @layer components {
-  .icon {
-    /* reset styles and prevent icon from being selected */
+  /*
+  Our base class for icons inherits the current text color and applies common styles.
+  We're using a specific component class to prevent potential style conflicts.
+  */
+  .icon,
+  .icon-x,
+  .icon-y {
     @apply select-none fill-current inline-block text-inherit box-content;
+    /** We need to align icons to the baseline, -0.125em is the 1/8 of the icon height */
+    vertical-align: -0.125em;
   }
 
-  .icon[data-axis*='x'] {
+  /* Set icon size to 1em based on its aspect ratio, so we can use `font-size` to scale it */
+  .icon,
+  .icon-x {
     /* scale horizontally */
     @apply w-[1em];
   }
 
-  .icon[data-axis*='y'] {
+  .icon,
+  .icon-y {
     /* scale vertically */
     @apply h-[1em];
   }
 }
 ```
 
-```tsx {2,6,11,22,25,27} [icon.tsx]
-export function Icon({ name /* ... */ }: IconProps) {
-  const { viewBox, filePath, iconName, axis } = getIconMeta(name);
+### Multi-color icon support
 
-  return (
-    <svg
-      className={clsx('icon', className)}
-      /**
-       * This prop is used by the "icon" class to set the icon's scaled size
-       * @see https://github.com/secundant/neodx/issues/92
-       */
-      data-axis={axis}
-      // ...
-    />
-  );
+For icons that use multiple colors, add this CSS variable:
+
+```css
+@layer base {
+  :root {
+    /** Multi-color icons will use this variable as an additional color */
+    --icon-secondary-color: currentColor;
+  }
 }
-
-const getIconMeta = <Key extends keyof SpritesMap>(name: IconName<Key>) => {
-  const [spriteName, iconName] = name.split('/') as [Key, SpritesMap[Key]];
-  const {
-    filePath,
-    items: {
-      [iconName]: { viewBox, width, height }
-    }
-  } = SPRITES_META[spriteName];
-  const axis = width === height ? 'xy' : width > height ? 'x' : 'y';
-
-  return { filePath, iconName, viewBox, axis };
-};
 ```
 
-:::
+## Usage Examples
+
+### Basic usage
+
+```tsx
+<Icon name="general:close" />
+<Icon name="general:chevron-right" className="text-blue-500" />
+```
+
+### With scaling control
+
+```tsx
+{/* Wide icon (32x16) - by default scales to fit height */}
+<Icon name="general:wide-icon" /> {/* Results in 2em x 1em */}
+
+{/* Same icon but inverted scaling */}
+<Icon name="general:wide-icon" invert /> {/* Results in 1em x 0.5em */}
+```
+
+### Custom styling
+
+```tsx
+<Icon
+  name="general:star"
+  className="text-yellow-500 hover:text-yellow-600 transition-colors"
+  style={{ fontSize: '24px' }}
+/>
+```
+
+## Best Practices
+
+- Use the generated types for type-safe icon references ([see metadata guide](./metadata.md))
+- Use [resetColors](./colors-reset.md) and [multicolored icons](./multicolored.md) for flexible color theming
+- Add accessibility attributes (`aria-hidden`, `focusable="false"`)
+- Provide fallback icons for error states
+- Test your icons in different layouts and color schemes
+- Configure `baseUrl` to match your deployment setup
+- For advanced optimization, see [SVG Optimization](./optimization.md)
+
+## Related
+
+- [Metadata Guide](./metadata.md)
+- [Color Reset](./colors-reset.md)
+- [Multicolored Icons](./multicolored.md)
+- [Optimization](./optimization.md)
+- [Sprite Grouping](./group-and-hash.md)
+- [Builder API](./api/builder.md)

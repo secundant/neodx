@@ -1,13 +1,20 @@
-import { type AnyKey, type AnyRecord, entries, fromEntries, type ObjectEntry } from '../shared.ts';
+import {
+  type AnyKey,
+  type AnyRecord,
+  entries,
+  fromEntries,
+  identity,
+  type ObjectEntry
+} from '../shared.ts';
 
 export function mapValues<Input extends AnyRecord, ResultValue>(
   target: Input,
   fn: (value: Input[keyof Input], key: keyof Input) => ResultValue
-): Record<keyof Input, ResultValue>;
+): { [Key in keyof Input]: ResultValue };
 export function mapValues<Input extends AnyRecord, ResultValue>(
   target: Input,
   fn: <Key extends keyof Input>(value: Input[Key], key: Key) => ResultValue
-): Record<keyof Input, ResultValue>;
+): { [Key in keyof Input]: ResultValue };
 export function mapValues<Input extends AnyRecord, ResultValue>(
   target: Input,
   fn: (value: Input[keyof Input], key: keyof Input) => ResultValue
@@ -45,9 +52,18 @@ export function mapToObject<Value, OutputValue>(
   return fromEntries(Array.from(target, fn));
 }
 
-export function mapKeysToObject<Key extends AnyKey, Value>(
+export function mapKeysToObject<const Key extends AnyKey, Value>(
   target: Iterable<Key>,
   fn: (key: Key, index: number) => Value
-): Record<Key, Value> {
+): Record<Key, Value>;
+export function mapKeysToObject<const Key extends AnyKey>(
+  target: Iterable<Key>
+): {
+  [K in Key]: K;
+};
+export function mapKeysToObject<const Key extends AnyKey, Value>(
+  target: Iterable<Key>,
+  fn: (key: Key, index: number) => Value = identity as any
+) {
   return mapToObject(target, (key, index) => [key, fn(key, index)] as any);
 }

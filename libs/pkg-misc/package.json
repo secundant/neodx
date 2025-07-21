@@ -25,12 +25,12 @@
     "@neodx/std": "0.3.1",
     "@types/prettier": "3.0.0",
     "pathe": "1.1.2",
-    "semver": "7.5.4"
+    "semver": "7.6.0"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
-    "@types/semver": "7.5.7",
-    "prettier": "3.2.5"
+    "@types/semver": "7.5.8",
+    "prettier": "3.3.2"
   },
   "peerDependencies": {
     "@types/semver": "*",

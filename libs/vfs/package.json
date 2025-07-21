@@ -50,8 +50,8 @@
   "devDependencies": {
     "@neodx/autobuild": "*",
     "@types/tmp": "0.2.6",
-    "tmp": "0.2.1",
-    "tsx": "4.7.1"
+    "tmp": "0.2.3",
+    "tsx": "4.16.2"
   },
   "exports": {
     ".": {
@@ -97,11 +97,11 @@
     "@neodx/log": "0.4.1",
     "@neodx/pkg-misc": "0.0.10",
     "@neodx/std": "0.3.1",
-    "@types/eslint": "8.56.2",
-    "grammex": "3.1.2",
+    "@types/eslint": "8.56.9",
+    "grammex": "3.1.3",
     "pathe": "1.1.2",
     "pkg-types": "1.0.3",
-    "ts-pattern": "5.0.8"
+    "ts-pattern": "5.2.0"
   },
   "peerDependencies": {
     "eslint": "*",

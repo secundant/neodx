@@ -1,5 +1,5 @@
 import { compact } from '../array';
-import type { Falsy } from '../shared.ts';
+import type { Awaitable, Falsy } from '../shared.ts';
 
 export { concurrent, concurrently } from './concurrent';
 export { deduplicateAsync } from './deduplicate';
@@ -17,9 +17,11 @@ export const tryCreateTimeoutSignal = (timeout?: number | null | false) =>
 
 // Not all browsers support AbortSignal.any, so we need to polyfill it
 const anyAbortSignal =
-  // @ts-expect-error AbortSignal.any is not added to @types/node or global
-  (AbortSignal.any as ((signals: Iterable<AbortSignal>) => AbortSignal) | undefined) ??
-  ((signals: Iterable<AbortSignal>) => {
+  // TODO Actualize types for AbortSignal.any
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition,@typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  AbortSignal.any ??
+  ((signals: AbortSignal[]) => {
     const controller = new AbortController();
     const listeners = new Map<AbortSignal, () => void>();
 
@@ -34,3 +36,14 @@ const anyAbortSignal =
     }
     return controller.signal;
   });
+
+export const intercept = async <Input, Result>(
+  input: Input,
+  handler: (input: Input) => Awaitable<Result>,
+  ...interceptors: Array<
+    (input: Input, next: (input: Input) => Promise<Result>) => Awaitable<Result>
+  >
+) =>
+  await async function next(input: Input) {
+    return await (interceptors.shift()?.(input, next) ?? handler(input));
+  }.call(this, input);

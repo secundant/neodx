@@ -18,7 +18,7 @@ export async function scanProject({
   cwd,
   env = 'production',
   log = 'info',
-  minify: minifyParam = env === 'production'
+  minify: minifyParam = false // env === 'production'
 }: ScanProjectParams): Promise<Project> {
   const packageJson = JSON.parse(await readFile(resolve(cwd, 'package.json'), 'utf-8'));
   const foundTsConfig = await parse(resolve(cwd, 'tsconfig.json')).catch(() => null);
@@ -81,6 +81,7 @@ export async function scanProject({
     sourceFiles,
     sourceMap,
     minify,
+    tsConfigPath,
     tsConfigJson: tsConfigPath ? JSON.parse(await readFile(tsConfigPath, 'utf-8')) : null,
     tsConfig,
     env,

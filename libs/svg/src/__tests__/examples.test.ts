@@ -1,11 +1,36 @@
 import { getChangesDump } from '@neodx/vfs/testing';
 import { describe, expect, test } from 'vitest';
-import type { BuildSpritesParams } from '..';
-import { generateExample, getExamplesNames } from './testing-utils';
+import { createSvgSpriteBuilder, type CreateSvgSpriteBuilderParams } from '../core/builder.ts';
+import { examplesVfs, getExamplesNames } from './testing-utils.ts';
 
-describe('examples', () => {
-  const examples = getExamplesNames();
-  const optionsMap: Record<string, Partial<BuildSpritesParams>> = {
+describe('examples', async () => {
+  async function generateExample(
+    name: string,
+    write: boolean,
+    options?: CreateSvgSpriteBuilderParams
+  ) {
+    const builder = createSvgSpriteBuilder({
+      vfs: {
+        path: examplesVfs.child(name).path,
+        eslint: false,
+        readonly: !write
+      },
+      output: 'generated',
+      metadata: 'generated/sprite-info.ts',
+      inputRoot: 'assets',
+      ...options
+    });
+
+    await builder.load(['**/*.svg']);
+    await builder.__.outputVfs.delete('.');
+    await builder.__.vfs.apply();
+    await builder.build({ apply: write });
+
+    return { vfs: builder.__.vfs };
+  }
+
+  const examples = (await getExamplesNames()) as Array<keyof typeof optionsMap>;
+  const optionsMap = {
     'groups-without-root': {
       group: true
     },
@@ -47,7 +72,7 @@ describe('examples', () => {
             }
           ],
           properties: ['fill', 'stroke'],
-          replaceUnknown: 'var(--icon-color)'
+          replaceUnknown: 'var(--icon-secondary-color)'
         }
       ]
     },
@@ -56,12 +81,7 @@ describe('examples', () => {
       group: true,
       fileName: '{name}.{hash:8}.svg',
       metadata: {
-        path: 'generated/meta.ts',
-        types: true,
-        runtime: {
-          viewBox: true,
-          size: true
-        }
+        path: 'generated/meta.ts'
       }
     }
   };
@@ -76,6 +96,6 @@ describe('examples', () => {
   test.each(examples)(`"%s" example should generate files`, async name => {
     const { vfs } = await generateExample(name, true, optionsMap[name]);
 
-    expect(await vfs.scan()).toMatchSnapshot();
+    expect((await vfs.scan()).sort()).toMatchSnapshot();
   });
 });

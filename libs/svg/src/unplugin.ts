@@ -1,71 +1,65 @@
-import { type VfsLogMethod } from '@neodx/vfs';
+import { once } from '@neodx/std';
 import { createUnplugin } from 'unplugin';
-import { createSpriteBuilder, type CreateSpriteBuilderParams, createWatcher } from './core';
+import { createSvgSpriteBuilder, type CreateSvgSpriteBuilderParams } from './core/builder.ts';
+import { buildSprites } from './tasks/build-sprites.ts';
+import { watchSprites } from './tasks/watch-sprites.ts';
 
-export interface SvgPluginParams extends Partial<Omit<CreateSpriteBuilderParams, 'vfs'>> {
+export interface SvgPluginParams extends Omit<CreateSvgSpriteBuilderParams, 'vfs'> {
+  /**
+   * Root path for the input files.
+   * All paths will be relative to this path.
+   * @default '.'
+   * @deprecated use `inputRoot` instead
+   */
+  root?: string;
   /**
    * Globs to icons files
    */
   input?: string | string[];
-  /**
-   * @deprecated Use `log` instead
-   * @see `log`
-   */
-  logLevel?: VfsLogMethod | 'silent';
 }
 
 export const unplugin = createUnplugin(
-  ({ root = '.', input = '**/*.svg', ...params }: SvgPluginParams = {}, { watchMode = false }) => {
-    const builder = createSpriteBuilder({
-      root,
+  (
+    { root, inputRoot = root ?? '.', input = '**/*.svg', ...params }: SvgPluginParams = {},
+    { watchMode = false }
+  ) => {
+    let production = !watchMode;
+    let development = watchMode;
+    let watcher: ReturnType<typeof watchSprites> | null = null;
+
+    const builder = createSvgSpriteBuilder({
       output: 'public',
+      inputRoot,
       ...params
     });
-    let isBuild = !watchMode;
-    let isWatch = watchMode;
-    let started = false;
+    const tasksParams = { builder, input };
+
+    if (root) builder.__.log.warn('`root` option is deprecated, use `inputRoot` instead');
 
     return {
       name: '@neodx/svg',
-      async buildStart() {
-        // Avoid multiple builds, for example, webpack calls buildStart on every change
-        if (started) return;
-        started = true;
-        builder.log.debug(
-          {
-            isWatch,
-            isBuild,
-            ...params
-          },
-          'Start building SVG sprites'
-        );
-        await builder.load(input);
-        await builder.build();
-        await builder.vfs.apply();
-        if (isWatch) {
-          createWatcher({
-            builder,
-            input,
-            root
-          });
-        }
-        if (isBuild) {
-          // TODO Implement unused icons removal
-        }
-      },
+      enforce: 'pre',
+      buildStart: once(async () => {
+        await buildSprites(tasksParams);
+        if (development) watcher = watchSprites(tasksParams);
+      }),
+      buildEnd: once(async () => {
+        builder.clear();
+        await watcher?.close();
+      }),
       vite: {
         async configResolved(config) {
-          isBuild = config.command === 'build';
-          isWatch = config.command === 'serve';
+          production = config.command === 'build';
+          development = config.command === 'serve';
         }
       },
       webpack(compiler) {
-        isBuild = compiler.options.mode === 'production';
-        isWatch = !isBuild;
+        production = compiler.options.mode === 'production';
+        development = !production;
       },
       rspack(compiler) {
-        isBuild = compiler.options.mode === 'production';
-        isWatch = !isBuild;
+        production = compiler.options.mode === 'production';
+        development = !production;
       }
     };
   }

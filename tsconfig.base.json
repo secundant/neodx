@@ -12,19 +12,20 @@
     "paths": {
       "@neodx/codegen": ["libs/codegen/src/index.ts"],
       "@neodx/colors": ["libs/colors/src/index.ts"],
-      "@neodx/fex": ["libs/fex/src/index.ts"],
       "@neodx/figma": ["libs/figma/src/index.ts"],
       "@neodx/fs": ["libs/fs/src/index.ts"],
       "@neodx/glob": ["libs/glob/src/index.ts"],
+      "@neodx/internal": ["libs/internal/src/index.ts"],
+      "@neodx/internal/*": ["libs/internal/src/*.ts", "libs/internal/src/*/index.ts"],
       "@neodx/log": ["libs/log/src/index.ts"],
       "@neodx/log/*": ["libs/log/src/*.ts", "libs/log/src/*/index.ts"],
       "@neodx/pkg-misc": ["libs/pkg-misc/src/index.ts"],
       "@neodx/std": ["libs/std/src/index.ts"],
+      "@neodx/std/*": ["libs/std/src/*.ts", "libs/std/src/*/index.ts"],
       "@neodx/svg": ["libs/svg/src/index.ts"],
       "@neodx/svg/*": ["libs/svg/src/*.ts", "libs/svg/src/*/index.ts"],
       "@neodx/vfs": ["libs/vfs/src/index.ts"],
-      "@neodx/vfs/*": ["libs/vfs/src/testing.ts"],
-      "@neodx/vite-plugin-library": ["libs/vite-plugin-library/src/index.ts"]
+      "@neodx/vfs/*": ["libs/vfs/src/*.ts"]
     },
     "strict": true,
     "noUnusedLocals": true,

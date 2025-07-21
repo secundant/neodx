@@ -1,0 +1,13 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="star" viewBox="0 0 24 24">
+      <polygon points="12,2 15,8 22,9 17,14 18,21 12,18 6,21 7,14 2,9 9,8" fill="gold" />
+    </symbol>
+  </defs>
+  <use href="#star" x="20" y="20">
+    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="10s" repeatCount="indefinite" />
+  </use>
+  <use href="#star" x="80" y="20" transform="scale(0.5)" />
+  <use href="#star" x="140" y="20" transform="scale(0.75)" />
+  <use href="#star" x="20" y="80" transform="scale(0.25)" />
+</svg>

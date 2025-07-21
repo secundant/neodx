@@ -1,15 +1,15 @@
 import { chunk, concurrently, entries, groupBy, sum, toArray, uniq } from '@neodx/std';
 import type { ExportSetting, GetImageParams } from '../../core';
 import { ConstrainType, ImageType } from '../../core';
+import type { FigmaClient } from '../../create-figma-client.ts';
 import { getConstraintScale, imageTypeToFormat } from '../../utils';
-import type { ExportContext } from '../create-export-context';
 
 export interface ResolveExportedAssetsParams<T, Resolvers = DefaultResolvers>
   extends ResolveExportedAssetsConfig<T, Resolvers> {
-  ctx: ExportContext;
+  figma: FigmaClient;
   items: T[];
   /**
-   * Required item meta information extractor.
+   * Required item meta-information extractor.
    */
   getItemMeta: (item: T) => DownloadableAssetMeta;
   resolversMap?: Resolvers;
@@ -58,7 +58,10 @@ export interface DownloadableAssetMeta {
  * });
  */
 export async function resolveExportedAssets<T, Resolvers = DefaultResolvers>({
-  ctx,
+  figma,
+  figma: {
+    __: { log }
+  },
   items,
   exportAs = 'svg' as keyof Resolvers,
   batching = 50,
@@ -66,7 +69,7 @@ export async function resolveExportedAssets<T, Resolvers = DefaultResolvers>({
   getItemMeta,
   resolversMap = defaultExportSettingsResolvers as Resolvers
 }: ResolveExportedAssetsParams<T, Resolvers>): Promise<DownloadableAsset<T>[]> {
-  ctx.log.info('Collecting assets to download from %i elements...', items.length);
+  log.info('Collecting assets to download from %i elements...', items.length);
 
   const resolvers = toArray(exportAs).map<ExportSettingsResolver<T>>(resolver =>
     typeof resolver === 'function'
@@ -100,7 +103,7 @@ export async function resolveExportedAssets<T, Resolvers = DefaultResolvers>({
     }));
   });
 
-  ctx.log.info(
+  log.info(
     'Loading %i exported assets images URLs for %i source elements...',
     sum(chunkedExports.map(({ ids }) => ids.length)),
     items.length
@@ -108,8 +111,7 @@ export async function resolveExportedAssets<T, Resolvers = DefaultResolvers>({
   const imageResults = await concurrently(
     chunkedExports,
     async ({ fileId, ids, format, scale }) => {
-      const { images } = await ctx.api.getImage({
-        id: fileId,
+      const images = await figma.file(fileId).images({
         ids,
         scale,
         format,

@@ -1,0 +1,14 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="meshGrad1" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="200" y2="200">
+      <stop offset="0" style="stop-color:rgb(255,255,255);" />
+      <stop offset="1" style="stop-color:rgb(0,0,255);" />
+    </linearGradient>
+    <linearGradient id="meshGrad2" gradientUnits="userSpaceOnUse" x1="200" y1="0" x2="0" y2="200">
+      <stop offset="0" style="stop-color:rgb(255,255,255);" />
+      <stop offset="1" style="stop-color:rgb(0,0,255);" />
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="100" fill="url(#meshGrad1)" />
+  <circle cx="100" cy="100" r="50" fill="url(#meshGrad2)" />
+</svg>

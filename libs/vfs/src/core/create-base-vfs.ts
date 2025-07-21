@@ -1,10 +1,14 @@
 import { colors } from '@neodx/colors';
-import { concurrently, quickPluralize } from '@neodx/std';
+import { createTaskRunner } from '@neodx/internal/tasks';
+import { concurrently, not, quickPluralize } from '@neodx/std';
+import { propEq } from '@neodx/std/object';
 import { dirname } from 'pathe';
+import { match } from 'ts-pattern';
 import { getVfsBackendKind } from '../backend/shared';
 import type { VfsContext } from './context';
 import {
   deleteVfsPath,
+  displayPath,
   existsVfsPath,
   getVfsActions,
   isVfsDir,
@@ -21,23 +25,38 @@ import type { BaseVfs, VfsFileAction } from './types';
 export function createBaseVfs(ctx: VfsContext) {
   const hooks = createHookRegistry();
   const backendKind = getVfsBackendKind(ctx.backend);
+  const { task } = createTaskRunner({ log: ctx.log });
 
-  const applyFile = async (action: VfsFileAction) => {
-    ctx.log.info('%s %s', labels[action.type], action.relativePath);
+  const applyDelete = task(
+    'delete',
+    async (action: VfsFileAction) => {
+      const reason = match(action)
+        .with({ overwrittenDir: true }, () => 'directory overwrite as file')
+        .with({ type: 'delete' }, () => 'direct deletion')
+        .otherwise(() => 'force deletion for ensure consistency');
 
-    await hooks.run('beforeApplyFile', action, getCurrentVfs());
-    // TODO Deletion is required only for write after directory deletion, probably we can optimize it
-    if (action.type === 'delete' || action.updatedAfterDelete) {
+      ctx.log.info('%s %s (%s)', colors.red('delete'), displayPath(ctx, action.path), reason);
       await ctx.backend.delete(action.path);
-    }
-    if (action.type !== 'delete') {
-      await ctx.backend.write(action.path, action.content);
-    }
-    if (action.type === 'delete') {
       await hooks.run('afterDelete', action.path, getCurrentVfs());
+    },
+    {
+      mapError: (_, action) => `failed to delete "${action.relativePath}"`
     }
-    ctx.unregister(action.path);
-  };
+  );
+
+  const applyFile = task(
+    'apply file',
+    async (action: Exclude<VfsFileAction, { type: 'delete' }>) => {
+      ctx.log.info('%s %s', labels[action.type], displayPath(ctx, action.path));
+
+      await hooks.run('beforeApplyFile', action, getCurrentVfs());
+      if (action.content) await ctx.backend.write(action.path, action.content);
+      ctx.unregister(action.path);
+    },
+    {
+      mapError: (_, action) => `failed to ${action.type} "${action.relativePath}"`
+    }
+  );
 
   const baseVfs: BaseVfs = {
     // @ts-expect-error internal
@@ -59,21 +78,34 @@ export function createBaseVfs(ctx: VfsContext) {
       return backendKind === 'readonly';
     },
 
-    async apply() {
-      try {
-        const changes = await getVfsActions(ctx);
+    apply: task(
+      'apply',
+      async () => {
+        const startingChanges = await getVfsActions(ctx);
 
         ctx.log.info(
           'Applying %d %s...',
-          changes.length,
-          quickPluralize(changes.length, 'change', 'changes')
+          startingChanges.length,
+          quickPluralize(startingChanges.length, 'change', 'changes')
         );
-        await hooks.run('beforeApply', changes, getCurrentVfs());
-        await concurrently(await getVfsActions(ctx), applyFile);
-      } catch (originalError) {
-        throw ctx.catch('Failed to apply changes', originalError);
+        await hooks.run('beforeApply', startingChanges, getCurrentVfs());
+
+        const changes = await getVfsActions(ctx);
+        const deletions = changes.filter(
+          action => action.type === 'delete' || action.updatedAfterDelete || action.overwrittenDir
+        );
+
+        // First, we need to delete all files and directories that were deleted
+        await concurrently(deletions, applyDelete);
+        await concurrently(changes.filter(not(propEq('type', 'delete'))), applyFile);
+
+        ctx.getAllDirectChanges().forEach(it => ctx.unregister(it.path));
+      },
+      {
+        mapError: () => `failed to apply changes`,
+        mapSuccessMessage: () => `applied changes`
       }
-    },
+    ),
 
     resolve: ctx.resolve,
     relative: ctx.relative,

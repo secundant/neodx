@@ -1,9 +1,10 @@
 import { invariant, toArray } from '@neodx/std';
 import { cosmiconfig } from 'cosmiconfig';
 import type { ExportFileAssetsParams } from './export';
-import type { ExportPublishedComponentsParams } from './export/export-published-components';
+import type { ExportPublishedComponentsParams } from './export/export-published-components.ts';
 import { isFigmaLink, parseFileIdFromLink } from './utils';
 
+// TODO Migrate to Zod
 export async function resolveNormalizedConfiguration(
   cwd: string,
   cliConfig: CliConfiguration
@@ -86,7 +87,7 @@ export interface Configuration {
 
 export type AnyExportConfigItem = ExportFileConfiguration | ExportPublishedComponentsConfiguration;
 
-export interface ExportFileConfiguration extends Omit<ExportFileAssetsParams, 'ctx' | 'fileId'> {
+export interface ExportFileConfiguration extends Omit<ExportFileAssetsParams, 'file'> {
   /**
    * Default export type
    */
@@ -102,7 +103,7 @@ export interface ExportFileConfiguration extends Omit<ExportFileAssetsParams, 'c
 }
 
 export interface ExportPublishedComponentsConfiguration
-  extends Omit<ExportPublishedComponentsParams, 'ctx' | 'fileId'> {
+  extends Omit<ExportPublishedComponentsParams, 'file'> {
   type: 'published-components';
   /**
    * URL or ID of the file to export from

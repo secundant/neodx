@@ -1,24 +1,24 @@
+import { timeDisplay } from '@neodx/internal/log';
 import type { DocumentNode } from '../core';
-import type { CollectNodesParams, GraphNode } from '../graph';
-import { collectNodes } from '../graph';
-import type { AnyGraphNode } from '../graph/create-nodes-graph';
-import { formatTimeMs } from '../shared';
-import type { ExportContext } from './create-export-context';
+import type { FigmaClientFile } from '../create-figma-client.ts';
+import { collectNodes, type CollectNodesParams } from '../graph';
+import type { AnyGraphNode, GraphNode } from '../graph/create-nodes-graph.ts';
 import {
   downloadExportedAssets,
   type DownloadExportedAssetsConfig
-} from './images/download-exported-assets';
-import type { ResolveExportedAssetsConfig } from './images/resolve-exported-assets';
+} from './images/download-exported-assets.ts';
 import {
   defaultExportSettingsResolvers,
-  resolveExportedAssets
-} from './images/resolve-exported-assets';
-import type { WriteDownloadedAssetsConfig } from './images/write-downloaded-assets';
-import { writeDownloadedAssets } from './images/write-downloaded-assets';
+  resolveExportedAssets,
+  type ResolveExportedAssetsConfig
+} from './images/resolve-exported-assets.ts';
+import {
+  writeDownloadedAssets,
+  type WriteDownloadedAssetsConfig
+} from './images/write-downloaded-assets.ts';
 
 export interface ExportFileAssetsParams {
-  ctx: ExportContext;
-  fileId: string;
+  file: FigmaClientFile;
   write?: WriteDownloadedAssetsConfig<AnyGraphNode, GraphNode<DocumentNode>>;
   collect?: CollectNodesParams;
   resolve?: ResolveExportedAssetsConfig<AnyGraphNode, typeof fileGraphResolversMap>;
@@ -26,42 +26,47 @@ export interface ExportFileAssetsParams {
 }
 
 export async function exportFileAssets({
-  ctx,
+  file,
+  file: {
+    figma,
+    figma: {
+      __: { log }
+    }
+  },
   write,
-  fileId,
   collect,
   resolve,
   download
 }: ExportFileAssetsParams) {
-  const { getFile, log } = ctx;
-  const { graph } = await getFile(fileId);
+  const printAllTime = timeDisplay();
+  const graph = await file.asGraph();
 
-  log.info('Exporting file "%s" (ID: %s)...', graph.source.name, graph.fileId);
-  const startedAt = Date.now();
+  log.info('Exporting file "%s" (ID: %s)...', graph.source.name, file.id);
   const collected = collectNodes(graph, {
     ...collect,
     log
   });
   const downloadable = await resolveExportedAssets({
-    ctx,
+    figma,
     items: collected,
     resolversMap: fileGraphResolversMap,
     getItemMeta: getGraphNodeDownloadableMeta,
     ...resolve
   });
   const downloadedItems = await downloadExportedAssets({
-    ctx,
+    figma,
     items: downloadable,
     ...download
   });
 
   await writeDownloadedAssets({
-    ctx,
+    figma,
     items: downloadedItems,
     getFileNameCtx: () => graph,
     ...write
   });
-  log.info('Exported successfully in %s', formatTimeMs(Date.now() - startedAt));
+  await figma.__.cache.vfs.apply();
+  log.info('Exported successfully in %s', printAllTime());
 }
 
 export const getGraphNodeDownloadableMeta = (node: AnyGraphNode) => ({
@@ -69,7 +74,6 @@ export const getGraphNodeDownloadableMeta = (node: AnyGraphNode) => ({
   name: node.source.name,
   id: node.id
 });
-
 export const fileGraphResolversMap = {
   ...defaultExportSettingsResolvers,
   export: (node: AnyGraphNode) =>

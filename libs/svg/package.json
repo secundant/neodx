@@ -1,6 +1,6 @@
 {
   "name": "@neodx/svg",
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@4.1.0",
   "version": "0.7.1",
   "description": "Supercharge your icons ⚡️",
   "author": {
@@ -54,6 +54,7 @@
   "sideEffects": false,
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "bench": "vitest bench",
     "build": "autobuild",
     "test": "vitest run",
     "lint": "eslint src"
@@ -63,25 +64,29 @@
     "@neodx/log": "0.4.1",
     "@neodx/std": "0.3.1",
     "@neodx/vfs": "0.2.1",
-    "chokidar": "3.5.3",
+    "chokidar": "3.6.0",
     "colord": "2.9.3",
-    "commander": "11.1.0",
+    "commander": "12.0.0",
+    "fast-xml-parser": "4.4.0",
+    "jiti": "1.21.6",
+    "object-hash": "3.0.0",
     "pathe": "1.1.2",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "svgo": "3.0.2",
-    "svgson": "5.3.1",
-    "unplugin": "1.7.1",
-    "zod": "3.22.4"
+    "svgo": "3.3.2",
+    "ts-pattern": "5.2.0",
+    "unplugin": "1.11.0",
+    "zod": "3.23.8"
   },
   "devDependencies": {
     "@neodx/autobuild": "*",
-    "@swc/helpers": "0.5.6",
-    "@types/react": "18.2.56",
-    "@types/react-dom": "18.2.19",
+    "@swc/helpers": "0.5.9",
+    "@types/react": "18.2.78",
+    "@types/react-dom": "18.2.25",
     "@types/svgo": "3.0.0",
     "clsx": "2.1.0",
-    "prettier": "3.2.5"
+    "prettier": "3.3.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "svgson": "5.3.1"
   },
   "peerDependencies": {
     "prettier": "*"

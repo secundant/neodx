@@ -1,10 +1,10 @@
-export type {
-  BuildSpritesParams,
-  CreateSpriteBuilderParams,
-  CreateWatcherParams,
-  SpriteBuilder
-} from './core';
-export { buildSprites, createSpriteBuilder, createWatcher } from './core';
-export type * from './core/types';
-export * as plugins from './plugins';
-export { createPlugin } from './plugins/plugin-utils';
+export type { CreateSvgSpriteBuilderParams } from './core/builder.ts';
+export { createSvgSpriteBuilder } from './core/builder.ts';
+export type { SvgCollector } from './core/collector.ts';
+export { createSvgCollector } from './core/collector.ts';
+export type { SvgOptimizer } from './core/optimizer.ts';
+export { createSvgOptimizer } from './core/optimizer.ts';
+export type { SvgResetColors, SvgResetColorsParams } from './core/reset-colors.ts';
+export { createSvgResetColors } from './core/reset-colors.ts';
+export type { SpriteMeta, SvgLogger, SymbolMeta } from './core/shared.ts';
+export { getSvgSizeProps, parseViewBox } from './core/shared.ts';

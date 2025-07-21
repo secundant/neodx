@@ -6,7 +6,11 @@
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
   "module": "./dist/index.mjs",
-  "source": "src/index.ts",
+  "source": [
+    "src/index.ts",
+    "src/*.ts",
+    "src/*/index.ts"
+  ],
   "license": "MIT",
   "sideEffects": false,
   "files": [
@@ -30,6 +34,74 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
+    },
+    "./debounce": {
+      "types": "./dist/debounce.d.ts",
+      "import": "./dist/debounce.mjs",
+      "require": "./dist/debounce.cjs"
+    },
+    "./invariant": {
+      "types": "./dist/invariant.d.ts",
+      "import": "./dist/invariant.mjs",
+      "require": "./dist/invariant.cjs"
+    },
+    "./math": {
+      "types": "./dist/math.d.ts",
+      "import": "./dist/math.mjs",
+      "require": "./dist/math.cjs"
+    },
+    "./memoize": {
+      "types": "./dist/memoize.d.ts",
+      "import": "./dist/memoize.mjs",
+      "require": "./dist/memoize.cjs"
+    },
+    "./merge": {
+      "types": "./dist/merge.d.ts",
+      "import": "./dist/merge.mjs",
+      "require": "./dist/merge.cjs"
+    },
+    "./guards": {
+      "types": "./dist/guards.d.ts",
+      "import": "./dist/guards.mjs",
+      "require": "./dist/guards.cjs"
+    },
+    "./string": {
+      "types": "./dist/string.d.ts",
+      "import": "./dist/string.mjs",
+      "require": "./dist/string.cjs"
+    },
+    "./to-case": {
+      "types": "./dist/to-case.d.ts",
+      "import": "./dist/to-case.mjs",
+      "require": "./dist/to-case.cjs"
+    },
+    "./url": {
+      "types": "./dist/url.d.ts",
+      "import": "./dist/url.mjs",
+      "require": "./dist/url.cjs"
+    },
+    "./shared": {
+      "types": "./dist/shared.d.ts",
+      "import": "./dist/shared.mjs",
+      "require": "./dist/shared.cjs"
+    },
+    "./async": {
+      "types": "./dist/async/index.d.ts",
+      "import": "./dist/async/index.mjs",
+      "require": "./dist/async/index.cjs"
+    },
+    "./object": {
+      "types": "./dist/object/index.d.ts",
+      "import": "./dist/object/index.mjs",
+      "require": "./dist/object/index.cjs"
+    },
+    "./array": {
+      "types": "./dist/array/index.d.ts",
+      "import": "./dist/array/index.mjs",
+      "require": "./dist/array/index.cjs"
     }
+  },
+  "dependencies": {
+    "type-fest": "4.21.0"
   }
 }

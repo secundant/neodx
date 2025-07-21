@@ -24,18 +24,6 @@ export const createVfsContext = ({
   const ctx: VfsContext = {
     log,
     ...params,
-
-    catch(message: string, originalError: unknown) {
-      // TODO Implement generic error handling
-      const error = new Error(`${message} (${originalError})`);
-
-      (error as any).path = ctx.path;
-      error.name = 'VfsError';
-      error.cause = originalError;
-      ctx.log.error(error);
-      return error;
-    },
-
     get(path: string) {
       const resolved = ctx.resolve(path);
 
@@ -57,15 +45,16 @@ export const createVfsContext = ({
         meta => meta.path
       );
     },
-    writePathContent(path: string, content: VfsContentLike) {
+    registerPath(
+      path: string,
+      content: VfsContentLike | null = null,
+      updatedAfterDelete?: boolean,
+      overwrittenDir?: boolean
+    ) {
       const resolved = ctx.resolve(path);
-      const currentMeta = ctx.get(resolved);
 
-      ctx.__.register(resolved, {
-        deleted: false,
-        content,
-        updatedAfterDelete: currentMeta?.deleted
-      });
+      updatedAfterDelete ??= Boolean(ctx.get(resolved)?.deleted);
+      ctx.__.register(resolved, { deleted: false, content, updatedAfterDelete, overwrittenDir });
     },
     deletePath(path: string) {
       ctx.__.register(ctx.resolve(path), { content: null, deleted: true });
@@ -77,12 +66,7 @@ export const createVfsContext = ({
       return resolve(ctx.path, ...to);
     },
     relative(path: string): string {
-      const normalized = normalize(path);
-
-      // TODO Remove this hack after https://github.com/unjs/pathe/issues/126
-      return ctx.path === '/' && normalized.startsWith('/')
-        ? normalized.slice(1)
-        : relative(ctx.path, resolve(ctx.path, normalized));
+      return relative(ctx.path, resolve(ctx.path, normalize(path)));
     },
 
     backend: mapValues(params.backend, (fn, key) =>
@@ -153,12 +137,15 @@ export interface VfsContext {
   getRelativeChanges(path: string): VfsChangeMeta[];
   /** Remove file from context. */
   unregister(path: string): void;
-  /** Set associated file temporal content. */
-  writePathContent(path: string, content: VfsContentLike): void;
+  /** Set associated file temporal content and updateAfterDelete flag. */
+  registerPath(
+    path: string,
+    content: VfsContentLike | null,
+    updatedAfterDelete?: boolean,
+    overwrittenDir?: boolean
+  ): void;
   /** Mark path as deleted. */
-  deletePath(path: string, deleted: boolean): void;
-  /** Handles any vfs errors. */
-  catch(message: string, error: unknown): Error;
+  deletePath(path: string): void;
 
   // meta
 
@@ -196,6 +183,10 @@ export interface VfsChangeMeta extends VfsFileMeta {
    * It could be used to ensure the correct order of operations.
    */
   updatedAfterDelete?: boolean;
+  /**
+   * The path was originally a directory, but it was overwritten with a file.
+   */
+  overwrittenDir?: boolean;
 }
 
 export const isVfsContext = (ctx: any): ctx is VfsContext => ctx?.__?.kind === kind;

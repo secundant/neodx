@@ -1,16 +1,16 @@
 # Setup `@neodx/svg` with [Vite](https://vitejs.dev/)
 
 ::: tip Example repository
-You can visit ["examples/svg-vite"](https://github.com/secundant/neodx/tree/main/examples/svg-vite) project in our repository to see how it works.
+You can visit [apps/examples/svg/vite-react](https://github.com/secundant/neodx/tree/main/apps/examples/svg/vite-react) project in our repository to see how it works.
 :::
 
 ## 1. Configure your assets
 
-Add `@neodx/svg/vite` plugin to `vite.config.ts` and describe your svg assets location and output.
+Add `@neodx/svg/vite` plugin to `vite.config.ts` and describe your SVG assets location and output.
 
 ::: code-group
 
-```typescript {3,8-11} [vite.config.ts]
+```typescript [vite.config.ts]
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svg from '@neodx/svg/vite';
@@ -19,9 +19,10 @@ export default defineConfig({
   plugins: [
     react(),
     svg({
-      // A "root" directory will be used to search for svg files
-      root: 'assets/icons',
-      output: 'public'
+      inputRoot: 'src/shared/ui/icon/assets',
+      output: 'public/sprites',
+      fileName: '{name}.{hash:8}.svg',
+      metadata: 'src/shared/ui/icon/sprite.gen.ts'
     })
   ]
 });
@@ -31,11 +32,11 @@ export default defineConfig({
 
 ## 2. Create your `Icon` component
 
-Visit our [Writing `Icon` component](../writing-icon-component) guide to see detailed instructions for creating `Icon` component.
+Visit our [Writing `Icon` component](../writing-icon-component) guide to see detailed instructions for creating an `Icon` component.
 
-The simplest variant of `Icon` component will look like this:
+A simple variant of the `Icon` component will look like this:
 
-```tsx [icon.jsx]
+```tsx [icon.tsx]
 import clsx from 'clsx';
 
 export function Icon({ name, className, ...props }) {
@@ -46,7 +47,7 @@ export function Icon({ name, className, ...props }) {
       aria-hidden
       {...props}
     >
-      <use href={`/sprite.svg#${name}`} />
+      <use href={`/sprites/sprite.svg#${name}`} />
     </svg>
   );
 }
@@ -58,7 +59,7 @@ export function Icon({ name, className, ...props }) {
 import { Icon } from '@/shared/ui/icon';
 
 export function SomeComponent() {
-  return <Icon name="my-icon-name" />;
+  return <Icon name="common:groups" />;
 }
 ```
 

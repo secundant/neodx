@@ -6,8 +6,9 @@ import { resolve } from 'pathe';
 import * as process from 'process';
 import { resolveNormalizedConfiguration } from './config';
 import { createFigmaApi } from './core';
-import { exportFileAssets, exportPublishedComponents } from './export';
-import { createExportCache, createExportContext } from './export/create-export-context';
+import { createFigmaClient } from './create-figma-client.ts';
+import { exportFileAssets } from './export/export-file-assets.ts';
+import { exportPublishedComponents } from './export/export-published-components.ts';
 import { figmaLogger, formatTimeMs } from './shared';
 
 export function createFigmaCli() {
@@ -33,7 +34,19 @@ export function createFigmaCli() {
           log,
           personalAccessToken: config.token
         });
-        const cache = createExportCache();
+        const vfs = createVfs(resolve(cwd), {
+          readonly: dryRun,
+          log: log.child('vfs', {
+            target: pretty({
+              displayLevel: false
+            })
+          })
+        });
+        const figma = await createFigmaClient({
+          log,
+          vfs,
+          api
+        });
 
         log.debug(
           {
@@ -47,33 +60,18 @@ export function createFigmaCli() {
         for (const exportConfig of config.export) {
           const { fileId, type, output } = exportConfig;
           log.info('👉 Starting export file "%s" to "%s"', fileId, output);
-          const vfs = createVfs(resolve(cwd, output), {
-            readonly: dryRun,
-            log: log.child('fs', {
-              target: pretty({
-                displayLevel: false
-              })
-            })
-          });
-          const ctx = createExportContext({
-            api,
-            vfs,
-            cache,
-            log
-          });
+          const file = figma.file(fileId);
 
           switch (exportConfig.type) {
             case 'file-assets':
               await exportFileAssets({
-                ctx,
-                fileId,
-                ...omit(exportConfig, ['type', 'fileId', 'output'])
+                ...omit(exportConfig, ['type', 'fileId', 'output']),
+                file
               });
               break;
             case 'published-components':
               await exportPublishedComponents({
-                ctx,
-                fileId,
+                file,
                 ...omit(exportConfig, ['type', 'fileId', 'output'])
               });
               break;

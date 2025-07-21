@@ -1,3 +1,4 @@
+import { type AutoLoggerInput } from '@neodx/log';
 import { createAutoLogger } from '@neodx/log/node';
 import { isTypeOfBoolean } from '@neodx/std';
 import type { VfsBackend, VirtualInitializer } from './backend';
@@ -5,7 +6,7 @@ import { createInMemoryBackend, createNodeFsBackend } from './backend';
 import { createReadonlyBackend } from './backend/create-readonly-backend';
 import { createVfsContext } from './core/context';
 import { createBaseVfs } from './core/create-base-vfs';
-import type { VfsLogger, VfsLogMethod } from './core/types';
+import type { VfsLogMethod } from './core/types';
 import { eslint, type EsLintPluginParams } from './plugins/eslint';
 import { glob } from './plugins/glob.ts';
 import { json } from './plugins/json.ts';
@@ -31,7 +32,7 @@ export interface CreateVfsParams extends CreateHeadlessVfsParams {
 
 export interface CreateHeadlessVfsParams extends CreateDefaultVfsBackendParams {
   /** @see @neodx/log */
-  log?: VfsLogger | VfsLogMethod | 'silent';
+  log?: AutoLoggerInput<VfsLogMethod>;
   /** Pass your own vfs backend. */
   backend?: VfsBackend;
 }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/require-array-sort-compare */
-import { fromLength, uniq } from '@neodx/std';
+import { createRelativeUrl, fromLength, uniq } from '@neodx/std';
 import { readFile } from 'node:fs/promises';
 import { expect, vi } from 'vitest';
 import type { AnyNode, GetFileResult, NodeType } from '../core';
@@ -51,8 +51,10 @@ export const createMockNodes = (length: number, type: NodeType = 'COMPONENT') =>
       }) as GraphNode<AnyNode>
   );
 
-export const createMockApi = () => {
-  const fetch = createMockFetch();
+export const createMockApi = ({
+  getResponseText
+}: { getResponseText?: Parameters<typeof createMockFetch>[0] } = {}) => {
+  const fetch = createMockFetch(getResponseText);
 
   return {
     fetch,
@@ -77,3 +79,12 @@ export const createMockFetch = (getText: (req: Request) => string = () => '{"tes
     await new Promise(resolve => setTimeout(resolve, 5 + Math.random() * 10));
     return response;
   });
+
+// Single request check. Probably, will be replaced with some more advanced assertions
+export const expectFetchCalled = (fetch: ReturnType<typeof createMockFetch>, path: string) => {
+  expect(fetch).toHaveBeenCalledWith(
+    createRelativeUrl(path, 'https://api.figma.com/v1/'),
+    expect.anything()
+  );
+  fetch.mockClear();
+};

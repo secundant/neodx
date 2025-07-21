@@ -1,13 +1,11 @@
 import type { LoggerMethods } from '@neodx/log';
-import { createLogger, pretty } from '@neodx/log/node';
+import { createLogger } from '@neodx/log/node';
 import { truncateString, type URLInit } from '@neodx/std';
 
 export type FigmaLogger = LoggerMethods<'debug' | 'error' | 'info' | 'warn'>;
 
 export const figmaLogger = createLogger({
-  name: 'figma',
-  target: pretty(),
-  level: 'debug'
+  name: 'figma'
 });
 
 export const logRequest = (

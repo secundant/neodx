@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /** Multi-color icons will use this variable as an additional color */
+    --icon-secondary-color: currentColor;
+  }
+
+  a {
+    @apply text-blue-600 hover:text-blue-800 hover:underline visited:text-purple-600 visited:hover:text-purple-800;
+  }
+}
+
+@layer components {
+  /*
+  Our base class for icons inherits the current text color and applies common styles.
+  We're using a specific component class to prevent potential style conflicts.
+  */
+  .icon,
+  .icon-x,
+  .icon-y {
+    @apply select-none fill-current inline-block text-inherit box-content;
+    /** We need to align icons to the baseline, -0.125em is the 1/8 of the icon height */
+    vertical-align: -0.125em;
+  }
+
+  /* Set icon size to 1em based on its aspect ratio, so we can use `font-size` to scale it */
+  .icon,
+  .icon-x {
+    /* scale horizontally */
+    @apply w-[1em];
+  }
+
+  .icon,
+  .icon-y {
+    /* scale vertically */
+    @apply h-[1em];
+  }
+}
+
+/** INLINE ALL THE FOLLOWING CSS */
+
+h1 {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2.5rem;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+}
+.icon-section {
+  background: #fff;
+  border-radius: 1rem;
+  border: 1px solid #e6eaf0;
+  margin: 2rem auto;
+  max-width: 900px;
+  padding: 2rem 2rem 1.5rem 2rem;
+}
+.icon-section h2 {
+  font-size: 1.15rem;
+  margin-bottom: 1.2rem;
+  color: #2d7be5;
+  letter-spacing: 0.01em;
+}
+.icon-row {
+  display: flex;
+  gap: 2.5rem;
+  margin-bottom: 1.5rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.icon-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 90px;
+  margin-bottom: 1rem;
+  transition: background 0.2s;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.5rem 0.25rem 0.5rem;
+}
+.icon-cell label {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #555;
+  letter-spacing: 0.01em;
+  background: #f1f3f6;
+  border-radius: 0.4rem;
+  padding: 0.15rem 0.6rem;
+  margin-bottom: 0.2rem;
+}
+.icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 0.5rem;
+  border: 1px solid #e6eaf0;
+  background: #f9fafb;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.02);
+  display: block;
+  transition:
+    box-shadow 0.2s,
+    background 0.2s;
+}
+.icon.colored {
+  fill: currentColor;
+  stroke: currentColor;
+}
+@media (max-width: 700px) {
+  .icon-row {
+    gap: 1.2rem;
+  }
+  .icon-section {
+    padding: 1.2rem 0.5rem 1rem 0.5rem;
+  }
+  .icon-cell {
+    min-width: 70px;
+  }
+  .icon {
+    width: 48px;
+    height: 48px;
+  }
+}

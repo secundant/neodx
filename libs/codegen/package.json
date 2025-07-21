@@ -2,7 +2,7 @@
   "name": "@neodx/codegen",
   "private": true,
   "description": "Code generation API",
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@4.1.0",
   "version": "0.0.7",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -55,20 +55,20 @@
   "devDependencies": {
     "@neodx/autobuild": "*",
     "@types/ejs": "3.1.5",
-    "@types/semver": "7.5.7",
+    "@types/semver": "7.5.8",
     "@types/tmp": "0.2.6",
-    "tmp": "0.2.1"
+    "tmp": "0.2.3"
   },
   "dependencies": {
     "@neodx/fs": "0.0.12",
     "@neodx/pkg-misc": "0.0.10",
     "@neodx/std": "0.3.1",
     "@neodx/vfs": "0.2.1",
-    "ejs": "3.1.9",
-    "jsonc-parser": "3.2.0",
+    "ejs": "3.1.10",
+    "jsonc-parser": "3.2.1",
     "picocolors": "1.0.0",
-    "prettier": "3.2.5",
-    "semver": "7.5.4"
+    "prettier": "3.3.2",
+    "semver": "7.6.0"
   },
   "nx": {
     "targets": {

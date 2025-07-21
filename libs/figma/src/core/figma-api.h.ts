@@ -1,5 +1,6 @@
 import type {
   AnyNode,
+  Comment,
   Component,
   ComponentMetadata,
   ComponentSet,

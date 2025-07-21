@@ -1,3 +1,4 @@
+import { transformerTwoslash } from '@shikijs/vitepress-twoslash';
 import { defineConfig } from 'vitepress';
 
 // https://vitepress.dev/reference/site-config
@@ -15,6 +16,9 @@ export default defineConfig({
     ['meta', { name: 'msapplication-config', content: '/browserconfig.xml' }],
     ['meta', { name: 'theme-color', content: '#ffffff' }]
   ],
+  markdown: {
+    codeTransformers: [transformerTwoslash()]
+  },
   themeConfig: {
     logo: '/logo.png',
     socialLinks: [{ icon: 'github', link: 'https://github.com/secundant/neodx' }],
@@ -87,10 +91,12 @@ export default defineConfig({
             text: 'Setup',
             link: '/svg/setup/',
             items: [
-              { text: 'Vite', link: '/svg/setup/vite.md' },
-              { text: 'Next', link: '/svg/setup/next.md' },
-              { text: 'Webpack', link: '/svg/setup/webpack.md' },
-              { text: 'Other', link: '/svg/setup/other' }
+              { text: 'Vite', link: '/svg/setup/vite' },
+              { text: 'Next.js', link: '/svg/setup/next' },
+              { text: 'Webpack', link: '/svg/setup/webpack' },
+              { text: 'Other', link: '/svg/setup/other' },
+              { text: 'Node.js programmatic API', link: '/svg/setup/node' },
+              { text: 'Storybook', link: '/svg/setup/storybook' }
             ]
           },
           {
@@ -98,9 +104,31 @@ export default defineConfig({
             items: [
               { text: 'Group and hash sprites', link: '/svg/group-and-hash' },
               { text: 'Generate metadata', link: '/svg/metadata' },
-              { text: '✨ Writing Icon component', link: '/svg/writing-icon-component' },
-              { text: 'Automatically reset colors', link: '/svg/colors-reset' },
-              { text: 'Working with multicolored', link: '/svg/multicolored' }
+              { text: 'Writing Icon component', link: '/svg/writing-icon-component' },
+              { text: 'Colors reset', link: '/svg/colors-reset' },
+              { text: 'Multicolored icons', link: '/svg/multicolored' },
+              { text: 'SVG optimization', link: '/svg/optimization' },
+              { text: 'SVG inlining', link: '/svg/inlining' },
+              { text: 'Automatic cleanup', link: '/svg/cleanup' }
+            ]
+          },
+          {
+            text: 'Integration',
+            link: '/svg/integration/',
+            items: [
+              { text: 'React', link: '/svg/integration/react' },
+              { text: 'Vue', link: '/svg/integration/vue' },
+              { text: 'Svelte', link: '/svg/integration/svelte' },
+              { text: 'Solid', link: '/svg/integration/solid' },
+              { text: 'Figma', link: '/svg/integration/figma' },
+              { text: 'Heroicons', link: '/svg/integration/heroicons' }
+            ]
+          },
+          {
+            text: 'Recipes',
+            items: [
+              { text: 'CDN Compatibility', link: '/svg/recipes/cdn-compatibility' },
+              { text: 'Text alignment', link: '/svg/recipes/text-alignment' }
             ]
           },
           {
@@ -108,23 +136,12 @@ export default defineConfig({
             collapsed: true,
             link: '/svg/api/',
             items: [
-              { text: 'createSpritesBuilder', link: '/svg/api/create-sprites-builder' },
-              { text: 'createWatcher', link: '/svg/api/create-watcher' },
-              { text: 'buildSprites', link: '/svg/api/build-sprites' },
-              {
-                text: 'Plugins API',
-                collapsed: true,
-                items: [
-                  { text: 'resetColors', link: '/svg/api/plugins/reset-colors' },
-                  {
-                    text: 'metadata',
-                    link: '/svg/api/plugins/metadata'
-                  },
-                  { text: 'svgo', link: '/svg/api/plugins/svgo' }
-                ]
-              }
+              { text: 'Overview', link: '/svg/api/' },
+              { text: 'Builder', link: '/svg/api/builder' }
             ]
-          }
+          },
+          { text: 'Migration guide', link: '/svg/migration' },
+          { text: 'FAQ', link: '/svg/faq' }
         ]
       },
       {
