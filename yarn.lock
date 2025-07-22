@@ -2916,6 +2916,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@neodx/e2e-svg@workspace:apps/e2e/svg"
   dependencies:
+    "@neodx/svg": "npm:*"
     "@playwright/test": "npm:1.52.0"
     "@types/react": "npm:^19"
     "@types/react-dom": "npm:^19"
