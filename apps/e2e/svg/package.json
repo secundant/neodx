@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "playwright test",
+    "e2e": "playwright test",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
@@ -46,7 +46,7 @@
           "^build"
         ]
       },
-      "test": {
+      "e2e": {
         "dependsOn": [
           "build"
         ]
