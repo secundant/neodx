@@ -1,5 +1,23 @@
 # @neodx/std
 
+## 0.4.0
+
+### Minor Changes
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`be18044`](https://github.com/secundant/neodx/commit/be18044b869116cc429f646afb11b8e083580407) Thanks [@secundant](https://github.com/secundant)! - Add `append`, `intercept` and `transformKeys`
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`be18044`](https://github.com/secundant/neodx/commit/be18044b869116cc429f646afb11b8e083580407) Thanks [@secundant](https://github.com/secundant)! - Add `redefineName` and improve `not` typings
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`be18044`](https://github.com/secundant/neodx/commit/be18044b869116cc429f646afb11b8e083580407) Thanks [@secundant](https://github.com/secundant)! - Add `merge` and `getOrCreateMapValue`
+
+### Patch Changes
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd) Thanks [@secundant](https://github.com/secundant)! - Add `renameKeys`
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd) Thanks [@secundant](https://github.com/secundant)! - Add "is," "without," "dropValue" and "zip"; improve "merge" and "groupBy" api and types
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd) Thanks [@secundant](https://github.com/secundant)! - Add `propEq`
+
 ## 0.3.1
 
 ### Patch Changes

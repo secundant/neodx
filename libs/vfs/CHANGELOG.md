@@ -1,5 +1,31 @@
 # @neodx/vfs
 
+## 0.3.0
+
+### Minor Changes
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd) Thanks [@secundant](https://github.com/secundant)! - Support for deletion of nested directories
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`be18044`](https://github.com/secundant/neodx/commit/be18044b869116cc429f646afb11b8e083580407) Thanks [@secundant](https://github.com/secundant)! - Extend `jsonFile` API with basic operations
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd) Thanks [@secundant](https://github.com/secundant)! - Disable parent dir deletion because of the unsolved conflicts
+
+### Patch Changes
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd) Thanks [@secundant](https://github.com/secundant)! - Integrate tasks system
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd) Thanks [@secundant](https://github.com/secundant)! - Sort .readDir results by name
+
+- [#154](https://github.com/secundant/neodx/pull/154) [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd) Thanks [@secundant](https://github.com/secundant)! - introduce `createAutoVfs` API
+
+- Updated dependencies [[`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd), [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd), [`be18044`](https://github.com/secundant/neodx/commit/be18044b869116cc429f646afb11b8e083580407), [`2e83215`](https://github.com/secundant/neodx/commit/2e83215dc0707ee36c0e3f2725a5126ee56363fd), [`be18044`](https://github.com/secundant/neodx/commit/be18044b869116cc429f646afb11b8e083580407), [`be18044`](https://github.com/secundant/neodx/commit/be18044b869116cc429f646afb11b8e083580407)]:
+  - @neodx/std@0.4.0
+  - @neodx/colors@0.2.9
+  - @neodx/fs@0.0.13
+  - @neodx/glob@0.1.2
+  - @neodx/pkg-misc@0.0.11
+  - @neodx/log@0.4.2
+
 ## 0.2.1
 
 ### Patch Changes
