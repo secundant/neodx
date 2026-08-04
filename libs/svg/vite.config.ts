@@ -3,9 +3,9 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 // Pack-only S2: Vite+ pack for @neodx/svg.
 // Split configs:
-//   1) core + CLI with full dts
-//   2) bundler adapters with dts.resolve:false — bundling vite/webpack/…
-//      type graphs fails (MISSING_EXPORT / CommonJS dts) under rolldown-plugin-dts.
+//   1) core + CLI
+//   2) bundler adapters with deps.neverBundle for bundler peers — without that,
+//      dts walks vite/webpack type graphs and fails (MISSING_EXPORT / CJS dts).
 // ./plugins export removed with the plugin system (cf368d9); keep entries aligned
 // with real sources. @neodx/internal must be inlined.
 const outExtensions = ({ format }: { format: string }) => ({
@@ -38,7 +38,7 @@ export default defineConfig({
       },
       platform: 'node',
       format: ['esm', 'cjs'],
-      dts: { resolve: false },
+      dts: true,
       sourcemap: true,
       clean: false,
       outExtensions,

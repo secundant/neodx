@@ -98,22 +98,23 @@ a separate owner style decision.
 Rolled on `improve/neodx` after owner accept. Per-lib evidence: `vp pack` +
 exports smoke + no runtime `@neodx/internal` in `.mjs`/`.cjs` + `yarn test`.
 
-| Package           | pack | smoke | internal | tests | Notes                                                             |
-| ----------------- | ---- | ----- | -------- | ----- | ----------------------------------------------------------------- |
-| `@neodx/std`      | ✅   | ✅    | ✅       | ✅    | Prior spike; re-verified                                          |
-| `@neodx/log`      | ✅   | ✅    | ✅       | ✅    | Prior spike; iso free of `node:*`                                 |
-| `@neodx/colors`   | ✅   | ✅    | ✅       | ✅    | `platform: 'node'`                                                |
-| `@neodx/fs`       | ✅   | ✅    | ✅       | ✅    | `platform: 'node'`                                                |
-| `@neodx/glob`     | ✅   | ✅    | ✅       | ✅    | `platform: 'node'`; grammex inlined                               |
-| `@neodx/pkg-misc` | ✅   | ✅    | ✅       | ✅    | Nested `dist/{mjs,cjs,types}`                                     |
-| `@neodx/vfs`      | ✅   | ✅    | ✅       | ✅    | Nested multi-entry; maps may cite internal sources                |
-| `@neodx/svg`      | ✅   | ✅    | ✅       | ✅    | Split pack; bundler dts `resolve:false`; dropped dead `./plugins` |
-| `@neodx/figma`    | ✅   | ✅    | ✅       | ✅    | Multi-entry flat                                                  |
+| Package           | pack | smoke | internal | tests | Notes                                                            |
+| ----------------- | ---- | ----- | -------- | ----- | ---------------------------------------------------------------- |
+| `@neodx/std`      | ✅   | ✅    | ✅       | ✅    | Prior spike; re-verified                                         |
+| `@neodx/log`      | ✅   | ✅    | ✅       | ✅    | Prior spike; iso free of `node:*`                                |
+| `@neodx/colors`   | ✅   | ✅    | ✅       | ✅    | `platform: 'node'`                                               |
+| `@neodx/fs`       | ✅   | ✅    | ✅       | ✅    | `platform: 'node'`                                               |
+| `@neodx/glob`     | ✅   | ✅    | ✅       | ✅    | `platform: 'node'`; grammex inlined                              |
+| `@neodx/pkg-misc` | ✅   | ✅    | ✅       | ✅    | Nested `dist/{mjs,cjs,types}`                                    |
+| `@neodx/vfs`      | ✅   | ✅    | ✅       | ✅    | Nested multi-entry; maps may cite internal sources               |
+| `@neodx/svg`      | ✅   | ✅    | ✅       | ✅    | Split pack; bundler `deps.neverBundle`; dropped dead `./plugins` |
+| `@neodx/figma`    | ✅   | ✅    | ✅       | ✅    | Multi-entry flat                                                 |
 
-**Debt from roll (not WP-V2):** svg bundler adapters need `dts: { resolve: false }`
-because bundling `vite`/`webpack` type graphs fails under rolldown-plugin-dts;
-`dts: { only: true }` for nested `dist/types` still emits companion `.mjs` (harmless
-for exports). Autobuild remains the `yarn build` path until WP-V2.
+**Debt from roll (not WP-V2):** svg bundler adapters need `deps.neverBundle` for
+bundler peers (`vite`/`webpack`/…) or dts walks those type graphs and fails under
+rolldown-plugin-dts; `dts: { only: true }` for nested `dist/types` still emits
+companion `.mjs` (harmless for exports). Autobuild remains the `yarn build` path
+until WP-V2.
 
 ## Owner authorization ask
 
