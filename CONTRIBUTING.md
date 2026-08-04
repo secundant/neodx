@@ -5,9 +5,7 @@ guidance and architecture, see [`AGENTS.md`](./AGENTS.md).
 
 ## Prerequisites
 
-- **Node.js 22+** for local work that matches CI (`vp pack` needs `Promise.withResolvers`).
-  `package.json` `engines.node` still allows `>=18.0.0`; treat 22 as the supported contributor
-  floor until engines are tightened in a later slice.
+- **Node.js 22+** — matches CI and root `engines.node` (`vp pack` needs `Promise.withResolvers`).
 - **Yarn 4** — pinned via `packageManager: yarn@4.3.1` in `package.json`. Run `corepack enable` if
   your Node did not enable it. `vp install` delegates to Yarn.
 - **[GitHub CLI (`gh`)](https://github.com/cli/cli)** — install (`brew install gh` on macOS) and run
@@ -25,16 +23,19 @@ vp install   # or: yarn
 
 ## Everyday commands
 
+Everyday path (keep it short):
+
 ```shell
-vp check                 # fmt + lint (types are separate)
-cd libs/std && yarn typecheck && vp test
-vp run @neodx/std#pack   # pack one library
-vp run --filter "./libs/*" --filter "!@neodx/autobuild" --filter "!@neodx/codegen" --filter "!@neodx/internal" pack
-yarn constraints         # dependency-graph honesty (--fix for safe fixes)
+vp install               # or: yarn
+vp check                 # fmt + lint
+cd libs/<pkg> && yarn typecheck && vp test
+yarn pack:libs           # vp pack all publishable libs
 ```
 
-Package-directory scripts (`yarn test`, `yarn build` → `vp pack`, …) still work via Yarn workspaces.
-Prefer package cwd for tests; root `vp test` can pick up Playwright/legacy noise.
+Also useful: `yarn constraints`, `yarn verify-exports` / `yarn publint` (after pack), and Playwright via
+`apps/e2e/svg/README.md`. Prefer package cwd for tests; root `vp test` can pick up Playwright noise.
+
+See [`SECURITY.md`](./SECURITY.md) for vulnerability reporting.
 
 ## Adding a changeset
 

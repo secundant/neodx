@@ -8,12 +8,12 @@ source that owns the current decision.
 
 ## Package layers
 
-| Layer               | Packages                                                                                                                  | Role                                 |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| Product (flagships) | `@neodx/svg`, `@neodx/figma`, `@neodx/log`, `@neodx/vfs`                                                                  | Caller-facing; ship docs + examples  |
-| Foundation          | `@neodx/std`, `@neodx/colors`, `@neodx/fs`, `@neodx/glob`, `@neodx/pkg-misc`                                              | Shared helpers consumed by products  |
-| Tooling             | `@neodx/autobuild` (legacy, not critical path), `@neodx/codegen` (private), `@neodx/scripts`, `@neodx/internal` (private) | Scaffold / legacy / shared internals |
-| Surfaces            | `apps/docs`, `apps/examples/**`, `apps/e2e/svg`                                                                           | VitePress docs, demos, visual e2e    |
+| Layer               | Packages                                                                                                               | Role                                 |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| Product (flagships) | `@neodx/svg`, `@neodx/figma`, `@neodx/log`, `@neodx/vfs`                                                               | Caller-facing; ship docs + examples  |
+| Foundation          | `@neodx/std`, `@neodx/colors`, `@neodx/fs`, `@neodx/glob`, `@neodx/pkg-misc`                                           | Shared helpers consumed by products  |
+| Tooling             | `@neodx/autobuild` (**private / archived**), `@neodx/codegen` (private), `@neodx/scripts`, `@neodx/internal` (private) | Scaffold / legacy / shared internals |
+| Surfaces            | `apps/docs`, `apps/examples/**`, `apps/e2e/svg`                                                                        | VitePress docs, demos, visual e2e    |
 
 - Dependencies flow foundation → product. Never import a product from a foundation.
 - `@neodx/internal` is **build-time inline only**: a `devDependency` on `svg`/`vfs`/`figma`, never a
@@ -27,17 +27,18 @@ source that owns the current decision.
 Critical path is **Vite+** (`vp`). Yarn remains the package manager (`packageManager: yarn@4.3.1`;
 `vp install` delegates to it).
 
-| Concern               | Command                                                                                                               | Notes                                                                                                         |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Install               | `vp install` or `yarn`                                                                                                | Yarn 4.3.1; Node **22+** for `vp pack`                                                                        |
-| Check (fmt + lint)    | `vp check`                                                                                                            | Root `vite.config.ts`; Oxlint typeAware/typeCheck off ([#161](https://github.com/secundant/neodx/issues/161)) |
-| Typecheck             | `cd libs/<pkg> && yarn typecheck` or `vp run --filter "./libs/*" typecheck`                                           | Per-package `tsc --noEmit` until S5 / #161                                                                    |
-| Lint / format alone   | `vp lint` / `vp fmt`                                                                                                  | Oxlint + Oxfmt                                                                                                |
-| Test                  | `cd libs/<pkg> && vp test`                                                                                            | Prefer package cwd; CI uses `vp run --filter "./libs/*" test`                                                 |
-| Pack one lib          | `vp run @neodx/<pkg>#pack`                                                                                            | Emits CJS/ESM/dts per pack config                                                                             |
-| Pack publishable libs | `vp run --filter "./libs/*" --filter "!@neodx/autobuild" --filter "!@neodx/codegen" --filter "!@neodx/internal" pack` | Dependency-ordered via package graph                                                                          |
-| Graph honesty         | `yarn constraints`                                                                                                    | `--fix` applies safe fixes                                                                                    |
-| E2E                   | pack svg → `cd apps/e2e/svg && vp build` → `yarn workspace @neodx/e2e-svg e2e`                                        | Playwright; required CI job                                                                                   |
+| Concern               | Command                                                                        | Notes                                                                                                         |
+| --------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| Install               | `vp install` or `yarn`                                                         | Yarn 4.3.1; Node **22+** for `vp pack`                                                                        |
+| Check (fmt + lint)    | `vp check`                                                                     | Root `vite.config.ts`; Oxlint typeAware/typeCheck off ([#161](https://github.com/secundant/neodx/issues/161)) |
+| Typecheck             | `cd libs/<pkg> && yarn typecheck` or `vp run --filter "./libs/*" typecheck`    | Per-package `tsc --noEmit` until S5 / #161                                                                    |
+| Lint / format alone   | `vp lint` / `vp fmt`                                                           | Oxlint + Oxfmt                                                                                                |
+| Test                  | `cd libs/<pkg> && vp test`                                                     | Prefer package cwd; CI uses `vp run --filter "./libs/*" test`                                                 |
+| Pack one lib          | `vp run @neodx/<pkg>#pack`                                                     | Emits CJS/ESM/dts per pack config                                                                             |
+| Pack publishable libs | `yarn pack:libs`                                                               | Alias for filtered `vp run … pack`                                                                            |
+| Export / publint      | `yarn verify-exports` / `yarn publint`                                         | After pack (CI runs both)                                                                                     |
+| Graph honesty         | `yarn constraints`                                                             | `--fix` applies safe fixes                                                                                    |
+| E2E                   | pack svg → `cd apps/e2e/svg && vp build` → `yarn workspace @neodx/e2e-svg e2e` | Playwright; required CI job                                                                                   |
 
 `vp run` uses workspace filters / `-r` / `-t` and fingerprint cache — **not** Nx-style
 git-affected selection. That difference is accepted.
@@ -50,7 +51,8 @@ git-affected selection. That difference is accepted.
 - Prefer `vp check`, package `yarn typecheck`, and package-cwd `vp test` on touched work; pack when
   you changed a publishable public surface or pack config.
 - For `@neodx/internal` or its consumers, confirm the inline contract test passes after pack.
-- CI gates on PR: `check` (`vp check` / `vp test` / pack) and `e2e-svg`. Keep both green.
+- CI gates on PR: `check` (fmt/lint, pack, typecheck, test, verify-exports, publint, internal-inline)
+  and `e2e-svg`. Keep both green.
 - Prefer the smallest change that solves the task. Touch only files the task requires.
 
 ## Public API rules
