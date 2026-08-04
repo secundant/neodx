@@ -252,8 +252,8 @@ describe('walk', () => {
             return dirents.filter(dirent => dirent.isDirectory());
           },
           mapPath: (item, { path }) =>
-            join(relative(resolve(tmp.path, path), item.path), item.name),
-          mapResult: item => join(relative(tmp.path, item.path), item.name)
+            join(relative(resolve(tmp.path, path), item.parentPath ?? item.path), item.name),
+          mapResult: item => join(relative(tmp.path, item.parentPath ?? item.path), item.name)
         })
       ).resolves.toEqual(['src/__tests__', 'src/modules']);
     });
