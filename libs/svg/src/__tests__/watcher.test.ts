@@ -42,6 +42,23 @@ describe.concurrent('watcher', async () => {
 
     return getChildNodes(svg).map(child => child.props.id!);
   };
+  /** Poll until sprite rebuild lands — CI fs events can lag past a fixed sleep. */
+  const waitForSymbols = async (vfs: Vfs, path: string, expected: string[], attempts = 20) => {
+    let lastError: unknown;
+
+    for (let i = 0; i < attempts; i++) {
+      try {
+        const names = await extractSymbolNames(vfs, path);
+
+        expect(names).toEqual(expected);
+        return names;
+      } catch (error) {
+        lastError = error;
+        await sleep(250);
+      }
+    }
+    throw lastError;
+  };
 
   test('should support directory renaming', async () => {
     const { vfs, watcher } = await prepare();
@@ -85,8 +102,7 @@ describe.concurrent('watcher', async () => {
 
     // rename with one letter case change, in the opposite to the previous test, the case is not forced to kamel-case
     await rename(vfs.resolve('assets/common/add.svg'), vfs.resolve('assets/common/Add.svg'));
-    await sleep(500);
-    expect(await extractSymbolNames(vfs, 'public/sprites/common.svg')).toEqual(['Add', 'close']);
+    await waitForSymbols(vfs, 'public/sprites/common.svg', ['Add', 'close']);
     await watcher.close();
   });
 

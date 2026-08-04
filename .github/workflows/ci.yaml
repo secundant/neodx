@@ -70,3 +70,14 @@ jobs:
       - name: Run Playwright e2e
         run: yarn nx run @neodx/e2e-svg:e2e
         # Flakes must be quarantined with a named GitHub issue — do not silent-skip.
+
+      - name: Upload Playwright artifacts
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: e2e-svg-playwright
+          path: |
+            apps/e2e/svg/test-results/
+            apps/e2e/svg/tests/svg-e2e.test.ts-snapshots/
+          if-no-files-found: ignore
+          retention-days: 7
