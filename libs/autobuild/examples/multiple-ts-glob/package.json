@@ -5,7 +5,7 @@
     "src/modules/*.ts",
     "src/modules/*/index.ts"
   ],
-  "types": "dist/types/index.d.ts",
   "main": "dist/cjs/index.cjs",
-  "module": "dist/esm/index.mjs"
+  "module": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts"
 }

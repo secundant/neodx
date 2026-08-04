@@ -1,4 +1,4 @@
-import { assertType, describe, expectTypeOf, test } from 'vitest';
+import { assertType, describe, expectTypeOf, test } from 'vite-plus/test';
 import {
   type CreateLogger,
   createLogger,

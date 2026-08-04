@@ -56,13 +56,15 @@ export type NormalizedExportConfigItem =
   | NormalizedExportPublishedComponentsConfigurationItem;
 
 export interface NormalizedExportFileConfigurationItem
-  extends Omit<ExportFileConfiguration, 'fileId' | 'output'>,
+  extends
+    Omit<ExportFileConfiguration, 'fileId' | 'output'>,
     Required<Pick<ExportFileConfiguration, 'fileId' | 'output'>> {
   type: 'file-assets';
 }
 
 export interface NormalizedExportPublishedComponentsConfigurationItem
-  extends Omit<ExportPublishedComponentsConfiguration, 'fileId' | 'output'>,
+  extends
+    Omit<ExportPublishedComponentsConfiguration, 'fileId' | 'output'>,
     Required<Pick<ExportPublishedComponentsConfiguration, 'fileId' | 'output'>> {
   type: 'published-components';
 }
@@ -102,8 +104,10 @@ export interface ExportFileConfiguration extends Omit<ExportFileAssetsParams, 'f
   output?: string;
 }
 
-export interface ExportPublishedComponentsConfiguration
-  extends Omit<ExportPublishedComponentsParams, 'file'> {
+export interface ExportPublishedComponentsConfiguration extends Omit<
+  ExportPublishedComponentsParams,
+  'file'
+> {
   type: 'published-components';
   /**
    * URL or ID of the file to export from

@@ -3,7 +3,7 @@ import Koa from 'koa';
 import type { IncomingMessage, OutgoingMessage } from 'node:http';
 import { createServer as createHttpServer } from 'node:http';
 import { createServer as createHttpsServer } from 'node:https';
-import { describe, expectTypeOf, test } from 'vitest';
+import { describe, expectTypeOf, test } from 'vite-plus/test';
 import { createExpressLogger } from '../express';
 import { createHttpLogger } from '../http';
 import { createKoaLogger } from '../koa';

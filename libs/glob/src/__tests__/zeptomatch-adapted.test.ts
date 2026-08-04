@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { matchGlob } from '../match.ts';
 
 // Tests adapted from "zeptomatch": https://github.com/fabiospampinato/zeptomatch/

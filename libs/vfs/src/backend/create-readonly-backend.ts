@@ -15,7 +15,7 @@ export function createReadonlyBackend(backend: VfsBackend) {
   };
 
   return {
-    read: path => (deleted(path) ? null : inMemory.read(path) ?? backend.read(path)),
+    read: path => (deleted(path) ? null : (inMemory.read(path) ?? backend.read(path))),
     exists: path => !deleted(path) && (inMemory.exists(path) || backend.exists(path)),
     isFile: path => !deleted(path) && (inMemory.isFile(path) || backend.isFile(path)),
     isDir: path => !deleted(path) && (inMemory.isDir(path) || backend.isDir(path)),

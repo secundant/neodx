@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { createTmpVfs } from '../testing';
 
 const createPreconfiguredTmpVfs = async ({ files = {} }: { files?: Record<string, string> } = {}) =>

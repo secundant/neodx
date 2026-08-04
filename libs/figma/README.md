@@ -159,9 +159,7 @@ We're providing powerful graph structure for easy traversing and accessing any d
 import { createFileGraph, createFigmaApi } from '@neodx/figma';
 
 const fileId = 'xxx';
-const api = createFigmaApi({
-  /* ... */
-});
+const api = createFigmaApi({/* ... */});
 const file = await api.getFile({ id: fileId });
 const graph = createFileGraph(fileId, file);
 // ...

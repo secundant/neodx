@@ -28,8 +28,10 @@ export interface JsonPluginApi {
   ): Promise<void>;
 }
 
-export interface JsonFileApi<FileContents extends JSONValue | unknown = unknown>
-  extends Omit<FileApi, 'read' | 'write' | 'tryRead'> {
+export interface JsonFileApi<FileContents extends JSONValue | unknown = unknown> extends Omit<
+  FileApi,
+  'read' | 'write' | 'tryRead'
+> {
   tryRead<T extends FileContents = FileContents>(options?: ParseJsonParams): Promise<T | null>;
   read<T extends FileContents = FileContents>(options?: ParseJsonParams): Promise<T>;
   write<T extends FileContents = FileContents>(

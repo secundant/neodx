@@ -1,7 +1,7 @@
 import { ensureFile, getHash, writeFile } from '@neodx/fs';
 import { concurrently, entries, identity } from '@neodx/std';
 import { dirSync } from 'tmp';
-import { expect, vitest } from 'vitest';
+import { expect, vitest } from 'vite-plus/test';
 import type { VirtualInitializer } from './backend';
 import { createInMemoryFilesRecord } from './backend';
 import { getVfsContext } from './core/create-base-vfs.ts';

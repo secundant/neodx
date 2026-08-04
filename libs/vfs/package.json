@@ -2,15 +2,17 @@
   "name": "@neodx/vfs",
   "version": "0.3.0",
   "description": "Simple virtual file system - working dir context, lazy changes, different modes, integrations and moreover",
-  "type": "module",
-  "main": "./dist/cjs/index.cjs",
-  "types": "./dist/types/index.d.ts",
-  "module": "./dist/mjs/index.mjs",
-  "source": [
-    "src/index.ts",
-    "src/plugins/*.ts"
+  "keywords": [
+    "dry-run",
+    "file",
+    "fs",
+    "lazy",
+    "vfs",
+    "virtual"
   ],
-  "sideEffects": false,
+  "homepage": "https://github.com/secundant/neodx/tree/main/libs/vfs",
+  "bugs": "https://github.com/secundant/neodx/issues",
+  "license": "MIT",
   "author": {
     "name": "Dmitry Remezov",
     "email": "mysecundant@gmail.com",
@@ -19,41 +21,25 @@
   "contributors": [
     "secundant"
   ],
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/secundant/neodx.git",
     "directory": "libs/vfs"
   },
-  "homepage": "https://github.com/secundant/neodx/tree/main/libs/vfs",
-  "bugs": "https://github.com/secundant/neodx/issues",
+  "source": [
+    "src/index.ts",
+    "src/plugins/*.ts"
+  ],
   "files": [
     "dist",
     "README.md",
     "package.json"
   ],
-  "keywords": [
-    "vfs",
-    "virtual",
-    "file",
-    "fs",
-    "lazy",
-    "dry-run"
-  ],
-  "scripts": {
-    "typecheck": "tsc --noEmit",
-    "bench": "vitest bench",
-    "build": "autobuild",
-    "test": "vitest run",
-    "lint": "eslint src"
-  },
-  "devDependencies": {
-    "@neodx/autobuild": "workspace:^",
-    "@neodx/internal": "workspace:^",
-    "@types/tmp": "0.2.6",
-    "tmp": "0.2.3",
-    "tsx": "4.16.2"
-  },
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/mjs/index.mjs",
+  "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
@@ -91,6 +77,14 @@
       "require": "./dist/cjs/plugins/scan.cjs"
     }
   },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "bench": "vitest bench",
+    "build": "vp pack",
+    "test": "vp test",
+    "lint": "vp lint",
+    "pack": "vp pack"
+  },
   "dependencies": {
     "@neodx/colors": "workspace:^",
     "@neodx/fs": "workspace:^",
@@ -103,6 +97,12 @@
     "pathe": "1.1.2",
     "pkg-types": "1.0.3",
     "ts-pattern": "5.2.0"
+  },
+  "devDependencies": {
+    "@neodx/internal": "workspace:^",
+    "@types/tmp": "0.2.6",
+    "tmp": "0.2.3",
+    "tsx": "4.16.2"
   },
   "peerDependencies": {
     "eslint": "*",

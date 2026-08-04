@@ -34,9 +34,7 @@ import {
   writeDownloadedAssets
 } from '@figma-export/core';
 
-const ctx = createExportContext({
-  /* ... */
-});
+const ctx = createExportContext({/* ... */});
 const myElements = await collectSomeFigmaElements();
 // Prepare assets for download
 const downloadable = await resolveExportedAssets({

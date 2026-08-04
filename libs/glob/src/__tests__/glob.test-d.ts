@@ -1,7 +1,7 @@
 import { identity } from '@neodx/std';
 import { readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { describe, expectTypeOf, test } from 'vitest';
+import { describe, expectTypeOf, test } from 'vite-plus/test';
 import { extractGlobPaths } from '../extract.ts';
 import { createGlobMatcher, globToRegExp, matchGlob } from '../match.ts';
 import { escapeGlob, isStaticGlob, unescapeGlob } from '../shared.ts';

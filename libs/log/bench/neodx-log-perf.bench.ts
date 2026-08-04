@@ -1,4 +1,4 @@
-import { bench, describe } from 'vitest';
+import { bench, describe } from 'vite-plus/test';
 import { exampleLogArgs, exampleObjects, LOG_METHODS, loggers } from './shared';
 
 describe('json target - methods performance', () => {

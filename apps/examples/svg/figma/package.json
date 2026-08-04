@@ -1,12 +1,20 @@
 {
   "name": "@neodx/example-svg-figma",
   "version": "0.0.1",
-  "type": "module",
   "private": true,
-  "packageManager": "yarn@4.3.1",
+  "type": "module",
   "sideEffects": false,
   "publishConfig": {
     "access": "restricted"
+  },
+  "scripts": {
+    "export-icons": "figma export --verbose",
+    "typecheck": "tsc --noEmit",
+    "build": "vite build",
+    "test": "vitest run",
+    "lint": "eslint src",
+    "dev": "vite",
+    "nuke": "rm -rf dist"
   },
   "dependencies": {
     "@neodx/figma": "workspace:^",
@@ -27,41 +35,5 @@
     "vite-tsconfig-paths": "6.1.1",
     "vitest": "4.1.10"
   },
-  "scripts": {
-    "export-icons": "figma export --verbose",
-    "typecheck": "tsc --noEmit",
-    "build": "vite build",
-    "test": "vitest run",
-    "lint": "eslint src",
-    "dev": "vite",
-    "nuke": "rm -rf dist"
-  },
-  "nx": {
-    "targets": {
-      "export-icons": {
-        "outputs": [
-          "{workspaceRoot}/assets/icons"
-        ],
-        "inputs": [
-          "{projectRoot}/assets/**/*.svg",
-          "shared"
-        ],
-        "dependsOn": [
-          "^build"
-        ]
-      },
-      "build-sprite": {
-        "outputs": [
-          "{workspaceRoot}/public/sprites"
-        ],
-        "inputs": [
-          "{projectRoot}/assets/**/*.svg",
-          "shared"
-        ],
-        "dependsOn": [
-          "^build"
-        ]
-      }
-    }
-  }
+  "packageManager": "yarn@4.3.1"
 }

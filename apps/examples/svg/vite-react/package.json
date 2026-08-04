@@ -2,10 +2,17 @@
   "name": "@neodx/example-svg-vite-react",
   "version": "0.0.1",
   "private": true,
-  "packageManager": "yarn@4.3.1",
   "sideEffects": false,
   "publishConfig": {
     "access": "restricted"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "nuke": "rm -rf dist"
   },
   "dependencies": {
     "@fontsource-variable/inter": "5.0.17",
@@ -24,38 +31,5 @@
     "vite": "8.2.0",
     "vite-tsconfig-paths": "6.1.1"
   },
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "start": "vite preview",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint src",
-    "nuke": "rm -rf dist"
-  },
-  "nx": {
-    "targets": {
-      "dev": {
-        "dependsOn": [
-          "^build"
-        ]
-      },
-      "build": {
-        "outputs": [
-          "{projectRoot}/public/sprites"
-        ],
-        "inputs": [
-          "{projectRoot}/src/shared/ui/icon/assets/**/*.svg",
-          "shared"
-        ],
-        "dependsOn": [
-          "^build"
-        ]
-      },
-      "test": {
-        "dependsOn": [
-          "build"
-        ]
-      }
-    }
-  }
+  "packageManager": "yarn@4.3.1"
 }

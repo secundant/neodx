@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { intercept } from '../async';
 import { asyncReduce } from '../async/reduce';
 import { identity } from '../shared';

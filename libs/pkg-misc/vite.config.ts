@@ -34,6 +34,7 @@ export default defineConfig({
       platform: 'node',
       format: ['esm'],
       outDir: 'dist/types',
+      // @ts-expect-error Vite+ pack dts typings lag tsdown `{ only: true }`
       dts: { only: true },
       sourcemap: false,
       clean: false,

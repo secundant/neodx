@@ -7,68 +7,92 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  nx:
+  check:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [20.x]
-
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v4
-
-      - uses: actions/setup-node@v4
+      - uses: voidzero-dev/setup-vp@v1
         with:
           node-version: ${{ matrix.node-version }}
-          cache: yarn
+          cache: true
+          run-install: true
 
-      - name: Install dependencies
-        run: yarn install --immutable
+      - name: Restore Vite Task cache
+        id: vite-task-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules/.vite/task-cache
+          key: vite-task-${{ runner.os }}-${{ runner.arch }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            vite-task-${{ runner.os }}-${{ runner.arch }}-
 
-      - name: Run NX checks
-        run: |
-          yarn nx format:check
-          yarn nx affected --target lint --parallel 3
-          yarn nx affected --target test --parallel 3
-          yarn nx affected --target build --parallel 3
-          yarn nx affected --target typecheck --parallel 3
+      - name: Check (fmt + lint)
+        run: vp check
+
+      - name: Typecheck publishable libraries
+        run: >
+          vp run
+          --filter "./libs/*"
+          --filter "!@neodx/autobuild"
+          typecheck
+
+      - name: Test libraries
+        run: >
+          vp run
+          --filter "./libs/*"
+          --filter "!@neodx/autobuild"
+          test
+
+      - name: Pack publishable libraries
+        run: >
+          vp run
+          --filter "./libs/*"
+          --filter "!@neodx/autobuild"
+          --filter "!@neodx/codegen"
+          --filter "!@neodx/internal"
+          pack
 
       - name: Verify @neodx/internal is inlined in dist
-        run: yarn vitest run libs/svg/src/__tests__/internal-inline.test.ts
+        working-directory: libs/svg
+        run: vp test src/__tests__/internal-inline.test.ts
+
+      - name: Save Vite Task cache
+        if: success()
+        uses: actions/cache/save@v4
+        with:
+          path: node_modules/.vite/task-cache
+          key: ${{ steps.vite-task-cache.outputs.cache-primary-key }}
 
   e2e-svg:
     runs-on: ubuntu-latest
     needs: []
-
     strategy:
       matrix:
         node-version: [20.x]
-
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: voidzero-dev/setup-vp@v1
         with:
           node-version: ${{ matrix.node-version }}
-          cache: yarn
-
-      - name: Install dependencies
-        run: yarn install --immutable
+          cache: true
+          run-install: true
 
       - name: Install Playwright Chromium
         run: yarn workspace @neodx/e2e-svg exec playwright install --with-deps chromium
 
+      - name: Pack svg (e2e dependency)
+        run: vp run -t @neodx/svg#pack
+
       - name: Build svg e2e app
-        run: yarn nx run @neodx/e2e-svg:build
+        run: vp -C apps/e2e/svg build
 
       - name: Run Playwright e2e
-        run: yarn nx run @neodx/e2e-svg:e2e
+        run: yarn workspace @neodx/e2e-svg e2e
         # Flakes must be quarantined with a named GitHub issue — do not silent-skip.
 
       - name: Upload Playwright artifacts

@@ -1,5 +1,5 @@
 import { createColors } from '@neodx/colors';
-import { describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vite-plus/test';
 import type { DefaultLoggerLevel } from '../core/shared';
 import type { LoggerParams } from '../core/types';
 import type { PrettyTargetParams } from '../node';

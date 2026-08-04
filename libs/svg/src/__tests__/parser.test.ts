@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { formatSvg, formatSvgAsset, parseSvg } from '../core/parser.ts';
 import { defineSymbolMeta } from '../core/shared.ts';
 

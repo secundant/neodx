@@ -1,5 +1,5 @@
 import { getChangesDump } from '@neodx/vfs/testing';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { createSvgSpriteBuilder, type CreateSvgSpriteBuilderParams } from '../core/builder.ts';
 import { examplesVfs, getExamplesNames } from './testing-utils.ts';
 

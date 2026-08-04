@@ -1,5 +1,5 @@
 import type { AnyFn } from '@neodx/std/shared';
-import { describe, expectTypeOf, test } from 'vitest';
+import { describe, expectTypeOf, test } from 'vite-plus/test';
 import type {
   AnyNode,
   Comment,

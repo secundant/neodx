@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vitest } from 'vitest';
+import { beforeEach, describe, expect, test, vitest } from 'vite-plus/test';
 import { createLogger } from '../index.ts';
 import { createLoggerAutoFactory } from '../utils/create-auto-logger-factory.ts';
 

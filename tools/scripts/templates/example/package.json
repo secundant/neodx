@@ -2,7 +2,6 @@
   "name": "@neodx/example-<%=lib%>-<%=name%>",
   "version": "0.0.1",
   "private": true,
-  "packageManager": "yarn@4.3.1",
   "type": "module",
   "sideEffects": false,
   "publishConfig": {
@@ -12,8 +11,9 @@
     "typecheck": "exit 0 || tsc --noEmit",
     "build": "exit 0 || vite build",
     "test": "exit 0 || vitest run",
-    "lint": "exit 0 || eslint src",
+    "lint": "vp lint",
     "dev": "exit 0 || vite",
     "nuke": "rm -rf dist"
-  }
+  },
+  "packageManager": "yarn@4.3.1"
 }

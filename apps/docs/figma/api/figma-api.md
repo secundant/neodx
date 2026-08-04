@@ -8,9 +8,7 @@ Basic API client for Figma. You can find some usage examples in these references
 ```typescript
 declare function createFigmaApi(params: CreateFigmaApiParams): FigmaApi;
 
-const figma = createFigmaApi({
-  /* ... */
-});
+const figma = createFigmaApi({/* ... */});
 ```
 
 ## `CreateFigmaApiParams`

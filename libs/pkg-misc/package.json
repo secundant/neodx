@@ -2,23 +2,31 @@
   "name": "@neodx/pkg-misc",
   "version": "0.0.11",
   "description": "Collection of utilities for common cases in package development - smart dependencies updates, simple formatting with auto-detection of prettier config, etc.",
-  "type": "module",
-  "main": "./dist/cjs/index.cjs",
-  "types": "./dist/types/index.d.ts",
-  "module": "./dist/mjs/index.mjs",
+  "license": "MIT",
   "source": "src/index.ts",
-  "sideEffects": false,
   "files": [
     "dist",
     "README.md",
     "package.json"
   ],
-  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/mjs/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/mjs/index.mjs",
+      "require": "./dist/cjs/index.cjs"
+    }
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "autobuild",
-    "test": "vitest run",
-    "lint": "eslint src"
+    "build": "vp pack",
+    "test": "vp test",
+    "lint": "vp lint",
+    "pack": "vp pack"
   },
   "dependencies": {
     "@neodx/fs": "workspace:^",
@@ -28,7 +36,6 @@
     "semver": "7.6.0"
   },
   "devDependencies": {
-    "@neodx/autobuild": "workspace:^",
     "@types/semver": "7.5.8",
     "prettier": "3.3.2"
   },
@@ -42,13 +49,6 @@
     },
     "prettier": {
       "optional": true
-    }
-  },
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/mjs/index.mjs",
-      "require": "./dist/cjs/index.cjs"
     }
   }
 }

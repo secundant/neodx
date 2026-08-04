@@ -2,10 +2,15 @@
   "name": "@neodx/example-svg-storybook",
   "version": "0.0.1",
   "private": true,
-  "packageManager": "yarn@4.3.1",
   "sideEffects": false,
   "publishConfig": {
     "access": "restricted"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "dev": "storybook dev -p 6006",
+    "build": "storybook build",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@fontsource-variable/inter": "5.0.17",
@@ -31,36 +36,5 @@
     "vite": "8.2.0",
     "vite-tsconfig-paths": "6.1.1"
   },
-  "scripts": {
-    "lint": "eslint src",
-    "dev": "storybook dev -p 6006",
-    "build": "storybook build",
-    "typecheck": "tsc --noEmit"
-  },
-  "nx": {
-    "targets": {
-      "dev": {
-        "dependsOn": [
-          "^build"
-        ]
-      },
-      "build": {
-        "outputs": [
-          "{projectRoot}/public/sprites"
-        ],
-        "inputs": [
-          "{projectRoot}/src/shared/ui/icon/assets/**/*.svg",
-          "shared"
-        ],
-        "dependsOn": [
-          "^build"
-        ]
-      },
-      "test": {
-        "dependsOn": [
-          "build"
-        ]
-      }
-    }
-  }
+  "packageManager": "yarn@4.3.1"
 }

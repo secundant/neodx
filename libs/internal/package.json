@@ -2,12 +2,10 @@
   "name": "@neodx/internal",
   "version": "0.0.1",
   "private": true,
-  "publishConfig": {
-    "access": "restricted"
-  },
-  "packageManager": "yarn@4.3.1",
   "description": "Collection of shared internal utilities and common patterns for neodx",
-  "sideEffects": false,
+  "homepage": "https://github.com/secundant/neodx/tree/main/libs/internal",
+  "bugs": "https://github.com/secundant/neodx/issues",
+  "license": "MIT",
   "author": {
     "name": "Dmitry Remezov",
     "email": "mysecundant@gmail.com",
@@ -16,30 +14,32 @@
   "contributors": [
     "secundant"
   ],
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/secundant/neodx.git",
     "directory": "libs/internal"
   },
-  "homepage": "https://github.com/secundant/neodx/tree/main/libs/internal",
-  "bugs": "https://github.com/secundant/neodx/issues",
   "files": [],
-  "scripts": {
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "lint": "eslint src"
-  },
+  "sideEffects": false,
   "exports": {
     "./*": {
       "types": "./src/*.ts",
       "import": "./src/*.ts"
     }
   },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vp test",
+    "lint": "vp lint"
+  },
   "dependencies": {
     "object-hash": "3.0.0"
   },
   "devDependencies": {
     "@types/object-hash": "3.0.6"
-  }
+  },
+  "packageManager": "yarn@4.3.1"
 }

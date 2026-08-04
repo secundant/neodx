@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { chunk, sliding } from '../array/chunking';
 import { renderWaterfall } from './testing-utils';
 

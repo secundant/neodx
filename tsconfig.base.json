@@ -31,8 +31,6 @@
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
     "noFallthroughCasesInSwitch": true,
-    "suppressExcessPropertyErrors": false,
-    "suppressImplicitAnyIndexErrors": false,
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
     "allowUnreachableCode": false,

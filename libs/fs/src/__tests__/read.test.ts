@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { type DirResult, dirSync } from 'tmp';
-import { beforeEach, describe, expect, test } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vite-plus/test';
 import { ensureFile } from '../ensure';
 import { deepReadDir } from '../read';
 

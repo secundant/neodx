@@ -121,8 +121,8 @@ export async function createSwcConfig(
         },
         externalHelpers: tsConfig.compilerOptions.importHelpers,
         target: tsConfig.compilerOptions.target
-          ? tsTargetToJSCTarget[tsConfig.compilerOptions.target] ??
-            tsConfig.compilerOptions.target.toString().toLowerCase()
+          ? (tsTargetToJSCTarget[tsConfig.compilerOptions.target] ??
+            tsConfig.compilerOptions.target.toString().toLowerCase())
           : 'es2022',
         baseUrl: tsConfig.compilerOptions.baseUrl,
         paths: tsConfig.compilerOptions.paths

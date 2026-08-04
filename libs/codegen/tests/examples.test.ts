@@ -1,6 +1,6 @@
 import { createVfs } from '@neodx/vfs';
 import { join } from 'node:path';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 
 describe('examples', () => {
   test('react-hook', async () => {

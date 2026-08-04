@@ -1,5 +1,5 @@
 import { readdirSync } from 'node:fs';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { buildExample, EXAMPLES_BASE_URL, getExampleDistPath } from './lib/build-example';
 
 /**

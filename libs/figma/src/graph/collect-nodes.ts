@@ -66,7 +66,7 @@ export function collectNodes(
 }
 
 export const extractNodeType = (type: NodeType) => (node: GraphNode<AnyNode>) =>
-  node.type === type ? node : node.registry.types[type] ?? [];
+  node.type === type ? node : (node.registry.types[type] ?? []);
 
 const collectByConditions = (
   root: GraphNode<AnyNode>,

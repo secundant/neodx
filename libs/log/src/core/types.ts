@@ -112,8 +112,9 @@ export interface CreateLogger<DefaultLevel extends string> {
   (params?: Partial<LoggerParams<DefaultLevel>>): Logger<DefaultLevel>;
 }
 
-export interface LoggerParamsWithLevels<LevelsConfig extends BaseLevelsConfig>
-  extends Partial<LoggerParams<GetLevelNames<LevelsConfig>>> {
+export interface LoggerParamsWithLevels<LevelsConfig extends BaseLevelsConfig> extends Partial<
+  LoggerParams<GetLevelNames<LevelsConfig>>
+> {
   /**
    * Dictionary of log levels with priority (lower is more prioritized).
    * The higher the number, the less important the level and the more likely it will be ignored.

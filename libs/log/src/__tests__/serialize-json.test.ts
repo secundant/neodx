@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { cycleRef, serializeJSON } from '../utils/serialize-json';
 
 describe('serializeJSON', () => {

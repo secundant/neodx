@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-unresolved
 import { createTmpVfs } from '@neodx/vfs/testing';
 import { join } from 'node:path';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { generateFiles, injectTemplateVariables } from './generate-files';
 
 const __dirname = new URL('.', import.meta.url).pathname;

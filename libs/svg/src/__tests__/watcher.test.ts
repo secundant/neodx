@@ -2,7 +2,7 @@ import { mapToObject, sleep } from '@neodx/std';
 import type { Vfs, VirtualInitializer } from '@neodx/vfs';
 import { rename } from 'node:fs/promises';
 import { basename } from 'pathe';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { createSvgSpriteBuilder, type CreateSvgSpriteBuilderParams } from '../core/builder.ts';
 import { parseSvg } from '../core/parser.ts';
 import { getChildNodes } from '../core/shared.ts';

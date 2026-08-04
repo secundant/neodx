@@ -1,8 +1,19 @@
 {
   "name": "@neodx/svg",
-  "packageManager": "yarn@4.3.1",
   "version": "0.8.0",
   "description": "Supercharge your icons ⚡️",
+  "keywords": [
+    "generator",
+    "icons",
+    "react",
+    "sprite",
+    "svg",
+    "svgr",
+    "typescript"
+  ],
+  "homepage": "https://github.com/secundant/neodx/tree/main/libs/svg",
+  "bugs": "https://github.com/secundant/neodx/issues",
+  "license": "MIT",
   "author": {
     "name": "Dmitry Remezov",
     "email": "mysecundant@gmail.com",
@@ -11,23 +22,14 @@
   "contributors": [
     "secundant"
   ],
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/secundant/neodx.git",
     "directory": "libs/svg"
   },
-  "homepage": "https://github.com/secundant/neodx/tree/main/libs/svg",
-  "bugs": "https://github.com/secundant/neodx/issues",
-  "keywords": [
-    "svg",
-    "icons",
-    "typescript",
-    "sprite",
-    "generator",
-    "react",
-    "svgr"
-  ],
+  "bin": {
+    "sprite": "bin.mjs"
+  },
   "source": [
     "src/index.ts",
     "src/cli.ts",
@@ -37,65 +39,17 @@
     "src/vite.ts",
     "src/webpack.ts"
   ],
-  "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "bin": {
-    "sprite": "bin.mjs"
-  },
   "files": [
     "package.json",
     "bin.mjs",
     "dist",
     "README.md"
   ],
+  "type": "module",
   "sideEffects": false,
-  "scripts": {
-    "typecheck": "tsc --noEmit",
-    "bench": "vitest bench",
-    "build": "autobuild",
-    "test": "vitest run",
-    "lint": "eslint src"
-  },
-  "dependencies": {
-    "@neodx/fs": "workspace:^",
-    "@neodx/log": "workspace:^",
-    "@neodx/std": "workspace:^",
-    "@neodx/vfs": "workspace:^",
-    "chokidar": "3.6.0",
-    "colord": "2.9.3",
-    "commander": "12.0.0",
-    "fast-xml-parser": "4.4.0",
-    "jiti": "1.21.6",
-    "object-hash": "3.0.0",
-    "pathe": "1.1.2",
-    "svgo": "3.3.2",
-    "ts-pattern": "5.2.0",
-    "unplugin": "1.11.0",
-    "zod": "3.23.8"
-  },
-  "devDependencies": {
-    "@neodx/autobuild": "workspace:^",
-    "@neodx/internal": "workspace:^",
-    "@swc/helpers": "0.5.9",
-    "@types/react": "18.2.78",
-    "@types/react-dom": "18.2.25",
-    "@types/svgo": "3.0.0",
-    "clsx": "2.1.0",
-    "prettier": "3.3.2",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "svgson": "5.3.1"
-  },
-  "peerDependencies": {
-    "prettier": "*"
-  },
-  "peerDependenciesMeta": {
-    "prettier": {
-      "optional": true
-    }
-  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -132,5 +86,51 @@
       "require": "./dist/webpack.cjs",
       "default": "./dist/webpack.mjs"
     }
-  }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "bench": "vitest bench",
+    "build": "vp pack",
+    "test": "vp test",
+    "lint": "vp lint",
+    "pack": "vp pack"
+  },
+  "dependencies": {
+    "@neodx/fs": "workspace:^",
+    "@neodx/log": "workspace:^",
+    "@neodx/std": "workspace:^",
+    "@neodx/vfs": "workspace:^",
+    "chokidar": "3.6.0",
+    "colord": "2.9.3",
+    "commander": "12.0.0",
+    "fast-xml-parser": "4.4.0",
+    "jiti": "1.21.6",
+    "object-hash": "3.0.0",
+    "pathe": "1.1.2",
+    "svgo": "3.3.2",
+    "ts-pattern": "5.2.0",
+    "unplugin": "1.11.0",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@neodx/internal": "workspace:^",
+    "@swc/helpers": "0.5.9",
+    "@types/react": "18.2.78",
+    "@types/react-dom": "18.2.25",
+    "@types/svgo": "3.0.0",
+    "clsx": "2.1.0",
+    "prettier": "3.3.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "svgson": "5.3.1"
+  },
+  "peerDependencies": {
+    "prettier": "*"
+  },
+  "peerDependenciesMeta": {
+    "prettier": {
+      "optional": true
+    }
+  },
+  "packageManager": "yarn@4.3.1"
 }

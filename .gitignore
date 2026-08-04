@@ -72,3 +72,7 @@ node_modules
 # ========== Yarn ==========
 
 .nx/cache
+
+# Vite+ generated hook dispatcher (recreated by `vp config`)
+.vite-hooks/_
+node_modules/.vite/

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/require-array-sort-compare */
 // eslint-disable-next-line import/no-unresolved
 import { createTmpVfs } from '@neodx/vfs/testing';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { flattenDist } from '../src/core/flatten-dist';
 import type { ProjectPackageJSON } from '../src/types';
 

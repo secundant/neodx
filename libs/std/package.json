@@ -2,33 +2,22 @@
   "name": "@neodx/std",
   "version": "0.4.0",
   "description": "Standard language helpers",
-  "type": "module",
-  "main": "./dist/index.cjs",
-  "types": "./dist/index.d.ts",
-  "module": "./dist/index.mjs",
+  "license": "MIT",
   "source": [
     "src/index.ts",
     "src/*.ts",
     "src/*/index.ts"
   ],
-  "license": "MIT",
-  "sideEffects": false,
   "files": [
     "dist",
     "README.md",
     "package.json"
   ],
-  "scripts": {
-    "typecheck": "tsc --noEmit",
-    "clean": "yarn dlx rimraf dist",
-    "build": "autobuild",
-    "test": "vitest run",
-    "lint": "eslint src",
-    "dev": "autobuild --watch"
-  },
-  "devDependencies": {
-    "@neodx/autobuild": "workspace:^"
-  },
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -100,6 +89,15 @@
       "import": "./dist/array/index.mjs",
       "require": "./dist/array/index.cjs"
     }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "clean": "yarn dlx rimraf dist",
+    "build": "vp pack",
+    "test": "vp test",
+    "lint": "vp lint",
+    "dev": "vp pack --watch",
+    "pack": "vp pack"
   },
   "dependencies": {
     "type-fest": "4.21.0"

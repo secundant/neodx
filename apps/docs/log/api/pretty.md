@@ -8,12 +8,8 @@ declare function pretty<Level extends string = string>(
   params?: PrettyTargetParams<Level>
 ): Target<Level>;
 
-pretty.defaultColors = {
-  /* ... */
-};
-pretty.defaultBadges = {
-  /* ... */
-};
+pretty.defaultColors = {/* ... */};
+pretty.defaultBadges = {/* ... */};
 ```
 
 ## `PrettyTargetParams`

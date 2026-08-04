@@ -1,6 +1,6 @@
 import { ensureDir } from '@neodx/fs';
 import { resolve } from 'pathe';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { createInMemoryBackend, createNodeFsBackend } from '../backend';
 import { createReadonlyBackend } from '../backend/create-readonly-backend';
 import type { VfsDirent } from '../backend/shared.ts';

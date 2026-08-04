@@ -4,7 +4,8 @@
 }
 
 .gridPattern {
-  background-image: linear-gradient(to right, theme('colors.neutral.400') 0.5px, transparent 0.5px),
+  background-image:
+    linear-gradient(to right, theme('colors.neutral.400') 0.5px, transparent 0.5px),
     linear-gradient(to bottom, theme('colors.neutral.400') 0.5px, transparent 0.5px);
 
   &.sm {

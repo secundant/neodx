@@ -3,7 +3,7 @@ import { identity, sleep } from '@neodx/std';
 import { createTmpVfs } from '@neodx/vfs/testing';
 import { readdir } from 'node:fs/promises';
 import { join, relative, resolve } from 'node:path';
-import { describe, expect, test, vitest } from 'vitest';
+import { describe, expect, test, vitest } from 'vite-plus/test';
 import {
   walkGlob,
   type WalkGlobCommonParams,

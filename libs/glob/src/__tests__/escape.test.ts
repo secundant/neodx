@@ -1,5 +1,5 @@
 import { toArray } from '@neodx/std';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { matchGlob } from '../match.ts';
 import { escapeGlob, unescapeGlob } from '../shared.ts';
 

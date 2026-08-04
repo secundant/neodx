@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { concurrent } from '../async';
 import { createMicroTimer, renderWaterfall } from './testing-utils';
 

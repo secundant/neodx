@@ -2,10 +2,10 @@
 
 |               |                                                                                                                          |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Status        | **In progress** — before recorded; cutover underway                                                                      |
+| Status        | **Cutover landed locally** — await CI tip after push                                                                     |
 | Date opened   | 2026-08-04                                                                                                               |
 | Branch        | `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160))                                                 |
-| Tip at before | `c855d75…` (pack-only roll green; `nx` + `e2e-svg` required checks pass)                                                 |
+| Tip at before | `097d3aa` (before-report); prior required checks `nx` + `e2e-svg` green                                                  |
 | Framing       | **Experiment** on neodx. Encapsulate learnings for possible Nubis adoption later. **Do not** declare Nubis adopts Vite+. |
 | Companion     | [WP-LINT-R1](./oxlint-eslint-kit-delta.md) · [WP-V1 spike](../spike-vite-plus-report.md)                                 |
 
@@ -62,15 +62,44 @@ Spike package times (earlier baseline @ `376e10f`): see [spike-vite-plus-baselin
 
 ## During
 
-_(filled during cutover)_
+Actions taken on `improve/neodx`:
+
+1. Root `vite.config.ts`: `lint` (Oxlint + import plugin), `fmt` (Oxfmt matching prior Prettier-ish options), `staged`, `run.tasks`, root `test.exclude` for Playwright/legacy.
+2. One-time `vp fmt --write` (~699 files).
+3. Publishable lib scripts: `build`/`pack` → `vp pack`; `test` → `vp test`; `lint` → `vp lint`; dropped `@neodx/autobuild` devDependency.
+4. Vitest imports rewritten to `vite-plus` / `vite-plus/test` (leave `declare module 'vitest'` alone).
+5. Removed eslint-kit configs (`.eslintrc.cjs`), husky, lint-staged, `nx.json`; added `.vite-hooks/{pre-commit,commit-msg}` + `prepare: vp config --no-agent`.
+6. Kept `.prettierrc.cjs` + `.prettierignore` + root `eslint`/`prettier` deps for `@neodx/vfs` plugin tests / `@neodx/pkg-misc` prettier helper.
+7. CI → `voidzero-dev/setup-vp@v1`, `vp check`, `vp run … typecheck`, `vp run … test`, `vp run … pack`, Playwright e2e; optional task-cache restore/save (not a gate). Dropped Nx-affected jobs.
+8. `typeAware`/`typeCheck` **off** — tsgolint rejects `baseUrl`/paths ([#161](https://github.com/secundant/neodx/issues/161)). Types via `tsc --noEmit`.
+9. `@neodx/autobuild` quarantined ([#162](https://github.com/secundant/neodx/issues/162)).
+10. S4-R1: near-full philosophy/principles + deepened code-style/testing/docs; `AGENTS.md` / check-loop on honest `vp *` vocabulary.
+
+Local verification (pre-push): `vp check` clean; lib typecheck/test/pack green; internal-inline green.
 
 ## After
 
-_(filled after CI green / tip push)_
+| Metric              | Result                                                                                                          |
+| ------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Critical path       | `vp check` / `vp test` (via `vp run`) / `vp pack` / Playwright — no Nx/eslint-kit/husky-full/autobuild required |
+| Oxfmt rewrite       | Landed (one-time)                                                                                               |
+| Sonar / import-sort | Named drops in WP-LINT-R1 — accepted                                                                            |
+| Nx affected         | Retired — `vp run` filters/`-t`/`-r` + fingerprint cache                                                        |
+| typeAware/typeCheck | Deferred — issue #161                                                                                           |
+| autobuild package   | Quarantined — issue #162                                                                                        |
+| Nubis adoption      | **Not declared** — experiment only                                                                              |
 
-## Nubis encapsulation (P-I draft)
+CI tip status: fill after push (`gh pr checks 160`). Required jobs expected: `check` + `e2e-svg` (Cloudflare still non-gating).
 
-Vite+ on neodx is an experiment polygon. After cutover, encapsulate: command vocabulary, root `lint`/`fmt`/`staged`/`run.tasks` shape, pack `outExtensions` + platform splits, CI `setup-vp` pattern, and explicit quality deltas. **Recommendation deferred** until after-report — do not assume Nubis adoption.
+## Nubis encapsulation (P-I)
+
+Vite+ on neodx is an **experiment polygon**, not a Nubis adoption commitment.
+
+**Copy / encapsulate later if promoting:** root `lint`/`fmt`/`staged`/`run.tasks` composition; pack `outExtensions` + platform splits + svg `deps.neverBundle`; CI `setup-vp` + `vp run --filter` pattern; keep a separate Prettier config if any product still formats via Prettier API; honest AGENTS vocabulary after cutover.
+
+**Forbid / watch:** enabling Oxlint `typeAware`/`typeCheck` on a `baseUrl`+paths monorepo without validating tsgolint; assuming `vp test` at workspace root equals per-package Vitest cwd (snapshots + Playwright collide); deleting eslint/prettier while vfs-like plugins still need them.
+
+**Recommendation:** **defer** Nubis Vite+ adoption until this branch’s CI is green for a soak period and S5 reports on references. Do not bump Nubis catalogs from this work.
 
 ## S5 stub (not started)
 

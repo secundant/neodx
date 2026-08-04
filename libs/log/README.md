@@ -276,17 +276,11 @@ createExpressLogger({
 
   getMeta: ({ req }) => ({ ip: req.ip }), // function to get metadata for every request
   // function to get metadata for error
-  getErrorMeta: ({ req, res, error }) => ({
-    /* ... */
-  }),
+  getErrorMeta: ({ req, res, error }) => ({/* ... */}),
   // function to get metadata for request
-  getRequestMeta: ({ req, res }) => ({
-    /* ... */
-  }),
+  getRequestMeta: ({ req, res }) => ({/* ... */}),
   // function to get metadata for response
-  getResponseMeta: ({ req, res }) => ({
-    /* ... */
-  }),
+  getResponseMeta: ({ req, res }) => ({/* ... */}),
 
   // Customize log messages (we already format them for you in a well-readable way)
 

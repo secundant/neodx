@@ -1,61 +1,26 @@
 {
   "name": "@neodx/autobuild",
-  "packageManager": "yarn@4.3.1",
   "version": "0.2.1",
-  "type": "module",
-  "bin": "bin.mjs",
   "license": "MIT",
+  "bin": "bin.mjs",
   "files": [
     "dist",
     "bin.mjs",
     "index.d.ts",
     "README.md"
   ],
+  "type": "module",
+  "sideEffects": false,
+  "typesVersions": {},
   "publishConfig": {
     "access": "public"
   },
-  "typesVersions": {},
-  "sideEffects": false,
   "scripts": {
     "typecheck": "tsc --noEmit",
     "clean": "yarn dlx rimraf dist",
     "build": "vite build",
-    "test": "vitest run",
-    "lint": "eslint"
-  },
-  "peerDependenciesMeta": {
-    "less": {
-      "optional": true
-    },
-    "node-sass": {
-      "optional": true
-    },
-    "postcss": {
-      "optional": true
-    },
-    "sass": {
-      "optional": true
-    },
-    "stylus": {
-      "optional": true
-    }
-  },
-  "peerDependencies": {
-    "@swc/helpers": "0.4.3",
-    "less": "*",
-    "node-sass": "*",
-    "postcss": "*",
-    "react": "*",
-    "sass": "*",
-    "stylus": "*"
-  },
-  "devDependencies": {
-    "@swc/helpers": "0.5.9",
-    "@types/babel__core": "7.20.5",
-    "@types/react": "18.2.78",
-    "postcss": "8.4.38",
-    "react": "18.2.0",
-    "sass": "1.75.0"
+    "test": "vp test",
+    "lint": "vp lint"
   },
   "dependencies": {
     "@babel/core": "7.24.4",
@@ -75,5 +40,40 @@
     "tiny-glob": "0.2.9",
     "tsconfck": "3.1.1",
     "typescript": "5.9.3"
-  }
+  },
+  "devDependencies": {
+    "@swc/helpers": "0.5.9",
+    "@types/babel__core": "7.20.5",
+    "@types/react": "18.2.78",
+    "postcss": "8.4.38",
+    "react": "18.2.0",
+    "sass": "1.75.0"
+  },
+  "peerDependencies": {
+    "@swc/helpers": "0.4.3",
+    "less": "*",
+    "node-sass": "*",
+    "postcss": "*",
+    "react": "*",
+    "sass": "*",
+    "stylus": "*"
+  },
+  "peerDependenciesMeta": {
+    "less": {
+      "optional": true
+    },
+    "node-sass": {
+      "optional": true
+    },
+    "postcss": {
+      "optional": true
+    },
+    "sass": {
+      "optional": true
+    },
+    "stylus": {
+      "optional": true
+    }
+  },
+  "packageManager": "yarn@4.3.1"
 }

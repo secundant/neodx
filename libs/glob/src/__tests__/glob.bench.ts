@@ -3,7 +3,7 @@
 import micromatch from 'micromatch';
 // @ts-expect-error no types
 import picomatch from 'picomatch';
-import { bench, describe } from 'vitest';
+import { bench, describe } from 'vite-plus/test';
 import zeptomatch from 'zeptomatch';
 import { matchGlob } from '../match.ts';
 
