@@ -2,7 +2,7 @@
 
 |               |                                                                                                                          |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Status        | **Cutover landed locally** — await CI tip after push                                                                     |
+| Status        | **WP-V2 complete** — tip CI `check` + `e2e-svg` green                                                                    |
 | Date opened   | 2026-08-04                                                                                                               |
 | Branch        | `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160))                                                 |
 | Tip at before | `097d3aa` (before-report); prior required checks `nx` + `e2e-svg` green                                                  |
@@ -89,7 +89,7 @@ Local verification (pre-push): `vp check` clean; lib typecheck/test/pack green; 
 | autobuild package   | Quarantined — issue #162                                                                                        |
 | Nubis adoption      | **Not declared** — experiment only                                                                              |
 
-CI tip status: fill after push (`gh pr checks 160`). Required jobs expected: `check` + `e2e-svg` (Cloudflare still non-gating).
+CI tip status @ `c11c252`: **`check (22.x)` pass**, **`e2e-svg (22.x)` pass**; Cloudflare Pages non-gating. Node floor for pack is 22 (`Promise.withResolvers`).
 
 ## Nubis encapsulation (P-I)
 
