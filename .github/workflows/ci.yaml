@@ -90,7 +90,8 @@ jobs:
         run: vp run -t @neodx/svg#pack
 
       - name: Build svg e2e app
-        run: vp -C apps/e2e/svg build
+        working-directory: apps/e2e/svg
+        run: vp build
 
       - name: Run Playwright e2e
         run: yarn workspace @neodx/e2e-svg e2e

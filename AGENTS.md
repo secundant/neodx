@@ -29,7 +29,7 @@ Critical path is **Vite+** (`vp`). Yarn remains the package manager (`packageMan
 
 | Concern                    | Command                                                                                                               | Notes                                            |
 | -------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| Install                    | `vp install` or `yarn`                                                                                                | Lockfile intentional                             |
+| Install                    | `vp install` or `yarn`                                                                                                | Yarn 4.3.1; Node **22+** for `vp pack`           |
 | Check (fmt + lint + types) | `vp check`                                                                                                            | Root `vite.config.ts` owns lint/fmt              |
 | Lint / format alone        | `vp lint` / `vp fmt`                                                                                                  | Oxlint + Oxfmt                                   |
 | Test                       | `vp test`                                                                                                             | Vitest via vite-plus; or `vp -C libs/<pkg> test` |
