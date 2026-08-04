@@ -89,7 +89,7 @@ Local verification (pre-push): `vp check` clean; lib typecheck/test/pack green; 
 | autobuild package   | Quarantined — issue #162                                                                                        |
 | Nubis adoption      | **Not declared** — experiment only                                                                              |
 
-CI tip status @ `c11c252`: **`check (22.x)` pass**, **`e2e-svg (22.x)` pass**; Cloudflare Pages non-gating. Node floor for pack is 22 (`Promise.withResolvers`).
+CI tip status @ `8702c1b` (also green @ `c11c252`): **`check (22.x)` pass**, **`e2e-svg (22.x)` pass**; Cloudflare Pages non-gating. Node floor for pack is 22 (`Promise.withResolvers`).
 
 ## Nubis encapsulation (P-I)
 

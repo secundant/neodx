@@ -22,15 +22,16 @@ From the repo root (Yarn 4 workspace):
 
 ```sh
 yarn
-yarn nx run @neodx/e2e-svg:build
+vp run -t @neodx/svg#pack
+cd apps/e2e/svg && vp build
 yarn workspace @neodx/e2e-svg exec playwright install chromium
-yarn nx run @neodx/e2e-svg:e2e
+yarn workspace @neodx/e2e-svg e2e
 ```
 
-Or from `apps/e2e/svg`:
+Or from `apps/e2e/svg` after svg is packed:
 
 ```sh
-yarn build
+vp build
 yarn e2e
 ```
 
