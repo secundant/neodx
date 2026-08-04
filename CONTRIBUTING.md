@@ -28,7 +28,7 @@ vp install   # or: yarn
 ```shell
 vp check                 # fmt + lint + types
 vp test                  # Vitest
-vp -C libs/std pack      # pack one library
+vp run @neodx/std#pack      # pack one library
 vp run --filter "./libs/*" --filter "!@neodx/autobuild" --filter "!@neodx/codegen" --filter "!@neodx/internal" pack
 yarn constraints         # dependency-graph honesty (--fix for safe fixes)
 ```

@@ -50,7 +50,7 @@ Coverage importance is independent of layer: **critical** (blocks trust), **majo
 
 ```shell
 vp test                          # workspace tests
-vp -C libs/<pkg> test            # one package
+cd libs/<pkg> && vp test            # one package
 vp test path/to/file.test.ts     # targeted
 yarn workspace @neodx/e2e-svg e2e   # Playwright (after pack + app build)
 ```

@@ -27,16 +27,16 @@ source that owns the current decision.
 Critical path is **Vite+** (`vp`). Yarn remains the package manager (`packageManager: yarn@4.3.1`;
 `vp install` delegates to it).
 
-| Concern                    | Command                                                                                                               | Notes                                            |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| Install                    | `vp install` or `yarn`                                                                                                | Yarn 4.3.1; Node **22+** for `vp pack`           |
-| Check (fmt + lint + types) | `vp check`                                                                                                            | Root `vite.config.ts` owns lint/fmt              |
-| Lint / format alone        | `vp lint` / `vp fmt`                                                                                                  | Oxlint + Oxfmt                                   |
-| Test                       | `vp test`                                                                                                             | Vitest via vite-plus; or `vp -C libs/<pkg> test` |
-| Pack one lib               | `vp -C libs/<pkg> pack` or `vp run @neodx/<pkg>#pack`                                                                 | Emits CJS/ESM/dts per pack config                |
-| Pack publishable libs      | `vp run --filter "./libs/*" --filter "!@neodx/autobuild" --filter "!@neodx/codegen" --filter "!@neodx/internal" pack` | Dependency-ordered via package graph             |
-| Graph honesty              | `yarn constraints`                                                                                                    | `--fix` applies safe fixes                       |
-| E2E                        | pack svg → `vp -C apps/e2e/svg build` → `yarn workspace @neodx/e2e-svg e2e`                                           | Playwright; required CI job                      |
+| Concern                    | Command                                                                                                               | Notes                                               |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| Install                    | `vp install` or `yarn`                                                                                                | Yarn 4.3.1; Node **22+** for `vp pack`              |
+| Check (fmt + lint + types) | `vp check`                                                                                                            | Root `vite.config.ts` owns lint/fmt                 |
+| Lint / format alone        | `vp lint` / `vp fmt`                                                                                                  | Oxlint + Oxfmt                                      |
+| Test                       | `vp test`                                                                                                             | Vitest via vite-plus; or `cd libs/<pkg> && vp test` |
+| Pack one lib               | `vp run @neodx/<pkg>#pack` or `vp run @neodx/<pkg>#pack`                                                              | Emits CJS/ESM/dts per pack config                   |
+| Pack publishable libs      | `vp run --filter "./libs/*" --filter "!@neodx/autobuild" --filter "!@neodx/codegen" --filter "!@neodx/internal" pack` | Dependency-ordered via package graph                |
+| Graph honesty              | `yarn constraints`                                                                                                    | `--fix` applies safe fixes                          |
+| E2E                        | pack svg → `cd apps/e2e/svg && vp build` → `yarn workspace @neodx/e2e-svg e2e`                                        | Playwright; required CI job                         |
 
 `vp run` uses workspace filters / `-r` / `-t` and fingerprint cache — **not** Nx-style
 git-affected selection. That difference is accepted.

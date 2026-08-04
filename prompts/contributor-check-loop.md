@@ -11,12 +11,12 @@ Repeat until every step is green or a skip is explicitly justified.
 2. **Check** (format + lint + types) from the repo root, or scope with `-C`:
    ```shell
    vp check
-   # or: vp -C libs/<pkg> check
+   # or: cd libs/<pkg> && vp check
    ```
 3. **Test** touched packages:
    ```shell
    vp test
-   # or: vp -C libs/<pkg> test
+   # or: cd libs/<pkg> && vp test
    ```
 4. **Pack** any touched publishable package whose public surface or pack config changed:
    ```shell

@@ -36,7 +36,7 @@ in the same change that changed the API.
 
 - **Changing the API → update docs in the same change.**
 - **Changing only docs → do not imply the API changed.**
-- Examples must build (`vp -C apps/examples/... build` or the package script).
+- Examples must build (`cd apps/examples/... && vp build` or the package script).
 - Foundation docs stay minimal: README + source is often enough.
 - Prefer Markdown links to canonical paths; keep VitePress inter-package links (`/svg`, `/figma`, …)
   aligned with the root `README.md` maturity table.
