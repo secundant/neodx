@@ -1,5 +1,4 @@
-/// <reference types="vitest" />
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
@@ -17,6 +16,6 @@ export default defineConfig({
       }
     }
   },
-  test: { passWithNoTests: true, threads: false },
+  test: { passWithNoTests: true, pool: 'forks', fileParallelism: false },
   plugins: [tsconfigPaths()]
 });

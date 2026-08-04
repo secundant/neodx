@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import svg from '@neodx/svg/vite';
 import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';

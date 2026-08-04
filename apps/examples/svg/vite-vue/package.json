@@ -19,13 +19,13 @@
   },
   "devDependencies": {
     "@neodx/svg": "workspace:^",
-    "@vitejs/plugin-vue": "^5.0.5",
+    "@vitejs/plugin-vue": "6.0.8",
     "autoprefixer": "10.4.19",
     "postcss": "8.4.38",
     "tailwindcss": "3.4.3",
     "typescript": "5.9.3",
-    "vite": "5.3.3",
-    "vite-tsconfig-paths": "4.3.2",
+    "vite": "8.2.0",
+    "vite-tsconfig-paths": "6.1.1",
     "vue-tsc": "2.2.12"
   },
   "nx": {

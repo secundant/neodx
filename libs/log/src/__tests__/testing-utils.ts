@@ -70,7 +70,10 @@ export async function runTestBuild({
         },
         rollupOptions: {
           external: nodeExternal,
-          treeshake: 'smallest'
+          treeshake: {
+            moduleSideEffects: false,
+            propertyReadSideEffects: false
+          }
         },
         write: true,
         emptyOutDir: false,
