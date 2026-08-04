@@ -5,7 +5,9 @@ guidance and architecture, see [`AGENTS.md`](./AGENTS.md).
 
 ## Prerequisites
 
-- **Node.js 20+** (CI runs on 20.x).
+- **Node.js 20+** for local work that matches CI (`nx` / `e2e-svg` jobs use 20.x).
+  `package.json` `engines.node` still allows `>=18.0.0`; treat 20 as the supported contributor
+  floor until engines are tightened in a later slice.
 - **Yarn 4** — pinned via `packageManager: yarn@4.3.1` in `package.json`. Run `corepack enable` if
   your Node did not enable it.
 - **[GitHub CLI (`gh`)](https://github.com/cli/cli)** — install (`brew install gh` on macOS) and run

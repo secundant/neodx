@@ -33,6 +33,21 @@ relevant plan or here. This is the whole imported machinery — nothing more.
 | **reject**  | Not applicable to neodx; record why      |
 | **defer**   | Right idea, wrong time; name the trigger |
 
+### S4 skills-integration dispositions (2026-08-04)
+
+| External claim (Nubis meta)                                  | Disposition    | neodx location                                                                                      |
+| ------------------------------------------------------------ | -------------- | --------------------------------------------------------------------------------------------------- |
+| Routing-index `AGENTS.md` shape                              | adapt          | [`../../AGENTS.md`](../../AGENTS.md)                                                                |
+| Intention / Public API / source-as-truth                     | adapt          | [`../skills/philosophy-lite/SKILL.md`](../skills/philosophy-lite/SKILL.md)                          |
+| Reader flow / less-is-better / nothing-is-fake               | adapt          | [`../skills/principles-lite/SKILL.md`](../skills/principles-lite/SKILL.md)                          |
+| `import type`, factories, barrels                            | adapt          | [`../skills/code-style/SKILL.md`](../skills/code-style/SKILL.md) (neodx form: `.ts` ext, `createX`) |
+| Behavior-over-impl, type tests, e2e-when-rendered            | adapt          | [`../skills/testing/SKILL.md`](../skills/testing/SKILL.md)                                          |
+| Docs vs source as source of truth                            | adapt          | [`../skills/docs/SKILL.md`](../skills/docs/SKILL.md)                                                |
+| Hub / QR / `@nubis/*` / Effector / Reatom / UI design-system | reject         | none                                                                                                |
+| pnpm catalog as law                                          | reject         | Yarn 4 workspaces                                                                                   |
+| Radical rework / portfolio ceremony                          | reject         | radical rework **default no** (above)                                                               |
+| `vp *` as the supported command table                        | adapt → honest | Yarn/Nx vocabulary in `AGENTS.md`; `vp` named only as post-migrate target                           |
+
 ### Evidence discipline
 
 - Pin the source (URL or path) and access date for any external claim.

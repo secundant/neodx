@@ -15,13 +15,13 @@ multi-step effort intends, what is locked, and where it stopped.
 
 ## Active plans
 
-| Plan              | Status                         | Owner ask                              |
-| ----------------- | ------------------------------ | -------------------------------------- |
-| WP-V1 Vite+ spike | `READY_FOR_ACCEPT` (pack-only) | Owner accept/reject full WP-V2 migrate |
+| Plan              | Status                                      | Owner ask                                                                                |
+| ----------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| WP-V1 Vite+ spike | `READY_FOR_ACCEPT` (pack-only; revalidated) | Authorize pack-only roll, or reject spike; **not** WP-V2 until Nx/Oxfmt/Sonar gaps close |
 
 The WP-V1 spike lives as in-repo **evidence**, not a full program plan:
 [`../spike-vite-plus-baseline.md`](../spike-vite-plus-baseline.md) (pre-migration baseline times) and
-[`../spike-vite-plus-report.md`](../spike-vite-plus-report.md) (acceptance matrix + caveats).
+[`../spike-vite-plus-report.md`](../spike-vite-plus-report.md) (acceptance matrix, Oxlint delta, debt).
 
 > The full neodx improvement program (S0–S7: honesty/graph, dependency currency, Vite+ migrate,
 > tooling solidify, AI surface, TS references, docs/1.0) is **not** copied into this repo. Its
