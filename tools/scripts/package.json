@@ -2,14 +2,16 @@
   "name": "@neodx/scripts",
   "type": "module",
   "private": true,
-  "packageManager": "yarn@4.1.0",
+  "packageManager": "yarn@4.3.1",
   "bin": {
     "neodx": "bin.mjs"
   },
   "dependencies": {
-    "@neodx/autobuild": "*",
-    "@neodx/std": "*",
-    "@neodx/vfs": "*",
+    "@neodx/autobuild": "workspace:^",
+    "@neodx/codegen": "workspace:^",
+    "@neodx/log": "workspace:^",
+    "@neodx/std": "workspace:^",
+    "@neodx/vfs": "workspace:^",
     "@nrwl/devkit": "18.2.4",
     "execa": "8.0.1",
     "sade": "1.8.1"

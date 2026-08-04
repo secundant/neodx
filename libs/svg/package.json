@@ -1,6 +1,6 @@
 {
   "name": "@neodx/svg",
-  "packageManager": "yarn@4.1.0",
+  "packageManager": "yarn@4.3.1",
   "version": "0.8.0",
   "description": "Supercharge your icons ⚡️",
   "author": {
@@ -60,10 +60,10 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@neodx/fs": "0.0.13",
-    "@neodx/log": "0.4.2",
-    "@neodx/std": "0.4.0",
-    "@neodx/vfs": "0.3.0",
+    "@neodx/fs": "workspace:^",
+    "@neodx/log": "workspace:^",
+    "@neodx/std": "workspace:^",
+    "@neodx/vfs": "workspace:^",
     "chokidar": "3.6.0",
     "colord": "2.9.3",
     "commander": "12.0.0",
@@ -77,7 +77,8 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
-    "@neodx/autobuild": "*",
+    "@neodx/autobuild": "workspace:^",
+    "@neodx/internal": "workspace:^",
     "@swc/helpers": "0.5.9",
     "@types/react": "18.2.78",
     "@types/react-dom": "18.2.25",

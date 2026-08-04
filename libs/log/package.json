@@ -1,6 +1,6 @@
 {
   "name": "@neodx/log",
-  "packageManager": "yarn@4.1.0",
+  "packageManager": "yarn@4.3.1",
   "description": "A lightweight universal logging framework",
   "version": "0.4.2",
   "type": "module",
@@ -56,11 +56,11 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@neodx/colors": "0.2.9",
+    "@neodx/colors": "workspace:^",
     "pathe": "1.1.2"
   },
   "devDependencies": {
-    "@neodx/autobuild": "*",
+    "@neodx/autobuild": "workspace:^",
     "@types/bunyan": "1.8.11",
     "@types/express": "4.17.21",
     "@types/koa": "2.15.0",

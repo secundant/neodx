@@ -1,7 +1,7 @@
 {
   "name": "@neodx/figma",
   "version": "0.6.0",
-  "packageManager": "yarn@4.1.0",
+  "packageManager": "yarn@4.3.1",
   "description": "No description",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -55,9 +55,9 @@
     "nuke": "rm -rf dist"
   },
   "dependencies": {
-    "@neodx/log": "0.4.2",
-    "@neodx/std": "0.4.0",
-    "@neodx/vfs": "0.3.0",
+    "@neodx/log": "workspace:^",
+    "@neodx/std": "workspace:^",
+    "@neodx/vfs": "workspace:^",
     "colord": "2.9.3",
     "commander": "12.0.0",
     "cosmiconfig": "9.0.0",
@@ -65,7 +65,8 @@
     "svgo": "3.3.2"
   },
   "devDependencies": {
-    "@neodx/autobuild": "*"
+    "@neodx/autobuild": "workspace:^",
+    "@neodx/internal": "workspace:^"
   },
   "exports": {
     ".": {

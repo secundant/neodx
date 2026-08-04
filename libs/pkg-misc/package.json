@@ -21,14 +21,14 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@neodx/fs": "0.0.13",
-    "@neodx/std": "0.4.0",
+    "@neodx/fs": "workspace:^",
+    "@neodx/std": "workspace:^",
     "@types/prettier": "3.0.0",
     "pathe": "1.1.2",
     "semver": "7.6.0"
   },
   "devDependencies": {
-    "@neodx/autobuild": "*",
+    "@neodx/autobuild": "workspace:^",
     "@types/semver": "7.5.8",
     "prettier": "3.3.2"
   },

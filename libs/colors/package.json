@@ -45,10 +45,10 @@
     "nuke": "rm -rf dist"
   },
   "devDependencies": {
-    "@neodx/autobuild": "*"
+    "@neodx/autobuild": "workspace:^"
   },
   "dependencies": {
-    "@neodx/std": "0.4.0"
+    "@neodx/std": "workspace:^"
   },
   "exports": {
     ".": {

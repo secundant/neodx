@@ -1,7 +1,7 @@
 {
   "name": "@neodx/glob",
   "version": "0.1.2",
-  "packageManager": "yarn@4.1.0",
+  "packageManager": "yarn@4.3.1",
   "description": "No description",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -39,10 +39,10 @@
     "nuke": "rm -rf dist"
   },
   "dependencies": {
-    "@neodx/std": "^0.4.0"
+    "@neodx/std": "workspace:^"
   },
   "devDependencies": {
-    "@neodx/autobuild": "*",
+    "@neodx/autobuild": "workspace:^",
     "grammex": "3.1.3"
   },
   "exports": {

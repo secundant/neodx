@@ -22,12 +22,12 @@
     "lint": "eslint src"
   },
   "devDependencies": {
-    "@neodx/autobuild": "*",
+    "@neodx/autobuild": "workspace:^",
     "@types/tmp": "0.2.6",
     "tmp": "0.2.3"
   },
   "dependencies": {
-    "@neodx/std": "0.4.0",
+    "@neodx/std": "workspace:^",
     "jsonc-parser": "3.2.1",
     "tiny-glob": "0.2.9"
   },

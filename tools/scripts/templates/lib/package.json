@@ -2,7 +2,7 @@
   "name": "@neodx/<%=name%>",
   "version": "0.0.1",
   "private": true,
-  "packageManager": "yarn@4.1.0",
+  "packageManager": "yarn@4.3.1",
   "description": "No description",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -42,7 +42,7 @@
     "nuke": "rm -rf dist"
   },
   "devDependencies": {
-    "@neodx/autobuild": "*"
+    "@neodx/autobuild": "workspace:^"
   },
   "exports": {
     ".": {

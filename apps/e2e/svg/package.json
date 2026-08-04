@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@neodx/svg": "*",
+    "@neodx/svg": "workspace:^",
     "@playwright/test": "1.52.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",

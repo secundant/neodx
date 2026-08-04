@@ -3,20 +3,19 @@
   "version": "0.0.1",
   "type": "module",
   "private": true,
-  "packageManager": "yarn@4.1.0",
+  "packageManager": "yarn@4.3.1",
   "sideEffects": false,
   "publishConfig": {
     "access": "restricted"
   },
   "dependencies": {
-    "@neodx/figma": "workspace:*",
-    "@neodx/std": "workspace:*",
-    "@neodx/svg": "workspace:*",
+    "@neodx/figma": "workspace:^",
+    "@neodx/std": "workspace:^",
+    "@neodx/svg": "workspace:^",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@neodx/svg": "*",
     "@types/react": "18.2.78",
     "@types/react-dom": "18.2.25",
     "@vitejs/plugin-react": "4.3.1",

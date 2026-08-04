@@ -27,7 +27,7 @@
     "dev": "autobuild --watch"
   },
   "devDependencies": {
-    "@neodx/autobuild": "*"
+    "@neodx/autobuild": "workspace:^"
   },
   "exports": {
     ".": {

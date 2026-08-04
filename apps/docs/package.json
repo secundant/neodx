@@ -2,12 +2,12 @@
   "name": "@neodx/docs",
   "private": true,
   "type": "module",
-  "packageManager": "yarn@4.1.0",
+  "packageManager": "yarn@4.3.1",
   "dependencies": {
-    "@neodx/log": "workspace:*",
-    "@neodx/std": "workspace:*",
-    "@neodx/svg": "workspace:*",
-    "@neodx/vfs": "workspace:*"
+    "@neodx/log": "workspace:^",
+    "@neodx/std": "workspace:^",
+    "@neodx/svg": "workspace:^",
+    "@neodx/vfs": "workspace:^"
   },
   "devDependencies": {
     "@shikijs/vitepress-twoslash": "1.21.0",

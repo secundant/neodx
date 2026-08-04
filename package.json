@@ -33,7 +33,7 @@
     "@changesets/cli": "2.27.1",
     "@commitlint/cli": "19.2.2",
     "@commitlint/config-conventional": "19.2.2",
-    "@neodx/scripts": "workspace:*",
+    "@neodx/scripts": "workspace:^",
     "@nx/vite": "18.2.4",
     "@types/node": "20.14.10",
     "eslint": "8.57.0",
