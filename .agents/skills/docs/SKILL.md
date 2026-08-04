@@ -1,7 +1,8 @@
 ---
 name: docs
-description: Where neodx documentation lives and what each surface is for — VitePress docs, README,
-  and source as source of truth. Load when writing or updating package documentation.
+description: >-
+  Where neodx documentation lives — VitePress, README, and source as source of truth.
+  Load when writing or updating package documentation or examples.
 ---
 
 # docs
@@ -23,24 +24,25 @@ in the same change that changed the API.
 
 ## Which surface
 
-| Surface                                           | Location                                      | Owns                                    |
-| ------------------------------------------------- | --------------------------------------------- | --------------------------------------- |
-| API reference, getting started, use cases, guides | `apps/docs/<pkg>` (VitePress)                 | Flagships: `svg`, `figma`, `log`, `vfs` |
-| Short entry / maturity / pointer to VitePress     | `libs/<pkg>/README.md`                        | Every package; primary for foundations  |
-| Current Public API shape                          | `libs/<pkg>/src/index.ts` (+ subpath barrels) | All packages — the only truth           |
-| Examples (usage truth)                            | `apps/examples/<pkg>/**`                      | Flagships with runnable demos           |
+| Surface                                           | Location                             | Owns                                    |
+| ------------------------------------------------- | ------------------------------------ | --------------------------------------- |
+| API reference, getting started, use cases, guides | `apps/docs/<pkg>` (VitePress)        | Flagships: `svg`, `figma`, `log`, `vfs` |
+| Short entry / maturity / pointer to VitePress     | `libs/<pkg>/README.md`               | Every package; primary for foundations  |
+| Current Public API shape                          | `libs/<pkg>/src` (+ subpath barrels) | All packages — the only API truth       |
+| Examples (usage truth)                            | `apps/examples/<pkg>/**`             | Flagships with runnable demos           |
+| Contributor / agent commands                      | `AGENTS.md`, `CONTRIBUTING.md`       | Honest `vp *` vocabulary                |
 
 ## When you change docs
 
-- **Changing the API → update docs in the same change.** A green build with stale docs is not done.
-- **Changing only docs → do not imply the API changed.** No false "new in X" callouts.
-- Examples must build. If you cite an example path, confirm it exists.
-- Foundation docs stay minimal: a README plus the source is often enough. Do not over-document
-  internals that are not Public API.
+- **Changing the API → update docs in the same change.**
+- **Changing only docs → do not imply the API changed.**
+- Examples must build (`vp -C apps/examples/... build` or the package script).
+- Foundation docs stay minimal: README + source is often enough.
+- Prefer Markdown links to canonical paths; keep VitePress inter-package links (`/svg`, `/figma`, …)
+  aligned with the root `README.md` maturity table.
 
-## VitePress specifics
+## VitePress
 
-- Docs deploy to `neodx.pages.dev` (Cloudflare Pages). A broken doc build is a real failure, not a
-  warning.
-- Keep inter-package links to the VitePress paths (`/svg`, `/figma`, …), matching the maturity table
-  in the root `README.md`.
+- Docs deploy to `neodx.pages.dev` (Cloudflare Pages). A broken doc build is a real failure.
+- Product notes about future vfs plugin adapters (oxlint/oxfmt/…) belong in docs or reports — they
+  are not must-ship work unless authorized.

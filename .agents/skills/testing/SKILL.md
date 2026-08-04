@@ -1,53 +1,63 @@
 ---
 name: testing
-description:
-  neodx test layers and when to use each — behavior unit tests, type tests, and Playwright
-  visual e2e. Load when adding or changing tests under libs/ or apps/e2e.
+description: >-
+  neodx test evidence — behavior unit tests, type tests, pack/dist contracts, and Playwright visual e2e.
+  Load when adding or changing tests under libs/ or apps/e2e, choosing a layer, or quarantining flakes.
 ---
 
 # testing
 
-neodx tests behavior and types. Pick the layer that proves the change, not the layer that is easiest
-to write.
+Testing owns evidence technique: which layer can credibly prove a behavior, how fixtures and mocks
+preserve that evidence, and what verification is enough. An admitted gap is better than a test that
+proves framework mechanics while claiming product behavior
+([nothing is better than fake](../principles/references/tenets.md#nothing-is-better-than-fake)).
 
 ## Layers
 
-| Layer               | Where                                            | Tool                  | Proves                                    |
-| ------------------- | ------------------------------------------------ | --------------------- | ----------------------------------------- |
-| Behavior unit tests | `libs/<pkg>/src/__tests__/*.test.ts`             | Vitest                | A function does what its Intention claims |
-| Type tests          | `libs/<pkg>/src/__tests__/*.test-d.ts`           | Vitest `expectTypeOf` | The Public API's types resolve correctly  |
-| Contracts           | `libs/svg/src/__tests__/internal-inline.test.ts` | Vitest                | Build-time invariants hold on `dist`      |
-| Visual e2e          | `apps/e2e/svg`                                   | Playwright            | The svg sprite pipeline renders correctly |
+| Layer          | Where                                                 | Tool                                    | Proves                                               |
+| -------------- | ----------------------------------------------------- | --------------------------------------- | ---------------------------------------------------- |
+| Behavior unit  | `libs/<pkg>/src/__tests__/*.test.ts`                  | Vitest via `vp test` / `vite-plus/test` | A function does what its Intention claims            |
+| Type tests     | `libs/<pkg>/src/__tests__/*.test-d.ts`                | `expectTypeOf`                          | Public API types resolve correctly                   |
+| Dist contracts | e.g. `libs/svg/src/__tests__/internal-inline.test.ts` | Vitest on packed `dist`                 | Build-time invariants (no runtime `@neodx/internal`) |
+| Visual e2e     | `apps/e2e/svg`                                        | Playwright                              | Sprite pipeline renders correctly                    |
 
-## Behavior tests
+There is no full-stack app-server or UI-framework test layer here — neodx is library + examples + e2e.
 
-- Test behavior, not implementation. Assert what the function returns/does, not its internal steps.
-- Co-locate tests in `src/__tests__/`. Name them `<feature>.test.ts`.
-- Run one package's tests: `yarn test` from the package dir. Run affected tests across the repo:
-  `yarn nx affected --target=test`.
-- Don't write a test that only verifies a framework default. Every test should fail if the behavior
-  it names regressed.
+## Select credible evidence
 
-## Type tests
+Choose the lowest layer that still crosses every boundary relevant to the claim.
 
-- Use `*.test-d.ts` with `expectTypeOf` from `vitest` for Public API type guarantees (return shapes,
-  narrowing, optionality).
-- These run as part of `yarn test`. Keep them when they guard a type that callers depend on; drop
-  ones that only restate the signature.
+| Behavior to prove                     | Primary layer                   |
+| ------------------------------------- | ------------------------------- |
+| Pure helper / pipeline step           | Behavior unit                   |
+| Caller-facing type contract           | Type test                       |
+| Packed export / inline invariant      | Dist contract (after `vp pack`) |
+| Rendered sprite / bundler integration | Playwright e2e                  |
 
-## When to use Playwright
+Coverage importance is independent of layer: **critical** (blocks trust), **major** (material gap),
+**minor** (useful edge). Report gaps as `<importance>(<layer>): <behavior>`.
 
-`apps/e2e/svg` is the only e2e surface today; it guards the flagship sprite pipeline visually and is
-a required CI job. Add Playwright only when the change is about rendered output or a bundler
-integration that a unit test cannot prove. Do not reach for e2e to test pure logic.
+## Author
 
-## Mocking
+- Assert through the observable contract (exported function, packed file, Playwright locator).
+- Test behavior that survives refactoring — not private collaborators or call counts.
+- Co-locate under `src/__tests__/`. Name `<feature>.test.ts` / `<feature>.test-d.ts`.
+- Prefer real in-memory backends (`createInMemoryBackend` for vfs) over stubbing internals.
+- Mock only outside the active boundary at its public edge.
+- Import test APIs from `vite-plus/test` (leave `declare module 'vitest'` augmentations on upstream).
 
-Mock at the system boundary, not inside your own code. Prefer a real, in-memory backend
-(`createInMemoryBackend` for vfs) over stubbing internals. Avoid mocks that make a test pass by
-hiding the behavior under test.
+## Verify
+
+```shell
+vp test                          # workspace tests
+vp -C libs/<pkg> test            # one package
+vp test path/to/file.test.ts     # targeted
+yarn workspace @neodx/e2e-svg e2e   # Playwright (after pack + app build)
+```
+
+For pack-sensitive contracts, pack first (`vp run -t @neodx/<pkg>#pack`), then run the contract test.
 
 ## Flakes and quarantine
 
-A flaky test is quarantined behind a **named issue** created with `gh issue create`, never
-silent-skipped. Leave a comment pointing at the issue at the skip site.
+Quarantine behind a **named issue** (`gh issue create`), never a silent skip. Leave a comment at the
+skip site pointing at the issue.

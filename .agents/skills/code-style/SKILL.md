@@ -1,51 +1,59 @@
 ---
 name: code-style
-description: neodx TypeScript form — factory naming, barrels, import type, .ts import extensions,
-  and multi-entry exports. Load when writing or editing library TS under libs/.
+description: >-
+  neodx TypeScript form — factories, barrels, import type, .ts extensions, multi-entry exports,
+  comments, naming, and object projections. Load when writing or editing library TS under libs/.
 ---
 
 # code-style
 
-The neodx TS conventions that matter. Match the surrounding code; these are not aspirational.
+Exact TypeScript and comment form for neodx libraries. Match surrounding code; these are not
+aspirational. For design judgment (whether to add a helper, Public API shape), use
+[principles](../principles/SKILL.md). For Intention / Public API meaning, use
+[philosophy](../philosophy/SKILL.md).
+
+## Load by concern
+
+| Concern                                             | Reference                                        |
+| --------------------------------------------------- | ------------------------------------------------ |
+| Types, imports, `satisfies`, async returns, escapes | [typescript](./references/typescript.md)         |
+| Comment form and when to keep comments              | [comments](./references/comments.md)             |
+| Casing tokens and naming                            | [conventions](./references/conventions.md)       |
+| Pick/omit/spread projections                        | [object-mapping](./references/object-mapping.md) |
+
+Strip from those references anything that sounds like CSS Modules, UI components, or reactive-store
+tokens — neodx libraries are TS packages, not a design system.
 
 ## Factory naming
 
 Public constructors are `createX` factories (`createLogger`, `createVfs`, `createAutoVfs`,
-`createInMemoryBackend`). When you add a constructor, name it `create<Thing>`, return the constructed
-object, and export it from the package entry.
+`createInMemoryBackend`). Name new constructors `create<Thing>`, return the constructed object, and
+export from the package entry.
 
 ## Imports
 
-- **`import type` for types.** `verbatimModuleSyntax` is on (`tsconfig.base.json`); a type-only
-  import that is not marked `type` is an error. Use `import { type Foo, bar } from …` to mix.
-- **`.ts` extensions in relative imports.** `allowImportingTsExtensions` is on and `noEmit` is on,
-  so relative imports use the literal extension: `import { not } from '../guards.ts';`. This is the
-  established form — do not drop the extension and do not switch to `.js`.
-- One import group per concern: external packages, then `@neodx/*` workspace, then relative.
+- **`import type` for types.** `verbatimModuleSyntax` is on; type-only imports must use `type`.
+- **`.ts` extensions in relative imports.** Established form — do not drop the extension or switch
+  to `.js`.
+- Group by concern: external packages → `@neodx/*` workspace → relative. Import _order_ is a
+  convention, not an Oxlint gate (see WP-LINT-R1).
 
 ## Barrels and multi-entry
 
-- A package entry is `src/index.ts`. Sub-features live in their own folder with an `index.ts` barrel
-  (e.g. `src/array/index.ts`) that re-exports the public surface.
-- Multi-entry exports are real: `std` exposes `./math`, `./object`, `./array`, …, each with its own
-  `index.ts`. When you add a sub-entry, add it to **both** the source barrel and `package.json`
-  `exports` (types/import/require) — they must agree.
-- Do not export from tests or stubs. `src` is API truth; `__tests__` is not.
+- Package entry is `src/index.ts`. Sub-features use folder barrels (`src/array/index.ts`).
+- Multi-entry exports are real: keep `package.json` `exports` in sync with source and with the
+  package `pack` block in `vite.config.ts`.
+- `src` is API truth; `__tests__` is not.
 
-## Types
+## Pack-aware surface
 
-- `strict`, `noUncheckedIndexedAccess`, `noImplicitReturns`, `noUnusedLocals` are all on. Indexing
-  an array yields `T | undefined`; handle it.
-- Prefer `satisfies` for object literals that must conform to a shape without widening.
-- Keep inference where it reads well; annotate function return types when the body does not make the
-  return obvious or when it is part of the Public API.
+When changing a publishable public surface or build config, verify with `vp pack` (or
+`vp run -t @neodx/<pkg>#pack`) and keep `@neodx/internal` build-time-inline (no runtime import in
+`dist`).
 
-## Functions and async
+## Functions, async, comments
 
-- `return await` only inside a `try`/`catch` where the stack matters; otherwise return the promise.
-- Prefer small named functions over deeply nested arrows for anything non-trivial.
-
-## Comments
-
-- Remove comments that restate mechanics (`// increment i`). Keep concise comments for non-obvious
-  logic, flow boundaries, API intent, and unstable decisions.
+- Prefer `satisfies` for literals that must conform without widening.
+- `return await` only inside `try`/`catch` where the stack matters.
+- Remove comments that restate mechanics; keep concise comments for non-obvious logic, flow
+  boundaries, API intent, and unstable decisions.
