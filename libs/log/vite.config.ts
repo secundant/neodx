@@ -14,6 +14,7 @@ const outExtensions = ({ format }: { format: string }) => ({
 });
 
 export default defineConfig({
+  resolve: { tsconfigPaths: true },
   pack: [
     {
       entry: {

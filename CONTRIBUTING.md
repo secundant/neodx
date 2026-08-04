@@ -5,8 +5,8 @@ guidance and architecture, see [`AGENTS.md`](./AGENTS.md).
 
 ## Prerequisites
 
-- **Node.js 20+** for local work that matches CI.
-  `package.json` `engines.node` still allows `>=18.0.0`; treat 20 as the supported contributor
+- **Node.js 22+** for local work that matches CI (`vp pack` needs `Promise.withResolvers`).
+  `package.json` `engines.node` still allows `>=18.0.0`; treat 22 as the supported contributor
   floor until engines are tightened in a later slice.
 - **Yarn 4** — pinned via `packageManager: yarn@4.3.1` in `package.json`. Run `corepack enable` if
   your Node did not enable it. `vp install` delegates to Yarn.

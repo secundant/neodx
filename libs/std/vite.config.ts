@@ -8,6 +8,7 @@ import { defineConfig } from 'vite-plus';
 // `@neodx/internal` is a build-time devDependency only — it must be inlined,
 // never emitted as a runtime import (verified by the internal-inline check).
 export default defineConfig({
+  resolve: { tsconfigPaths: true },
   pack: {
     entry: {
       index: 'src/index.ts',

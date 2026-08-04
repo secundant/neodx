@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x]
+        # Vite+ pack (tsdown/rolldown) needs Promise.withResolvers (Node ≥22).
+        node-version: [22.x]
     steps:
       - uses: actions/checkout@v4
 
@@ -33,6 +34,15 @@ jobs:
       - name: Check (fmt + lint)
         run: vp check
 
+      - name: Pack publishable libraries
+        run: >
+          vp run
+          --filter "./libs/*"
+          --filter "!@neodx/autobuild"
+          --filter "!@neodx/codegen"
+          --filter "!@neodx/internal"
+          pack
+
       - name: Typecheck publishable libraries
         run: >
           vp run
@@ -46,15 +56,6 @@ jobs:
           --filter "./libs/*"
           --filter "!@neodx/autobuild"
           test
-
-      - name: Pack publishable libraries
-        run: >
-          vp run
-          --filter "./libs/*"
-          --filter "!@neodx/autobuild"
-          --filter "!@neodx/codegen"
-          --filter "!@neodx/internal"
-          pack
 
       - name: Verify @neodx/internal is inlined in dist
         working-directory: libs/svg
@@ -72,7 +73,7 @@ jobs:
     needs: []
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [22.x]
     steps:
       - uses: actions/checkout@v4
 
