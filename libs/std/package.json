@@ -3,6 +3,11 @@
   "version": "0.4.0",
   "description": "Standard language helpers",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secundant/neodx.git",
+    "directory": "libs/std"
+  },
   "source": [
     "src/index.ts",
     "src/*.ts",
@@ -89,6 +94,9 @@
       "import": "./dist/array/index.mjs",
       "require": "./dist/array/index.cjs"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

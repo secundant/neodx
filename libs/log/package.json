@@ -36,7 +36,8 @@
   ],
   "files": [
     "dist",
-    "package.json"
+    "package.json",
+    "README.md"
   ],
   "type": "module",
   "sideEffects": false,
@@ -87,6 +88,9 @@
       "import": "./dist/http/index.mjs",
       "require": "./dist/http/index.cjs"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "compare-bundle": "tsx bench/compare-bundle.ts",

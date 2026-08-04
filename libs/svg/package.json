@@ -87,6 +87,9 @@
       "default": "./dist/webpack.mjs"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "bench": "vitest bench",

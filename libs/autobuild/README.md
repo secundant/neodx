@@ -4,7 +4,10 @@
   </a>
 </h1>
 
-> In early development
+> **Retired from the neodx critical path (WP-V2 / S3).** Package is `private` and not released.
+> Build publishable libs with `vp pack`. Tracking: https://github.com/secundant/neodx/issues/162
+
+> Historical note: early development builder (Rollup + SWC). Kept in-tree for reference only.
 
 One command, one dependency and zero configuration to build your libraries.
 

@@ -3,6 +3,11 @@
   "version": "0.0.11",
   "description": "Collection of utilities for common cases in package development - smart dependencies updates, simple formatting with auto-detection of prettier config, etc.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secundant/neodx.git",
+    "directory": "libs/pkg-misc"
+  },
   "source": "src/index.ts",
   "files": [
     "dist",
@@ -20,6 +25,9 @@
       "import": "./dist/mjs/index.mjs",
       "require": "./dist/cjs/index.cjs"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

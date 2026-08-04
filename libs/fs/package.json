@@ -3,6 +3,11 @@
   "version": "0.0.13",
   "description": "File system helpers",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secundant/neodx.git",
+    "directory": "libs/fs"
+  },
   "source": "src/index.ts",
   "files": [
     "dist",
@@ -20,6 +25,9 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

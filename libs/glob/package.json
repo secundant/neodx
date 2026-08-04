@@ -1,7 +1,7 @@
 {
   "name": "@neodx/glob",
   "version": "0.1.2",
-  "description": "No description",
+  "description": "Fast glob matching and path walking helpers",
   "homepage": "https://github.com/secundant/neodx/tree/main/libs/glob",
   "bugs": "https://github.com/secundant/neodx/issues",
   "license": "MIT",
@@ -35,6 +35,9 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

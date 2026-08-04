@@ -1,6 +1,8 @@
 {
   "name": "@neodx/autobuild",
   "version": "0.2.1",
+  "private": true,
+  "description": "Legacy zero-config library builder (retired from critical path — use vp pack)",
   "license": "MIT",
   "bin": "bin.mjs",
   "files": [
@@ -12,9 +14,6 @@
   "type": "module",
   "sideEffects": false,
   "typesVersions": {},
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "clean": "yarn dlx rimraf dist",

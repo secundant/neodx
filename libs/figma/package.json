@@ -1,7 +1,7 @@
 {
   "name": "@neodx/figma",
   "version": "0.6.0",
-  "description": "No description",
+  "description": "Typed Figma API client, graph helpers, and asset export for design-to-code workflows",
   "keywords": [
     "cli",
     "design",
@@ -72,6 +72,9 @@
       "import": "./dist/cli.mjs",
       "require": "./dist/cli.cjs"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

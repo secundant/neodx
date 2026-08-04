@@ -77,6 +77,9 @@
       "require": "./dist/cjs/plugins/scan.cjs"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "bench": "vitest bench",
