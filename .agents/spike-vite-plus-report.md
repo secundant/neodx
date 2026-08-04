@@ -3,7 +3,11 @@
 Executed 2026-08-04 on `improve/neodx`. Revalidated 2026-08-04 (post-audit fixes).
 Authoritative ledger: `nubis` → `.agents/plans/2026-08-04-neodx-improvements-proposal.md` (S2).
 
-## Gate: `READY_FOR_ACCEPT` (pack-only path)
+## Gate: `ACCEPTED` (pack-only path) — 2026-08-04
+
+Owner authorized pack-only accept of WP-V1. Roll `vp pack` across publishable
+`@neodx/*` in dependency order on `improve/neodx`; keep Nx + eslint-kit + husky +
+autobuild on the critical path. **WP-V2 not authorized.**
 
 `vp pack` produces clean multi-entry CJS+ESM+dts output for `@neodx/std` and
 `@neodx/log`, preserving the published `exports` map and the `@neodx/internal`
@@ -89,8 +93,30 @@ a separate owner style decision.
 | D3  | SonarJS + import-sort gap vs eslint-kit                                                    | Keep eslint-kit until accepted                           |
 | D4  | Host `vp` installer may edit `~/.zshrc` / `~/.vite-plus`                                   | Outside repo; operator cleanup                           |
 
+## Pack-only roll (accepted 2026-08-04)
+
+Rolled on `improve/neodx` after owner accept. Per-lib evidence: `vp pack` +
+exports smoke + no runtime `@neodx/internal` in `.mjs`/`.cjs` + `yarn test`.
+
+| Package           | pack | smoke | internal | tests | Notes                                                             |
+| ----------------- | ---- | ----- | -------- | ----- | ----------------------------------------------------------------- |
+| `@neodx/std`      | ✅   | ✅    | ✅       | ✅    | Prior spike; re-verified                                          |
+| `@neodx/log`      | ✅   | ✅    | ✅       | ✅    | Prior spike; iso free of `node:*`                                 |
+| `@neodx/colors`   | ✅   | ✅    | ✅       | ✅    | `platform: 'node'`                                                |
+| `@neodx/fs`       | ✅   | ✅    | ✅       | ✅    | `platform: 'node'`                                                |
+| `@neodx/glob`     | ✅   | ✅    | ✅       | ✅    | `platform: 'node'`; grammex inlined                               |
+| `@neodx/pkg-misc` | ✅   | ✅    | ✅       | ✅    | Nested `dist/{mjs,cjs,types}`                                     |
+| `@neodx/vfs`      | ✅   | ✅    | ✅       | ✅    | Nested multi-entry; maps may cite internal sources                |
+| `@neodx/svg`      | ✅   | ✅    | ✅       | ✅    | Split pack; bundler dts `resolve:false`; dropped dead `./plugins` |
+| `@neodx/figma`    | ✅   | ✅    | ✅       | ✅    | Multi-entry flat                                                  |
+
+**Debt from roll (not WP-V2):** svg bundler adapters need `dts: { resolve: false }`
+because bundling `vite`/`webpack` type graphs fails under rolldown-plugin-dts;
+`dts: { only: true }` for nested `dist/types` still emits companion `.mjs` (harmless
+for exports). Autobuild remains the `yarn build` path until WP-V2.
+
 ## Owner authorization ask
 
-Authorize **pack-only path** (roll `vp pack` to publishable libs in dep order; keep
-Nx + eslint-kit interim). Do **not** authorize WP-V2 until Nx-affected gap and
-Oxfmt-vs-Prettier (+ Sonar/import-sort) decisions are resolved.
+~~Authorize pack-only path~~ — **accepted 2026-08-04**; roll complete.
+Do **not** authorize WP-V2 until Nx-affected gap and Oxfmt-vs-Prettier
+(+ Sonar/import-sort) decisions are resolved.
