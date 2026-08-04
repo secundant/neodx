@@ -43,6 +43,12 @@ jobs:
           --filter "!@neodx/internal"
           pack
 
+      - name: Verify export targets exist
+        run: yarn verify-exports
+
+      - name: Publint publishable libraries
+        run: yarn publint
+
       - name: Typecheck publishable libraries
         run: >
           vp run

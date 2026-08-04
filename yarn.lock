@@ -3186,6 +3186,7 @@ __metadata:
     micromatch: "npm:4.0.5"
     picomatch: "npm:4.0.2"
     prettier: "npm:3.3.2"
+    publint: "npm:0.3.12"
     tsx: "npm:4.16.2"
     type-fest: "npm:4.21.0"
     typescript: "npm:5.9.3"
@@ -3785,6 +3786,15 @@ __metadata:
   version: 1.0.0-next.29
   resolution: "@polka/url@npm:1.0.0-next.29"
   checksum: 10/69ca11ab15a4ffec7f0b07fcc4e1f01489b3d9683a7e1867758818386575c60c213401259ba3705b8a812228d17e2bfd18e6f021194d943fff4bca389c9d4f28
+  languageName: node
+  linkType: hard
+
+"@publint/pack@npm:^0.1.2":
+  version: 0.1.6
+  resolution: "@publint/pack@npm:0.1.6"
+  dependencies:
+    tinyexec: "npm:^1.2.4"
+  checksum: 10/f1348e48c5926bfeab37b155670c774e89896d9b337f24b8802279fd52e0ae178d2c8207da54e29011ddeb75bbb3daaf75627f886ba1df25d7be5dfca84b9a28
   languageName: node
   linkType: hard
 
@@ -13491,6 +13501,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"package-manager-detector@npm:^1.1.0":
+  version: 1.8.0
+  resolution: "package-manager-detector@npm:1.8.0"
+  checksum: 10/5d79b8bf3d0d3da312ec08749c74a3b7e4d4139c259fe3561538772c65ece8ff733e002c67a4324b5c505d2ac625c121b94cf3d5135e1b4e43fed5bced148763
+  languageName: node
+  linkType: hard
+
 "parent-module@npm:^1.0.0":
   version: 1.0.1
   resolution: "parent-module@npm:1.0.1"
@@ -14493,6 +14510,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"publint@npm:0.3.12":
+  version: 0.3.12
+  resolution: "publint@npm:0.3.12"
+  dependencies:
+    "@publint/pack": "npm:^0.1.2"
+    package-manager-detector: "npm:^1.1.0"
+    picocolors: "npm:^1.1.1"
+    sade: "npm:^1.8.1"
+  bin:
+    publint: src/cli.js
+  checksum: 10/77153a20821b58fbe57e3d90e2ddd7c014c4a7dd4b506f8919ef0ecbb1e14745514c89be9d72623dcad014f0c11dbc0b204c05f713297c4435b695ba9f874c21
+  languageName: node
+  linkType: hard
+
 "punycode@npm:^2.1.0":
   version: 2.1.1
   resolution: "punycode@npm:2.1.1"
@@ -15258,7 +15289,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sade@npm:1.8.1":
+"sade@npm:1.8.1, sade@npm:^1.8.1":
   version: 1.8.1
   resolution: "sade@npm:1.8.1"
   dependencies:
@@ -16381,7 +16412,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinyexec@npm:^1.0.2":
+"tinyexec@npm:^1.0.2, tinyexec@npm:^1.2.4":
   version: 1.3.0
   resolution: "tinyexec@npm:1.3.0"
   checksum: 10/749a8c5aac2ffe3f04220b8966f414636c6c324d4ae88895dfffb2319db61cf1c01c5d7e8f0fb8ab747389ea0be1f0f80d850a9cce88a9d96cc5ebcb345db018
