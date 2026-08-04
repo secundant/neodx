@@ -17,6 +17,6 @@ export default defineConfig({
       }
     }
   },
-  test: { typecheck: { ignoreSourceErrors: true }, passWithNoTests: true, threads: false },
+  test: { passWithNoTests: true, threads: false },
   plugins: [tsconfigPaths()]
 });

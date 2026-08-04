@@ -1,5 +1,10 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn nx run-many --all --target typecheck
-yarn nx run-many --all --target test
+# Affected-only: full-repo typecheck+test on every push was NDX-12 debt.
+# Override with NX_BASE / NX_HEAD if needed (defaults match origin/main…HEAD).
+BASE="${NX_BASE:-origin/main}"
+HEAD="${NX_HEAD:-HEAD}"
+
+yarn nx affected --base="$BASE" --head="$HEAD" --target=typecheck --parallel=3
+yarn nx affected --base="$BASE" --head="$HEAD" --target=test --parallel=3

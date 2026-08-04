@@ -11,6 +11,6 @@ export default defineConfig({
       fileName: 'index'
     }
   },
-  test: { typecheck: { ignoreSourceErrors: true }, passWithNoTests: true },
+  test: { passWithNoTests: true },
   plugins: [tsconfigPaths()]
 });

@@ -36,3 +36,37 @@ jobs:
           yarn nx affected --target test --parallel 3
           yarn nx affected --target build --parallel 3
           yarn nx affected --target typecheck --parallel 3
+
+      - name: Verify @neodx/internal is inlined in dist
+        run: yarn vitest run libs/svg/src/__tests__/internal-inline.test.ts
+
+  e2e-svg:
+    runs-on: ubuntu-latest
+    needs: []
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Install Playwright Chromium
+        run: yarn workspace @neodx/e2e-svg exec playwright install --with-deps chromium
+
+      - name: Build svg e2e app
+        run: yarn nx run @neodx/e2e-svg:build
+
+      - name: Run Playwright e2e
+        run: yarn nx run @neodx/e2e-svg:e2e
+        # Flakes must be quarantined with a named GitHub issue — do not silent-skip.
