@@ -26,14 +26,15 @@ vp install   # or: yarn
 ## Everyday commands
 
 ```shell
-vp check                 # fmt + lint + types
-vp test                  # Vitest
-vp run @neodx/std#pack      # pack one library
+vp check                 # fmt + lint (types are separate)
+cd libs/std && yarn typecheck && vp test
+vp run @neodx/std#pack   # pack one library
 vp run --filter "./libs/*" --filter "!@neodx/autobuild" --filter "!@neodx/codegen" --filter "!@neodx/internal" pack
 yarn constraints         # dependency-graph honesty (--fix for safe fixes)
 ```
 
 Package-directory scripts (`yarn test`, `yarn build` → `vp pack`, …) still work via Yarn workspaces.
+Prefer package cwd for tests; root `vp test` can pick up Playwright/legacy noise.
 
 ## Adding a changeset
 
