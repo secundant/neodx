@@ -13,7 +13,7 @@ export function createNodeFsBackend() {
     },
     async write(path, content) {
       await ensureFile(path);
-      return await writeFile(path, content);
+      return await writeFile(path, Buffer.isBuffer(content) ? new Uint8Array(content) : content);
     },
     async delete(path) {
       return await rm(path, {

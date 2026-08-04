@@ -89,6 +89,8 @@ export async function createSwcConfig(
     [ScriptTarget.ES2020]: 'es2020',
     [ScriptTarget.ES2021]: 'es2021',
     [ScriptTarget.ES2022]: 'es2022',
+    [ScriptTarget.ES2023]: 'es2022',
+    [ScriptTarget.ES2024]: 'es2022',
     [ScriptTarget.ESNext]: 'esnext',
     // ???
     [ScriptTarget.JSON]: 'es2022'
