@@ -20,6 +20,22 @@ Packages overview:
 - [@neodx/log](#neodxlog) | [docs](https://neodx.pages.dev/log) | [source](./libs/log)
 - [@neodx/vfs](#neodxvfs) | [docs](https://neodx.pages.dev/vfs) | [source](./libs/vfs)
 
+### Maturity (stub)
+
+| Package           | npm    | Maturity | Notes                     |
+| ----------------- | ------ | -------- | ------------------------- |
+| `@neodx/svg`      | 0.8.0  | beta     | Flagship; docs + examples |
+| `@neodx/figma`    | 0.6.0  | beta     | Flagship; docs + examples |
+| `@neodx/log`      | 0.4.2  | beta     | Flagship; docs            |
+| `@neodx/vfs`      | 0.3.0  | beta     | Flagship; docs            |
+| `@neodx/colors`   | 0.2.9  | alpha    | Foundation                |
+| `@neodx/std`      | 0.4.0  | alpha    | Foundation                |
+| `@neodx/fs`       | 0.0.13 | alpha    | Foundation                |
+| `@neodx/glob`     | 0.1.2  | alpha    | Foundation                |
+| `@neodx/pkg-misc` | 0.0.11 | alpha    | Foundation                |
+
+Workspace-wide 1.0 and a fuller maturity review are tracked for a later program stream.
+
 ### [@neodx/figma](./libs/figma)
 
 Figma is a great tool for design collaboration, but we don't have a solid way to use it in our development workflow.
@@ -43,12 +59,13 @@ So, `@neodx/figma` is an attempt to create it. Currently, we have the following 
 - **Typed Figma API**: All Figma API methods are typed and have autocomplete support.
 - **Built-in document graph API**: Figma API is too low-level for writing any stable solution. We provide an API that allows you work with the document as a simple high-level graph of nodes.
 
-[Visit `@neodx/figma` documentation](https://neodx.pages.dev/svg) to learn more!
+[Visit `@neodx/figma` documentation](https://neodx.pages.dev/figma) to learn more!
 
 See our examples for more details:
 
-- [SVG sprite generation on steroids with Figma export](./examples/svg-magic-with-figma-export) - Integrated showcase of the `@neodx/svg` and `@neodx/figma` packages with real application usage!
-- [Export icons from the Community Weather Icons Kit](./examples/figma-export-file-assets) - A simple step-by-step example of how to use the `@neodx/figma` to export icons.
+- [SVG sprite generation on steroids with Figma export](./apps/examples/svg/figma) - Integrated showcase of the `@neodx/svg` and `@neodx/figma` packages with real application usage!
+- [Export icons from the Community Weather Icons Kit](./apps/examples/figma/export-file-assets) - A simple step-by-step example of how to use the `@neodx/figma` to export icons.
+- [Export published Figma components](./apps/examples/figma/export-published) - Export published components from a Figma library.
 
 Also, we have some ideas for future development, so stay tuned and feel free to request your own! 🚀
 
@@ -94,9 +111,9 @@ Here we go! Type safety, autocomplete, runtime access to icon metadata all wrapp
 
 Also, you can check out our examples:
 
-- [React, Vite, TailwindCSS, and multicolored icon](./examples/svg-vite) - A step-by-step tutorial showcasing how to integrate sprite icons into your Vite project.
-- [React, Vite, icons exported by "@neodx/figma"](./examples/svg-magic-with-figma-export) - Integrated showcase of the seamless automation capabilities of `@neodx/svg` and `@neodx/figma` for your icons!
-- [Next.js, webpack and simple flat icons](./examples/svg-next) - An example demonstrating the usage of `@neodx/svg` webpack plugin with Next.js.
+- [React, Vite, TailwindCSS, and multicolored icon](./apps/examples/svg/vite-react) - A step-by-step tutorial showcasing how to integrate sprite icons into your Vite project.
+- [React, Vite, icons exported by "@neodx/figma"](./apps/examples/svg/figma) - Integrated showcase of the seamless automation capabilities of `@neodx/svg` and `@neodx/figma` for your icons!
+- [Next.js, webpack and simple flat icons](./apps/examples/svg/next) - An example demonstrating the usage of `@neodx/svg` webpack plugin with Next.js.
 
 ### [@neodx/log](./libs/log)
 
@@ -181,7 +198,6 @@ await fs.updateJson('package.json', pkg => {
 });
 await fs.write('src/index.ts', 'export const foo = 42;');
 await fs.apply();
-}
 ```
 
 While it may seem unnecessary at first glance, let's explore the core concepts that make `@neodx/vfs` invaluable:
@@ -201,7 +217,7 @@ In other words, it's designed as single API for all file system operations, so y
 
 ### Getting started
 
-We're using [Yarn 3 (berry)](https://yarnpkg.com/) as a package manager and [Nx](https://nx.dev/) as a monorepo management tool.
+We're using [Yarn 4 (berry)](https://yarnpkg.com/) as a package manager and [Nx](https://nx.dev/) as a monorepo management tool.
 
 After cloning the repo, to install dependencies, run:
 
@@ -212,10 +228,10 @@ yarn
 And, optionally, for building all packages, run:
 
 ```shell
-yarn nx run-many  --all --target=build
+yarn nx run-many --all --target=build
 ```
 
-It isn't necessary, you can start working with the codebase right away, but it will boost initial cache whn you run e2e tests (scenarios in examples/\*).
+It isn't necessary, you can start working with the codebase right away, but it will boost initial cache when you run e2e tests (scenarios in `apps/examples/*`).
 
 ### Internal scripts
 

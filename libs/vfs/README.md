@@ -22,9 +22,9 @@ await vfs.formatChangedFiles(); // Format all changed files
 console.log(await vfs.read('foo/baz.ts')); // console.log("Hello world")
 
 // Nothing is written to the disk yet. However, we have actual state of the file and
-// For that, we need to call `applyChanges`:
+// For that, we need to call `apply`:
 
-await vfs.applyChanges(); // Now the files are written to the disk
+await vfs.apply(); // Now the files are written to the disk
 ```
 
 ## Installation
@@ -82,7 +82,7 @@ await pkg.removeDependencies({ dependencies: ['foo'] });
 // Remove a dev dependency or any other type
 await pkg.removeDependencies({ devDependencies: ['foo'], peerDependencies: ['bar'] });
 
-await vfs.applyChanges(); // Write all changes to the disk (if we're on a real FS)
+await vfs.apply(); // Write all changes to the disk (if we're on a real FS)
 ```
 
 ## Tradeoffs and limitations
@@ -119,7 +119,7 @@ interface VFS {
   read(path: string): Promise<Buffer>;
   read(path: string, encoding: BufferEncoding): Promise<string>;
 
-  // Keep the file content in memory and write it to the disk on `applyChanges`
+  // Keep the file content in memory and write it to the disk on `apply`
   write(path: string, content: ContentLike): Promise<void>;
 
   // Returns true if the path exists
@@ -131,7 +131,7 @@ interface VFS {
   // Rename file or directory
   rename(prevPath: string, nextPath: string): Promise<void>;
 
-  // Mark the file for deletion on `applyChanges`
+  // Mark the file for deletion on `apply`
   delete(path: string): Promise<void>;
 
   // Returns flattened list of files and directories
@@ -141,7 +141,7 @@ interface VFS {
   getChanges(): Promise<FileChange[]>;
 
   // Write all changes to the disk
-  applyChanges(): Promise<void>;
+  apply(): Promise<void>;
 }
 ```
 
