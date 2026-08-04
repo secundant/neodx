@@ -35,8 +35,7 @@
     "src/rollup.ts",
     "src/rspack.ts",
     "src/vite.ts",
-    "src/webpack.ts",
-    "src/plugins/index.ts"
+    "src/webpack.ts"
   ],
   "type": "module",
   "main": "./dist/index.cjs",
@@ -107,11 +106,6 @@
       "types": "./dist/cli.d.ts",
       "import": "./dist/cli.mjs",
       "require": "./dist/cli.cjs"
-    },
-    "./plugins": {
-      "types": "./dist/plugins/index.d.ts",
-      "import": "./dist/plugins/index.mjs",
-      "require": "./dist/plugins/index.cjs"
     },
     "./esbuild": {
       "types": "./dist/esbuild.d.ts",
