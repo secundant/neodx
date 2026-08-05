@@ -29,17 +29,17 @@ Critical path is **Vite+** (`vp`). Yarn remains the package manager (`packageMan
 
 | Concern               | Command                                                                        | Notes                                                                                                         |
 | --------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| Install               | `vp install` or `yarn`                                                         | Yarn 4.3.1; Node **22+** for `vp pack`                                                                        |
+| Install               | `vp install` or `yarn`                                                         | Yarn 4.3.1; Node **26** default (`.node-version` / `n`; engines `>=26`)                                       |
 | Check (fmt + lint)    | `vp check`                                                                     | Root `vite.config.ts`; Oxlint typeAware/typeCheck off ([#161](https://github.com/secundant/neodx/issues/161)) |
 | Typecheck             | `yarn typecheck` or `cd libs/<pkg> && yarn typecheck`                          | Unified lib solution `tsc -b`; build configs clear `paths` + `development` exports                            |
 | Typecheck (package)   | `tsc -b tsconfig.build.json`                                                   | Throwaway `dist-types/`; published dts still from `vp pack`                                                   |
 | Refs drift            | `yarn check-references`                                                        | deps ↔ `references` (soft-skips internal↔vfs cycle)                                                           |
 | Lint / format alone   | `vp lint` / `vp fmt`                                                           | Oxlint + Oxfmt                                                                                                |
 | Test                  | `cd libs/<pkg> && vp test`                                                     | Prefer package cwd; CI uses `vp run --filter "./libs/*" test`                                                 |
-| Pack one lib          | `vp run @neodx/<pkg>#pack`                                                     | Emits CJS/ESM/dts per pack config                                                                             |
+| Pack one lib          | `vp run @neodx/<pkg>#pack`                                                     | Emits CJS/ESM/dts per pack config; avoid `vp run -t …#pack` (self-cycle on vp 0.2.7)                          |
 | Pack publishable libs | `yarn pack:libs`                                                               | Alias for filtered `vp run … pack`                                                                            |
 | Export / publint      | `yarn verify-exports` / `yarn publint`                                         | After pack (CI runs both)                                                                                     |
-| Dependency structure  | `yarn depcruise`                                                               | S5-R2-c; needs Node **22/24/≥26** (not 25); baseline file ignores known vfs cycles                            |
+| Dependency structure  | `yarn depcruise`                                                               | S5-R2-c; Node **26** default (cruiser also accepts 22/24; not 25); baseline ignores known vfs cycles          |
 | Graph honesty         | `yarn constraints`                                                             | `--fix` applies safe fixes                                                                                    |
 | E2E                   | pack svg → `cd apps/e2e/svg && vp build` → `yarn workspace @neodx/e2e-svg e2e` | Playwright; required CI job                                                                                   |
 

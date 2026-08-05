@@ -5,7 +5,8 @@
 neodx publishes `@neodx/*` packages on npm. Security fixes land on the latest release line of each
 package. Older major/minor lines are not guaranteed to receive backports.
 
-Supported contributor / CI runtime: **Node.js 22+** (see root `package.json` `engines`).
+Supported contributor / CI runtime: **Node.js 26** (see root `package.json` `engines` and
+`.node-version`). Other Node majors are for optional support-matrix checks only.
 
 ## Reporting a vulnerability
 

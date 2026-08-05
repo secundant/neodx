@@ -217,7 +217,8 @@ In other words, it's designed as single API for all file system operations, so y
 ## Development and contribution
 
 This monorepo uses [Yarn 4](https://yarnpkg.com/) and [Vite+](https://viteplus.dev/guide/) (`vp`).
-**Node.js 22+** is required (`vp pack` needs `Promise.withResolvers`).
+**Node.js 26** is the default runtime (`.node-version`; install with [`n`](https://github.com/tj/n)).
+Other majors are for optional support-matrix CI only.
 
 Everyday path:
 

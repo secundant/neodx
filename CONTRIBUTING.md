@@ -5,9 +5,11 @@ guidance and architecture, see [`AGENTS.md`](./AGENTS.md).
 
 ## Prerequisites
 
-- **Node.js 22+** — matches CI and root `engines.node` (`vp pack` needs `Promise.withResolvers`).
-  Prefer **22 or 24** locally: `yarn depcruise` follows the Node release cycle and does not run on
-  Node 25.
+- **Node.js 26** — default contributor and CI runtime (root `engines.node` `>=26`, pinned in
+  `.node-version`). Install and switch with [`n`](https://github.com/tj/n) (`n 26` / `n auto`).
+  Do not use nvm for this repo. Other majors (22/24) are for optional support-matrix CI only —
+  not local defaults. Note: `dependency-cruiser` rejects odd Currents such as Node 25
+  (`engines` `^22||^24||>=26`).
 - **Yarn 4** — pinned via `packageManager: yarn@4.3.1` in `package.json`. Run `corepack enable` if
   your Node did not enable it. `vp install` delegates to Yarn.
 - **[GitHub CLI (`gh`)](https://github.com/cli/cli)** — install (`brew install gh` on macOS) and run

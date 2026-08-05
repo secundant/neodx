@@ -23,7 +23,7 @@ Selected over alternatives after research:
 | `knip`                 | ✅ "unlisted dependencies" | ❌                            | ❌                           | Broader unused-deps scope; does not own graph cycles/layers                                            |
 | `madge`                | ❌ skips unresolvable      | ✅                            | ❌                           | No undeclared-deps detection — hard disqualifier                                                       |
 
-- Node engines `^22||^24||>=26` — fits CI Node 22 exactly.
+- Node engines `^22||^24||>=26` — compatible with repo default Node **26** (and optional 22/24 matrix).
 - Per-module resolution uses the **closest `package.json`**, so workspace `@neodx/*` imports are attributed to the right package even when symlinked to source.
 - `enhanced-resolve` + `tsconfig-paths-webpack-plugin` ship bundled; nothing extra to install.
 
@@ -110,7 +110,7 @@ Root cause: pack emits `.mjs`/`.cjs` paired with **`.d.ts`** (not `.d.mts`/`.d.c
 
 **ATTW stays installed** as a devDep so the R2-d/e follow-up can wire the gate immediately once paired dts land. Exit criteria tracked in #164.
 
-## Verification (local, Node 22)
+## Verification (local, Node 26)
 
 | Gate                                          | Result                                 |
 | --------------------------------------------- | -------------------------------------- |
