@@ -1,13 +1,13 @@
 # TypeScript Project References / TS 7 — Before-Report (S5)
 
-|               |                                                                                                                            |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Status        | **Before complete** + bounded spike evidence (During below). Full-repo `tsc -b` cutover **not** authorized by this report. |
-| Date opened   | 2026-08-05                                                                                                                 |
-| Branch        | `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160))                                                   |
-| Tip at before | `b9fc972` (S3 solidify); report+spike land in the same session                                                             |
-| Framing       | **Experiment** on neodx. Encapsulate for possible Nubis later. **Do not** declare Nubis adopts project references.         |
-| Companion     | [Vite+ after-report](./vite-plus-migration.md) · debt [#161](https://github.com/secundant/neodx/issues/161)                |
+|               |                                                                                                                     |
+| ------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Status        | **Before + spike complete**; full cutover documented in [implementation](./ts-project-references-implementation.md) |
+| Date opened   | 2026-08-05                                                                                                          |
+| Branch        | `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160))                                            |
+| Tip at before | `b9fc972` (S3 solidify); spike @ `a3cf247`; cutover after `1579d67`                                                 |
+| Framing       | **Experiment** on neodx. Encapsulate for possible Nubis later. **Do not** declare Nubis adopts project references.  |
+| Companion     | [Vite+ after-report](./vite-plus-migration.md) · debt [#161](https://github.com/secundant/neodx/issues/161)         |
 
 ## Hypothesis
 
@@ -20,7 +20,9 @@ Solution-style TypeScript project references (`composite` + `tsc -b`) on neodx w
 
 Success does **not** require rushing a TypeScript 7 major. TS **5.9.3** is enough to prove references. TS 7 stays a later currency decision.
 
-## Current TS graph (facts @ `b9fc972`)
+## Current TS graph (facts @ `b9fc972` — historical before-snapshot)
+
+> **Superseded for live commands:** after cutover, see [implementation report](./ts-project-references-implementation.md). Tables below freeze the pre-cutover world the spike measured against.
 
 ### Config shape
 
@@ -36,7 +38,7 @@ Success does **not** require rushing a TypeScript 7 major. TS **5.9.3** is enoug
 | TS version       | **5.9.3** (Yarn patch).                                                                                   |
 | Vite resolve     | Root + many packages enable `tsconfigPaths` / `vite-tsconfig-paths` so pack/test follow the same aliases. |
 
-### How CI typechecks today
+### How CI typechecked at before (`b9fc972`)
 
 From `.github/workflows/ci.yaml` (required job `check`):
 
