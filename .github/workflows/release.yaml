@@ -24,7 +24,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@v1
         with:
-          node-version: 22.x
+          node-version: 26.x
           cache: true
           run-install: true
 
