@@ -13,7 +13,7 @@ multi-step effort intends, what is locked, and where it stopped.
 ## Program status (2026-08-05)
 
 Critical path on `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160)).
-Re-read `git rev-parse --short HEAD` before citing SHAs (A∥C closed at **`594a2f4`**).
+Re-read `git rev-parse --short HEAD` before citing SHAs (A∥C closed at **`c73f9d6`**).
 
 | Stream                   | Status                                            | Evidence                                                                                                                                                                               |
 | ------------------------ | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -29,15 +29,15 @@ Re-read `git rev-parse --short HEAD` before citing SHAs (A∥C closed at **`594a
 
 ### Closed parallel session
 
-| Lane             | Tip       | Verdict                                    |
-| ---------------- | --------- | ------------------------------------------ |
-| **A** std 1.0    | `523574a` | `CONFIRMED_WITH_DEBT` (await tip CI)       |
-| **C** depcruise  | `594a2f4` | `CONFIRMED_WITH_DEBT` (#164; known cycles) |
-| **R** revalidate | —         | overall `CONFIRMED_WITH_DEBT`              |
+| Lane             | Tip       | Verdict                                                  |
+| ---------------- | --------- | -------------------------------------------------------- |
+| **A** std 1.0    | `523574a` | `CONFIRMED` (tip CI green)                               |
+| **C** depcruise  | `594a2f4` | `CONFIRMED_WITH_DEBT` (#164; known cycles; tip CI green) |
+| **R** revalidate | —         | overall `CONFIRMED_WITH_DEBT` → tip CI green @ `c73f9d6` |
 
 Board: [sessions/parallel-s7-r2c/STATUS.md](../sessions/parallel-s7-r2c/STATUS.md).
 
-**Next:** confirm PR CI on `594a2f4+`; then S5-R2-a (paths delete) **or** S7 `@neodx/colors` 1.0. Do not pair R2-a with a product 1.0 PR.
+**Next:** S5-R2-a (paths delete) **or** S7 `@neodx/colors` 1.0. Do not pair R2-a with a product 1.0 PR.
 
 ### Residual debt (named issues)
 

@@ -46,5 +46,5 @@ Full step log from the parallel wave is preserved in git history of this file be
 
 - [x] Lane A Tip SHA `523574a`
 - [x] Lane C Tip SHA `594a2f4`
-- [ ] PR #160 `check` + `e2e-svg` green on tip that includes depcruise (after push)
-- [x] Revalidation recorded — overall `CONFIRMED_WITH_DEBT` pending tip CI
+- [x] PR #160 `check` + `e2e-svg` green on `c73f9d6` (includes depcruise + `yarn pack:libs` e2e)
+- [x] Revalidation recorded — tip CI confirmed after closeout fixes
