@@ -1,13 +1,16 @@
 # WP-V1 Vite+ Spike — Report
 
+> **Historical (WP-V1 pack-only).** Gate text below (“keep Nx”, “WP-V2 not authorized”)
+> describes the accept moment only. **WP-V2 completed afterward.** Live guidance:
+> [`../vite-plus-migration.md`](../vite-plus-migration.md) and root [`AGENTS.md`](../../../AGENTS.md).
+
 Executed 2026-08-04 on `improve/neodx`. Revalidated 2026-08-04 (post-audit fixes).
-Authoritative ledger: `nubis` → `.agents/plans/2026-08-04-neodx-improvements-proposal.md` (S2).
 
 ## Gate: `ACCEPTED` (pack-only path) — 2026-08-04
 
 Owner authorized pack-only accept of WP-V1. Roll `vp pack` across publishable
 `@neodx/*` in dependency order on `improve/neodx`; keep Nx + eslint-kit + husky +
-autobuild on the critical path. **WP-V2 not authorized.**
+autobuild on the critical path. **WP-V2 not authorized at this gate** (later executed).
 
 `vp pack` produces clean multi-entry CJS+ESM+dts output for `@neodx/std` and
 `@neodx/log`, preserving the published `exports` map and the `@neodx/internal`

@@ -1,5 +1,9 @@
 # @neodx/codegen
 
+> **Private / debt.** Package is not on the publishable critical path.
+> The Tree API may be absorbed into `@neodx/vfs` or deleted.
+> Tracking: [#163](https://github.com/secundant/neodx/issues/163). Prefer `@neodx/vfs` for new work.
+
 Helpers for implementing your own generation flow.
 
 - Abstraction over file system

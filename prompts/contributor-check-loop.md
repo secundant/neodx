@@ -22,7 +22,7 @@ Repeat until every step is green or a skip is explicitly justified.
    ```
 5. **Pack** any touched publishable package whose public surface or pack config changed:
    ```shell
-   vp run -t @neodx/<pkg>#pack
+   vp run @neodx/<pkg>#pack
    ```
    If you touched `@neodx/internal` or a consumer, confirm the inline contract test passes
    (`libs/svg/src/__tests__/internal-inline.test.ts`) after pack.

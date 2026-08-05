@@ -1,5 +1,8 @@
 # WP-V1 Vite+ Spike — Baseline
 
+> **Historical.** Pre–WP-V2 baseline only. Live Vite+ state:
+> [`../vite-plus-migration.md`](../vite-plus-migration.md).
+
 Recorded on `improve/neodx` tip `376e10f` (2026-08-04) before any Vite+ changes.
 Toolchain: autobuild (rollup), eslint-kit, Nx 18, Vitest 4.1.10, TS 5.9.3, Node v25.8.2, yarn 4.3.1.
 Times are wall clock from a single warm run via local binaries (`tsc`, `vitest`, `eslint`, package `build`).

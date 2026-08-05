@@ -14,7 +14,7 @@ Supercharge your icons ⚡️
 - TypeScript support out of box - generated types and [information about your sprites](#-content-based-hashes-and-runtime-metadata-generation)
 - [Built-in integrated plugins](#integrate-with-your-bundler) for all major bundlers: `vite`, `webpack`, `rollup`, `esbuild`, etc.
 - Optional [grouping by folders](https://neodx.pages.dev/svg/group-and-hash.html)
-- Optimization with [svgo](https://neodx.pages.dev/svg/api/plugins/svgo.html)
+- Optimization with [SVGO](https://neodx.pages.dev/svg/optimization.html)
 - [Automatically reset colors](#-automatically-reset-colors)
 
 ## Installation and usage

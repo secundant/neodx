@@ -20,7 +20,7 @@ Packages overview:
 - [@neodx/log](#neodxlog) | [docs](https://neodx.pages.dev/log) | [source](./libs/log)
 - [@neodx/vfs](#neodxvfs) | [docs](https://neodx.pages.dev/vfs) | [source](./libs/vfs)
 
-### Maturity (stub)
+### Maturity
 
 | Package           | npm    | Maturity | Notes                     |
 | ----------------- | ------ | -------- | ------------------------- |
@@ -34,7 +34,8 @@ Packages overview:
 | `@neodx/glob`     | 0.1.2  | alpha    | Foundation                |
 | `@neodx/pkg-misc` | 0.0.11 | alpha    | Foundation                |
 
-Workspace-wide 1.0 and a fuller maturity review are tracked for a later program stream.
+Workspace-wide 1.0 is the S7 stream (not started). Treat the table as a snapshot of published
+versions, not a release promise.
 
 ### [@neodx/figma](./libs/figma)
 
@@ -215,39 +216,33 @@ In other words, it's designed as single API for all file system operations, so y
 
 ## Development and contribution
 
-### Getting started
+This monorepo uses [Yarn 4](https://yarnpkg.com/) and [Vite+](https://viteplus.dev/guide/) (`vp`).
+**Node.js 22+** is required (`vp pack` needs `Promise.withResolvers`).
 
-We're using [Yarn 4 (berry)](https://yarnpkg.com/) as a package manager and [Nx](https://nx.dev/) as a monorepo management tool.
-
-After cloning the repo, to install dependencies, run:
-
-```shell
-yarn
-```
-
-And, optionally, for building all packages, run:
+Everyday path:
 
 ```shell
-yarn nx run-many --all --target=build
+vp install                 # or: yarn
+vp check                   # fmt + lint only (not typecheck)
+cd libs/<pkg> && yarn typecheck && vp test
+yarn pack:libs             # vp pack all publishable libs
 ```
 
-It isn't necessary, you can start working with the codebase right away, but it will boost initial cache when you run e2e tests (scenarios in `apps/examples/*`).
+After pack, CI also runs `yarn verify-exports` and `yarn publint`. Prefer package-cwd tests;
+root `vp test` can pick up Playwright noise from `apps/e2e`.
 
-### Internal scripts
+Full contributor path: [CONTRIBUTING.md](./CONTRIBUTING.md).
+Repo layout, command table, and AI routing: [AGENTS.md](./AGENTS.md).
+Security / advisories: [SECURITY.md](./SECURITY.md).
 
-#### Create a new global example
+### Scaffolding
 
 ```shell
-yarn neodx example new-example-name
+yarn neodx example new-example-name   # under apps/examples
+yarn neodx lib new-lib-name           # under libs
 ```
 
-#### Create a new library
-
-```shell
-yarn neodx lib new-lib-name
-```
-
-The source code can be accessed by starting from [tools/scripts/bin.mjs](./tools/scripts/bin.mjs)..
+Entry: [tools/scripts/bin.mjs](./tools/scripts/bin.mjs).
 
 ## License
 

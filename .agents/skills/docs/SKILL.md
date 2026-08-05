@@ -31,6 +31,8 @@ in the same change that changed the API.
 | Current Public API shape                          | `libs/<pkg>/src` (+ subpath barrels) | All packages — the only API truth       |
 | Examples (usage truth)                            | `apps/examples/<pkg>/**`             | Flagships with runnable demos           |
 | Contributor / agent commands                      | `AGENTS.md`, `CONTRIBUTING.md`       | Honest `vp *` vocabulary                |
+| Experiment dossiers                               | `.agents/reports/`                   | Vite+, Oxlint delta, TS refs            |
+| Program status                                    | `.agents/plans/AGENTS.md`            | Stream status + evidence pointers       |
 
 ## When you change docs
 

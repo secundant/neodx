@@ -1,12 +1,12 @@
 # WP-LINT-R1 — Oxlint vs eslint-kit delta
 
-|          |                                                                                                                                                                                           |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Status   | **Complete** (lightweight inventory)                                                                                                                                                      |
-| Date     | 2026-08-04                                                                                                                                                                                |
-| Branch   | `improve/neodx`                                                                                                                                                                           |
-| Decision | Migrate to `vp lint` / Oxlint; **OK to lose** residual SonarJS + import-sort after naming them                                                                                            |
-| Source   | eslint-kit `presets.imports()` + node/typescript presets (`node_modules/eslint-kit/dist/index.mjs`); spike [Oxlint delta](../spike-vite-plus-report.md#oxlint--oxfmt-delta-vs-eslint-kit) |
+|          |                                                                                                                                                                                                  |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Status   | **Complete** (lightweight inventory)                                                                                                                                                             |
+| Date     | 2026-08-04                                                                                                                                                                                       |
+| Branch   | `improve/neodx`                                                                                                                                                                                  |
+| Decision | Migrate to `vp lint` / Oxlint; **OK to lose** residual SonarJS + import-sort after naming them                                                                                                   |
+| Source   | eslint-kit `presets.imports()` + node/typescript presets (`node_modules/eslint-kit/dist/index.mjs`); spike [Oxlint delta](./archive/spike-vite-plus-report.md#oxlint--oxfmt-delta-vs-eslint-kit) |
 
 ## Scope
 

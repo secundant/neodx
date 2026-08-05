@@ -48,14 +48,17 @@ Coverage importance is independent of layer: **critical** (blocks trust), **majo
 
 ## Verify
 
+Prefer **package cwd**. Root `vp test` can pick up Playwright under `apps/e2e` and collide with
+library Vitest runs. CI uses `vp run --filter "./libs/*" test`.
+
 ```shell
-vp test                          # workspace tests
-cd libs/<pkg> && vp test            # one package
-vp test path/to/file.test.ts     # targeted
+cd libs/<pkg> && vp test            # one package (preferred)
+vp run --filter "./libs/*" test     # all libs (CI shape)
+cd libs/<pkg> && vp test path/to/file.test.ts
 yarn workspace @neodx/e2e-svg e2e   # Playwright (after pack + app build)
 ```
 
-For pack-sensitive contracts, pack first (`vp run -t @neodx/<pkg>#pack`), then run the contract test.
+For pack-sensitive contracts, pack first (`vp run @neodx/<pkg>#pack`), then run the contract test.
 
 ## Flakes and quarantine
 

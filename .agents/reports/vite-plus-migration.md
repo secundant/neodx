@@ -7,7 +7,7 @@
 | Branch        | `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160))                                                 |
 | Tip at before | `097d3aa` (before-report); prior required checks `nx` + `e2e-svg` green                                                  |
 | Framing       | **Experiment** on neodx. Encapsulate learnings for possible Nubis adoption later. **Do not** declare Nubis adopts Vite+. |
-| Companion     | [WP-LINT-R1](./oxlint-eslint-kit-delta.md) · [WP-V1 spike](../spike-vite-plus-report.md)                                 |
+| Companion     | [WP-LINT-R1](./oxlint-eslint-kit-delta.md) · [WP-V1 spike (archive)](./archive/spike-vite-plus-report.md)                |
 
 ## Hypothesis
 
@@ -34,7 +34,7 @@ Success does **not** require matching Nx affected semantics or 100% eslint-kit r
 | CI            | `.github/workflows/ci.yaml` jobs `nx` + `e2e-svg`                         | Required green at start; Cloudflare Pages fail non-gating           |
 | Orchestration | Nx 18 affected                                                            | No Vite+ root `vite.config.ts` yet                                  |
 
-Spike package times (earlier baseline @ `376e10f`): see [spike-vite-plus-baseline.md](../spike-vite-plus-baseline.md).
+Spike package times (earlier baseline @ `376e10f`): see [archive/spike-vite-plus-baseline.md](./archive/spike-vite-plus-baseline.md).
 
 ## Success metrics
 
