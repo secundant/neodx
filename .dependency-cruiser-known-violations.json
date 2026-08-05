@@ -1,0 +1,763 @@
+[
+  {
+    "type": "cycle",
+    "from": "libs/internal/src/npm.ts",
+    "to": "libs/internal/src/vfs.ts",
+    "unresolvedTo": "./vfs.ts",
+    "dependencyTypes": ["local", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/internal/src/vfs.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/index.ts",
+        "dependencyTypes": [
+          "aliased",
+          "aliased-tsconfig",
+          "aliased-tsconfig-paths",
+          "local",
+          "type-only",
+          "import"
+        ]
+      },
+      {
+        "name": "libs/vfs/src/create-auto-vfs.ts",
+        "dependencyTypes": ["local", "export"]
+      },
+      {
+        "name": "libs/vfs/src/create-vfs.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/plugins/eslint.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/internal/src/npm.ts",
+        "dependencyTypes": [
+          "aliased",
+          "aliased-tsconfig",
+          "aliased-tsconfig-paths",
+          "local",
+          "import"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/internal/src/npm.ts",
+    "to": "libs/vfs/src/index.ts",
+    "unresolvedTo": "@neodx/vfs",
+    "dependencyTypes": ["aliased", "aliased-tsconfig", "aliased-tsconfig-paths", "local", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/index.ts",
+        "dependencyTypes": [
+          "aliased",
+          "aliased-tsconfig",
+          "aliased-tsconfig-paths",
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "libs/vfs/src/create-auto-vfs.ts",
+        "dependencyTypes": ["local", "export"]
+      },
+      {
+        "name": "libs/vfs/src/create-vfs.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/plugins/eslint.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/internal/src/npm.ts",
+        "dependencyTypes": [
+          "aliased",
+          "aliased-tsconfig",
+          "aliased-tsconfig-paths",
+          "local",
+          "import"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/svg/src/core/parser.ts",
+    "to": "libs/svg/src/core/shared.ts",
+    "unresolvedTo": "./shared.ts",
+    "dependencyTypes": ["local", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/svg/src/core/shared.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/svg/src/core/parser.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/backend/create-in-memory-backend.ts",
+    "to": "libs/vfs/src/backend/shared.ts",
+    "unresolvedTo": "./shared",
+    "dependencyTypes": ["local", "type-only", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/backend/shared.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/create-vfs-plugin.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/context.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/index.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/create-in-memory-backend.ts",
+        "dependencyTypes": ["local", "export"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/backend/create-in-memory-backend.ts",
+    "to": "libs/vfs/src/core/types.ts",
+    "unresolvedTo": "../core/types",
+    "dependencyTypes": ["local", "type-only", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/create-base-vfs.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/operations.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/create-in-memory-backend.ts",
+        "dependencyTypes": ["local", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/backend/create-node-fs-backend.ts",
+    "to": "libs/vfs/src/backend/shared.ts",
+    "unresolvedTo": "./shared",
+    "dependencyTypes": ["local", "type-only", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/backend/shared.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/create-vfs-plugin.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/context.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/index.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/create-node-fs-backend.ts",
+        "dependencyTypes": ["local", "export"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/backend/index.ts",
+    "to": "libs/vfs/src/backend/create-in-memory-backend.ts",
+    "unresolvedTo": "./create-in-memory-backend",
+    "dependencyTypes": ["local", "export"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/backend/create-in-memory-backend.ts",
+        "dependencyTypes": ["local", "export"]
+      },
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/create-vfs-plugin.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/context.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/index.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/backend/index.ts",
+    "to": "libs/vfs/src/backend/shared.ts",
+    "unresolvedTo": "./shared",
+    "dependencyTypes": ["local", "type-only", "export"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/backend/shared.ts",
+        "dependencyTypes": ["local", "type-only", "export"]
+      },
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/create-vfs-plugin.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/context.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/index.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/backend/shared.ts",
+    "to": "libs/vfs/src/core/types.ts",
+    "unresolvedTo": "../core/types",
+    "dependencyTypes": ["local", "type-only", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/shared.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/core/context.ts",
+    "to": "libs/vfs/src/core/types.ts",
+    "unresolvedTo": "./types",
+    "dependencyTypes": ["local", "type-only", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/context.ts",
+        "dependencyTypes": ["local", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/core/context.ts",
+    "to": "libs/vfs/src/create-vfs-plugin.ts",
+    "unresolvedTo": "../create-vfs-plugin",
+    "dependencyTypes": ["local", "type-only", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/create-vfs-plugin.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/context.ts",
+        "dependencyTypes": ["local", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/core/create-base-vfs.ts",
+    "to": "libs/vfs/src/backend/shared.ts",
+    "unresolvedTo": "../backend/shared",
+    "dependencyTypes": ["local", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/backend/shared.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/create-vfs-plugin.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/create-base-vfs.ts",
+        "dependencyTypes": ["local", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/core/create-base-vfs.ts",
+    "to": "libs/vfs/src/core/context.ts",
+    "unresolvedTo": "./context",
+    "dependencyTypes": ["local", "type-only", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/core/context.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/index.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/create-in-memory-backend.ts",
+        "dependencyTypes": ["local", "export"]
+      },
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/create-vfs-plugin.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/create-base-vfs.ts",
+        "dependencyTypes": ["local", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/core/create-base-vfs.ts",
+    "to": "libs/vfs/src/core/operations.ts",
+    "unresolvedTo": "./operations",
+    "dependencyTypes": ["local", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/core/operations.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/create-in-memory-backend.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/create-vfs-plugin.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/create-base-vfs.ts",
+        "dependencyTypes": ["local", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/core/create-base-vfs.ts",
+    "to": "libs/vfs/src/core/scopes.ts",
+    "unresolvedTo": "./scopes",
+    "dependencyTypes": ["local", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/create-base-vfs.ts",
+        "dependencyTypes": ["local", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/core/create-base-vfs.ts",
+    "to": "libs/vfs/src/core/types.ts",
+    "unresolvedTo": "./types",
+    "dependencyTypes": ["local", "type-only", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/create-base-vfs.ts",
+        "dependencyTypes": ["local", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/core/operations.ts",
+    "to": "libs/vfs/src/core/context.ts",
+    "unresolvedTo": "./context",
+    "dependencyTypes": ["local", "type-only", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/core/context.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/index.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/create-in-memory-backend.ts",
+        "dependencyTypes": ["local", "export"]
+      },
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/create-vfs-plugin.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/create-base-vfs.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/operations.ts",
+        "dependencyTypes": ["local", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/core/scopes.ts",
+    "to": "libs/vfs/src/core/context.ts",
+    "unresolvedTo": "./context",
+    "dependencyTypes": ["local", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/core/context.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/index.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/backend/create-in-memory-backend.ts",
+        "dependencyTypes": ["local", "export"]
+      },
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/core/scopes.ts",
+    "to": "libs/vfs/src/core/types.ts",
+    "unresolvedTo": "./types",
+    "dependencyTypes": ["local", "type-only", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/core/scopes.ts",
+    "to": "libs/vfs/src/create-vfs-plugin.ts",
+    "unresolvedTo": "../create-vfs-plugin",
+    "dependencyTypes": ["local", "type-only", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/create-vfs-plugin.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/scopes.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/core/types.ts",
+    "to": "libs/vfs/src/create-vfs-plugin.ts",
+    "unresolvedTo": "../create-vfs-plugin",
+    "dependencyTypes": ["local", "type-only", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/create-vfs-plugin.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      },
+      {
+        "name": "libs/vfs/src/core/types.ts",
+        "dependencyTypes": ["local", "type-only", "import"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/create-vfs.ts",
+    "to": "libs/vfs/src/plugins/eslint.ts",
+    "unresolvedTo": "./plugins/eslint",
+    "dependencyTypes": ["local", "import"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/plugins/eslint.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/internal/src/npm.ts",
+        "dependencyTypes": [
+          "aliased",
+          "aliased-tsconfig",
+          "aliased-tsconfig-paths",
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "libs/internal/src/vfs.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/vfs/src/index.ts",
+        "dependencyTypes": [
+          "aliased",
+          "aliased-tsconfig",
+          "aliased-tsconfig-paths",
+          "local",
+          "type-only",
+          "import"
+        ]
+      },
+      {
+        "name": "libs/vfs/src/create-vfs.ts",
+        "dependencyTypes": ["local", "export"]
+      }
+    ]
+  },
+  {
+    "type": "cycle",
+    "from": "libs/vfs/src/index.ts",
+    "to": "libs/vfs/src/create-vfs.ts",
+    "unresolvedTo": "./create-vfs.ts",
+    "dependencyTypes": ["local", "export"],
+    "rule": {
+      "severity": "error",
+      "name": "no-circular"
+    },
+    "cycle": [
+      {
+        "name": "libs/vfs/src/create-vfs.ts",
+        "dependencyTypes": ["local", "export"]
+      },
+      {
+        "name": "libs/vfs/src/plugins/eslint.ts",
+        "dependencyTypes": ["local", "import"]
+      },
+      {
+        "name": "libs/internal/src/npm.ts",
+        "dependencyTypes": [
+          "aliased",
+          "aliased-tsconfig",
+          "aliased-tsconfig-paths",
+          "local",
+          "import"
+        ]
+      },
+      {
+        "name": "libs/vfs/src/index.ts",
+        "dependencyTypes": [
+          "aliased",
+          "aliased-tsconfig",
+          "aliased-tsconfig-paths",
+          "local",
+          "import"
+        ]
+      }
+    ]
+  }
+]

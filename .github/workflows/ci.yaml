@@ -37,6 +37,13 @@ jobs:
       - name: References drift gate
         run: yarn check-references
 
+      # S5-R2-c: dependency-cruiser honesty gate. Fails on undeclared workspace
+      # / npm imports, production source reaching into devDependencies, new
+      # cycles, or unresolvable imports. Documented `vfs ↔ internal` soft edge
+      # + intra-vfs cycles are accepted via the committed baseline file.
+      - name: Dependency structure gate (dependency-cruiser)
+        run: yarn depcruise
+
       # Unified root solution (`tsc -b`). Cold-clone honest via build configs'
       # paths:{} + package.json `development` export condition — before pack.
       - name: Typecheck libraries (project references)
