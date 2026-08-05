@@ -102,10 +102,11 @@ jobs:
       - name: Install Playwright Chromium
         run: yarn workspace @neodx/e2e-svg exec playwright install --with-deps chromium
 
-      - name: Pack svg (e2e dependency)
-        # Prefer `@pkg#task` over `-t` — `-t` expands the pack graph and can
-        # self-cycle on `@neodx/vfs#pack` (vp 0.2.7). Same form as AGENTS.md.
-        run: vp run @neodx/svg#pack
+      - name: Pack publishable libs (e2e needs packed svg + workspace deps)
+        # Do not use `vp run -t @neodx/svg#pack` — `-t` self-cycles vfs pack on
+        # vite-plus 0.2.7. Packing only svg leaves `@neodx/std` dist missing when
+        # the packed svg unplugin resolves workspace deps to dist.
+        run: yarn pack:libs
 
       - name: Build svg e2e app
         working-directory: apps/e2e/svg

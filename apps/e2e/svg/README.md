@@ -22,13 +22,14 @@ From the repo root (Yarn 4 workspace):
 
 ```sh
 yarn
-vp run @neodx/svg#pack
+yarn pack:libs
 cd apps/e2e/svg && vp build
 yarn workspace @neodx/e2e-svg exec playwright install chromium
 yarn workspace @neodx/e2e-svg e2e
 ```
 
-(`vp run -t @neodx/svg#pack` can self-cycle the pack graph on vite-plus 0.2.7 — prefer `@pkg#task`.)
+Pack all publishable libs (not only svg): packed `@neodx/svg` resolves workspace
+deps to `dist/`, and `vp run -t @neodx/svg#pack` can self-cycle on vite-plus 0.2.7.
 
 Or from `apps/e2e/svg` after svg is packed:
 
