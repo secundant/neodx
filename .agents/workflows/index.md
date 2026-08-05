@@ -7,8 +7,8 @@ workflow system.
 ## When to use these
 
 Load a protocol when a change is larger than a single session and needs deliberate sequencing,
-evidence, or disposition discipline. For a one-off change, root [`AGENTS.md`](../../AGENTS.md) and
-the skills are enough.
+evidence, or disposition discipline. For a one-off change, root [`AGENTS.md`](../../AGENTS.md) is
+enough.
 
 ## Protocols
 
@@ -18,7 +18,6 @@ the skills are enough.
 | Radical improvement    | Tooling cutovers + per-package 1.0 slices                                        | When the toolchain or release graph has drifted                  |
 | Localized rebuild      | Rebuild one boundary in place: vfs Layers, figma Zod config, thin `@neodx/fs`    | When one package's Intention is sound but its realization rotted |
 | External research      | Pin source, grade evidence, keep second-hand claims labelled                     | Competitor study, Vite+ or TS upgrade evaluation                 |
-| Skills integration     | Maintain `.agents/skills/` with claim disposition                                | When importing guidance from outside the repo                    |
 | Mental map             | Only when a package's Mental Model is contested                                  | Rare; default to the atlas + Intention                           |
 | Radical rework program | **Default no**                                                                   | Do not start without owner sign-off                              |
 
@@ -34,20 +33,19 @@ relevant plan or here.
 | **reject**  | Not applicable to neodx; record why      |
 | **defer**   | Right idea, wrong time; name the trigger |
 
-### Skills-integration dispositions (S4 / S4-R1, 2026-08-04)
+### Standing dispositions from the external-pattern survey (S4 / S4-R1)
 
-| External claim                                            | Disposition            | neodx location                                                                          |
-| --------------------------------------------------------- | ---------------------- | --------------------------------------------------------------------------------------- |
-| Routing-index `AGENTS.md` shape                           | adapt                  | [`../../AGENTS.md`](../../AGENTS.md)                                                    |
-| Intention / Public API / source-as-truth                  | adapt                  | [`../skills/philosophy/SKILL.md`](../skills/philosophy/SKILL.md)                        |
-| Reader flow / less-is-better / nothing-is-fake            | adapt                  | [`../skills/principles/SKILL.md`](../skills/principles/SKILL.md)                        |
-| `import type`, factories, barrels                         | adapt                  | [`../skills/code-style/SKILL.md`](../skills/code-style/SKILL.md) (`.ts` ext, `createX`) |
-| Behavior-over-impl, type tests, e2e-when-rendered         | adapt                  | [`../skills/testing/SKILL.md`](../skills/testing/SKILL.md)                              |
-| Docs vs source as source of truth                         | adapt                  | [`../skills/docs/SKILL.md`](../skills/docs/SKILL.md)                                    |
-| Hub / QR / app product stacks / UI design-system ceremony | reject                 | none                                                                                    |
-| Foreign package-manager catalogs as law                   | reject                 | Yarn 4 workspaces                                                                       |
-| Radical rework / portfolio ceremony                       | reject                 | radical rework **default no** (above)                                                   |
-| `vp *` as the supported command table                     | **adopt** (post–WP-V2) | Honest table in [`AGENTS.md`](../../AGENTS.md); `vp check` = fmt+lint only              |
+The S4/S4-R1 survey imported a `.agents/skills/` adaptation from an external monorepo; that
+adaptation has since been **withdrawn**. What stands is the set of architectural stances, not the
+imported skill files:
+
+| External claim                                            | Disposition | neodx location                                                             |
+| --------------------------------------------------------- | ----------- | -------------------------------------------------------------------------- |
+| Routing-index `AGENTS.md` shape                           | adopt       | [`../../AGENTS.md`](../../AGENTS.md)                                       |
+| Hub / QR / app product stacks / UI design-system ceremony | reject      | none — neodx is a tooling monorepo, not an app stack                       |
+| Foreign package-manager catalogs as law                   | reject      | Yarn 4 workspaces (`packageManager: yarn@4.3.1`)                           |
+| Radical rework / portfolio ceremony                       | reject      | radical rework **default no** (protocol table above)                       |
+| `vp *` as the supported command table                     | adopt       | Honest table in [`AGENTS.md`](../../AGENTS.md); `vp check` = fmt+lint only |
 
 ### Evidence discipline
 

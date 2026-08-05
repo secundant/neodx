@@ -87,11 +87,6 @@ git-affected selection. That difference is accepted.
 Load guidance on trigger, not by default. When a task references a path or link, load that file if
 relevant. Treat loaded content as instructions for its scope.
 
-- TS form, `createX` factories, barrels, `import type`: `.agents/skills/code-style/SKILL.md`
-- Test layer choice and mocking: `.agents/skills/testing/SKILL.md`
-- VitePress vs README vs source as source of truth: `.agents/skills/docs/SKILL.md`
-- Conceptual anchors (Intention, Public API, Development Process, Loop): `.agents/skills/philosophy/SKILL.md`
-- Quality rubric (reader flow, less-is-better, nothing-is-fake, …): `.agents/skills/principles/SKILL.md`
 - Experiment reports (Vite+, Oxlint delta, TS refs): `.agents/reports/README.md`
 - Program status / plans index: `.agents/plans/AGENTS.md`
 - Parallel session boards: `.agents/sessions/`
