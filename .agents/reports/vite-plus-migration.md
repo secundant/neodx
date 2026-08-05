@@ -101,6 +101,6 @@ Vite+ on neodx is an **experiment polygon**, not a Nubis adoption commitment.
 
 **Recommendation:** **defer** Nubis Vite+ adoption until this branch’s CI is green for a soak period and S5 reports on references. Do not bump Nubis catalogs from this work.
 
-## S5 stub → opened
+## S5 — cutover landed (pointer)
 
-TS project references / TS 7 experiment **opened** 2026-08-05. Before-report + bounded spike: [ts-project-references-before.md](./ts-project-references-before.md). Full-repo `tsc -b` cutover not started; Nubis promotion deferred pending after-report.
+TS project references experiment **cut over** 2026-08-05 (unified lib `tsc -b`). Dual-run base `paths` retained → **S5-R2**. Reports: [before](./ts-project-references-before.md) · [research](./ts-project-references-research.md) · [implementation](./ts-project-references-implementation.md). Nubis promotion still **deferred**.

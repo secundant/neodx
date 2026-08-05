@@ -5,7 +5,7 @@
 | Status        | **Before + spike complete**; full cutover documented in [implementation](./ts-project-references-implementation.md) |
 | Date opened   | 2026-08-05                                                                                                          |
 | Branch        | `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160))                                            |
-| Tip at before | `b9fc972` (S3 solidify); spike @ `a3cf247`; cutover after `1579d67`                                                 |
+| Tip at before | `b9fc972` (S3 solidify); spike @ `a3cf247`; cutover @ `0dc4a98`/`7e0ec17`                                           |
 | Framing       | **Experiment** on neodx. Encapsulate for possible Nubis later. **Do not** declare Nubis adopts project references.  |
 | Companion     | [Vite+ after-report](./vite-plus-migration.md) · debt [#161](https://github.com/secundant/neodx/issues/161)         |
 

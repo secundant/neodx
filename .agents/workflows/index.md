@@ -57,12 +57,13 @@ relevant plan or here.
 
 ## Experiment reports
 
-| Experiment               | Live owner                                                                                 |
-| ------------------------ | ------------------------------------------------------------------------------------------ |
-| Vite+ migrate            | [`../reports/vite-plus-migration.md`](../reports/vite-plus-migration.md)                   |
-| Oxlint vs eslint-kit     | [`../reports/oxlint-eslint-kit-delta.md`](../reports/oxlint-eslint-kit-delta.md)           |
-| TS project references    | [`../reports/ts-project-references-before.md`](../reports/ts-project-references-before.md) |
-| WP-V1 spike (historical) | [`../reports/archive/`](../reports/archive/)                                               |
+| Experiment            | Live owner                                                                                                                                                                             |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Vite+ migrate         | [`../reports/vite-plus-migration.md`](../reports/vite-plus-migration.md)                                                                                                               |
+| Oxlint vs eslint-kit  | [`../reports/oxlint-eslint-kit-delta.md`](../reports/oxlint-eslint-kit-delta.md)                                                                                                       |
+| TS project references | [before](../reports/ts-project-references-before.md) · [research](../reports/ts-project-references-research.md) · [implementation](../reports/ts-project-references-implementation.md) |
+| Parallel sessions     | [`../sessions/`](../sessions/)                                                                                                                                                         |
+| WP-V1 spike (archive) | [`../reports/archive/`](../reports/archive/)                                                                                                                                           |
 
 ## What stays out
 

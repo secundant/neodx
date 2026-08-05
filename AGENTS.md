@@ -93,4 +93,6 @@ relevant. Treat loaded content as instructions for its scope.
 - Quality rubric (reader flow, less-is-better, nothing-is-fake, …): `.agents/skills/principles/SKILL.md`
 - Experiment reports (Vite+, Oxlint delta, TS refs): `.agents/reports/README.md`
 - Program status / plans index: `.agents/plans/AGENTS.md`
+- Parallel session boards: `.agents/sessions/`
 - Workflow protocols: `.agents/workflows/index.md`
+- Session prompts: `prompts/lane-*.md`, `prompts/revalidate-*.md`

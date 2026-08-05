@@ -13,5 +13,7 @@ Live guidance for everyday commands stays in [`../../AGENTS.md`](../../AGENTS.md
 | [ts-project-references-implementation.md](./ts-project-references-implementation.md) | Cutover after-report       | Unified lib `tsc -b`; residuals → S5-R2  |
 | [archive/](./archive/)                                                               | Historical                 | WP-V1 pack-only spike; superseded        |
 
+Active parallel session (S7 `std` ∥ S5-R2 CI gates): [`../sessions/parallel-s7-r2c/`](../sessions/parallel-s7-r2c/). Lane C may add an S5-R2-c/d during-report when it lands.
+
 Treat Vite+ and TypeScript project references as **experiments** until an after-report recommends
 promote, defer, or reject for downstream consumers. Do not assume another monorepo adopts them.

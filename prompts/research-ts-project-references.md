@@ -1,3 +1,8 @@
+> **COMPLETED (2026-08-05).** Deliverable landed at
+> [`.agents/reports/ts-project-references-research.md`](../.agents/reports/ts-project-references-research.md)
+> (+ [implementation](../.agents/reports/ts-project-references-implementation.md)).
+> Keep this prompt as historical research brief — do **not** re-run as a fresh cutover.
+
 # Research: TypeScript project references in modern publishable monorepos
 
 ## Objective

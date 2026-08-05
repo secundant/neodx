@@ -1,14 +1,15 @@
 # TypeScript Project References — Implementation Report (S5 cutover)
 
-|          |                                                                                           |
-| -------- | ----------------------------------------------------------------------------------------- |
-| Status   | **Cutover complete (unified libs)** — dual-run pack bridge retained; S5-R2 owns residuals |
-| Date     | 2026-08-05                                                                                |
-| Branch   | `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160))                  |
-| Base tip | `1579d67` → this cutover                                                                  |
-| Research | [ts-project-references-research.md](./ts-project-references-research.md)                  |
-| Before   | [ts-project-references-before.md](./ts-project-references-before.md)                      |
-| Framing  | Experiment on neodx. **Do not** declare Nubis adopts project references.                  |
+|             |                                                                                           |
+| ----------- | ----------------------------------------------------------------------------------------- |
+| Status      | **Cutover complete (unified libs)** — dual-run pack bridge retained; S5-R2 owns residuals |
+| Date        | 2026-08-05                                                                                |
+| Branch      | `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160))                  |
+| Base tip    | `1579d67`                                                                                 |
+| Cutover tip | `0dc4a98` (build) + `7e0ec17` (docs)                                                      |
+| Research    | [ts-project-references-research.md](./ts-project-references-research.md)                  |
+| Before      | [ts-project-references-before.md](./ts-project-references-before.md)                      |
+| Framing     | Experiment on neodx. **Do not** declare Nubis adopts project references.                  |
 
 ## Executive summary
 
