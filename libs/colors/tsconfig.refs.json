@@ -1,0 +1,28 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "rootDir": "src",
+    "outDir": "dist-types",
+    "tsBuildInfoFile": "dist-types/.tsbuildinfo",
+    "baseUrl": ".",
+    "paths": {
+      "@neodx/std": ["../std/src/index.ts"],
+      "@neodx/std/*": ["../std/src/*.ts", "../std/src/*/index.ts"]
+    }
+  },
+  "references": [{ "path": "../std/tsconfig.refs.json" }],
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test-d.ts",
+    "src/**/__tests__/**",
+    "dist",
+    "dist-types",
+    "node_modules"
+  ]
+}
