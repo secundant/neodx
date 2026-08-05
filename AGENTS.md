@@ -39,6 +39,7 @@ Critical path is **Vite+** (`vp`). Yarn remains the package manager (`packageMan
 | Pack one lib          | `vp run @neodx/<pkg>#pack`                                                     | Emits CJS/ESM/dts per pack config                                                                             |
 | Pack publishable libs | `yarn pack:libs`                                                               | Alias for filtered `vp run … pack`                                                                            |
 | Export / publint      | `yarn verify-exports` / `yarn publint`                                         | After pack (CI runs both)                                                                                     |
+| Dependency structure  | `yarn depcruise`                                                               | S5-R2-c; needs Node **22/24/≥26** (not 25); baseline file ignores known vfs cycles                            |
 | Graph honesty         | `yarn constraints`                                                             | `--fix` applies safe fixes                                                                                    |
 | E2E                   | pack svg → `cd apps/e2e/svg && vp build` → `yarn workspace @neodx/e2e-svg e2e` | Playwright; required CI job                                                                                   |
 

@@ -6,6 +6,8 @@ guidance and architecture, see [`AGENTS.md`](./AGENTS.md).
 ## Prerequisites
 
 - **Node.js 22+** — matches CI and root `engines.node` (`vp pack` needs `Promise.withResolvers`).
+  Prefer **22 or 24** locally: `yarn depcruise` follows the Node release cycle and does not run on
+  Node 25.
 - **Yarn 4** — pinned via `packageManager: yarn@4.3.1` in `package.json`. Run `corepack enable` if
   your Node did not enable it. `vp install` delegates to Yarn.
 - **[GitHub CLI (`gh`)](https://github.com/cli/cli)** — install (`brew install gh` on macOS) and run
@@ -32,8 +34,9 @@ cd libs/<pkg> && yarn typecheck && vp test
 yarn pack:libs           # vp pack all publishable libs
 ```
 
-Also useful: `yarn constraints`, `yarn verify-exports` / `yarn publint` (after pack), and Playwright via
-`apps/e2e/svg/README.md`. Prefer package cwd for tests; root `vp test` can pick up Playwright noise.
+Also useful: `yarn constraints`, `yarn depcruise` (dependency structure), `yarn verify-exports` /
+`yarn publint` (after pack), and Playwright via `apps/e2e/svg/README.md`. Prefer package cwd for
+tests; root `vp test` can pick up Playwright noise.
 
 See [`SECURITY.md`](./SECURITY.md) for vulnerability reporting.
 
