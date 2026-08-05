@@ -34,6 +34,14 @@ jobs:
       - name: Check (fmt + lint)
         run: vp check
 
+      - name: References drift gate
+        run: yarn check-references
+
+      # Unified root solution (`tsc -b`). Cold-clone honest via build configs'
+      # paths:{} + package.json `development` export condition — before pack.
+      - name: Typecheck libraries (project references)
+        run: yarn typecheck
+
       - name: Pack publishable libraries
         run: >
           vp run
@@ -49,18 +57,13 @@ jobs:
       - name: Publint publishable libraries
         run: yarn publint
 
-      - name: Typecheck publishable libraries
-        run: >
-          vp run
-          --filter "./libs/*"
-          --filter "!@neodx/autobuild"
-          typecheck
-
+      # vp run task graph cycles on internal↔vfs; autobuild quarantined from critical path.
       - name: Test libraries
         run: >
           vp run
           --filter "./libs/*"
           --filter "!@neodx/autobuild"
+          --filter "!@neodx/internal"
           test
 
       - name: Verify @neodx/internal is inlined in dist

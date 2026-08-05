@@ -52,36 +52,43 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "development": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
     "./cli": {
+      "development": "./src/cli.ts",
       "types": "./dist/cli.d.ts",
       "import": "./dist/cli.mjs",
       "require": "./dist/cli.cjs"
     },
     "./esbuild": {
+      "development": "./src/esbuild.ts",
       "types": "./dist/esbuild.d.ts",
       "require": "./dist/esbuild.cjs",
       "default": "./dist/esbuild.mjs"
     },
     "./rollup": {
+      "development": "./src/rollup.ts",
       "types": "./dist/rollup.d.ts",
       "require": "./dist/rollup.cjs",
       "default": "./dist/rollup.mjs"
     },
     "./rspack": {
+      "development": "./src/rspack.ts",
       "types": "./dist/rspack.d.ts",
       "require": "./dist/rspack.cjs",
       "default": "./dist/rspack.mjs"
     },
     "./vite": {
+      "development": "./src/vite.ts",
       "types": "./dist/vite.d.ts",
       "require": "./dist/vite.cjs",
       "default": "./dist/vite.mjs"
     },
     "./webpack": {
+      "development": "./src/webpack.ts",
       "types": "./dist/webpack.d.ts",
       "require": "./dist/webpack.cjs",
       "default": "./dist/webpack.mjs"
@@ -91,7 +98,7 @@
     "access": "public"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -b tsconfig.build.json",
     "bench": "vitest bench",
     "build": "vp pack",
     "test": "vp test",
@@ -100,6 +107,7 @@
   },
   "dependencies": {
     "@neodx/fs": "workspace:^",
+    "@neodx/glob": "workspace:^",
     "@neodx/log": "workspace:^",
     "@neodx/std": "workspace:^",
     "@neodx/vfs": "workspace:^",

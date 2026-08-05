@@ -5,16 +5,21 @@ import type { NormalizedOutputOptions, OutputAsset, OutputBundle, OutputChunk } 
 
 export type ExportsKey = 'types' | 'require' | 'default' | 'import' | 'browser' | 'node';
 export type ExportsRecord = Partial<Record<ExportsKey, string>>;
-export type ExportsGenerator = Awaited<ReturnType<typeof createExportsGenerator>>;
 export interface ExportsGeneratorParams {
   outDir?: string;
   root?: string;
 }
 
+export interface ExportsGenerator {
+  addBundle(options: NormalizedOutputOptions, bundle: OutputBundle): void;
+  getExports(): Record<string, ExportsRecord>;
+  getFields(): Partial<Pick<ExportsRecord, 'types'>>;
+}
+
 export async function createExportsGenerator({
   root = '',
   outDir = 'dist'
-}: ExportsGeneratorParams) {
+}: ExportsGeneratorParams): Promise<ExportsGenerator> {
   const exportsMap = new Map<string, ExportsRecord>();
   const relativeOutDir = outDir.startsWith(root) ? relative(root, outDir) : outDir;
   const pkg = await JSON.parse(await readFile(join(root, 'package.json'), 'utf-8'));

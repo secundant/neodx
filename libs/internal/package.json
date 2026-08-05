@@ -24,18 +24,23 @@
   "exports": {
     "./*": {
       "types": "./src/*.ts",
-      "import": "./src/*.ts"
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
     }
   },
   "publishConfig": {
     "access": "restricted"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -b tsconfig.build.json",
     "test": "vp test",
     "lint": "vp lint"
   },
   "dependencies": {
+    "@neodx/colors": "workspace:^",
+    "@neodx/log": "workspace:^",
+    "@neodx/std": "workspace:^",
+    "@neodx/vfs": "workspace:^",
     "object-hash": "3.0.0"
   },
   "devDependencies": {

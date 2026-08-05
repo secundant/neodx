@@ -1,12 +1,10 @@
 import { defineConfig } from 'vite-plus';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 // Pack-only S2: Vite+ pack for @neodx/figma.
 // Multi-entry flat dist mirrors published exports.
 // CLI + Node tooling → platform node.
 // @neodx/internal must be inlined.
 export default defineConfig({
-  plugins: [tsconfigPaths()],
   pack: {
     entry: {
       index: 'src/index.ts',

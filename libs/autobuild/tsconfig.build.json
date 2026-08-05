@@ -1,0 +1,49 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "rootDir": "src",
+    "outDir": "dist-types",
+    "tsBuildInfoFile": "dist-types/.tsbuildinfo",
+    "baseUrl": ".",
+    "paths": {},
+    "customConditions": ["development"],
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "types": ["node"],
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test-d.ts",
+    "src/**/__tests__/**",
+    "dist",
+    "dist-types",
+    "node_modules",
+    "examples",
+    "bench",
+    "docs",
+    "test",
+    "tests"
+  ],
+  "references": [
+    {
+      "path": "../std/tsconfig.build.json"
+    },
+    {
+      "path": "../fs/tsconfig.build.json"
+    },
+    {
+      "path": "../log/tsconfig.build.json"
+    },
+    {
+      "path": "../vfs/tsconfig.build.json"
+    }
+  ]
+}

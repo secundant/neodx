@@ -44,7 +44,7 @@
   },
   "scripts": {
     "add-example": "node scripts/add-example.mjs",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -b tsconfig.build.json",
     "test": "vp test",
     "lint": "vp lint"
   },

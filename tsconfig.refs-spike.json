@@ -1,8 +1,0 @@
-{
-  "files": [],
-  "references": [
-    { "path": "./libs/std/tsconfig.refs.json" },
-    { "path": "./libs/colors/tsconfig.refs.json" },
-    { "path": "./libs/log/tsconfig.refs.json" }
-  ]
-}

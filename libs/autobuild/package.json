@@ -15,7 +15,7 @@
   "sideEffects": false,
   "typesVersions": {},
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -b tsconfig.build.json",
     "clean": "yarn dlx rimraf dist",
     "build": "vite build",
     "test": "vp test",
@@ -23,6 +23,10 @@
   },
   "dependencies": {
     "@babel/core": "7.24.4",
+    "@neodx/fs": "workspace:^",
+    "@neodx/log": "workspace:^",
+    "@neodx/std": "workspace:^",
+    "@neodx/vfs": "workspace:^",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-commonjs": "25.0.7",
     "@rollup/plugin-node-resolve": "15.2.3",

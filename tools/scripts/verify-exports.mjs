@@ -25,6 +25,8 @@ const collectTargets = (exportsField, acc = []) => {
   if (typeof exportsField === 'object') {
     for (const [key, value] of Object.entries(exportsField)) {
       if (key.startsWith('#')) continue;
+      // Workspace-only source bridge — not a packed artifact.
+      if (key === 'development') continue;
       collectTargets(value, acc);
     }
   }

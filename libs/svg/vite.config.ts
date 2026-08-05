@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite-plus';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 // Pack-only S2: Vite+ pack for @neodx/svg.
 // Split configs:
@@ -14,7 +13,6 @@ const outExtensions = ({ format }: { format: string }) => ({
 });
 
 export default defineConfig({
-  plugins: [tsconfigPaths()],
   pack: [
     {
       entry: {

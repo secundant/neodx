@@ -8,9 +8,9 @@ import { defineConfig } from 'vite-plus';
  * `.prettierrc.cjs` / `.prettierignore` for the prettier plugin surface).
  */
 export default defineConfig({
-  resolve: {
-    tsconfigPaths: true
-  },
+  // Workspace packages resolve via package.json `exports`. Vite already adds the
+  // `development` condition in serve/test mode — do not force it at root or pack
+  // will resolve to `./src` and break dts emit.
   test: {
     // Prefer `vp run --filter "./libs/*" test` in CI (package cwd + local config).
     // Root `vp test` is a convenience; exclude Playwright and legacy tooling noise.
@@ -44,9 +44,9 @@ export default defineConfig({
     ],
     plugins: ['typescript', 'import'],
     options: {
-      // tsgolint typeAware/typeCheck reject workspace `baseUrl` + non-relative paths
-      // (oxc-project/tsgolint#351). Kept off until S5 TS-refs experiment rewrites the graph.
-      // CI typechecks with per-package `tsc --noEmit` via `vp run … typecheck`.
+      // tsgolint typeAware/typeCheck still off (#161): base tsconfig keeps `paths` for
+      // pack/rolldown-plugin-dts. Re-try only after S5-R2 deletes base paths (see
+      // .agents/reports/ts-project-references-implementation.md residuals).
       typeAware: false,
       typeCheck: false
     },

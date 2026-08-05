@@ -31,6 +31,7 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "development": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
@@ -40,7 +41,7 @@
     "access": "public"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -b tsconfig.build.json",
     "bench": "vitest bench",
     "build": "vp pack",
     "test": "vp test",
@@ -49,6 +50,7 @@
     "pack": "vp pack"
   },
   "dependencies": {
+    "@neodx/log": "workspace:^",
     "@neodx/std": "workspace:^"
   },
   "devDependencies": {

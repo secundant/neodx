@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
     "declaration": true,
@@ -10,12 +10,10 @@
     "outDir": "dist-types",
     "tsBuildInfoFile": "dist-types/.tsbuildinfo",
     "baseUrl": ".",
-    "paths": {
-      "@neodx/std": ["../std/src/index.ts"],
-      "@neodx/std/*": ["../std/src/*.ts", "../std/src/*/index.ts"]
-    }
+    "paths": {},
+    "customConditions": ["development"],
+    "lib": ["ES2023", "DOM"]
   },
-  "references": [{ "path": "../std/tsconfig.refs.json" }],
   "include": ["src/**/*.ts"],
   "exclude": [
     "src/**/*.test.ts",
@@ -23,6 +21,22 @@
     "src/**/__tests__/**",
     "dist",
     "dist-types",
-    "node_modules"
+    "node_modules",
+    "examples",
+    "bench",
+    "docs",
+    "test",
+    "tests"
+  ],
+  "references": [
+    {
+      "path": "../std/tsconfig.build.json"
+    },
+    {
+      "path": "../log/tsconfig.build.json"
+    },
+    {
+      "path": "../vfs/tsconfig.build.json"
+    }
   ]
 }

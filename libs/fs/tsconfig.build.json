@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
     "declaration": true,
@@ -10,16 +10,10 @@
     "outDir": "dist-types",
     "tsBuildInfoFile": "dist-types/.tsbuildinfo",
     "baseUrl": ".",
-    "paths": {
-      "@neodx/std": ["../std/src/index.ts"],
-      "@neodx/std/*": ["../std/src/*.ts", "../std/src/*/index.ts"],
-      "@neodx/colors": ["../colors/src/index.ts"]
-    }
+    "paths": {},
+    "customConditions": ["development"],
+    "allowSyntheticDefaultImports": true
   },
-  "references": [
-    { "path": "../std/tsconfig.refs.json" },
-    { "path": "../colors/tsconfig.refs.json" }
-  ],
   "include": ["src/**/*.ts"],
   "exclude": [
     "src/**/*.test.ts",
@@ -29,6 +23,14 @@
     "dist-types",
     "node_modules",
     "examples",
-    "bench"
+    "bench",
+    "docs",
+    "test",
+    "tests"
+  ],
+  "references": [
+    {
+      "path": "../std/tsconfig.build.json"
+    }
   ]
 }

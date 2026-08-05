@@ -1,0 +1,41 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./libs/std/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/colors/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/fs/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/log/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/glob/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/pkg-misc/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/vfs/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/internal/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/svg/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/figma/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/codegen/tsconfig.build.json"
+    },
+    {
+      "path": "./libs/autobuild/tsconfig.build.json"
+    }
+  ]
+}

@@ -48,26 +48,31 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "development": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
     "./core": {
+      "development": "./src/core/index.ts",
       "types": "./dist/core/index.d.ts",
       "import": "./dist/core/index.mjs",
       "require": "./dist/core/index.cjs"
     },
     "./graph": {
+      "development": "./src/graph/index.ts",
       "types": "./dist/graph/index.d.ts",
       "import": "./dist/graph/index.mjs",
       "require": "./dist/graph/index.cjs"
     },
     "./export": {
+      "development": "./src/export/index.ts",
       "types": "./dist/export/index.d.ts",
       "import": "./dist/export/index.mjs",
       "require": "./dist/export/index.cjs"
     },
     "./cli": {
+      "development": "./src/cli.ts",
       "types": "./dist/cli.d.ts",
       "import": "./dist/cli.mjs",
       "require": "./dist/cli.cjs"
@@ -77,7 +82,7 @@
     "access": "public"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -b tsconfig.build.json",
     "build": "vp pack",
     "test": "vp test",
     "lint": "vp lint",

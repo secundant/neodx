@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite-plus';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   build: {
@@ -16,6 +15,5 @@ export default defineConfig({
       }
     }
   },
-  test: { passWithNoTests: true, pool: 'forks', fileParallelism: false },
-  plugins: [tsconfigPaths()]
+  test: { passWithNoTests: true, pool: 'forks', fileParallelism: false }
 });

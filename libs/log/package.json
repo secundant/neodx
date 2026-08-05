@@ -47,6 +47,7 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "development": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "node": {
         "import": "./dist/node/index.mjs",
@@ -60,6 +61,7 @@
       "require": "./dist/index.cjs"
     },
     "./node": {
+      "development": "./src/node/index.ts",
       "types": "./dist/node/index.d.ts",
       "browser": {
         "import": "./dist/index.mjs",
@@ -69,21 +71,25 @@
       "require": "./dist/node/index.cjs"
     },
     "./utils": {
+      "development": "./src/utils/index.ts",
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.mjs",
       "require": "./dist/utils/index.cjs"
     },
     "./express": {
+      "development": "./src/express.ts",
       "types": "./dist/express.d.ts",
       "import": "./dist/express.mjs",
       "require": "./dist/express.cjs"
     },
     "./koa": {
+      "development": "./src/koa.ts",
       "types": "./dist/koa.d.ts",
       "import": "./dist/koa.mjs",
       "require": "./dist/koa.cjs"
     },
     "./http": {
+      "development": "./src/http/index.ts",
       "types": "./dist/http/index.d.ts",
       "import": "./dist/http/index.mjs",
       "require": "./dist/http/index.cjs"
@@ -97,7 +103,7 @@
     "compare-output": "tsx bench/compare-output.ts",
     "show-output": "tsx examples/big-list-of-logs.ts",
     "bench": "vitest bench",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -b tsconfig.build.json",
     "clean": "yarn dlx rimraf dist",
     "build": "vp pack",
     "test": "vp test",
@@ -106,6 +112,7 @@
   },
   "dependencies": {
     "@neodx/colors": "workspace:^",
+    "@neodx/std": "workspace:^",
     "pathe": "1.1.2"
   },
   "devDependencies": {

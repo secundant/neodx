@@ -1,11 +1,9 @@
 import { defineConfig } from 'vite-plus';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 // Pack-only S2: Vite+ pack for @neodx/glob.
 // Single-entry flat dist; outExtensions preserve .mjs/.cjs/.d.ts.
 // Uses node:path → platform node.
 export default defineConfig({
-  plugins: [tsconfigPaths()],
   pack: {
     entry: {
       index: 'src/index.ts'
