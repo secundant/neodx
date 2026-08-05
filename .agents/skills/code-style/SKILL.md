@@ -48,7 +48,7 @@ export from the package entry.
 ## Pack-aware surface
 
 When changing a publishable public surface or build config, verify with `vp pack` (or
-`vp run -t @neodx/<pkg>#pack`) and keep `@neodx/internal` build-time-inline (no runtime import in
+`vp run @neodx/<pkg>#pack`) and keep `@neodx/internal` build-time-inline (no runtime import in
 `dist`).
 
 ## Functions, async, comments
