@@ -1,13 +1,13 @@
 # Parallel session STATUS — S7 std ∥ S5-R2 CI gates
 
-| Field            | Value                                               |
-| ---------------- | --------------------------------------------------- |
-| Session id       | `parallel-s7-r2c`                                   |
-| Branch           | `improve/neodx`                                     |
-| PR               | [#160](https://github.com/secundant/neodx/pull/160) |
-| Base tip at open | `7e0ec17`                                           |
-| Pairing          | Lane A + Lane C only                                |
-| Closed tip       | `594a2f4` (after A `523574a` + C `594a2f4`)         |
+| Field            | Value                                                       |
+| ---------------- | ----------------------------------------------------------- |
+| Session id       | `parallel-s7-r2c`                                           |
+| Branch           | `improve/neodx`                                             |
+| PR               | [#160](https://github.com/secundant/neodx/pull/160)         |
+| Base tip at open | `7e0ec17`                                                   |
+| Pairing          | Lane A + Lane C only                                        |
+| Closed tip       | `fa18ade`+ (A `523574a`, C `594a2f4`; e2e pack fix pending) |
 
 ## Lane board
 
