@@ -22,7 +22,7 @@ export default defineConfig({
       },
       platform: 'neutral',
       format: ['esm', 'cjs'],
-      dts: true,
+      dts: { eager: true },
       sourcemap: true,
       clean: true,
       outExtensions
@@ -36,7 +36,7 @@ export default defineConfig({
       },
       platform: 'node',
       format: ['esm', 'cjs'],
-      dts: true,
+      dts: { eager: true },
       sourcemap: true,
       clean: false,
       outExtensions

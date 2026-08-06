@@ -10,7 +10,7 @@ export default defineConfig({
     },
     platform: 'node',
     format: ['esm', 'cjs'],
-    dts: true,
+    dts: { eager: true },
     sourcemap: true,
     clean: true,
     outExtensions: ({ format }) => ({ dts: '.d.ts', js: format === 'cjs' ? '.cjs' : '.mjs' })

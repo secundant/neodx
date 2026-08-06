@@ -26,7 +26,7 @@ export default defineConfig({
       'array/index': 'src/array/index.ts'
     },
     format: ['esm', 'cjs'],
-    dts: true,
+    dts: { eager: true },
     sourcemap: true,
     clean: true,
     outExtensions: ({ format }) => ({ dts: '.d.ts', js: format === 'cjs' ? '.cjs' : '.mjs' })

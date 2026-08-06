@@ -12,6 +12,13 @@
  * `.agents/reports/ts-project-references-implementation.md` § "Soft reference
  * edge (cycle)"). Run with `--no-ignore-known` to see the full set. New
  * violations of any rule fail CI.
+ *
+ * Resolution (paths-free end-state): base `tsconfig` no longer carries a
+ * `paths` map, so `@neodx/*` resolves through `package.json` `exports` + the
+ * `node_modules/@neodx/*` workspace symlinks. `preserveSymlinks: true` keeps
+ * resolution at the symlink so each import is classified against the importing
+ * package's `package.json` (declared vs undeclared), while the `development`
+ * export condition still points the graph at source rather than packed `dist`.
  */
 
 // Production-source test/example exclusions shared by every rule.
@@ -41,13 +48,37 @@ module.exports = {
       severity: 'error',
       from: { path: '^libs/[^/]+/src/', pathNot: SRC_TEST_EXCLUDE },
       to: { dependencyTypes: ['npm-dev'], pathNot: ['^@neodx/internal(/|$)'] }
+    },
+    {
+      // Override the preset's no-orphans: `@neodx/internal` is a private,
+      // source-exported package inlined at pack and consumed only via its
+      // `@neodx/internal/*` specifier. Under `preserveSymlinks` that specifier
+      // resolves to the symlink (an external leaf), so `internal/src/*` is not
+      // reachable from the cruised entry set and would otherwise look orphaned.
+      // It is not — exclude it from the orphan check.
+      name: 'no-orphans',
+      comment: 'Orphan module — likely unused. Excludes @neodx/internal (inlined private pkg).',
+      severity: 'error',
+      from: {
+        orphan: true,
+        pathNot: [
+          '(^|/)\\.[^/]+\\.(js|cjs|mjs|ts|json)$',
+          '\\.d\\.(c|m)?ts$',
+          '(^|/)tsconfig\\.json$',
+          '(^|/)(?:babel|webpack)\\.config\\.(?:js|cjs|mjs|ts|json)$',
+          '^libs/internal/src/'
+        ]
+      },
+      to: {}
     }
   ],
   options: {
-    // Follow @neodx/* to TypeScript source (resolve via the package.json
-    // `development` export condition, same bridge `tsc -b` uses) instead of
-    // packed dist. Honesty-first: the gate inspects declared edges between
-    // source modules, not build output.
+    // Keep resolution at the `node_modules/@neodx/*` symlink so workspace
+    // imports are classified against the importing package.json (declared vs
+    // undeclared). Without this, the `development` export condition rewrites
+    // `@neodx/std` to a repo-relative source path and every workspace edge
+    // collapses to `undetermined` (false no-non-package-json violations).
+    preserveSymlinks: true,
     tsPreCompilationDeps: true,
     tsConfig: { fileName: 'tsconfig.base.json' },
     enhancedResolveOptions: {

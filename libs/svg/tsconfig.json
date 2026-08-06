@@ -3,7 +3,8 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
-    "types": ["node"]
+    "types": ["node"],
+    "customConditions": ["development"]
   },
   "include": ["src/**/*.ts"],
   "exclude": [

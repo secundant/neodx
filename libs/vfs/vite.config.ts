@@ -43,7 +43,7 @@ export default defineConfig({
       outDir: 'dist/types',
       // Runtime tsdown option; pack typings reject `{ only: true }` shape today.
       // @ts-expect-error Vite+ pack dts typings lag tsdown `{ only: true }`
-      dts: { only: true },
+      dts: { only: true, eager: true },
       sourcemap: false,
       clean: false,
       outExtensions: () => ({ dts: '.d.ts', js: '.mjs' })

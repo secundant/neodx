@@ -5,7 +5,8 @@
     "target": "ES2022",
     "module": "ESNext",
     "types": ["node"],
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "customConditions": ["development"]
   },
   "include": ["src/**/*.ts"],
   "exclude": [

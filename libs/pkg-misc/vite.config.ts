@@ -33,7 +33,7 @@ export default defineConfig({
       format: ['esm'],
       outDir: 'dist/types',
       // @ts-expect-error Vite+ pack dts typings lag tsdown `{ only: true }`
-      dts: { only: true },
+      dts: { only: true, eager: true },
       sourcemap: false,
       clean: false,
       outExtensions: () => ({ dts: '.d.ts', js: '.mjs' })
