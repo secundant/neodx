@@ -44,9 +44,9 @@ export default defineConfig({
     ],
     plugins: ['typescript', 'import'],
     options: {
-      // tsgolint typeAware/typeCheck still off (#161): base tsconfig keeps `paths` for
-      // pack/rolldown-plugin-dts. Re-try only after S5-R2 deletes base paths (see
-      // .agents/reports/ts-project-references-implementation.md residuals).
+      // tsgolint typeAware/typeCheck still off (#161). S5-R2-a deleted base `paths`/`baseUrl`
+      // (no longer a blocker for tsgolint, which hard-rejects `baseUrl`), so the retry is
+      // unblocked — tracked as S5-R2-b. Leave off until that retry lands.
       typeAware: false,
       typeCheck: false
     },

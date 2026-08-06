@@ -1,22 +1,23 @@
 # TypeScript Project References — Implementation Report (S5 cutover)
 
-|             |                                                                                           |
-| ----------- | ----------------------------------------------------------------------------------------- |
-| Status      | **Cutover complete (unified libs)** — dual-run pack bridge retained; S5-R2 owns residuals |
-| Date        | 2026-08-05 (cutover); actualized 2026-08-06                                               |
-| Branch      | `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160))                  |
-| Base tip    | `1579d67`                                                                                 |
-| Cutover tip | `0dc4a98` (build) + `7e0ec17` (docs)                                                      |
-| Status tip  | `508458b` (R2-a BLOCK recorded)                                                           |
-| Research    | [ts-project-references-research.md](./ts-project-references-research.md)                  |
-| Before      | [ts-project-references-before.md](./ts-project-references-before.md)                      |
-| Framing     | Experiment on neodx. **Do not** declare Nubis adopts project references.                  |
+|             |                                                                                                   |
+| ----------- | ------------------------------------------------------------------------------------------------- |
+| Status      | **Honesty end-state landed (S5-R2-a done)** — base `paths`/`baseUrl` deleted; pack exports-native |
+| Date        | 2026-08-05 (cutover); 2026-08-06 (R2-a honesty end-state)                                         |
+| Branch      | `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160))                          |
+| Base tip    | `1579d67`                                                                                         |
+| Cutover tip | `0dc4a98` (build) + `7e0ec17` (docs)                                                              |
+| Status tip  | `508458b` (R2-a BLOCK recorded)                                                                   |
+| R2-a tip    | _(this session)_ — base paths deleted; `vite-tsconfig-paths` removed                              |
+| Research    | [ts-project-references-research.md](./ts-project-references-research.md)                          |
+| Before      | [ts-project-references-before.md](./ts-project-references-before.md)                              |
+| Framing     | Experiment on neodx. **Do not** declare Nubis adopts project references.                          |
 
 ## Executive summary
 
 Neodx now typechecks the **entire `libs/` tree** as one TypeScript project-references solution (`yarn typecheck` → `tsc -b`). Published JS+dts still come from `vp pack` (research **P2**). CI typechecks **before** pack (cold-clone floor).
 
-The cutover is **honesty-first** with one deliberate dual-run: base `tsconfig` keeps `paths` so pack/rolldown-plugin-dts keeps working; each `tsconfig.build.json` clears `paths` and uses `customConditions: ["development"]` so `tsc -b` does not depend on pack `dist`.
+**S5-R2-a honesty end-state is landed:** base `tsconfig.base.json` carries **no** `baseUrl`/`paths`. Pack dts resolves `@neodx/*` to **source** via `customConditions: ["development"]` on each pack leaf `tsconfig.json` (the same bridge `tsc -b` uses), plus `dts.eager` so the dts bundler resolves type-only re-exports from inlined `@neodx/internal`. `vite-tsconfig-paths` is removed repo-wide; Vite resolves workspace packages natively via `exports` + symlinks. The previous "dual-run pack bridge" is gone.
 
 ## Working end-state (patterns that work)
 
@@ -24,11 +25,12 @@ The cutover is **honesty-first** with one deliberate dual-run: base `tsconfig` k
 
 ```text
 tsconfig.json                          # solution: files:[], refs → every libs/*/tsconfig.build.json
-tsconfig.base.json                     # shared options + paths (pack/IDE dual-run)
-libs/<pkg>/tsconfig.json               # IDE + pack leaf (extends base; NO references)
+tsconfig.base.json                     # shared options only — NO baseUrl, NO paths (deleted in R2-a)
+libs/<pkg>/tsconfig.json               # IDE + pack leaf (extends base; customConditions:["development"]; NO references)
 libs/<pkg>/tsconfig.build.json         # composite + emitDeclarationOnly → dist-types/
-                                       # paths:{} + customConditions:["development"] + references
-package.json exports.*.development     # ./src/… bridge for honest tsc -b
+                                       # customConditions:["development"] + references
+libs/<pkg>/vite.config.ts              # pack: dts:{ eager: true } (re-export resolution)
+package.json exports.*.development     # ./src/… bridge (tsc -b AND pack dts resolve to source)
 tools/scripts/check-references.mjs     # drift gate
 ```
 
@@ -92,78 +94,85 @@ Build projects `include: ["src/**/*.ts"]` and **exclude** `*.test.ts`, `*.test-d
 - Explicit `ExportsGenerator` return type in autobuild (TS2742 on `compactObject` deep path)
 - `@neodx/vfs/testing` explicit export (was path-alias-only)
 - `verify-exports` skips `development` targets
-- Lib package vite configs dropped `tsconfigPaths` plugins; **apps/examples/e2e/templates + log test helper still use `vite-tsconfig-paths`** (must go with H4 / paths delete)
+- **S5-R2-a:** `vite-tsconfig-paths` removed repo-wide (root, apps/examples/e2e, templates, docs); lib pack leaf `tsconfig.json` files gained `customConditions:["development"]`; pack `dts` set to `{ eager: true }`; dep-cruiser gained `preserveSymlinks:true` + `no-orphans` internal exclusion.
 
 ## What does **not** work / must not be claimed
 
-| Claim                                     | Reality                                                                                          |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| “Base `paths` are gone”                   | **False** — still required for pack dts today                                                    |
-| “`references` alone resolve `@neodx/*`”   | **False** — need exports (+ development) or paths (spike Attempt 4)                              |
-| “Deleting paths is free”                  | **False** — 2026-08-06: paths off → figma pack dts `TS2742` on hashed vfs/log `dist` type chunks |
-| “typeAware is unblocked”                  | **False** — #161 still blocked while base keeps paths                                            |
-| “vp run typecheck/test includes internal” | **False** — package.json cycle with vfs; use root `tsc -b` for types                             |
-| “`vite-tsconfig-paths` is gone”           | **False** — still in root `package.json` + apps/examples/e2e + templates                         |
+| Claim                                     | Reality                                                              |
+| ----------------------------------------- | -------------------------------------------------------------------- |
+| “`references` alone resolve `@neodx/*`”   | **False** — need exports (+ `development`) (spike Attempt 4)         |
+| “vp run typecheck/test includes internal” | **False** — package.json cycle with vfs; use root `tsc -b` for types |
+| “typeAware is unblocked”                  | **Not yet** — R2-a (base paths) is done; S5-R2-b owns the #161 retry |
+
+### Resolved by S5-R2-a (no longer true)
+
+| Former claim                            | Resolution                                                                                           |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| “Base `paths` are gone” = False         | **Now true** — `tsconfig.base.json` has no `baseUrl`/`paths`                                         |
+| “Deleting paths is free” = False        | Required two fixes (below): pack-leaf `customConditions` + `dts.eager`                               |
+| “`vite-tsconfig-paths` is gone” = False | **Now true** — removed repo-wide; Vite resolves workspace packages natively via `exports` + symlinks |
 
 ## Migration workflow (replay)
 
 1. **H1 — Declare** undeclared `@neodx/*` imports in `package.json`.
 2. **H3 — Bridge** add `development` → `./src/…` on publishable `exports`.
 3. **H5 — Wire** `tsconfig.build.json` per lib + root solution; typecheck scripts → `tsc -b`.
-4. **Honesty override** on build: `paths: {}` + `customConditions: ["development"]`.
-5. **Keep** base `paths` until pack dts is exports-native (**S5-R2**).
+4. **Honesty override** on build: `customConditions: ["development"]` (paths override no longer needed — base has none).
+5. **S5-R2-a:** delete base `paths`/`baseUrl`; mirror `customConditions:["development"]` onto the **pack leaf** `tsconfig.json`; set pack `dts:{ eager: true }`; remove `vite-tsconfig-paths`; reconfigure dep-cruiser.
 6. **CI** typecheck before pack; drift gate; do not reference from pack tsconfig.
 7. **Unify** every `libs/*` into the solution (including private/quarantined).
 
 ## Analysis vs research
 
-| Research recommendation         | Disposition                                                                   |
-| ------------------------------- | ----------------------------------------------------------------------------- |
-| P2 bundler owns publish dts     | **Adopted**                                                                   |
-| Pattern C / `tsc -b` type gate  | **Adopted** (`yarn typecheck`)                                                |
-| `development` bridge            | **Adopted**                                                                   |
-| Delete base paths (H4)          | **Blocked → S5-R2-a** (pack dts `TS2742`; paths restored)                     |
-| Remove `vite-tsconfig-paths`    | **Coupled to H4** — Vite resolves via `exports`; plugin is fake-green surface |
-| dependency-cruiser              | **Landed** (S5-R2-c `594a2f4`)                                                |
-| ATTW / paired `.d.mts`          | **Deferred → #164 / R2-e**                                                    |
-| Exclude internal from composite | **Superseded** — internal is in; soft edge for cycle                          |
-| Full test tsconfig matrix       | **Deferred → S5-R2-f**                                                        |
+| Research recommendation         | Disposition                                                                                     |
+| ------------------------------- | ----------------------------------------------------------------------------------------------- |
+| P2 bundler owns publish dts     | **Adopted**                                                                                     |
+| Pattern C / `tsc -b` type gate  | **Adopted** (`yarn typecheck`)                                                                  |
+| `development` bridge            | **Adopted** (now used by `tsc -b` **and** pack dts via pack-leaf customConditions)              |
+| Delete base paths (H4)          | **Adopted (S5-R2-a)** — pack-leaf `customConditions:["development"]` + `dts.eager` unblocked it |
+| Remove `vite-tsconfig-paths`    | **Adopted (S5-R2-a)** — Vite resolves via `exports` + symlinks natively                         |
+| dependency-cruiser              | **Landed** (S5-R2-c); **reconfigured for paths-free** (R2-a: `preserveSymlinks`)                |
+| ATTW / paired `.d.mts`          | **Deferred → #164 / R2-e**                                                                      |
+| Exclude internal from composite | **Superseded** — internal is in; soft edge for cycle                                            |
+| Full test tsconfig matrix       | **Deferred → S5-R2-f**                                                                          |
 
 ## Residuals → **S5-R2** (tracked)
 
 Explicit future-iteration goals (also in Nubis plan §S5 / checklist / next-session). Owner-facing backlog:
 
-| ID          | Goal                                            | Why blocked now                                                                                                                                                                                                                                                            | Exit criteria                                                |
-| ----------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| **S5-R2-a** | Delete base `baseUrl`/`paths`                   | **BLOCK 2026-08-06 @ `d639c4b`:** cold-verify green _with_ paths; after true delete, `yarn pack:libs` fails on `@neodx/figma` dts (`TS2742` naming hashed `@neodx/vfs` / `@neodx/log` `dist` chunks). Paths restored. Not the old `MISSING_EXPORT` on `@neodx/internal/*`. | Cold `tsc -b` + `yarn pack:libs` green with empty base paths |
-| **S5-R2-b** | Retry Oxlint `typeAware`/`typeCheck` (#161)     | Depends on S5-R2-a (or upstream tsgolint)                                                                                                                                                                                                                                  | typeAware on in CI, or residual issue filed                  |
-| **S5-R2-c** | Add dependency-cruiser                          | **Landed** (`594a2f4`) — baseline ignores known vfs cycles; residual ATTW → #164                                                                                                                                                                                           | Done                                                         |
-| **S5-R2-d** | Add ATTW to publish gate                        | Orthogonal; publint already in CI                                                                                                                                                                                                                                          | `attw --pack` (or equiv) in CI                               |
-| **S5-R2-e** | Paired `.d.mts`/`.d.cts`                        | Changes pack `outExtensions` contract                                                                                                                                                                                                                                      | ATTW clean dual-format; Changeset if public                  |
-| **S5-R2-f** | `tsconfig.test.json` / `test-d` / `node` matrix | Build exclude is enough for cutover                                                                                                                                                                                                                                        | Documented per-package matrix live                           |
-| **S5-R2-g** | Apps/examples/e2e as referenced projects        | Lib unification first                                                                                                                                                                                                                                                      | Optional; apps stay consumers                                |
+| ID          | Goal                                            | Why blocked now                                                                                                                                                                                                                                                   | Exit criteria                               |
+| ----------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| **S5-R2-a** | Delete base `baseUrl`/`paths`                   | **DONE 2026-08-06:** base `paths`/`baseUrl` deleted; pack dts resolves `@neodx/*` to source via pack-leaf `customConditions:["development"]` + `dts.eager`; `vite-tsconfig-paths` removed; dep-cruiser reconfigured (`preserveSymlinks`). Full cold-verify green. | ✅ Met                                      |
+| **S5-R2-b** | Retry Oxlint `typeAware`/`typeCheck` (#161)     | **Unblocked by R2-a** — base no longer carries `baseUrl`/`paths` (tsgolint hard-rejects `baseUrl`). Ready to retry.                                                                                                                                               | typeAware on in CI, or residual issue filed |
+| **S5-R2-c** | Add dependency-cruiser                          | **Landed** (`594a2f4`); **reconfigured for paths-free world** (R2-a): `preserveSymlinks:true` + `no-orphans` internal exclusion; baseline regenerated (19 intra-vfs cycles). Positive control verified.                                                           | Done                                        |
+| **S5-R2-d** | Add ATTW to publish gate                        | Orthogonal; publint already in CI                                                                                                                                                                                                                                 | `attw --pack` (or equiv) in CI              |
+| **S5-R2-e** | Paired `.d.mts`/`.d.cts`                        | Changes pack `outExtensions` contract                                                                                                                                                                                                                             | ATTW clean dual-format; Changeset if public |
+| **S5-R2-f** | `tsconfig.test.json` / `test-d` / `node` matrix | Build exclude is enough for cutover                                                                                                                                                                                                                               | Documented per-package matrix live          |
+| **S5-R2-g** | Apps/examples/e2e as referenced projects        | Lib unification first                                                                                                                                                                                                                                             | Optional; apps stay consumers               |
 
 **Also open (not numbered, do with R2-a or S3 follow-ups):** cold-consumer unpack of one packed tarball proving `development` is absent and `exports` → `dist`; optional migrate `constraints.pro` → `yarn.config.cjs` for composite/no-paths invariants.
 
 ## Failure catalog (reproduce → fix)
 
-| Symptom                                                                  | Cause                                                                                      | Fix                                                                                                                                                                                    |
-| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `TS2307` on `@neodx/*` under `tsc -b` with empty paths                   | No bridge / no dep / no exports                                                            | Declare dep; add `development` → `./src`; `customConditions` on build tsconfig                                                                                                         |
-| Pack `MISSING_EXPORT` on `@neodx/internal/*`                             | Pack tsconfig had `references` **or** base paths deleted too early                         | Keep pack leaf reference-free; keep base paths until R2-a                                                                                                                              |
-| Pack `TS2742` on figma naming `dist/types/index-*.d.ts` / `dist/utils-*` | Without base paths, pack leaf resolves `@neodx/*` via `exports.types` → hashed dist chunks | Keep base paths; make pack dts resolve stable public types (or source) without forcing root Vite `resolve.conditions: ['development']`; annotate return types only as a tactical probe |
-| Pack resolves to `./src` and dts collapses                               | Root Vite `resolve.conditions` forced `development`                                        | Do not force; let Vite add it only in serve/test                                                                                                                                       |
-| `vp run -r typecheck` cycles on internal↔vfs                             | Task graph follows package.json edges both ways                                            | Root `yarn typecheck` (`tsc -b`); soft refs                                                                                                                                            |
-| `TS2742` cannot name type without import                                 | Composite consumer sees inferred deep type                                                 | Export public type or annotate return type                                                                                                                                             |
-| Drift gate fails after adding a workspace dep                            | Forgot matching `references` in `tsconfig.build.json`                                      | Add ref (unless soft edge) or adjust soft-skip                                                                                                                                         |
+| Symptom                                                                    | Cause                                                                                                                                                                                                  | Fix                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TS2307` on `@neodx/*` under `tsc -b` with empty paths                     | No bridge / no dep / no exports                                                                                                                                                                        | Declare dep; add `development` → `./src`; `customConditions` on build tsconfig                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Pack `MISSING_EXPORT` on `@neodx/internal/*`                               | Pack tsconfig had `references` **or** base paths deleted too early                                                                                                                                     | Keep pack leaf reference-free; keep base paths until R2-a                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Pack `TS2742` on figma naming `dist/types/index-*.d.ts` / `dist/utils-*`   | Without base paths, pack leaf resolves `@neodx/*` via `exports.types` → hashed dist chunks                                                                                                             | **FIXED (R2-a):** add `compilerOptions.customConditions: ["development"]` to each pack leaf `libs/<pkg>/tsconfig.json` so pack dts resolves deps to **source** (portable types), exactly as `tsconfig.build.json` already does for `tsc -b`.                                                                                                                                                                                                                                    |
+| Pack `MISSING_EXPORT` on `@neodx/internal/svgo` (`CreateSvgoConfigParams`) | dts bundler loses the type-only re-export while inlining `@neodx/internal` source                                                                                                                      | **FIXED (R2-a):** set `dts: { eager: true }` in the pack config (the option `rolldown-plugin-dts` itself recommends). Eager re-export resolution preserves the type-only export. Same fix applied to the `vfs`/`pkg-misc` `dts: { only: true }` builds.                                                                                                                                                                                                                         |
+| dep-cruiser `no-non-package-json` 176 false positives after paths delete   | With no `paths` map, `@neodx/*` resolves via `exports`+`development` to repo-relative source; dep-cruiser classifies it `undetermined` (inside cruise root), so the rule fires on every workspace edge | **FIXED (R2-a):** `options.preserveSymlinks: true` keeps resolution at the `node_modules/@neodx/*` symlink so imports classify as `aliased-workspace`/`npm` and are checked against `package.json`; override `no-orphans` to exclude `libs/internal/src/` (inlined private pkg, only reachable via its specifier). Baseline regenerated (19 intra-vfs cycles; the `vfs↔internal` cross edge is no longer traversed). Positive control (injected undeclared import) still fires. |
+| Pack resolves to `./src` and dts collapses                                 | Root Vite `resolve.conditions` forced `development`                                                                                                                                                    | Do not force; let Vite add it only in serve/test                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `vp run -r typecheck` cycles on internal↔vfs                               | Task graph follows package.json edges both ways                                                                                                                                                        | Root `yarn typecheck` (`tsc -b`); soft refs                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `TS2742` cannot name type without import                                   | Composite consumer sees inferred deep type                                                                                                                                                             | Export public type or annotate return type                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Drift gate fails after adding a workspace dep                              | Forgot matching `references` in `tsconfig.build.json`                                                                                                                                                  | Add ref (unless soft edge) or adjust soft-skip                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 ## Day-to-day operator notes
 
 1. After editing a workspace dependency edge: update `package.json` **and** `tsconfig.build.json` `references` (except soft `internal↔vfs`), then `yarn check-references`.
 2. Prefer `yarn typecheck` over per-package `vp run typecheck` for whole-graph confidence.
 3. Do not commit `dist-types/` or `.tsbuildinfo` (gitignored).
-4. When debugging pack dts, use the package `tsconfig.json` (paths on); when debugging honesty, use `tsconfig.build.json` (paths off).
-5. New lib: add `tsconfig.build.json`, root solution entry, `development` exports if publishable, drift-gate coverage.
+4. Both `tsconfig.json` (pack leaf) and `tsconfig.build.json` now use `customConditions:["development"]` and carry **no** `paths` — they resolve `@neodx/*` to source via the `exports` `development` bridge identically. Base `tsconfig.base.json` is options-only.
+5. New publishable lib: add `tsconfig.build.json`, root solution entry, `development` exports, `customConditions:["development"]` on the pack leaf `tsconfig.json`, `dts:{ eager:true }` in the pack config, drift-gate coverage.
 
 ## Strategy (what “done” means for S5)
 
@@ -175,11 +184,27 @@ Explicit future-iteration goals (also in Nubis plan §S5 / checklist / next-sess
 
 ## Nubis encapsulation
 
-**Recommendation: proceed-with-guards** (neodx); **defer** Nubis adoption until S5-R2-a (paths deletion) and a soak on CI.
+**Recommendation: proceed-with-guards** (neodx); **R2-a is landed** — Nubis adoption remains a separate owner decision after a CI soak.
 
-**Copy:** honesty-first deps; `development` exports; build vs pack tsconfig split; soft cycle handling; typecheck-before-pack; drift gate; unified private+publishable solution with soft edges for source cycles.
+**Copy:** honesty-first deps; `development` exports; build vs pack tsconfig split; pack-leaf `customConditions:["development"]` + `dts.eager`; soft cycle handling; typecheck-before-pack; drift gate; dep-cruiser with `preserveSymlinks`; unified private+publishable solution with soft edges for source cycles.
 
-**Forbid:** putting `references` on the tsconfig pack reads; enabling typeAware while base paths remain; assuming hoist/pack dist proves encapsulation; excluding private libs from the typed graph “because they don’t publish”.
+**Forbid:** putting `references` on the tsconfig pack reads; forcing root Vite `resolve.conditions:['development']`; assuming hoist/pack dist proves encapsulation; excluding private libs from the typed graph “because they don’t publish”.
+
+## S5-R2-a — deleting base `paths` (approach matrix + winning fix)
+
+The prior BLOCK: with base `paths` deleted, `yarn pack:libs` failed on `@neodx/figma` dts with `TS2742` ("cannot be named without a reference to `…/@neodx/vfs/dist/types/index-HASH`"). Two distinct failures, each with a proven fix:
+
+| ID       | Approach                                                                                         | Smallest proof                                                   | Outcome                                                                                                                                                                                    |
+| -------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| B1       | `compilerOptions.customConditions: ["development"]` on each pack leaf `libs/<pkg>/tsconfig.json` | delete paths + add customConditions → `vp run @neodx/figma#pack` | **Fixes TS2742** — pack dts resolves `@neodx/*` to **source** (portable) via the `development` export bridge, identical to `tsconfig.build.json`. Surfaced the secondary `MISSING_EXPORT`. |
+| B2       | `dts: { eager: true }` in pack configs (the option `rolldown-plugin-dts` self-recommends)        | B1 + eager → `vp run @neodx/figma#pack`                          | **Fixes `MISSING_EXPORT` on `@neodx/internal/svgo`** (`CreateSvgoConfigParams`) — eager re-export resolution preserves type-only re-exports while inlining `@neodx/internal` source.       |
+| B2-alone | eager without customConditions                                                                   | delete paths + eager (no customConditions)                       | ❌ TS2742 persists — eager does **not** fix hashed-dist naming; source resolution (B1) is required.                                                                                        |
+
+**Winning combo: B1 + B2.** Both behavior-preserving, tool-recommended, no Public API change. Applied to all 12 lib pack leaves (customConditions) and all 9 dts-emitting pack configs (eager). `vfs`/`pkg-misc` use `dts: { only: true, eager: true }` (their separate dts-only build).
+
+**`vite-tsconfig-paths` removal** (coupled to R2-a): with paths gone, Vite resolves workspace `@neodx/*` natively via `exports` + `node_modules` symlinks (+ the `development` condition Vite adds in serve/test). Plugin removed from root + all consumer apps/examples/e2e/templates/docs. The one site needing source resolution in **build** mode (`libs/log` bench `testing-utils.ts`) gets a scoped `resolve.conditions: ['development']` on that single Vite build — never forced at root. `apps/e2e/svg` build verified green end-to-end with native resolution.
+
+**dep-cruiser reconfiguration** (required by R2-a): the R2-c gate silently relied on `paths` for `dependencyTypes` classification. With paths deleted, `@neodx/*` resolved to repo-relative source → classified `undetermined` → 176 false `no-non-package-json`. Fixed with `options.preserveSymlinks: true` (keeps resolution at the symlink → `aliased-workspace`/`npm`, checked against `package.json`) + an overridden `no-orphans` excluding `libs/internal/src/` (inlined private pkg, only reachable via its specifier). Baseline regenerated: 19 intra-vfs cycles (the `vfs↔internal` cross edge is no longer traversed). Positive control (injected undeclared import) still fires both rules.
 
 ## Verification (local)
 
@@ -193,3 +218,17 @@ Session revalidation 2026-08-05 (post-unification):
 | Lib tests via `vp run` (excl. autobuild/internal) | ✅     |
 | svg `internal-inline`                             | ✅     |
 | `vp check`                                        | ✅     |
+
+R2-a honesty end-state revalidation 2026-08-06 (base paths **deleted**):
+
+| Gate                                                | Result |
+| --------------------------------------------------- | ------ |
+| `rm -rf libs/*/dist-types && yarn check-references` | ✅     |
+| `yarn typecheck` (cold `tsc -b`, no paths)          | ✅     |
+| `yarn pack:libs` (9 libs, exports-native dts)       | ✅     |
+| `yarn verify-exports`                               | ✅     |
+| `yarn publint`                                      | ✅     |
+| `yarn depcruise` (`preserveSymlinks`, re-baselined) | ✅     |
+| `vp check`                                          | ✅     |
+| Lib tests via `vp run` (excl. autobuild/internal)   | ✅     |
+| `apps/e2e/svg` build (native resolution)            | ✅     |
