@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "types": ["node"],
     "customConditions": ["development"]
   },
   "include": ["src/**/*.ts"],
