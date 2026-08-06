@@ -2986,7 +2986,6 @@ __metadata:
     tailwindcss: "npm:3.4.3"
     typescript: "npm:5.9.3"
     vite: "npm:8.2.0"
-    vite-tsconfig-paths: "npm:6.1.1"
   languageName: unknown
   linkType: soft
 
@@ -3013,7 +3012,6 @@ __metadata:
     tailwindcss: "npm:3.4.3"
     typescript: "npm:5.9.3"
     vite: "npm:8.2.0"
-    vite-tsconfig-paths: "npm:6.1.1"
     vitest: "npm:4.1.10"
   languageName: unknown
   linkType: soft
@@ -3036,7 +3034,6 @@ __metadata:
     tailwindcss: "npm:3.4.3"
     typescript: "npm:5.9.3"
     vite: "npm:8.2.0"
-    vite-tsconfig-paths: "npm:6.1.1"
   languageName: unknown
   linkType: soft
 
@@ -3084,7 +3081,6 @@ __metadata:
     tailwindcss: "npm:3.4.3"
     typescript: "npm:5.9.3"
     vite: "npm:8.2.0"
-    vite-tsconfig-paths: "npm:6.1.1"
   languageName: unknown
   linkType: soft
 
@@ -3104,7 +3100,6 @@ __metadata:
     tailwindcss: "npm:3.4.3"
     typescript: "npm:5.9.3"
     vite: "npm:8.2.0"
-    vite-tsconfig-paths: "npm:6.1.1"
   languageName: unknown
   linkType: soft
 
@@ -3119,7 +3114,6 @@ __metadata:
     tailwindcss: "npm:3.4.3"
     typescript: "npm:5.9.3"
     vite: "npm:8.2.0"
-    vite-tsconfig-paths: "npm:6.1.1"
     vue: "npm:^3.4.29"
     vue-tsc: "npm:2.2.12"
   languageName: unknown
@@ -3260,7 +3254,6 @@ __metadata:
     typescript: "npm:5.9.3"
     vite: "npm:8.2.0"
     vite-plus: "npm:0.2.7"
-    vite-tsconfig-paths: "npm:6.1.1"
     vitest: "npm:4.1.10"
     zeptomatch: "npm:2.0.0"
   dependenciesMeta:
@@ -17033,7 +17026,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsconfck@npm:3.1.1, tsconfck@npm:^3.0.3":
+"tsconfck@npm:3.1.1":
   version: 3.1.1
   resolution: "tsconfck@npm:3.1.1"
   peerDependencies:
@@ -17704,19 +17697,6 @@ __metadata:
     vp: bin/vp
     vpr: bin/vpr
   checksum: 10/f9b25f99744a87c003eb65ab41e9e2750cdb6d20d136624e351186778d28c6196a70ae0c7324ff3de63234b511839f3457027560f2479ff1c3f8697029bf8284
-  languageName: node
-  linkType: hard
-
-"vite-tsconfig-paths@npm:6.1.1":
-  version: 6.1.1
-  resolution: "vite-tsconfig-paths@npm:6.1.1"
-  dependencies:
-    debug: "npm:^4.1.1"
-    globrex: "npm:^0.1.2"
-    tsconfck: "npm:^3.0.3"
-  peerDependencies:
-    vite: "*"
-  checksum: 10/f752bce4f3c5707f0df7af8a20294b1f325e26f50578b82c8262d851028616ebb1a3e73ab0789c55cf3c8da8d985e843193c0bec2cb31662c567ccdf137f1fd0
   languageName: node
   linkType: hard
 

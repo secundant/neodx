@@ -18,11 +18,9 @@ yarn add @neodx/svg
 import svg from '@neodx/svg/vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { defineConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   plugins: [
-    tsconfigPaths(),
     svelte(),
     svg({
       output: 'public/sprites',

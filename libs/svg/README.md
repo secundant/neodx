@@ -186,12 +186,10 @@ We want to generate separate sprites for each folder and use them in our React c
 import { defineConfig } from 'vite';
 import svg from '@neodx/svg/vite';
 import react from '@vitejs/plugin-react';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   plugins: [
     react(),
-    tsconfigPaths(),
     svg({
       root: 'assets',
       group: true,

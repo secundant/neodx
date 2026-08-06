@@ -2,13 +2,11 @@
 import svg from '@neodx/svg/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite-plus';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   test: { passWithNoTests: true },
   plugins: [
     react(),
-    tsconfigPaths(),
     svg({
       output: 'public/sprites',
       fileName: '{name}.{hash:8}.svg',

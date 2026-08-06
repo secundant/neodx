@@ -31,12 +31,10 @@ pnpm i -D @neodx/svg
 import svg from '@neodx/svg/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(({ command }) => ({
   // ...
   plugins: [
-    tsconfigPaths(),
     react(),
     svg({
       inputRoot: 'assets', // Root folder for SVG files, all source paths will be relative to this folder
