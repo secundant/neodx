@@ -54,8 +54,10 @@ git-affected selection. That difference is accepted.
 - Prefer `vp check`, package `yarn typecheck`, and package-cwd `vp test` on touched work; pack when
   you changed a publishable public surface or pack config.
 - For `@neodx/internal` or its consumers, confirm the inline contract test passes after pack.
-- CI gates on PR: `check` (fmt/lint, pack, typecheck, test, verify-exports, publint, internal-inline)
-  and `e2e-svg`. Keep both green.
+- **CI/CD is opt-in for agents:** do **not** push, watch, or wait on GitHub Actions / PR checks unless
+  the task targets CI/CD itself, the owner explicitly asks, or a concrete failure requires a remote
+  run. Local cold-verify is enough for normal library/tooling work. When CI _is_ in scope, required
+  gates are `check` and `e2e-svg` (Cloudflare Pages and Snyk are non-gating).
 - Prefer the smallest change that solves the task. Touch only files the task requires.
 
 ## Public API rules
@@ -77,7 +79,8 @@ git-affected selection. That difference is accepted.
 - Explore repository facts before asking. Ask only about unresolved intent, ownership, risk
   tolerance, or tradeoffs that materially change the plan.
 - Keep changes surgical; preserve unrelated work in the worktree.
-- Verify before done; name any skipped check with a reason.
+- Verify before done with **local** checks; name any skipped check with a reason. Do not burn
+  time on CI wait loops (see [Verification](#verification)).
 - Treat comments as design surface: remove comments that only restate mechanics; keep concise
   comments for non-obvious logic, flow boundaries, and API intent.
 - Do not commit or push unless asked.

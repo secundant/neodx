@@ -3,10 +3,11 @@
 |             |                                                                                           |
 | ----------- | ----------------------------------------------------------------------------------------- |
 | Status      | **Cutover complete (unified libs)** — dual-run pack bridge retained; S5-R2 owns residuals |
-| Date        | 2026-08-05                                                                                |
+| Date        | 2026-08-05 (cutover); actualized 2026-08-06                                               |
 | Branch      | `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160))                  |
 | Base tip    | `1579d67`                                                                                 |
 | Cutover tip | `0dc4a98` (build) + `7e0ec17` (docs)                                                      |
+| Status tip  | `508458b` (R2-a BLOCK recorded)                                                           |
 | Research    | [ts-project-references-research.md](./ts-project-references-research.md)                  |
 | Before      | [ts-project-references-before.md](./ts-project-references-before.md)                      |
 | Framing     | Experiment on neodx. **Do not** declare Nubis adopts project references.                  |
@@ -43,7 +44,16 @@ tools/scripts/check-references.mjs     # drift gate
 | Drift gate                          | `yarn check-references`                     |
 | Pack (publishable only)             | `yarn pack:libs`                            |
 
-Incremental state: `composite` ⇒ `.tsbuildinfo` at `dist-types/.tsbuildinfo` (gitignored with `dist-types/`).
+### Incremental / `.tsbuildinfo` (where it lives)
+
+| Artifact                    | Location                                                                                 | Git / publish                  |
+| --------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------ |
+| Composite incremental state | `libs/<pkg>/dist-types/.tsbuildinfo` via `tsBuildInfoFile` in each `tsconfig.build.json` | Under gitignored `dist-types/` |
+| Legacy default name         | `**/tsconfig.tsbuildinfo`                                                                | Also gitignored                |
+| Throwaway dts from `tsc -b` | `libs/<pkg>/dist-types/**`                                                               | gitignored; **not** published  |
+| Published dts               | `libs/<pkg>/dist/**` from `vp pack`                                                      | Packed; `exports.types`        |
+
+Clean floor: `rm -rf libs/*/dist-types` before a honesty typecheck. Never cache `.tsbuildinfo` without the declarations it describes (fake green). Do not ship either in npm tarballs.
 
 ### Graph honesty (declared edges)
 
@@ -82,17 +92,18 @@ Build projects `include: ["src/**/*.ts"]` and **exclude** `*.test.ts`, `*.test-d
 - Explicit `ExportsGenerator` return type in autobuild (TS2742 on `compactObject` deep path)
 - `@neodx/vfs/testing` explicit export (was path-alias-only)
 - `verify-exports` skips `development` targets
-- Lib vite configs dropped `tsconfigPaths` plugins
+- Lib package vite configs dropped `tsconfigPaths` plugins; **apps/examples/e2e/templates + log test helper still use `vite-tsconfig-paths`** (must go with H4 / paths delete)
 
 ## What does **not** work / must not be claimed
 
-| Claim                                     | Reality                                                              |
-| ----------------------------------------- | -------------------------------------------------------------------- |
-| “Base `paths` are gone”                   | **False** — still required for pack dts today                        |
-| “`references` alone resolve `@neodx/*`”   | **False** — need exports (+ development) or paths (spike Attempt 4)  |
-| “Deleting paths is free”                  | **False** — pack bisect: paths off → svg/figma dts `MISSING_EXPORT`  |
-| “typeAware is unblocked”                  | **False** — #161 still blocked while base keeps paths                |
-| “vp run typecheck/test includes internal” | **False** — package.json cycle with vfs; use root `tsc -b` for types |
+| Claim                                     | Reality                                                                                          |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| “Base `paths` are gone”                   | **False** — still required for pack dts today                                                    |
+| “`references` alone resolve `@neodx/*`”   | **False** — need exports (+ development) or paths (spike Attempt 4)                              |
+| “Deleting paths is free”                  | **False** — 2026-08-06: paths off → figma pack dts `TS2742` on hashed vfs/log `dist` type chunks |
+| “typeAware is unblocked”                  | **False** — #161 still blocked while base keeps paths                                            |
+| “vp run typecheck/test includes internal” | **False** — package.json cycle with vfs; use root `tsc -b` for types                             |
+| “`vite-tsconfig-paths` is gone”           | **False** — still in root `package.json` + apps/examples/e2e + templates                         |
 
 ## Migration workflow (replay)
 
@@ -106,15 +117,17 @@ Build projects `include: ["src/**/*.ts"]` and **exclude** `*.test.ts`, `*.test-d
 
 ## Analysis vs research
 
-| Research recommendation              | Disposition                                          |
-| ------------------------------------ | ---------------------------------------------------- |
-| P2 bundler owns publish dts          | **Adopted**                                          |
-| Pattern C / `tsc -b` type gate       | **Adopted** (`yarn typecheck`)                       |
-| `development` bridge                 | **Adopted**                                          |
-| Delete base paths (H4)               | **Deferred → S5-R2** (pack blocker)                  |
-| dependency-cruiser / attw / `.d.mts` | **Deferred → S5-R2**                                 |
-| Exclude internal from composite      | **Superseded** — internal is in; soft edge for cycle |
-| Full test tsconfig matrix            | **Deferred → S5-R2**                                 |
+| Research recommendation         | Disposition                                                                   |
+| ------------------------------- | ----------------------------------------------------------------------------- |
+| P2 bundler owns publish dts     | **Adopted**                                                                   |
+| Pattern C / `tsc -b` type gate  | **Adopted** (`yarn typecheck`)                                                |
+| `development` bridge            | **Adopted**                                                                   |
+| Delete base paths (H4)          | **Blocked → S5-R2-a** (pack dts `TS2742`; paths restored)                     |
+| Remove `vite-tsconfig-paths`    | **Coupled to H4** — Vite resolves via `exports`; plugin is fake-green surface |
+| dependency-cruiser              | **Landed** (S5-R2-c `594a2f4`)                                                |
+| ATTW / paired `.d.mts`          | **Deferred → #164 / R2-e**                                                    |
+| Exclude internal from composite | **Superseded** — internal is in; soft edge for cycle                          |
+| Full test tsconfig matrix       | **Deferred → S5-R2-f**                                                        |
 
 ## Residuals → **S5-R2** (tracked)
 
@@ -124,7 +137,7 @@ Explicit future-iteration goals (also in Nubis plan §S5 / checklist / next-sess
 | ----------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | **S5-R2-a** | Delete base `baseUrl`/`paths`                   | **BLOCK 2026-08-06 @ `d639c4b`:** cold-verify green _with_ paths; after true delete, `yarn pack:libs` fails on `@neodx/figma` dts (`TS2742` naming hashed `@neodx/vfs` / `@neodx/log` `dist` chunks). Paths restored. Not the old `MISSING_EXPORT` on `@neodx/internal/*`. | Cold `tsc -b` + `yarn pack:libs` green with empty base paths |
 | **S5-R2-b** | Retry Oxlint `typeAware`/`typeCheck` (#161)     | Depends on S5-R2-a (or upstream tsgolint)                                                                                                                                                                                                                                  | typeAware on in CI, or residual issue filed                  |
-| **S5-R2-c** | Add dependency-cruiser                          | Not needed to land `tsc -b`; ongoing honesty gate                                                                                                                                                                                                                          | CI rule `npm-unknown` / no-circular green                    |
+| **S5-R2-c** | Add dependency-cruiser                          | **Landed** (`594a2f4`) — baseline ignores known vfs cycles; residual ATTW → #164                                                                                                                                                                                           | Done                                                         |
 | **S5-R2-d** | Add ATTW to publish gate                        | Orthogonal; publint already in CI                                                                                                                                                                                                                                          | `attw --pack` (or equiv) in CI                               |
 | **S5-R2-e** | Paired `.d.mts`/`.d.cts`                        | Changes pack `outExtensions` contract                                                                                                                                                                                                                                      | ATTW clean dual-format; Changeset if public                  |
 | **S5-R2-f** | `tsconfig.test.json` / `test-d` / `node` matrix | Build exclude is enough for cutover                                                                                                                                                                                                                                        | Documented per-package matrix live                           |
@@ -157,7 +170,7 @@ Explicit future-iteration goals (also in Nubis plan §S5 / checklist / next-sess
 | Layer                        | Done when                                                                                          |
 | ---------------------------- | -------------------------------------------------------------------------------------------------- |
 | **S5 cutover (this report)** | All `libs/*` in one `tsc -b` solution; honesty deps; CI typecheck-before-pack; dual-run documented |
-| **S5-R2 honesty end-state**  | Base `paths`/`baseUrl` gone; typeAware retry (#161); cruiser + ATTW optional but tracked           |
+| **S5-R2 honesty end-state**  | Base `paths`/`baseUrl` gone; `vite-tsconfig-paths` removed; typeAware retry (#161); ATTW tracked   |
 | **Nubis promote**            | Separate owner decision after R2-a soak — **not** implied by this cutover                          |
 
 ## Nubis encapsulation
