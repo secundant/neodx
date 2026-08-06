@@ -22,13 +22,16 @@ This release makes the package's documented Intention match reality:
   - corrects the `deepReadDir` default: paths are **absolute** by default, not relative (the
     previous README stated relative-by-default, which contradicted both source and tests).
 - Removed a stray `console.log` in `deepReadDir` that printed every directory read at runtime.
-- Replaced silent JSON-related TODOs with dated, tracked debt: `parseJson` JSONC contract and
-  `serializeJson` circular-reference safety are deferred to #166. Current behavior is unchanged
-  and now documented honestly (JSONC is an incidental fallback; `serializeJson` is not
-  circular-reference safe).
+- Replaced silent in-source TODOs with dated, tracked debt pointed at #166 (the TODOs are
+  preserved in source with `#166` pointers so the signal is not lost):
+  - `parseJson` JSONC contract (first-class vs. incidental fallback, error shape);
+  - `serializeJson` circular-reference safety (current behavior is not circular-ref safe);
+  - a duplicated array-compare test helper (`expectArrayEq` in `read.test.ts` mirrors the
+    sort-then-compare pattern in `scan.test.ts`).
+    Current behavior is unchanged and now documented honestly.
 
 **No breaking Public API change.** All existing exports, signatures, and behavior are preserved;
 the 1.0 major signals stability of the documented surface, not a removal.
 
-Residual (not blocking 1.0): JSONC parsing semantics and circular-reference-safe serialization
-are tracked in #166 for a future, documented decision.
+Residual (not blocking 1.0): the three items above are tracked in #166 for future, documented
+decisions.
