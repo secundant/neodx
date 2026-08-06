@@ -139,3 +139,22 @@ CI run pending commit + push.
 - **R2-d ATTW gate** → #164 (do with R2-e paired dts).
 - **Intra-vfs cycles (19)** — accepted in baseline; not a regression. A future vfs refactor could shrink the set, but that is architectural and out of scope. Run `yarn depcruise --no-ignore-known` to review.
 - **Nubis adoption** — not implied. This is an experiment on neodx.
+
+## Paths-free reconfiguration (R2-a, re-verified 2026-08-07)
+
+After R2-a deleted base `paths`/`baseUrl`, the cruiser was reconfigured (the gate silently relied on
+`paths` for `dependencyTypes` classification):
+
+- `options.preserveSymlinks: true` — keeps resolution at the `node_modules/@neodx/*` symlink so
+  imports classify as `aliased-workspace`/`npm` and are checked against `package.json` (without it,
+  `@neodx/*` resolves to repo-relative source → `undetermined` → 176 false `no-non-package-json`).
+- `no-orphans` override excluding `libs/internal/src/` — the inlined private pkg is only reachable
+  via its specifier, so it is legitimately "orphan" under strict graph rules.
+- Baseline regenerated: **19 `no-circular`** (all intra-vfs; the `vfs↔internal` cross edge is no
+  longer traversed — there are **no** `internal` cross edges in the baseline now).
+- Positive control still valid: injecting an undeclared import fires both `not-to-unresolvable` and
+  `no-non-package-json` (exit 2).
+
+Current clean run: `✔ no dependency violations found (179 modules, 418 dependencies cruised)` —
+`‼ 19 known violations ignored`. (The module/dependency counts differ from the original 23-entry
+baseline because the paths-free resolution and a later source change trimmed the cruised set.)

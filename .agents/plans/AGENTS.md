@@ -10,23 +10,24 @@ multi-step effort intends, what is locked, and where it stopped.
 - Keep the **decision table** and **progress ledger** inside the plan.
 - Close a plan (delete, or keep with a reason) only when slices are verified and debt is recorded.
 
-## Program status (2026-08-06)
+## Program status (2026-08-07)
 
 Critical path on `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160)).
-Re-read `git rev-parse --short HEAD` before citing SHAs (tip at status write: **`3fa31a3`** + uncommitted S5-R2-a).
+Re-read `git rev-parse --short HEAD` before citing SHAs (tip at status write: **`59d44c2`**).
 
-| Stream                   | Status                                                                                        | Evidence                                                                                                                                                                               |
-| ------------------------ | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| S0 Honesty + graph       | Done                                                                                          | PR #160 history                                                                                                                                                                        |
-| S1 Dep chunks C1–C3      | Done                                                                                          | C8 Renovate still open                                                                                                                                                                 |
-| S2 Vite+ migrate (WP-V2) | Done                                                                                          | [Vite+ report](../reports/vite-plus-migration.md), [Oxlint delta](../reports/oxlint-eslint-kit-delta.md)                                                                               |
-| S3 Solidify              | `PASS_WITH_DEBT`                                                                              | verify-exports, publint, SECURITY, provenance-ready release                                                                                                                            |
-| S4 AI meta + S4-R1       | Done                                                                                          | Standing dispositions in [workflows/index.md](../workflows/index.md); imported skill adaptation **withdrawn**                                                                          |
-| S5 TS project references | **Honesty end-state landed (R2-a done)**                                                      | [before](../reports/ts-project-references-before.md) · [research](../reports/ts-project-references-research.md) · [implementation](../reports/ts-project-references-implementation.md) |
-| S6 Workflows             | Bootstrapped                                                                                  | [workflows index](../workflows/index.md)                                                                                                                                               |
-| S7 Docs / tests / 1.0    | **`@neodx/std` + `@neodx/colors` 1.0 Changesets landed**                                      | [STATUS](../sessions/parallel-s7-r2c/STATUS.md); colors `d639c4b`; residual options → [#165](https://github.com/secundant/neodx/issues/165)                                            |
-| S5-R2-a                  | **Done** — base `paths`/`baseUrl` deleted; pack exports-native; `vite-tsconfig-paths` removed | [implementation](../reports/ts-project-references-implementation.md) § S5-R2-a                                                                                                         |
-| S5-R2-c                  | **Landed** (`594a2f4`); **reconfigured for paths-free world** (R2-a); R2-d deferred           | [s5-r2-ci-gates.md](../reports/s5-r2-ci-gates.md) · [#164](https://github.com/secundant/neodx/issues/164)                                                                              |
+| Stream                   | Status                                                                                                 | Evidence                                                                                                                                                                               |
+| ------------------------ | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S0 Honesty + graph       | Done                                                                                                   | PR #160 history                                                                                                                                                                        |
+| S1 Dep chunks C1–C3      | Done                                                                                                   | C8 Renovate still open                                                                                                                                                                 |
+| S2 Vite+ migrate (WP-V2) | Done                                                                                                   | [Vite+ report](../reports/vite-plus-migration.md), [Oxlint delta](../reports/oxlint-eslint-kit-delta.md)                                                                               |
+| S3 Solidify              | `PASS_WITH_DEBT`                                                                                       | verify-exports, publint, SECURITY, provenance-ready release                                                                                                                            |
+| S4 AI meta + S4-R1       | Done                                                                                                   | Standing dispositions in [workflows/index.md](../workflows/index.md); imported skill adaptation **withdrawn**                                                                          |
+| S5 TS project references | **Honesty end-state landed (R2-a done)**                                                               | [before](../reports/ts-project-references-before.md) · [research](../reports/ts-project-references-research.md) · [implementation](../reports/ts-project-references-implementation.md) |
+| S6 Workflows             | Bootstrapped                                                                                           | [workflows index](../workflows/index.md)                                                                                                                                               |
+| S7 Docs / tests / 1.0    | **`@neodx/std` + `@neodx/colors` 1.0 Changesets landed**                                               | [STATUS](../sessions/parallel-s7-r2c/STATUS.md); colors `d639c4b`; residual options → [#165](https://github.com/secundant/neodx/issues/165)                                            |
+| S5-R2-a                  | **Done** — base `paths`/`baseUrl` deleted; pack exports-native; `vite-tsconfig-paths` removed          | [implementation](../reports/ts-project-references-implementation.md) § S5-R2-a                                                                                                         |
+| S5-R2-b                  | **LANDED_WITH_DEBT** — `typeAware` on; `typeCheck` off (→ R2-f); node-types gap fixed on 7 pack leaves | [implementation](../reports/ts-project-references-implementation.md) § S5-R2-b · [#161](https://github.com/secundant/neodx/issues/161)                                                 |
+| S5-R2-c                  | **Landed** (`594a2f4`); **reconfigured for paths-free world** (R2-a); R2-d deferred                    | [s5-r2-ci-gates.md](../reports/s5-r2-ci-gates.md) · [#164](https://github.com/secundant/neodx/issues/164)                                                                              |
 
 ### Closed parallel session
 
@@ -38,9 +39,9 @@ Re-read `git rev-parse --short HEAD` before citing SHAs (tip at status write: **
 
 Board: [sessions/parallel-s7-r2c/STATUS.md](../sessions/parallel-s7-r2c/STATUS.md).
 
-**Next (S5 residuals):** R2-b — retry Oxlint `typeAware`/`typeCheck` (#161), now unblocked (base
-carries no `baseUrl`/`paths`). Then R2-d/e (ATTW + paired `.d.mts`/`.d.cts`, #164), R2-f (test
-tsconfig matrix). Do not pair R2-a with a product 1.0 Changeset.
+**Next (S5 residuals):** R2-b **done** (typeAware on, LANDED_WITH_DEBT). R2-f (test tsconfig matrix)
+now owns the `typeCheck` flip — unblocks the source-vs-packed-dts conflict in test files. Then R2-d/e
+(ATTW + paired `.d.mts`/`.d.cts`, #164). Do not pair R2-a with a product 1.0 Changeset.
 
 ### Residual debt (named issues)
 
