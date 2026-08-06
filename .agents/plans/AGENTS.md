@@ -37,7 +37,7 @@ Re-read `git rev-parse --short HEAD` before citing SHAs (A∥C closed at **`c73f
 
 Board: [sessions/parallel-s7-r2c/STATUS.md](../sessions/parallel-s7-r2c/STATUS.md).
 
-**Next:** S5-R2-a (paths delete) **or** S7 `@neodx/colors` 1.0. Do not pair R2-a with a product 1.0 PR.
+**Next:** Unblock pack dts for empty base paths (S5-R2-a **BLOCK** @ `d639c4b`: figma `TS2742` on hashed vfs/log dist types), then retry R2-a. Colors 1.0 already landed (`d639c4b`). Do not pair R2-a with a product 1.0 PR.
 
 ### Residual debt (named issues)
 
