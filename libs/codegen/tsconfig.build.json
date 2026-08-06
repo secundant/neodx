@@ -9,8 +9,6 @@
     "rootDir": "src",
     "outDir": "dist-types",
     "tsBuildInfoFile": "dist-types/.tsbuildinfo",
-    "baseUrl": ".",
-    "paths": {},
     "customConditions": ["development"],
     "module": "ESNext",
     "types": ["node"],
