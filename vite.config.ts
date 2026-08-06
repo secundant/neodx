@@ -44,10 +44,19 @@ export default defineConfig({
     ],
     plugins: ['typescript', 'import'],
     options: {
-      // tsgolint typeAware/typeCheck still off (#161). S5-R2-a deleted base `paths`/`baseUrl`
-      // (no longer a blocker for tsgolint, which hard-rejects `baseUrl`), so the retry is
-      // unblocked — tracked as S5-R2-b. Leave off until that retry lands.
-      typeAware: false,
+      // typeAware is ON (#161, S5-R2-b): type-aware rules now run against the
+      // per-package tsconfig programs. The dominant blocker was a program-config
+      // gap — tsgolint, unlike `tsc`, does not auto-include `@types/node`, so the
+      // pack-leaf `libs/*/tsconfig.json` files that omitted `types` lost Node/DOM
+      // globals (~68 false TS2591/2304/2552/2584). Fixed by adding `types: ["node"]`
+      // to the 7 lib pack leaves whose source uses Node globals (fs/glob/internal/
+      // log/std/vfs/figma). typeCheck stays OFF: enabling it surfaces a source-vs-
+      // packed-dts conflict in test files (`@neodx/vfs` resolves to gitignored
+      // `dist/types` while tests use source) — that needs the R2-f test tsconfig
+      // matrix, not a dishonest override. The remaining ~56 type-aware findings are
+      // warnings (non-blocking), mostly intentional method refs (unbound-method) and
+      // sync/async backend unions (await-thenable); triaged, not mass-suppressed.
+      typeAware: true,
       typeCheck: false
     },
     overrides: [
