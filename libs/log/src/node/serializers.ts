@@ -10,7 +10,9 @@ export type LogSerializers = Record<string, LogSerializer>;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type LogSerializer = (value: any) => any;
 
-// TODO https://linear.app/secundant/issue/SEC-42/neodxlog-top-level-serializers-api
+// TODO A top-level public serializers API is deferred. `serializeMeta`/`DEFAULT_SERIALIZERS`
+// are internal to the node targets today; a first-class public contract is tracked as
+// https://linear.app/secundant/issue/SEC-42/neodxlog-top-level-serializers-api (no GitHub issue yet).
 export function serializeMeta(meta: LoggerBaseMeta, serializers?: LogSerializers) {
   if (!serializers) return meta;
   const result = {} as LoggerBaseMeta;
