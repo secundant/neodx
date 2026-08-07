@@ -14,7 +14,7 @@ export interface SerializeJsonParams {
 
 /**
  * Parses `input` as JSON, falling back to JSONC (e.g. `tsconfig.json`) on `JSON.parse` failure.
- * JSONC contract is deferred to #166; today it is an incidental fallback, not a first-class mode.
+ * TODO Define the JSONC contract — first-class mode vs incidental fallback, and error shape (#166).
  */
 export function parseJson<T = unknown>(input: string, options?: ParseJsonParams): T {
   try {
@@ -25,8 +25,8 @@ export function parseJson<T = unknown>(input: string, options?: ParseJsonParams)
 }
 
 /**
- * Serializes `input` to a JSON string with a trailing newline. Not circular-reference safe;
- * a safe-serialize policy is deferred to #166.
+ * Serializes `input` to a JSON string with a trailing newline.
+ * TODO Not circular-reference safe — pick a policy (throw vs elide vs placeholder) (#166).
  */
 export function serializeJson<T = unknown>(
   input: T,
@@ -35,7 +35,7 @@ export function serializeJson<T = unknown>(
   return JSON.stringify(input, replacer, spaces) + '\n';
 }
 
-// Safe JSON parsing with circular-reference support is deferred to #166.
+// TODO Replace with a safe JSON parser with circular-reference support (#166).
 const parseJsonAsJSON = <T = unknown>(input: string) => JSON.parse(input) as T;
 const parseJsonAsJSONC = <T = unknown>(input: string, options?: ParseJsonParams) => {
   const errors: ParseError[] = [];
