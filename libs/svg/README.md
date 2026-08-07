@@ -9,13 +9,22 @@
 
 Supercharge your icons ⚡️
 
-> We're working on the new documentation, please, visit [neodx.pages.dev](https://neodx.pages.dev/svg) to see the latest version.
+`@neodx/svg` is an SVG sprite pipeline: it **collects** your SVG files, **optimizes** them
+(with SVGO) and **resets their colors** (to `currentColor` by default), **builds** grouped,
+content-hashed sprites, and **emits** TypeScript typings and runtime metadata you can consume
+from an `<Icon />` component. It is exposed as a programmatic API, bundler plugins for all
+major bundlers, and a (deprecated-but-supported) CLI.
 
-- TypeScript support out of box - generated types and [information about your sprites](#-content-based-hashes-and-runtime-metadata-generation)
-- [Built-in integrated plugins](#integrate-with-your-bundler) for all major bundlers: `vite`, `webpack`, `rollup`, `esbuild`, etc.
+> The in-depth, up-to-date documentation lives at [neodx.pages.dev/svg](https://neodx.pages.dev/svg).
+> This README documents the current public surface honestly; source (`src/index.ts` and the
+> bundler entry files) remains the single source of truth.
+
+- TypeScript support out of the box - generated types and [runtime metadata](#-content-based-hashes-and-runtime-metadata-generation)
+- [Built-in bundler plugins](#integrate-with-your-bundler) for `vite`, `webpack`, `rollup`, `esbuild`, and `rspack`
 - Optional [grouping by folders](https://neodx.pages.dev/svg/group-and-hash.html)
 - Optimization with [SVGO](https://neodx.pages.dev/svg/optimization.html)
 - [Automatically reset colors](#-automatically-reset-colors)
+- A [programmatic API](#programmatic-api) for integrating the pipeline into your own tooling
 
 ## Installation and usage
 
@@ -28,16 +37,25 @@ yarn add -D @neodx/svg
 pnpm add -D @neodx/svg
 ```
 
-We're highly recommended to start with our ["Getting started" guide](https://neodx.pages.dev/svg/).
+We highly recommend starting with our ["Getting started" guide](https://neodx.pages.dev/svg/).
 
 ### Integrate with your bundler
 
-> For better understanding and to access the latest version, please visit [our documentation](https://neodx.pages.dev/svg/setup/).
+> For a deeper walkthrough, see [our setup guide](https://neodx.pages.dev/svg/setup/).
 
-Our plugins are built upon [unplugin](https://github.com/unjs/unplugin)
-and provide a consistent interface and working principle across all multiple bundlers and frameworks.
+The bundler plugins are built on [unplugin](https://github.com/unjs/unplugin), so they share
+one consistent interface across all supported bundlers. Import the entry that matches your
+bundler — each subpath's default export is the plugin for that bundler:
 
-For instance, here's an example of `vite` plugin with some options:
+| Import               | Bundler | Default export     |
+| -------------------- | ------- | ------------------ |
+| `@neodx/svg/vite`    | Vite    | `unplugin.vite`    |
+| `@neodx/svg/webpack` | Webpack | `unplugin.webpack` |
+| `@neodx/svg/rollup`  | Rollup  | `unplugin.rollup`  |
+| `@neodx/svg/esbuild` | esbuild | `unplugin.esbuild` |
+| `@neodx/svg/rspack`  | Rspack  | `unplugin.rspack`  |
+
+For instance, here's a `vite` plugin with common options:
 
 ```typescript
 import svg from '@neodx/svg/vite';
@@ -45,17 +63,72 @@ import svg from '@neodx/svg/vite';
 export default defineConfig({
   plugins: [
     svg({
-      root: 'assets',
+      inputRoot: 'assets',
       output: 'public'
     })
   ]
 });
 ```
 
-It will search for all SVG files in `assets` folder, group them by folders, optimize them with `svgo`,
-reset all colors to `currentColor` and generate sprites in `public` folder.
+It will search for all SVG files in the `assets` folder, group them by folder, optimize them
+with SVGO, reset all colors to `currentColor`, and generate sprites in the `public` folder.
+
+The same options work for every other bundler entry — only the import changes, for example
+`import svg from '@neodx/svg/webpack'`.
 
 For more details, see our [Step-by-step guide](https://neodx.pages.dev/svg/).
+
+## Programmatic API
+
+The root entry `@neodx/svg` exposes the building blocks of the pipeline so you can run it
+standalone (for example, in a custom build script or another tool). The bundler plugins and
+the CLI are thin wrappers around these primitives.
+
+| Export                         | Kind  | Purpose                                                                                                                                           |
+| ------------------------------ | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `createSvgSpriteBuilder`       | value | Creates the sprite builder: collects, optimizes, resets colors, builds sprites, and emits metadata.                                               |
+| `createSvgCollector`           | value | Collects SVG files from a VFS, parses them, and applies optimize + reset-colors. Used by the builder.                                             |
+| `createSvgOptimizer`           | value | Creates the SVGO-backed optimizer with separate `symbol` and `sprite` minification modes.                                                         |
+| `createSvgResetColors`         | value | Creates the color-reset transformation (defaults to `fill`/`stroke` → `currentColor`).                                                            |
+| `getSvgSizeProps`              | value | Reads `width`, `height`, and `viewBox` (falling back across the three) from a parsed SVG node.                                                    |
+| `parseViewBox`                 | value | Parses a `viewBox` string into `[width, height]` (or `[]`).                                                                                       |
+| `CreateSvgSpriteBuilderParams` | type  | Options for `createSvgSpriteBuilder` (`inputRoot`, `output`, `group`, `optimize`, `resetColors`, `metadata`, `fileName`, `inline`, `cleanup`, …). |
+| `SvgCollector`                 | type  | Return type of `createSvgCollector`.                                                                                                              |
+| `SvgOptimizer`                 | type  | Return type of `createSvgOptimizer`.                                                                                                              |
+| `SvgResetColors`               | type  | Return type of `createSvgResetColors`.                                                                                                            |
+| `SvgResetColorsParams`         | type  | Color-reset configuration (a single rule or an array of rules).                                                                                   |
+| `SpriteMeta`, `SymbolMeta`     | type  | Metadata shapes describing a generated sprite and its symbols.                                                                                    |
+| `SvgLogger`                    | type  | Logger interface compatible with `@neodx/vfs`.                                                                                                    |
+
+```typescript
+import { createSvgSpriteBuilder } from '@neodx/svg';
+
+const builder = createSvgSpriteBuilder({
+  inputRoot: 'assets',
+  output: 'public/sprites',
+  group: true,
+  metadata: 'src/sprite.gen.ts'
+});
+
+await builder.load('**/*.svg');
+await builder.build();
+```
+
+The plugin options (`inputRoot`, `input`, `output`, `group`, `optimize`, `resetColors`,
+`metadata`, `fileName`, `inline`, `cleanup`, …) are the same ones documented under
+[Features](#features) below. The `inputRoot` option replaces the deprecated `root` option.
+
+## CLI (deprecated, but supported in 1.x)
+
+`@neodx/svg` ships a `sprite` binary (`bin.mjs`) backed by the `@neodx/svg/cli` subpath:
+
+```shell
+sprite -i 'assets/**/*.svg' -o public/sprites -d src/sprite.gen.ts
+```
+
+The CLI is **deprecated** in favor of the [programmatic API](#programmatic-api) and may be
+removed in a future major release, but it **remains supported in 1.x**. New integrations
+should prefer the programmatic API or a bundler plugin.
 
 ## Features
 
@@ -113,7 +186,7 @@ To solve this issue and achieve content-based hashes in filenames, you need to t
 export default defineConfig({
   plugins: [
     svg({
-      root: 'assets',
+      inputRoot: 'assets',
       output: 'public/sprites',
       fileName: '{name}.{hash:8}.svg',
       metadata: {
@@ -191,7 +264,7 @@ export default defineConfig({
   plugins: [
     react(),
     svg({
-      root: 'assets',
+      inputRoot: 'assets',
       group: true,
       output: 'public/sprites',
       metadata: 'src/shared/ui/icon/sprite.gen.ts'
@@ -249,6 +322,18 @@ svg({
 +      viewBox: true,
 +    }
 +  }
+});
+```
+
+### Move from `root` to `inputRoot`
+
+The `root` option is deprecated and will be removed in a future major release. Use
+`inputRoot` instead — the behavior is identical.
+
+```diff
+svg({
+-  root: 'assets',
++  inputRoot: 'assets',
 });
 ```
 
