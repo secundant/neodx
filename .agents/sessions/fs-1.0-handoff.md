@@ -4,13 +4,16 @@ Single-lane slice. Ran in parallel with the S5-R2-b typeAware lane (#161) by fil
 
 ## Result
 
-- **Tip:** `c9f6384` on `improve/neodx` (not pushed; CI opt-in per neodx `AGENTS.md`).
+- **Tip:** tracking/handoff corrections on `improve/neodx` (not pushed; CI opt-in per neodx
+  `AGENTS.md`). Substantive code tip remains `c9f6384`.
 - **My commits** (clean linear history, interleaved with the parallel typeAware lane):
   - `2cefdf7` `feat(fs): ship 1.0 honesty freeze for documented API`
   - `3d93e58` `docs(fs): track all three 1.0-deferred TODOs in changeset (#166)`
   - `ebe9c33` `test(fs): point shared-util TODO at #166`
   - `84a1eaa` `docs(fs): add 1.0 handoff note (S7)`
   - `c9f6384` `fix(fs): restore TODO tokens in json.ts (#166)`
+  - `75e84f6` `docs(fs): correct handoff — 4 TODO sites, token preserved (c9f6384)`
+  - follow-up: align changeset + handoff + #166 with all four TODO sites
 - **Changeset:** `.changeset/fs-1.0.0.md` → `@neodx/fs` major (`0.0.13` → `1.0.0`).
 
 ## What landed
@@ -32,10 +35,11 @@ Single-lane slice. Ran in parallel with the S5-R2-b typeAware lane (#161) by fil
   - `parseJsonAsJSON` safe-parser replacement — `json.ts`;
   - duplicated array-compare test helper (`expectArrayEq` in `read.test.ts` mirrors the
     sort-then-compare pattern in `scan.test.ts` — the TODO is vindicated, not speculative).
-    Correction history: `2cefdf7` stripped the `TODO` token from all `json.ts` markers and from
-    `read.test.ts` (concern survived in prose/#166, but the grep signal was lost). A reviewer caught
-    the `read.test.ts` case (`ebe9c33`), then the same defect in `json.ts` (`c9f6384`). All four now
-    retain the token + improved prose + `#166` pointer.
+    Correction history: `2cefdf7` stripped the `TODO` token from the three `json.ts` markers
+    (concern survived in prose/#166, but the grep signal was lost). `c9f6384` restored those
+    tokens. `read.test.ts` never lost its `TODO` — `ebe9c33` enriched the existing marker with
+    the duplication rationale and a `#166` pointer. All four now retain the token + prose +
+    `#166` pointer (`rg -c "TODO" libs/fs/src` totals 4).
 - Added `"types": ["node"]` to `libs/fs/tsconfig.json` to match sibling libs and pass the Vite+
   staged type-aware lint gate on fs sources.
 
@@ -66,11 +70,11 @@ documented surface as-is.
 
 The S5-R2-b typeAware lane landed `22a2ec0 build(lint): enable Oxlint typeAware (#161, S5-R2-b)`
 during this slice (enabled `typeAware: true`, kept `typeCheck: false`, added `types: ["node"]` to
-figma/glob/internal/log/std/vfs). It landed cleanly between my commits; my three commits are
-fs-scoped only. **Zero file overlap** between my commits and `22a2ec0`:
+figma/glob/internal/log/std/vfs). It landed cleanly between my commits; fs commits are
+fs-scoped only. **Zero file overlap** between fs commits and `22a2ec0`:
 
 - Mine: `.changeset/fs-1.0.0.md`, `libs/fs/{README.md, src/read.ts, src/json.ts,
-src/__tests__/read.test.ts, tsconfig.json}`.
+src/__tests__/read.test.ts, tsconfig.json}`, `.agents/sessions/fs-1.0-handoff.md`.
 - Parallel: `vite.config.ts`, `apps/examples/**`, `libs/{figma,glob,internal,log,std,vfs}/tsconfig.json`.
 
 Note: both lanes independently added `types: ["node"]` to a lib tsconfig (me: fs; them: the others),
@@ -78,9 +82,10 @@ so the two changes are consistent, not conflicting.
 
 ## Residuals
 
-- [#166](https://github.com/secundant/neodx/issues/166) — post-1.0 fs debt, three items:
-  `parseJson` JSONC contract, `serializeJson` circular-ref safety, shared array-compare test util.
-  All three TODOs are preserved in source with `#166` pointers.
+- [#166](https://github.com/secundant/neodx/issues/166) — post-1.0 fs debt, **four** items:
+  `parseJson` JSONC contract, `serializeJson` circular-ref safety, `parseJsonAsJSON` safe-parser
+  replacement, shared array-compare test util. All four TODOs are preserved in source with
+  `#166` pointers.
 
 ## Out of scope / untouched
 

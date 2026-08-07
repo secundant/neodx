@@ -26,6 +26,7 @@ This release makes the package's documented Intention match reality:
   preserved in source with `#166` pointers so the signal is not lost):
   - `parseJson` JSONC contract (first-class vs. incidental fallback, error shape);
   - `serializeJson` circular-reference safety (current behavior is not circular-ref safe);
+  - `parseJsonAsJSON` safe-parser replacement (circular-reference-aware parse path);
   - a duplicated array-compare test helper (`expectArrayEq` in `read.test.ts` mirrors the
     sort-then-compare pattern in `scan.test.ts`).
     Current behavior is unchanged and now documented honestly.
@@ -33,5 +34,5 @@ This release makes the package's documented Intention match reality:
 **No breaking Public API change.** All existing exports, signatures, and behavior are preserved;
 the 1.0 major signals stability of the documented surface, not a removal.
 
-Residual (not blocking 1.0): the three items above are tracked in #166 for future, documented
+Residual (not blocking 1.0): the four items above are tracked in #166 for future, documented
 decisions.
