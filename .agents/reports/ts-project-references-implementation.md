@@ -8,7 +8,7 @@
 | Base tip    | `1579d67`                                                                                         |
 | Cutover tip | `0dc4a98` (build) + `7e0ec17` (docs)                                                              |
 | Status tip  | `508458b` (R2-a BLOCK recorded)                                                                   |
-| R2-a tip    | _(this session)_ — base paths deleted; `vite-tsconfig-paths` removed                              |
+| R2-a tip    | `b000233` (paths) + `643d1c0` (Vite) + `4c35fb4` (report actualization)                           |
 | Research    | [ts-project-references-research.md](./ts-project-references-research.md)                          |
 | Before      | [ts-project-references-before.md](./ts-project-references-before.md)                              |
 | Framing     | Experiment on neodx. **Do not** declare Nubis adopts project references.                          |
@@ -78,7 +78,9 @@ Source imports exist both ways: `vfs ↔ internal`. **Project references must st
 
 ### Tests vs src
 
-Build projects `include: ["src/**/*.ts"]` and **exclude** `*.test.ts`, `*.test-d.ts`, `__tests__/**`, `examples`, `bench`, `docs`, `test`, `tests`. Vitest still runs tests via its own config. Dedicated `tsconfig.test.json` is an S5-R2 item (research T2 matrix).
+Build projects `include: ["src/**/*.ts"]` and **exclude** `*.test.ts`, `*.test-d.ts`, `__tests__/**`, `examples`, `bench`, `docs`, `test`, `tests`. Vitest still runs tests via its own config. This proves the production declaration graph only; it is not evidence that test, config, or type-test programs are covered.
+
+S5-R2-f must freeze the current diagnostic counts and compiler file lists before changing config, then give runtime tests, `*.test-d.ts`, and Node/Vite config files explicit non-emitting owners. A smaller diagnostic set is not success unless the same intended files remain checked. Test-only reverse imports stay in the test graph and must not become production references merely to make `tsc -b` accept them.
 
 ### CI sequence
 
@@ -150,7 +152,9 @@ Explicit future-iteration goals (also in Nubis plan §S5 / checklist / next-sess
 | **S5-R2-f** | `tsconfig.test.json` / `test-d` / `node` matrix | Build exclude is enough for cutover                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Documented per-package matrix live          |
 | **S5-R2-g** | Apps/examples/e2e as referenced projects        | Lib unification first                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Optional; apps stay consumers               |
 
-**Also open (not numbered, do with R2-a or S3 follow-ups):** cold-consumer unpack of one packed tarball proving `development` is absent and `exports` → `dist`; optional migrate `constraints.pro` → `yarn.config.cjs` for composite/no-paths invariants.
+Before R2-f closes, its dedicated non-emitting projects must pass from a clean declaration-output state without reducing intended file coverage. Runtime tests, `*.test-d.ts`, and Node/Vite config files keep separate owners, and test-only reverse imports do not become production references.
+
+**Still open, separately owned:** cold-consumer unpack of one packed tarball proving `development` is absent and `exports` → `dist`; optional migrate `constraints.pro` → `yarn.config.cjs` for composite/no-paths invariants.
 
 ## Failure catalog (reproduce → fix)
 
@@ -186,9 +190,9 @@ Explicit future-iteration goals (also in Nubis plan §S5 / checklist / next-sess
 
 **Recommendation: proceed-with-guards** (neodx); **R2-a is landed** — Nubis adoption remains a separate owner decision after a CI soak.
 
-**Copy:** honesty-first deps; `development` exports; build vs pack tsconfig split; pack-leaf `customConditions:["development"]` + `dts.eager`; soft cycle handling; typecheck-before-pack; drift gate; dep-cruiser with `preserveSymlinks`; unified private+publishable solution with soft edges for source cycles.
+**Copy:** honesty-first deps; `development` exports; build vs pack tsconfig split; pack-leaf `customConditions:["development"]` + `dts.eager`; soft cycle handling; typecheck-before-pack; drift gate; dep-cruiser with `preserveSymlinks`; unified private+publishable solution with soft edges for source cycles; frozen diagnostic and file-coverage baselines before config repartitioning; separate production-build, runtime-test, type-test, and tool-config ownership.
 
-**Forbid:** putting `references` on the tsconfig pack reads; forcing root Vite `resolve.conditions:['development']`; assuming hoist/pack dist proves encapsulation; excluding private libs from the typed graph “because they don’t publish”.
+**Forbid:** putting `references` on the tsconfig pack reads; forcing root Vite `resolve.conditions:['development']`; assuming hoist/pack dist proves encapsulation; excluding private libs from the typed graph “because they don’t publish”; treating fewer diagnostics as success without proving file coverage; turning a test-only reverse import into a production reference.
 
 ## S5-R2-a — deleting base `paths` (approach matrix + winning fix)
 
