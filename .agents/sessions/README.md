@@ -8,6 +8,5 @@ right now_.
 | ------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------- |
 | [parallel-s7-r2c](./parallel-s7-r2c/) | Lane A (`523574a`) ∥ Lane C (`594a2f4`) — **closed** `CONFIRMED_WITH_DEBT` | [STATUS.md](./parallel-s7-r2c/STATUS.md) |
 
-Prompts live under [`../../prompts/`](../../prompts/) (`lane-*.md`, `revalidate-*.md`).
 When a session closes, keep the STATUS log as evidence; move the folder under
 `archive/` only if the board is noise relative to reports.

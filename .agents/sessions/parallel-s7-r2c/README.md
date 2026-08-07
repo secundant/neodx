@@ -1,12 +1,12 @@
 # Parallel session — S7 std ∥ S5-R2 CI gates
 
-|              |                                                                                           |
-| ------------ | ----------------------------------------------------------------------------------------- |
-| Opened       | 2026-08-05                                                                                |
-| Tip at open  | `7e0ec17` on `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160))     |
-| Pairing      | **Lane A** + **Lane C** (conflict-safe). **Not** Lane B (S5-R2-a paths delete).           |
-| Live board   | [STATUS.md](./STATUS.md)                                                                  |
-| Revalidation | [`prompts/revalidate-parallel-s7-r2c.md`](../../../prompts/revalidate-parallel-s7-r2c.md) |
+|              |                                                                                       |
+| ------------ | ------------------------------------------------------------------------------------- |
+| Opened       | 2026-08-05                                                                            |
+| Tip at open  | `7e0ec17` on `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160)) |
+| Pairing      | **Lane A** + **Lane C** (conflict-safe). **Not** Lane B (S5-R2-a paths delete).       |
+| Live board   | [STATUS.md](./STATUS.md)                                                              |
+| Revalidation | Closed — dual-check in [STATUS.md](./STATUS.md) (throwaway prompts removed)           |
 
 ## Why this pairing
 
@@ -19,12 +19,7 @@
 
 ## How to run
 
-1. Both agents **read** [STATUS.md](./STATUS.md) and this README before mutating.
-2. Paste the matching prompt into a fresh session:
-   - [Lane A](../../../prompts/lane-a-s7-std-1.0.md)
-   - [Lane C](../../../prompts/lane-c-s5-r2-ci-gates.md)
-3. Each agent claims its lane on the STATUS board (`IN_PROGRESS`) with base SHA.
-4. After both report `DONE` (or one `BLOCKED`), run the [revalidation prompt](../../../prompts/revalidate-parallel-s7-r2c.md) in a **third** session.
+Session is **closed** (`CONFIRMED_WITH_DEBT` in [STATUS.md](./STATUS.md)). Do not re-run Lane A/C or the revalidation prompt; the throwaway handoffs under `prompts/` were removed after close. Keep this README as ownership/matrix context only.
 
 ## Conflict matrix (hard)
 

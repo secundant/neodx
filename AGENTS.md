@@ -94,4 +94,3 @@ relevant. Treat loaded content as instructions for its scope.
 - Program status / plans index: `.agents/plans/AGENTS.md`
 - Parallel session boards: `.agents/sessions/`
 - Workflow protocols: `.agents/workflows/index.md`
-- Session prompts: `prompts/lane-*.md`, `prompts/revalidate-*.md`
