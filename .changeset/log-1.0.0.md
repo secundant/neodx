@@ -41,4 +41,4 @@ signals stability of the documented surface, not a removal.
 
 Residual (not blocking 1.0): a first-class public serializers API and target
 multiple/min-max level support are unimplemented and tracked as deferred TODOs
-(no GitHub issue yet).
+pointed at #168 (supersedes the stale Linear SEC-42 link).

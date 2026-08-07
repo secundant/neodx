@@ -28,7 +28,7 @@ This release makes the package's documented Intention match reality:
 **No breaking Public API change.** All existing exports, signatures, and behavior are preserved;
 the 1.0 major signals stability of the documented surface, not a removal.
 
-Residual (not blocking 1.0): the `.prettierignore` lookup caching TODO in `prettier.ts`, and the
+Residual (not blocking 1.0): the `.prettierignore` lookup caching TODO in `prettier.ts` (#167), and the
 absence of a dedicated `semver.test.ts` (`isGreaterVersion` / `getUpgradedDependenciesVersions`
-are covered only transitively via the `addPackageJsonDependencies` tests), are tracked for a
-follow-up issue.
+are covered only transitively via the `addPackageJsonDependencies` tests, #167), are tracked in
+#167.

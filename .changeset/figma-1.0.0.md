@@ -26,8 +26,8 @@ This release makes the package's documented Intention match reality:
     `type`) now throws a Zod error (`Wrong value for "Figma configuration":
 …`) instead of an `invariant` string. No previously-valid config breaks.
   - Deep `collect`/`target`/`filter`/`resolve`/`download`/`write` predicate
-    validation is intentionally deferred (tracked separately); those fields
-    pass through as opaque values, preserving current behavior.
+    validation is intentionally deferred (#169); those fields pass through as
+    opaque values, preserving current behavior.
 - **README honesty:** fixed the npm badge anchor (it pointed at `@neodx/log`
   by copy-paste), replaced the "under 0.x.x breaking changes" framing with a
   1.0 stability statement, rewrote the Motivation bullet that boasted "no

@@ -141,9 +141,9 @@ export interface LoggerParams<Level extends string> {
    * Additional fields that will be added to every log chunk.
    */
   meta: LoggerBaseMeta;
-  // TODO Deferred: a single target config currently accepts one minimum `level`; accepting
+  // TODO(#168) Deferred: a single target config currently accepts one minimum `level`; accepting
   // multiple discrete levels is not implemented.
-  // TODO Deferred: a single target config currently accepts one minimum `level`; min/max level
+  // TODO(#168) Deferred: a single target config currently accepts one minimum `level`; min/max level
   // ranges are not implemented.
   /**
    * List of streams that will receive log chunks.

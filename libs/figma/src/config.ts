@@ -81,7 +81,7 @@ export async function resolveNormalizedConfiguration(
   }) as NormalizedConfiguration;
 }
 
-// TODO(1.x): Validate deep `collect`/`target`/`filter` predicate shapes.
+// TODO(#169): Validate deep `collect`/`target`/`filter` predicate shapes.
 //   The top-level config + export item + token/output/fileId validation moved
 //   to Zod above; the nested collect/target/filter/resolver/download/write
 //   fields still pass through as opaque values. Fold them into typed Zod
