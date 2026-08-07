@@ -4,11 +4,13 @@ Single-lane slice. Ran in parallel with the S5-R2-b typeAware lane (#161) by fil
 
 ## Result
 
-- **Tip:** `ebe9c33` on `improve/neodx` (not pushed; CI opt-in per neodx `AGENTS.md`).
+- **Tip:** `c9f6384` on `improve/neodx` (not pushed; CI opt-in per neodx `AGENTS.md`).
 - **My commits** (clean linear history, interleaved with the parallel typeAware lane):
   - `2cefdf7` `feat(fs): ship 1.0 honesty freeze for documented API`
   - `3d93e58` `docs(fs): track all three 1.0-deferred TODOs in changeset (#166)`
   - `ebe9c33` `test(fs): point shared-util TODO at #166`
+  - `84a1eaa` `docs(fs): add 1.0 handoff note (S7)`
+  - `c9f6384` `fix(fs): restore TODO tokens in json.ts (#166)`
 - **Changeset:** `.changeset/fs-1.0.0.md` → `@neodx/fs` major (`0.0.13` → `1.0.0`).
 
 ## What landed
@@ -22,18 +24,24 @@ Single-lane slice. Ran in parallel with the S5-R2-b typeAware lane (#161) by fil
   - frames the package as a thin real-FS helper layer and points deferred-write needs to
     `@neodx/vfs`.
 - Removed a stray `console.log` in `deepReadDir` (`libs/fs/src/read.ts`) that logged every dir read.
-- **TODOs preserved, not deleted** — all three 1.0-deferred TODOs are kept in source with `#166`
-  pointers, and tracked in [#166](https://github.com/secundant/neodx/issues/166):
-  - `parseJson` JSONC contract (first-class vs. incidental fallback, error shape);
-  - `serializeJson` circular-reference safety (current behavior is not circular-ref safe);
+- **TODOs preserved, not deleted** — all four 1.0-deferred TODOs are kept in source, carry the
+  `TODO` token (so `rg TODO` and reviewers still see them), and point at
+  [#166](https://github.com/secundant/neodx/issues/166):
+  - `parseJson` JSONC contract (first-class vs. incidental fallback, error shape) — `json.ts`;
+  - `serializeJson` circular-reference safety (not circular-ref safe) — `json.ts`;
+  - `parseJsonAsJSON` safe-parser replacement — `json.ts`;
   - duplicated array-compare test helper (`expectArrayEq` in `read.test.ts` mirrors the
     sort-then-compare pattern in `scan.test.ts` — the TODO is vindicated, not speculative).
+    Correction history: `2cefdf7` stripped the `TODO` token from all `json.ts` markers and from
+    `read.test.ts` (concern survived in prose/#166, but the grep signal was lost). A reviewer caught
+    the `read.test.ts` case (`ebe9c33`), then the same defect in `json.ts` (`c9f6384`). All four now
+    retain the token + improved prose + `#166` pointer.
 - Added `"types": ["node"]` to `libs/fs/tsconfig.json` to match sibling libs and pass the Vite+
   staged type-aware lint gate on fs sources.
 
 No breaking Public API change; the major signals stability of the documented surface, not a removal.
 
-## Verify (local, cold, on tip `ebe9c33`)
+## Verify (local, cold, on tip `c9f6384`)
 
 typeAware is now ON repo-wide (`vite.config.ts` `typeAware: true`, `typeCheck: false`) — landed
 concurrently by the parallel lane in `22a2ec0` (between my `2cefdf7` and `3d93e58`).
