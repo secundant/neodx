@@ -3132,6 +3132,7 @@ __metadata:
     cosmiconfig: "npm:9.0.0"
     pathe: "npm:1.1.2"
     svgo: "npm:3.3.2"
+    zod: "npm:3.23.8"
   bin:
     figma: bin.mjs
   languageName: unknown

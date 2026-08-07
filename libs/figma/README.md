@@ -3,14 +3,16 @@
 The modern Figma integration tools, typed API, human-friendly files traversing, assets exporter, and more.
 
 <div align="center">
-  <a href="https://www.npmjs.com/package/@neodx/log">
+  <a href="https://www.npmjs.com/package/@neodx/figma">
     <img src="https://img.shields.io/npm/v/@neodx/figma.svg" alt="npm" />
   </a>
   <img src="https://img.shields.io/npm/l/@neodx/figma.svg" alt="license"/>
 </div>
 
-> **Warning**
-> This project is still in the development stage, under 0.x.x version breaking changes can be introduced in any release, but I'll try to make them loud.
+> **Note**
+> `@neodx/figma` is a publicly published flagship package. From 1.0 onward the documented Public API
+> (the root entry plus the `./core`, `./graph`, `./export`, and `./cli` subpaths) is intended to stay
+> stable; breaking changes ship as a new major with a Changeset and migration notes.
 
 - Flexible optimized Export API - the simple but powerful way to automate your design system
 - Fully Typed Figma API and common helpers
@@ -26,6 +28,19 @@ pnpm install -D @neodx/figma
 # npm
 npm install -D @neodx/figma
 ```
+
+### Imports
+
+`@neodx/figma` ships several entry points. The root barrel covers most use cases;
+import from a subpath when you only need one concern (smaller, more precise graphs):
+
+| Entry                 | Provides                                                                                                                     |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `@neodx/figma`        | Everything below, re-exported from one barrel (API client, graph, export, utils, config).                                    |
+| `@neodx/figma/core`   | The typed Figma REST client: `createFigmaApi`, `FigmaApi`, and the Figma type enums.                                         |
+| `@neodx/figma/graph`  | File graph helpers: `createFileGraph`, `createNodesGraph`, `collectNodes`, `extractNodeType`.                                |
+| `@neodx/figma/export` | The asset export pipeline: `exportFileAssets`, `exportPublishedComponents`, and the low-level resolvers/downloaders/writers. |
+| `@neodx/figma/cli`    | The `figma` CLI builder: `createFigmaCli` (used by the `figma export` command).                                              |
 
 > **Note** We're migrating our documentation to the standalone website, so some parts of the current documentation may be outdated.
 >
@@ -257,7 +272,10 @@ So I decided to create my own Figma API, which will be:
 - **Fully typed** consistent Figma API and common helpers
 - **Convenient high-level** Node.JS API for working with Figma projects
 - **Web API based** and not depends on specific third-party libraries
-- **Safe** and **stable** as possible without strict value validation (via `zod`, `runtypes` or something like that)
+- **Validated configuration** — the top-level config (token, export items, `fileId`/`output`)
+  is parsed with [Zod](https://zod.dev), so a malformed `figma.config.*` fails with a clear
+  error instead of an opaque runtime failure. (Deep `collect`/`target`/`filter` predicate
+  validation is still on the roadmap.)
 - etc.
 
 In other words, the holistic high-level well-featured instrument.

@@ -97,7 +97,8 @@
     "commander": "12.0.0",
     "cosmiconfig": "9.0.0",
     "pathe": "1.1.2",
-    "svgo": "3.3.2"
+    "svgo": "3.3.2",
+    "zod": "3.23.8"
   },
   "devDependencies": {
     "@neodx/internal": "workspace:^"
