@@ -10,10 +10,18 @@ const NON_SEMVER_PRIORITY = {
 };
 
 /**
- * Check if incoming version is greater than existing version (including non-semver versions).
- * @param incoming Incoming version
- * @param existing Existing version
- * @return True if incoming version is greater than existing version
+ * Check if `incoming` is a greater version than `existing`, with limited support for non-semver
+ * dist-tags (`*`, `next`, `latest`, `previous`, `legacy`) ranked in that order.
+ *
+ * Rules, in order:
+ * - both non-semver → compare by the fixed tag priority;
+ * - exactly one non-semver → `true` (a tag is treated as newer than a pinned semver, and vice
+ *   versa, so any tag/semver mix is considered an upgrade);
+ * - both semver → coerce and compare with `>`.
+ *
+ * @param incoming Incoming version (semver or one of the known dist-tags)
+ * @param existing Existing version (semver or one of the known dist-tags)
+ * @return `true` if `incoming` is greater than `existing` per the rules above
  */
 export function isGreaterVersion(incoming: string, existing: string) {
   const incomingIsNotSemver = hasOwn(NON_SEMVER_PRIORITY, incoming);
@@ -31,20 +39,16 @@ export function isGreaterVersion(incoming: string, existing: string) {
 }
 
 /**
- * Get dependencies that have been upgraded compared to current dependencies.
- * @param changes Object with dependencies to upgrade
- * @param current Object with current dependencies
- * @return Object with dependencies that have been upgraded or null if nothing has been upgraded
+ * Compare two flat name → version maps and keep only the entries where `changes` is a real upgrade
+ * over `current` (per `isGreaterVersion`). Operates on a single dependency group (e.g. one of
+ * `dependencies` / `devDependencies`), not on a full `PackageJsonDependencies` object.
+ * @param changes Incoming name → version map (candidates to apply)
+ * @param current Existing name → version map (baseline to compare against)
+ * @return Name → version map of upgraded entries, or `null` if nothing is a real upgrade
  * @example
- * getUpgradedDependenciesVersions(
- *  { dependencies: { a: '^1.2.3', b: '^2.0.0' } },
- *  { dependencies: { a: '^1.2.3', b: '^1.0.0' } } // b is outdated
- * );
- * // { dependencies: { b: '^2.0.0' } }
- * getUpgradedDependenciesVersions(
- * { dependencies: { a: '^1.2.3', b: '^2.0.0' } },
- * { dependencies: { a: '^1.2.3', b: '^2.0.0' } } // nothing is outdated
- * );
+ * getUpgradedDependenciesVersions({ a: '^1.2.3', b: '^2.0.0' }, { a: '^1.2.3', b: '^1.0.0' });
+ * // { b: '^2.0.0' }
+ * getUpgradedDependenciesVersions({ a: '^1.2.3', b: '^2.0.0' }, { a: '^1.2.3', b: '^2.0.0' });
  * // null
  */
 export function getUpgradedDependenciesVersions(

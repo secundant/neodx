@@ -35,7 +35,8 @@ export async function tryFormatPrettier(
     return null;
   }
   const configPath = await prettier.resolveConfigFile(path);
-  // TODO: Cache .prettierignore lookup
+  // TODO: Cache the .prettierignore lookup — `resolveConfigFile` + `getFileInfo` re-read the FS
+  //   on every call. Tracked debt (see pkg-misc 1.0 residual); current behavior is correct, just slow.
   const possibleIgnorePath = configPath && resolve(configPath, '../.prettierignore');
   const resolvedOptions = await prettier.resolveConfig(path, {
     editorconfig: true
