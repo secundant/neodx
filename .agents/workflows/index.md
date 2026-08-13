@@ -55,13 +55,13 @@ imported skill files:
 
 ## Experiment reports
 
-| Experiment            | Live owner                                                                                                                                                                             |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Vite+ migrate         | [`../reports/vite-plus-migration.md`](../reports/vite-plus-migration.md)                                                                                                               |
-| Oxlint vs eslint-kit  | [`../reports/oxlint-eslint-kit-delta.md`](../reports/oxlint-eslint-kit-delta.md)                                                                                                       |
-| TS project references | [before](../reports/ts-project-references-before.md) · [research](../reports/ts-project-references-research.md) · [implementation](../reports/ts-project-references-implementation.md) |
-| Parallel sessions     | [`../sessions/`](../sessions/)                                                                                                                                                         |
-| WP-V1 spike (archive) | [`../reports/archive/`](../reports/archive/)                                                                                                                                           |
+| Experiment            | Live owner                                                                                                                                                                                                               |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Vite+ migrate         | [`../reports/vite-plus-migration.md`](../reports/vite-plus-migration.md)                                                                                                                                                 |
+| Oxlint vs eslint-kit  | [`../reports/oxlint-eslint-kit-delta.md`](../reports/oxlint-eslint-kit-delta.md)                                                                                                                                         |
+| TS project references | [before](../reports/ts-project-references-before.md) · [research](../reports/ts-project-references-research.md) · [implementation](../reports/ts-project-references-implementation.md) (R2-a/b landed; typeCheck → R2-f) |
+| Parallel sessions     | [`../sessions/`](../sessions/)                                                                                                                                                                                           |
+| WP-V1 spike (archive) | [`../reports/archive/`](../reports/archive/)                                                                                                                                                                             |
 
 ## What stays out
 
