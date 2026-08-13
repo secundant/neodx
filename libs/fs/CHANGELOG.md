@@ -1,5 +1,49 @@
 # @neodx/fs
 
+## 1.0.0
+
+### Major Changes
+
+- [#160](https://github.com/secundant/neodx/pull/160) [`2cefdf7`](https://github.com/secundant/neodx/commit/2cefdf7215f77792a1f269d3d8144c8a8e6efa78) Thanks [@secundant](https://github.com/secundant)! - `@neodx/fs` 1.0.0 — Intention freeze and Public API honesty.
+
+  Promotes `@neodx/fs` to a stable foundation: it backs the product packages
+  (`svg`, `figma`, `log`, `vfs`, …) and is published for direct use, with a small,
+  dependency-light surface intended to stay stable.
+
+  This release makes the package's documented Intention match reality:
+
+  - The README now frames the package as a thin Node.js file system helper layer that operates on
+    the real file system, and points callers needing deferred-write / virtual semantics to
+    `@neodx/vfs`.
+  - The README API overview now mirrors the actual exports from `src/index.ts` (source remains the
+    single source of truth):
+    - documents the previously-undocumented `assertFile`, `assertDir`, and `isValidStats` checks;
+    - documents the full `node:fs/promises` re-export surface (`access`, `readFile`, `writeFile`,
+      `mkdir`, `readdir`, `rm`, …) so a single import covers helpers and the native promise API;
+    - documents the `scan(cwd, ScanParams)` object overload and the `scan.parsePatterns` static;
+    - corrects the `deepReadDir` default: paths are **absolute** by default, not relative (the
+      previous README stated relative-by-default, which contradicted both source and tests).
+  - Removed a stray `console.log` in `deepReadDir` that printed every directory read at runtime.
+  - Replaced silent in-source TODOs with dated, tracked debt pointed at #166 (the TODOs are
+    preserved in source with `#166` pointers so the signal is not lost):
+    - `parseJson` JSONC contract (first-class vs. incidental fallback, error shape);
+    - `serializeJson` circular-reference safety (current behavior is not circular-ref safe);
+    - `parseJsonAsJSON` safe-parser replacement (circular-reference-aware parse path);
+    - a duplicated array-compare test helper (`expectArrayEq` in `read.test.ts` mirrors the
+      sort-then-compare pattern in `scan.test.ts`).
+      Current behavior is unchanged and now documented honestly.
+
+  **No breaking Public API change.** All existing exports, signatures, and behavior are preserved;
+  the 1.0 major signals stability of the documented surface, not a removal.
+
+  Residual (not blocking 1.0): the four items above are tracked in #166 for future, documented
+  decisions.
+
+### Patch Changes
+
+- Updated dependencies [[`523574a`](https://github.com/secundant/neodx/commit/523574ab76cb405ef00b41478436bc39d2c92e39)]:
+  - @neodx/std@1.0.0
+
 ## 0.0.13
 
 ### Patch Changes
