@@ -31,8 +31,10 @@ Parameters for the `resolveExportedAssets` API.
 - [ResolveExportedAssetsConfig](#resolveexportedassetsconfig)
 
 ```ts
-export interface ResolveExportedAssetsParams<T, Resolvers = DefaultResolvers>
-  extends ResolveExportedAssetsConfig<T, Resolvers> {
+export interface ResolveExportedAssetsParams<
+  T,
+  Resolvers = DefaultResolvers
+> extends ResolveExportedAssetsConfig<T, Resolvers> {
   ctx: ExportContext;
   items: T[];
   /**
@@ -97,10 +99,8 @@ Input for the `exportAs` resolver.
 
 ```ts
 export type ExportResolverInputItem<T, Resolvers = DefaultResolvers> =
-  | keyof Resolvers
-  | ExportSettingsResolver<T>;
+  keyof Resolvers | ExportSettingsResolver<T>;
 
 export type ExportResolverInput<T, Resolvers = DefaultResolvers> =
-  | ExportResolverInputItem<T, Resolvers>
-  | ExportResolverInputItem<T, Resolvers>[];
+  ExportResolverInputItem<T, Resolvers> | ExportResolverInputItem<T, Resolvers>[];
 ```

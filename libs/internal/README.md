@@ -1,5 +1,11 @@
 # @neodx/internal
 
-The mixed set of different internal libraries for the Neodx project.
+Private shared helpers for neodx packages (`@neodx/svg`, `@neodx/vfs`, `@neodx/figma`, …).
 
-Some specific APIs could be exposed to the public under other `@neodx` packages.
+**Contract:** keep this package `private`. Consumers must declare it as a **devDependency** only.
+`vp pack` must inline it into published `dist`. It must never appear in published `dependencies`,
+and built JS must not runtime-import `@neodx/internal`.
+
+Enforced by `libs/svg/src/__tests__/internal-inline.test.ts` after pack.
+
+Some APIs may later graduate into public `@neodx/*` packages.

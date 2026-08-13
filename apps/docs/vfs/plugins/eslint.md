@@ -10,9 +10,7 @@ Works well alongside the [prettier plugin](./prettier.md) (included by default).
 import { createVfs } from '@neodx/vfs';
 
 const vfs = createVfs(process.cwd(), {
-  eslint: {
-    /* ... */
-  } // see EsLintPluginParams
+  eslint: {/* ... */} // see EsLintPluginParams
 });
 
 // automatically

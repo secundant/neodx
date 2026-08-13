@@ -2,7 +2,7 @@
 import { type Awaitable, fromEntries, identity, mapValues, uniq } from '@neodx/std';
 // eslint-disable-next-line import/no-unresolved
 import { createTmpVfs } from '@neodx/vfs/testing';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import type { AnyNode, FigmaApi } from '../core';
 import { createFigmaClient } from '../create-figma-client.ts';
 import { downloadExportedAssets, resolveExportedAssets } from '../export';

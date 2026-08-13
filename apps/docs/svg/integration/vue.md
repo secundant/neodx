@@ -21,12 +21,10 @@ yarn add @neodx/svg
 import svg from '@neodx/svg/vite';
 import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   plugins: [
     vue(),
-    tsconfigPaths(),
     svg({
       output: 'public/sprites',
       fileName: '{name}.{hash:8}.svg',

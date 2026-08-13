@@ -1,5 +1,5 @@
 import { keys, values } from '@neodx/std';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { testFileResults, testGraphs } from './testing-utils';
 
 describe('create-nodes-testGraphs.simple', async () => {

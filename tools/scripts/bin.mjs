@@ -2,15 +2,17 @@ import { generateFiles } from '@neodx/codegen';
 import { createLogger } from '@neodx/log';
 import { invariant, omit } from '@neodx/std';
 import { createVfs } from '@neodx/vfs';
-import devkit from '@nrwl/devkit';
 import { $ } from 'execa';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import sade from 'sade';
 
 const log = createLogger({ name: 'neodx' });
-const commands = devkit.getPackageManagerCommand(devkit.detectPackageManager());
-const vfs = createVfs(devkit.workspaceRoot);
+const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
+const commands = { install: 'yarn' };
+const vfs = createVfs(workspaceRoot);
 const selfVfs = vfs.child('tools/scripts');
-const $$ = $({ stdio: 'inherit', cwd: devkit.workspaceRoot, all: true });
+const $$ = $({ stdio: 'inherit', cwd: workspaceRoot, all: true });
 
 sade('neodx')
   .command('lib [name]')
@@ -36,7 +38,7 @@ sade('neodx')
       }));
       await vfs.apply();
       await $$`${commands.install}`;
-      await $$`nx build @neodx/${name}`;
+      await $$`vp run @neodx/${name}#pack`;
     } catch (error) {
       log.error(error);
       process.exit(1);
@@ -65,7 +67,7 @@ sade('neodx')
     }));
     await vfs.apply();
     await $$`${commands.install}`;
-    // await $$`nx build @neodx/example-${lib}-${name}`;
+    // await $$`vp -C apps/examples/${lib}/${name} build`;
   })
   .parse(process.argv);
 

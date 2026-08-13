@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import type { Vfs } from '../create-vfs.ts';
 import { createTmpVfs } from '../testing.ts';
 

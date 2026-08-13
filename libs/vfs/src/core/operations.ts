@@ -108,7 +108,8 @@ export async function writeVfsFile(ctx: VfsContext, path: string, content: VfsCo
   const actualContent = pathIsDir ? null : await tryReadVfsBackendFile(ctx, path);
 
   ensureVfsPath(ctx, ctx.resolve(path));
-  if (actualContent && Buffer.from(content).equals(actualContent)) {
+  const nextContent = Buffer.isBuffer(content) ? content : Buffer.from(content);
+  if (actualContent && nextContent.equals(new Uint8Array(actualContent))) {
     // If content is not changed, then we can just forget about this file
     ctx.unregister(path);
   } else {

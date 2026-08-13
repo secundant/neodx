@@ -2,7 +2,6 @@ import { toArray } from '@neodx/std';
 import { builtinModules } from 'node:module';
 import { promisify } from 'node:util';
 import { gzip } from 'node:zlib';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export interface TestBuildParams {
   name: string;
@@ -70,7 +69,10 @@ export async function runTestBuild({
         },
         rollupOptions: {
           external: nodeExternal,
-          treeshake: 'smallest'
+          treeshake: {
+            moduleSideEffects: false,
+            propertyReadSideEffects: false
+          }
         },
         write: true,
         emptyOutDir: false,
@@ -91,7 +93,10 @@ export async function runTestBuild({
         noExternal: true
       },
       logLevel: 'silent',
-      plugins: [tsconfigPaths()]
+      // Resolve workspace `@neodx/*` to source via the `development` export condition
+      // (the honesty bridge). Replaces `vite-tsconfig-paths`, which read the now-deleted
+      // base `paths`. Scoped to this bench build — do not force at the root Vite config.
+      resolve: { conditions: ['development'] }
     })
   )[0]!;
 

@@ -1,6 +1,6 @@
 import { readdir, readFile } from 'fs/promises';
 import { exists, isDirectory, isFile } from '@neodx/fs';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { createInMemoryBackend, createNodeFsBackend } from '../backend';
 import { createVfsContext, type CreateVfsContextParams } from '../core/context';
 import { createBaseVfs } from '../core/create-base-vfs';

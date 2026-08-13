@@ -1,0 +1,39 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "rootDir": "src",
+    "outDir": "dist-types",
+    "tsBuildInfoFile": "dist-types/.tsbuildinfo",
+    "customConditions": ["development"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test-d.ts",
+    "src/**/__tests__/**",
+    "dist",
+    "dist-types",
+    "node_modules",
+    "examples",
+    "bench",
+    "docs",
+    "test",
+    "tests"
+  ],
+  "references": [
+    {
+      "path": "../std/tsconfig.build.json"
+    },
+    {
+      "path": "../colors/tsconfig.build.json"
+    },
+    {
+      "path": "../log/tsconfig.build.json"
+    }
+  ]
+}

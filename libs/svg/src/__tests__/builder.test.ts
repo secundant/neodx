@@ -13,7 +13,7 @@ import {
 import type { VirtualInitializer } from '@neodx/vfs';
 import { createTmpVfs, getChangesDump } from '@neodx/vfs/testing';
 import type { AsyncReturnType } from 'type-fest';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import {
   createSvgSpriteBuilder,
   type CreateSvgSpriteBuilderParams,
@@ -115,7 +115,7 @@ describe('sprites builder', async () => {
       params?: SvgResetColorsParams;
     } = {}) => {
       const { builder } = await createTestBuilder(
-        mapEntries(only ? pick(stubs.colors!, only) : stubs.colors!, ([name, stub]) => [
+        mapEntries(only ? pick(stubs.colors!, only) : stubs.colors!, ([name, _stub]) => [
           `assets/${name}`,
           `colors/${name}`
         ]),

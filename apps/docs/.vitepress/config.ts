@@ -5,6 +5,8 @@ import { defineConfig } from 'vitepress';
 export default defineConfig({
   title: 'Neodx',
   description: 'Modern solutions for great DX',
+  // Package README is not a docs page; VitePress would treat ../../CONTRIBUTING.md as a site link.
+  srcExclude: ['README.md'],
   head: [
     ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' }],
     ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' }],

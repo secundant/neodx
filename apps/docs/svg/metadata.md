@@ -33,12 +33,8 @@ In the result, we'll get `src/sprite.gen.ts` file with something like this:
 ```typescript
 // Variable name can be changed by `metadata.name` option
 export const sprites = defineSpriteMap({
-  common: defineSprite('common', [
-    /* generated info... */
-  ]),
-  editor: defineSprite('editor', [
-    /* generated info... */
-  ])
+  common: defineSprite('common', [/* generated info... */]),
+  editor: defineSprite('editor', [/* generated info... */])
 });
 
 // Type name can be changed by `metadata.typeName` option

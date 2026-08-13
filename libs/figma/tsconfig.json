@@ -1,6 +1,22 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["ES2023", "DOM"]
-  }
+    "lib": ["ES2023", "DOM"],
+    "types": ["node"],
+    "customConditions": ["development"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test-d.ts",
+    "src/**/__tests__/**",
+    "dist",
+    "dist-types",
+    "node_modules",
+    "examples",
+    "bench",
+    "docs",
+    "test",
+    "tests"
+  ]
 }

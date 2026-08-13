@@ -1,5 +1,5 @@
 import { difference, keys, mapValues } from '@neodx/std';
-import { describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vite-plus/test';
 import type { LogChunk, LoggerParams } from '../core/types';
 import { createLogger, DEFAULT_LOGGER_LEVELS, type DefaultLoggerLevel } from '../node';
 

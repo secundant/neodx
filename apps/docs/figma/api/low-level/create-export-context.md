@@ -14,9 +14,7 @@ import { resolve } from 'node:path';
 
 const log = createLogger({ name: 'figma', level: 'debug' });
 const vfs = createVfs(resolve(process.cwd, 'assets'));
-const api = createFigmaApi({
-  /* ... */
-});
+const api = createFigmaApi({/* ... */});
 const ctx = createExportContext({ api });
 ```
 

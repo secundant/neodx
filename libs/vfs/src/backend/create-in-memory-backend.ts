@@ -49,7 +49,7 @@ export function createInMemoryBackend(root = '/', initializer: VirtualInitialize
     },
 
     write(path: string, content: VfsContentLike) {
-      store.set(path, Buffer.from(content));
+      store.set(path, Buffer.isBuffer(content) ? content : Buffer.from(content));
       while (path !== '/') {
         deleted.delete(path);
         path = dirname(path);

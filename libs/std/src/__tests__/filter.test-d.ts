@@ -1,4 +1,4 @@
-import { expectTypeOf, test } from 'vitest';
+import { expectTypeOf, test } from 'vite-plus/test';
 import { compactObject } from '../object';
 
 test('should compact object', () => {

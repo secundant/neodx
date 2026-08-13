@@ -33,7 +33,7 @@ export function serializeHttpRequest(req: IncomingMessage) {
   const connection = info || req.socket;
 
   return {
-    id: typeof id === 'function' ? id() : id ?? info?.id,
+    id: typeof id === 'function' ? id() : (id ?? info?.id),
     url: getIncomingMessageUrl(req),
     query,
     params,
@@ -54,7 +54,7 @@ export function serializeHttpResponse(res: OutgoingMessage) {
 }
 
 export const getIncomingMessageUrl = ({ originalUrl, path, url }: any) =>
-  originalUrl || (typeof path === 'string' ? path : url?.path ?? url);
+  originalUrl || (typeof path === 'string' ? path : (url?.path ?? url));
 
 export const createRequestIdGenerator = () => {
   let currentRequestId = 0;

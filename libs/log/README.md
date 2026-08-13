@@ -23,8 +23,15 @@
   <a href="https://neodx.pages.dev/log">Explore documentation</a>
 </div>
 
-> **Warning**
-> This project is still in the development stage, under 0.x.x version breaking changes can be introduced in any release, but I'll try to make them loud.
+`@neodx/log` is a **product (flagship)** package: it is publicly published
+(`access: public`), consumed across the `@neodx` namespace, and documented for direct use. The
+documented Public API below is intended to stay stable; the source under [`src`](./src) remains the
+single source of truth.
+
+The core logger is **isomorphic** — it ships from `@neodx/log` and works the same in Node.js and
+browsers. The optional Node.js targets (`pretty`, `json`, `file`) and the HTTP framework adapters
+(`express`, `koa`, Node core `http`) live in dedicated subpath entries so the browser bundle stays
+small.
 
 - **Tiny and simple**. `< 1kb!` without extra configuration
 - **Fast enough**. No extra overhead, no hidden magic
@@ -32,7 +39,7 @@
 - **Isomorphic**. Automatically works in Node.js and browsers
 - **Typed**. Written in TypeScript, with full type support
 - **Well featured**. Semantic levels, JSON logs, pretty output, error handling, and more
-- 🆕 [**Built-in HTTP frameworks**](#-frameworks-integration) ⛓️`express`, `koa`, Node core `http` loggers are supported out of the box
+- [**Built-in HTTP frameworks**](#-frameworks-integration) ⛓️`express`, `koa`, Node core `http` loggers are supported out of the box
 
 ```typescript
 const log = createLogger();
@@ -50,6 +57,26 @@ const needToGoDeeper = childLog.child('next one', {
 childLog.warn('Hello, world!'); // [example] Hello, world!
 needToGoDeeper.debug('debug is enabled here'); // [example › next one] debug is enabled here
 ```
+
+## Public API overview
+
+The source under [`src`](./src) is the source of truth for the current Public API. The package is
+split into an **isomorphic core** (`@neodx/log`) and **Node.js-only** targets/adapters so the
+browser bundle stays minimal. Multi-entry exports are first-class.
+
+| Subpath              | Surface                                                                                                                                                                                                                                                                                                                 |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@neodx/log`         | Core logger factory. `createLogger`, `createAutoLogger`, `createLoggerFactory` (+ `CreateLoggerFactoryParams`), `createConsoleTarget`, `DEFAULT_LOGGER_LEVELS`, `DEFAULT_LOGGER_PARAMS`, `LOGGER_SILENT_LEVEL` (+ `DefaultLoggerLevel`), and the core types (`Logger`, `LoggerParams`, `LogChunk`, `LoggerHandler`, …). |
+| `@neodx/log/node`    | Node.js entry: `createLogger`/`createAutoLogger` with `pretty`/`json` defaults, the `pretty`/`json`/`file` targets (+ `PrettyTargetParams`, `JsonTargetParams`), `printCodeFrame`/`printPrettyError` (+ their option types), `NODE_LOGGER_SYSTEM_INFO`, and the core factory re-exports.                                |
+| `@neodx/log/utils`   | Building blocks for custom factories: `createLoggerAutoFactory`, `printf`, `readArguments`, `serializeJSON` (+ `LogArguments`, `AutoLoggerInput`).                                                                                                                                                                      |
+| `@neodx/log/http`    | Node core `http` adapter: `createHttpLogger` (+ `HttpLoggerParams`, `HttpResponseContext`, `HttpLogLevels`, `HttpRequestId`, `HttpLoggerMetaKeys`). Augments `http.IncomingMessage`/`ServerResponse`/`OutgoingMessage`.                                                                                                 |
+| `@neodx/log/express` | Express adapter: `createExpressLogger` (returns the middleware plus `preserveErrorMiddleware`). Augments `express` `Request`/`Response`.                                                                                                                                                                                |
+| `@neodx/log/koa`     | Koa adapter: `createKoaLogger`. Augments `koa` `Context`/`Request`/`Response`.                                                                                                                                                                                                                                          |
+
+> In the browser, the `./node` subpath transparently resolves to the isomorphic `@neodx/log` build
+> (see the `browser` condition in `package.json` `exports`), so importing `@neodx/log/node` yields
+> the core logger instead of the Node-only targets. The `./express`, `./koa`, and `./http` adapters
+> are Node-only and should not be imported in browser code.
 
 ## Installation
 
@@ -96,13 +123,15 @@ We're supporting multiple log levels exposed as methods for semantic and output 
 You can use one of the built-in log levels: `error`, `warn`, `info`, `done`, `success`, `verbose`, `debug`:
 
 ```typescript
-named.error('Something went wrong!'); // errors most important level
-named.warn('Deprecated function used!'); // warnings
-named.info('User logged in'); // information, most used level, neutral messages
-named.done('Task completed'); // any success messages, by default less important than "info"
-named.success('Session has been closed'); // alias to "done"
-named.debug({ login: 'gigachad', password: '123' }, 'User logged in, session id: %s', 'xx-dj2jd'); // debug messages, the least important level, can contain sensitive information for debugging purposes
-named.verbose('User opened the page %s', '/home'); // verbose messages, extended information, alias to "debug"
+const log = createLogger({ name: 'my-app' });
+
+log.error('Something went wrong!'); // errors most important level
+log.warn('Deprecated function used!'); // warnings
+log.info('User logged in'); // information, most used level, neutral messages
+log.done('Task completed'); // any success messages, by default less important than "info"
+log.success('Session has been closed'); // alias to "done"
+log.debug({ login: 'gigachad', password: '123' }, 'User logged in, session id: %s', 'xx-dj2jd'); // debug messages, the least important level, can contain sensitive information for debugging purposes
+log.verbose('User opened the page %s', '/home'); // verbose messages, extended information, alias to "debug"
 ```
 
 <div align="center">
@@ -276,17 +305,11 @@ createExpressLogger({
 
   getMeta: ({ req }) => ({ ip: req.ip }), // function to get metadata for every request
   // function to get metadata for error
-  getErrorMeta: ({ req, res, error }) => ({
-    /* ... */
-  }),
+  getErrorMeta: ({ req, res, error }) => ({/* ... */}),
   // function to get metadata for request
-  getRequestMeta: ({ req, res }) => ({
-    /* ... */
-  }),
+  getRequestMeta: ({ req, res }) => ({/* ... */}),
   // function to get metadata for response
-  getResponseMeta: ({ req, res }) => ({
-    /* ... */
-  }),
+  getResponseMeta: ({ req, res }) => ({/* ... */}),
 
   // Customize log messages (we already format them for you in a well-readable way)
 
@@ -425,7 +448,8 @@ Levels are a semantic method and mechanism for controlling output in different e
 ```typescript
 const log = createLogger({
   /**
-   * @default "info"
+   * All messages with a lower-priority level than this are ignored.
+   * @default "done" (from DEFAULT_LOGGER_PARAMS)
    */
   level: process.env.NODE_ENV === 'production' ? 'info' : 'debug'
 });
@@ -458,7 +482,7 @@ const log = createLogger({
 
 log.success('Done successfully!');
 log.warn('Let me check it...');
-log.fail('Oops, or not done');
+log.fatal('Something went very wrong');
 ```
 
 For some additional information about levels, see [createLogger API](#createlogger) options.
@@ -555,7 +579,7 @@ export const createLogger = createLoggerFactory({
 If you don't feel good with our built-in core parts, and you want to build your own logger, you can use `createLoggerFactory` function:
 
 ```typescript
-import { createLoggerFactory } from '@neodx/log';
+import { createConsoleTarget, createLoggerFactory, DEFAULT_LOGGER_PARAMS } from '@neodx/log';
 import { readArguments } from '@neodx/log/utils';
 
 export const createLogger = createLoggerFactory({
@@ -569,6 +593,11 @@ export const createLogger = createLoggerFactory({
   readArguments // Not too much sense to override it, but you can do it
 });
 ```
+
+`createConsoleTarget(console = globalThis.console)` returns a `LoggerHandler` that maps each log level
+to its matching `console` method (falling back to `console.log`), appends non-empty `meta` as a final
+argument, and prints the `error` on its own line when present. It is the default target of the
+isomorphic `createLogger`.
 
 ## API
 
@@ -587,7 +616,7 @@ const log = createLogger({
   name: 'my-logger',
   /**
    * Logger level. All messages with lower level will be ignored.
-   * @default info
+   * @default done
    */
   level: 'debug',
   /**
@@ -708,10 +737,8 @@ const log = createLogger({
 
 #### `transform: Array<LoggerTransformer<Level>>`
 
-> **Warning:**
-> This feature probably will be removed.
-
-If you need to transform different log chunks in different ways, you can specify an array of transformers:
+If you need to transform different log chunks in different ways, you can specify an array of transformers
+(the single-transformer form above is just shorthand for a one-element array):
 
 ```typescript
 const log = createLogger({

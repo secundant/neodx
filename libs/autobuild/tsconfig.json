@@ -1,13 +1,25 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist",
     "importHelpers": true,
     "target": "ES2022",
     "module": "ESNext",
     "types": ["node"],
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "customConditions": ["development"]
   },
-  "include": ["src", "test"],
-  "exclude": ["dist", "node_modules"]
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test-d.ts",
+    "src/**/__tests__/**",
+    "dist",
+    "dist-types",
+    "node_modules",
+    "examples",
+    "bench",
+    "docs",
+    "test",
+    "tests"
+  ]
 }

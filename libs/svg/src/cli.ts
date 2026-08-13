@@ -55,10 +55,9 @@ export function createCli(cwd = process.cwd()) {
       });
 
       builder.__.log
-        .error(`After @neodx/svg@0.8.0 CLI is deprecated and will be removed in the v1.0.0 release.
-
-Too keep your workflow, please use our new programmatic API instead: https://neodx.pages.dev/svg/api/index.html
-Also, you can read more about the migration in https://neodx.pages.dev/svg/migration.html
+        .warn(`The @neodx/svg CLI is deprecated in favor of the programmatic API and may be removed in a future major release.
+It remains supported in 1.x. To migrate, use the programmatic API: https://neodx.pages.dev/svg/api/index.html
+You can also read the migration guide: https://neodx.pages.dev/svg/migration.html
 `);
 
       return buildSprites({

@@ -20,6 +20,23 @@ Packages overview:
 - [@neodx/log](#neodxlog) | [docs](https://neodx.pages.dev/log) | [source](./libs/log)
 - [@neodx/vfs](#neodxvfs) | [docs](https://neodx.pages.dev/vfs) | [source](./libs/vfs)
 
+### Maturity
+
+| Package           | npm    | Maturity | Notes                     |
+| ----------------- | ------ | -------- | ------------------------- |
+| `@neodx/svg`      | 0.8.0  | beta     | Flagship; docs + examples |
+| `@neodx/figma`    | 0.6.0  | beta     | Flagship; docs + examples |
+| `@neodx/log`      | 0.4.2  | beta     | Flagship; docs            |
+| `@neodx/vfs`      | 0.3.0  | beta     | Flagship; docs            |
+| `@neodx/colors`   | 0.2.9  | alpha    | Foundation                |
+| `@neodx/std`      | 0.4.0  | alpha    | Foundation                |
+| `@neodx/fs`       | 0.0.13 | alpha    | Foundation                |
+| `@neodx/glob`     | 0.1.2  | alpha    | Foundation                |
+| `@neodx/pkg-misc` | 0.0.11 | alpha    | Foundation                |
+
+Workspace-wide 1.0 is the S7 stream (not started). Treat the table as a snapshot of published
+versions, not a release promise.
+
 ### [@neodx/figma](./libs/figma)
 
 Figma is a great tool for design collaboration, but we don't have a solid way to use it in our development workflow.
@@ -43,12 +60,13 @@ So, `@neodx/figma` is an attempt to create it. Currently, we have the following 
 - **Typed Figma API**: All Figma API methods are typed and have autocomplete support.
 - **Built-in document graph API**: Figma API is too low-level for writing any stable solution. We provide an API that allows you work with the document as a simple high-level graph of nodes.
 
-[Visit `@neodx/figma` documentation](https://neodx.pages.dev/svg) to learn more!
+[Visit `@neodx/figma` documentation](https://neodx.pages.dev/figma) to learn more!
 
 See our examples for more details:
 
-- [SVG sprite generation on steroids with Figma export](./examples/svg-magic-with-figma-export) - Integrated showcase of the `@neodx/svg` and `@neodx/figma` packages with real application usage!
-- [Export icons from the Community Weather Icons Kit](./examples/figma-export-file-assets) - A simple step-by-step example of how to use the `@neodx/figma` to export icons.
+- [SVG sprite generation on steroids with Figma export](./apps/examples/svg/figma) - Integrated showcase of the `@neodx/svg` and `@neodx/figma` packages with real application usage!
+- [Export icons from the Community Weather Icons Kit](./apps/examples/figma/export-file-assets) - A simple step-by-step example of how to use the `@neodx/figma` to export icons.
+- [Export published Figma components](./apps/examples/figma/export-published) - Export published components from a Figma library.
 
 Also, we have some ideas for future development, so stay tuned and feel free to request your own! 🚀
 
@@ -94,9 +112,9 @@ Here we go! Type safety, autocomplete, runtime access to icon metadata all wrapp
 
 Also, you can check out our examples:
 
-- [React, Vite, TailwindCSS, and multicolored icon](./examples/svg-vite) - A step-by-step tutorial showcasing how to integrate sprite icons into your Vite project.
-- [React, Vite, icons exported by "@neodx/figma"](./examples/svg-magic-with-figma-export) - Integrated showcase of the seamless automation capabilities of `@neodx/svg` and `@neodx/figma` for your icons!
-- [Next.js, webpack and simple flat icons](./examples/svg-next) - An example demonstrating the usage of `@neodx/svg` webpack plugin with Next.js.
+- [React, Vite, TailwindCSS, and multicolored icon](./apps/examples/svg/vite-react) - A step-by-step tutorial showcasing how to integrate sprite icons into your Vite project.
+- [React, Vite, icons exported by "@neodx/figma"](./apps/examples/svg/figma) - Integrated showcase of the seamless automation capabilities of `@neodx/svg` and `@neodx/figma` for your icons!
+- [Next.js, webpack and simple flat icons](./apps/examples/svg/next) - An example demonstrating the usage of `@neodx/svg` webpack plugin with Next.js.
 
 ### [@neodx/log](./libs/log)
 
@@ -181,7 +199,6 @@ await fs.updateJson('package.json', pkg => {
 });
 await fs.write('src/index.ts', 'export const foo = 42;');
 await fs.apply();
-}
 ```
 
 While it may seem unnecessary at first glance, let's explore the core concepts that make `@neodx/vfs` invaluable:
@@ -199,39 +216,34 @@ In other words, it's designed as single API for all file system operations, so y
 
 ## Development and contribution
 
-### Getting started
+This monorepo uses [Yarn 4](https://yarnpkg.com/) and [Vite+](https://viteplus.dev/guide/) (`vp`).
+**Node.js 26** is the default runtime (`.node-version`; install with [`n`](https://github.com/tj/n)).
+Other majors are for optional support-matrix CI only.
 
-We're using [Yarn 3 (berry)](https://yarnpkg.com/) as a package manager and [Nx](https://nx.dev/) as a monorepo management tool.
-
-After cloning the repo, to install dependencies, run:
-
-```shell
-yarn
-```
-
-And, optionally, for building all packages, run:
+Everyday path:
 
 ```shell
-yarn nx run-many  --all --target=build
+vp install                 # or: yarn
+vp check                   # fmt + lint only (not typecheck)
+cd libs/<pkg> && yarn typecheck && vp test
+yarn pack:libs             # vp pack all publishable libs
 ```
 
-It isn't necessary, you can start working with the codebase right away, but it will boost initial cache whn you run e2e tests (scenarios in examples/\*).
+After pack, CI also runs `yarn verify-exports` and `yarn publint`. Prefer package-cwd tests;
+root `vp test` can pick up Playwright noise from `apps/e2e`.
 
-### Internal scripts
+Full contributor path: [CONTRIBUTING.md](./CONTRIBUTING.md).
+Repo layout, command table, and AI routing: [AGENTS.md](./AGENTS.md).
+Security / advisories: [SECURITY.md](./SECURITY.md).
 
-#### Create a new global example
+### Scaffolding
 
 ```shell
-yarn neodx example new-example-name
+yarn neodx example new-example-name   # under apps/examples
+yarn neodx lib new-lib-name           # under libs
 ```
 
-#### Create a new library
-
-```shell
-yarn neodx lib new-lib-name
-```
-
-The source code can be accessed by starting from [tools/scripts/bin.mjs](./tools/scripts/bin.mjs)..
+Entry: [tools/scripts/bin.mjs](./tools/scripts/bin.mjs).
 
 ## License
 

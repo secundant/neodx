@@ -2,7 +2,6 @@
   "name": "@neodx/example-svg-vite-vue",
   "version": "0.0.1",
   "private": true,
-  "packageManager": "yarn@4.1.0",
   "type": "module",
   "sideEffects": false,
   "publishConfig": {
@@ -18,40 +17,14 @@
     "vue": "^3.4.29"
   },
   "devDependencies": {
-    "@neodx/svg": "*",
-    "@vitejs/plugin-vue": "^5.0.5",
+    "@neodx/svg": "workspace:^",
+    "@vitejs/plugin-vue": "6.0.8",
     "autoprefixer": "10.4.19",
     "postcss": "8.4.38",
     "tailwindcss": "3.4.3",
-    "typescript": "5.4.5",
-    "vite": "5.3.3",
-    "vite-tsconfig-paths": "4.3.2",
-    "vue-tsc": "^2.0.21"
+    "typescript": "5.9.3",
+    "vite": "8.2.0",
+    "vue-tsc": "2.2.12"
   },
-  "nx": {
-    "targets": {
-      "dev": {
-        "dependsOn": [
-          "^build"
-        ]
-      },
-      "build": {
-        "outputs": [
-          "{projectRoot}/public/sprites"
-        ],
-        "inputs": [
-          "{projectRoot}/src/shared/ui/icon/assets/**/*.svg",
-          "shared"
-        ],
-        "dependsOn": [
-          "^build"
-        ]
-      },
-      "test": {
-        "dependsOn": [
-          "build"
-        ]
-      }
-    }
-  }
+  "packageManager": "yarn@4.3.1"
 }

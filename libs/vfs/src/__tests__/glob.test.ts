@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { globVfs } from '../plugins/glob.ts';
 import { createTmpVfs, expectArrayEqual } from '../testing';
 

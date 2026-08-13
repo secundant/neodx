@@ -16,7 +16,7 @@ const FastPathSimples = match(
 );
 
 const Escaped = match(/\\./, identity);
-const Escape = match(/[$.*+?^(){}[\]\|]/, char => `\\${char}`);
+const Escape = match(/[$.*+?^(){}[\]|]/, char => `\\${char}`);
 const Passthrough = match(/./, identity);
 
 const NegationOdd = match(/^(?:!!)*!(.*)$/, (_, glob) => `(?!^${convert(glob)}$).*?`);
@@ -39,7 +39,7 @@ const ClassOpen = match('[', identity);
 const ClassClose = match(']', identity);
 const ClassNegation = match(/[!^]/, '^/');
 const ClassRange = match(/[a-z]-[a-z]|[0-9]-[0-9]/i, identity);
-const ClassEscape = match(/[$.*+?^(){}[\|]/, char => `\\${char}`);
+const ClassEscape = match(/[$.*+?^(){}[|]/, char => `\\${char}`);
 const ClassPassthrough = match(/[^\]]/, identity);
 const ClassValue = or([Escaped, ClassEscape, ClassRange, ClassPassthrough]);
 const Class = and([ClassOpen, optional(ClassNegation), star(ClassValue), ClassClose]);
@@ -61,7 +61,7 @@ const Range = and([RangeOpen, RangeValue, RangeClose]);
 const BracesOpen = match('{', '(?:');
 const BracesClose = match('}', ')');
 const BracesComma = match(',', '|');
-const BracesEscape = match(/[$.*+?^(){[\]\|]/, char => `\\${char}`);
+const BracesEscape = match(/[$.*+?^(){[\]|]/, char => `\\${char}`);
 const BracesPassthrough = match(/[^}]/, identity);
 const BracesNested = lazy(() => Braces);
 const BracesValue = or([

@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { createFigmaClient, type FigmaClientParams } from '../create-figma-client.ts';
 import { createMockApi, expectFetchCalled } from './testing-utils.ts';
 

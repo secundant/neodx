@@ -2,33 +2,49 @@
   "name": "@neodx/pkg-misc",
   "version": "0.0.11",
   "description": "Collection of utilities for common cases in package development - smart dependencies updates, simple formatting with auto-detection of prettier config, etc.",
-  "type": "module",
-  "main": "./dist/cjs/index.cjs",
-  "types": "./dist/types/index.d.ts",
-  "module": "./dist/mjs/index.mjs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secundant/neodx.git",
+    "directory": "libs/pkg-misc"
+  },
   "source": "src/index.ts",
-  "sideEffects": false,
   "files": [
     "dist",
     "README.md",
     "package.json"
   ],
-  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/mjs/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "development": "./src/index.ts",
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/mjs/index.mjs",
+      "require": "./dist/cjs/index.cjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "typecheck": "tsc --noEmit",
-    "build": "autobuild",
-    "test": "vitest run",
-    "lint": "eslint src"
+    "typecheck": "tsc -b tsconfig.build.json",
+    "build": "vp pack",
+    "test": "vp test",
+    "lint": "vp lint",
+    "pack": "vp pack"
   },
   "dependencies": {
-    "@neodx/fs": "0.0.13",
-    "@neodx/std": "0.4.0",
+    "@neodx/fs": "workspace:^",
+    "@neodx/std": "workspace:^",
     "@types/prettier": "3.0.0",
     "pathe": "1.1.2",
     "semver": "7.6.0"
   },
   "devDependencies": {
-    "@neodx/autobuild": "*",
     "@types/semver": "7.5.8",
     "prettier": "3.3.2"
   },
@@ -42,13 +58,6 @@
     },
     "prettier": {
       "optional": true
-    }
-  },
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/mjs/index.mjs",
-      "require": "./dist/cjs/index.cjs"
     }
   }
 }

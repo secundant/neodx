@@ -1,3 +1,0 @@
-{
-  "*": ["yarn nx affected:lint --fix --files", "yarn nx format:write --files"]
-}

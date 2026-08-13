@@ -1,5 +1,5 @@
 import { sleep } from '@neodx/std';
-import { describe, expect, test, vitest } from 'vitest';
+import { describe, expect, test, vitest } from 'vite-plus/test';
 import { createScanVfsCache, scanVfs } from '../plugins/scan.ts';
 import { createTmpVfs, expectArrayEqual, mockReadDir } from '../testing.ts';
 

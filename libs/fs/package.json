@@ -2,40 +2,49 @@
   "name": "@neodx/fs",
   "version": "0.0.13",
   "description": "File system helpers",
-  "type": "module",
-  "main": "./dist/index.cjs",
-  "types": "./dist/index.d.ts",
-  "module": "./dist/index.mjs",
-  "source": "src/index.ts",
-  "sideEffects": false,
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secundant/neodx.git",
+    "directory": "libs/fs"
+  },
+  "source": "src/index.ts",
   "files": [
     "dist",
     "README.md",
     "package.json"
   ],
-  "scripts": {
-    "typecheck": "tsc --noEmit",
-    "clean": "yarn dlx rimraf dist",
-    "build": "autobuild",
-    "test": "vitest run",
-    "lint": "eslint src"
-  },
-  "devDependencies": {
-    "@neodx/autobuild": "*",
-    "@types/tmp": "0.2.6",
-    "tmp": "0.2.3"
-  },
-  "dependencies": {
-    "@neodx/std": "0.4.0",
-    "jsonc-parser": "3.2.1",
-    "tiny-glob": "0.2.9"
-  },
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "development": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "typecheck": "tsc -b tsconfig.build.json",
+    "clean": "yarn dlx rimraf dist",
+    "build": "vp pack",
+    "test": "vp test",
+    "lint": "vp lint",
+    "pack": "vp pack"
+  },
+  "dependencies": {
+    "@neodx/std": "workspace:^",
+    "jsonc-parser": "3.2.1",
+    "tiny-glob": "0.2.9"
+  },
+  "devDependencies": {
+    "@types/tmp": "0.2.6",
+    "tmp": "0.2.7"
   }
 }

@@ -1,7 +1,6 @@
 import svg from '@neodx/svg/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 const __dirname = new URL('.', import.meta.url).pathname;
 const createSvg = (name: string, params = {}) =>
@@ -22,7 +21,6 @@ const createSvg = (name: string, params = {}) =>
 
 export default defineConfig({
   plugins: [
-    tsconfigPaths(),
     react(),
     createSvg('no-inline', { inline: false }),
     createSvg('inline-all', { inline: 'all' }),

@@ -3,7 +3,7 @@ import { identity, sleep } from '@neodx/std';
 import { createTmpVfs } from '@neodx/vfs/testing';
 import { readdir } from 'node:fs/promises';
 import { join, relative, resolve } from 'node:path';
-import { describe, expect, test, vitest } from 'vitest';
+import { describe, expect, test, vitest } from 'vite-plus/test';
 import {
   walkGlob,
   type WalkGlobCommonParams,
@@ -252,8 +252,8 @@ describe('walk', () => {
             return dirents.filter(dirent => dirent.isDirectory());
           },
           mapPath: (item, { path }) =>
-            join(relative(resolve(tmp.path, path), item.path), item.name),
-          mapResult: item => join(relative(tmp.path, item.path), item.name)
+            join(relative(resolve(tmp.path, path), item.parentPath ?? item.path), item.name),
+          mapResult: item => join(relative(tmp.path, item.parentPath ?? item.path), item.name)
         })
       ).resolves.toEqual(['src/__tests__', 'src/modules']);
     });

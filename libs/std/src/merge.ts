@@ -48,8 +48,8 @@ const mergeUnknown = <Source, Target>(
   source: Source,
   target: Target
 ): MergeUnknown<Source, Target> => {
-  if (isObject(target)) return isObject(source) ? (mergeObject(source, target) as any) : target;
-  if (isArray(target)) return isArray(source) ? (mergeArray(source, target) as any) : target;
+  if (isObject(target)) return (isObject(source) ? mergeObject(source, target) : target) as any;
+  if (isArray(target)) return (isArray(source) ? mergeArray(source, target) : target) as any;
   return target as any;
 };
 

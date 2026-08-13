@@ -8,32 +8,11 @@
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "rootDir": ".",
-    "baseUrl": ".",
-    "paths": {
-      "@neodx/codegen": ["libs/codegen/src/index.ts"],
-      "@neodx/colors": ["libs/colors/src/index.ts"],
-      "@neodx/figma": ["libs/figma/src/index.ts"],
-      "@neodx/fs": ["libs/fs/src/index.ts"],
-      "@neodx/glob": ["libs/glob/src/index.ts"],
-      "@neodx/internal": ["libs/internal/src/index.ts"],
-      "@neodx/internal/*": ["libs/internal/src/*.ts", "libs/internal/src/*/index.ts"],
-      "@neodx/log": ["libs/log/src/index.ts"],
-      "@neodx/log/*": ["libs/log/src/*.ts", "libs/log/src/*/index.ts"],
-      "@neodx/pkg-misc": ["libs/pkg-misc/src/index.ts"],
-      "@neodx/std": ["libs/std/src/index.ts"],
-      "@neodx/std/*": ["libs/std/src/*.ts", "libs/std/src/*/index.ts"],
-      "@neodx/svg": ["libs/svg/src/index.ts"],
-      "@neodx/svg/*": ["libs/svg/src/*.ts", "libs/svg/src/*/index.ts"],
-      "@neodx/vfs": ["libs/vfs/src/index.ts"],
-      "@neodx/vfs/*": ["libs/vfs/src/*.ts"]
-    },
     "strict": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
     "noFallthroughCasesInSwitch": true,
-    "suppressExcessPropertyErrors": false,
-    "suppressImplicitAnyIndexErrors": false,
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
     "allowUnreachableCode": false,
@@ -46,5 +25,5 @@
     "noErrorTruncation": false,
     "pretty": true
   },
-  "exclude": ["node_modules", "**/dist"]
+  "exclude": ["node_modules", "**/dist", "**/dist-types"]
 }

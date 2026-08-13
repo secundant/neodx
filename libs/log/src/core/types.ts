@@ -112,8 +112,9 @@ export interface CreateLogger<DefaultLevel extends string> {
   (params?: Partial<LoggerParams<DefaultLevel>>): Logger<DefaultLevel>;
 }
 
-export interface LoggerParamsWithLevels<LevelsConfig extends BaseLevelsConfig>
-  extends Partial<LoggerParams<GetLevelNames<LevelsConfig>>> {
+export interface LoggerParamsWithLevels<LevelsConfig extends BaseLevelsConfig> extends Partial<
+  LoggerParams<GetLevelNames<LevelsConfig>>
+> {
   /**
    * Dictionary of log levels with priority (lower is more prioritized).
    * The higher the number, the less important the level and the more likely it will be ignored.
@@ -140,8 +141,10 @@ export interface LoggerParams<Level extends string> {
    * Additional fields that will be added to every log chunk.
    */
   meta: LoggerBaseMeta;
-  // TODO Add support for streams with multiple levels
-  // TODO Add support for streams with min and max levels
+  // TODO(#168) Deferred: a single target config currently accepts one minimum `level`; accepting
+  // multiple discrete levels is not implemented.
+  // TODO(#168) Deferred: a single target config currently accepts one minimum `level`; min/max level
+  // ranges are not implemented.
   /**
    * List of streams that will receive log chunks.
    * @example [{ level: 'info', target: [console.log] }, { level: 'error', target: [console.error] }]

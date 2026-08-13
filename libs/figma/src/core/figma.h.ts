@@ -971,7 +971,8 @@ export interface VectorNode extends Node<'VECTOR'> {
 }
 
 export interface SectionNode
-  extends Pick<
+  extends
+    Pick<
       VectorNode,
       'fills' | 'fillGeometry' | 'strokes' | 'strokeWeight' | 'strokeAlign' | 'strokeGeometry'
     >,
@@ -1068,8 +1069,7 @@ export interface ComponentSetNode extends Omit<FrameNode, 'type'>, Node<'COMPONE
 
 /** An instance of a component, changes to the component result in the same changes applied to the instance */
 export interface InstanceNode<ComponentID = string>
-  extends Omit<FrameNode, 'type'>,
-    Node<'INSTANCE'> {
+  extends Omit<FrameNode, 'type'>, Node<'INSTANCE'> {
   /** ID of component that this instance came from, refers to components table (see endpoints section below) */
   componentId: ComponentID;
   /**

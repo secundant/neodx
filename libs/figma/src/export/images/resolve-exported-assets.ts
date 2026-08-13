@@ -4,8 +4,10 @@ import { ConstrainType, ImageType } from '../../core';
 import type { FigmaClient } from '../../create-figma-client.ts';
 import { getConstraintScale, imageTypeToFormat } from '../../utils';
 
-export interface ResolveExportedAssetsParams<T, Resolvers = DefaultResolvers>
-  extends ResolveExportedAssetsConfig<T, Resolvers> {
+export interface ResolveExportedAssetsParams<
+  T,
+  Resolvers = DefaultResolvers
+> extends ResolveExportedAssetsConfig<T, Resolvers> {
   figma: FigmaClient;
   items: T[];
   /**

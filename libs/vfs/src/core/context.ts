@@ -92,7 +92,11 @@ export const createVfsContext = ({
           ...currentMeta,
           ...overrides,
           path,
-          content: isNull(overrides.content) ? overrides.content : Buffer.from(overrides.content),
+          content: isNull(overrides.content)
+            ? overrides.content
+            : Buffer.isBuffer(overrides.content)
+              ? overrides.content
+              : Buffer.from(overrides.content),
           relativePath: ctx.relative(path)
         };
 

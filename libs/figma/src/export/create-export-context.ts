@@ -24,7 +24,7 @@ export type ExportContext = Awaited<ReturnType<typeof createExportContext>>;
 export async function createExportContext({
   api,
   vfs,
-  cache = createExportCache(),
+  cache: _cache = createExportCache(),
   log = figmaLogger
 }: CreateExportContextParams) {
   const getNewFile = async (id: string) => {

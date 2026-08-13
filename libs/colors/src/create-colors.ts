@@ -1,6 +1,6 @@
 import { entries, identity } from '@neodx/std';
 
-// TODO Rework options
+// TODO(#165): rework positional options
 export function createColors(isTTY = false, disabled = false, force = false) {
   const enabled =
     force ||

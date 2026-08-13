@@ -7,32 +7,123 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  nx:
+  check:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        node-version: [20.x]
-
+        # Default runtime is Node 26 (see `.node-version` / root engines).
+        # Add 22.x / 24.x here only as support-matrix probes, not as the default.
+        node-version: [26.x]
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
-      - uses: nrwl/nx-set-shas@v3
-
-      - uses: actions/setup-node@v3
+      - uses: voidzero-dev/setup-vp@v1
         with:
           node-version: ${{ matrix.node-version }}
-          cache: yarn
+          cache: true
+          run-install: true
 
-      - name: Install dependencies
-        run: yarn install --immutable
+      - name: Restore Vite Task cache
+        id: vite-task-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules/.vite/task-cache
+          key: vite-task-${{ runner.os }}-${{ runner.arch }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            vite-task-${{ runner.os }}-${{ runner.arch }}-
 
-      - name: Run NX checks
-        run: |
-          yarn nx format:check
-          yarn nx affected --target lint --parallel 3
-          yarn nx affected --target test --parallel 3
-          yarn nx affected --target build --parallel 3
-          yarn nx affected --target typecheck --parallel 3
+      - name: Check (fmt + lint)
+        run: vp check
+
+      - name: References drift gate
+        run: yarn check-references
+
+      # S5-R2-c: dependency-cruiser honesty gate. Fails on undeclared workspace
+      # / npm imports, production source reaching into devDependencies, new
+      # cycles, or unresolvable imports. Documented `vfs ↔ internal` soft edge
+      # + intra-vfs cycles are accepted via the committed baseline file.
+      - name: Dependency structure gate (dependency-cruiser)
+        run: yarn depcruise
+
+      # Unified root solution (`tsc -b`). Cold-clone honest via build configs'
+      # paths:{} + package.json `development` export condition — before pack.
+      - name: Typecheck libraries (project references)
+        run: yarn typecheck
+
+      - name: Pack publishable libraries
+        run: >
+          vp run
+          --filter "./libs/*"
+          --filter "!@neodx/autobuild"
+          --filter "!@neodx/codegen"
+          --filter "!@neodx/internal"
+          pack
+
+      - name: Verify export targets exist
+        run: yarn verify-exports
+
+      - name: Publint publishable libraries
+        run: yarn publint
+
+      # vp run task graph cycles on internal↔vfs; autobuild quarantined from critical path.
+      - name: Test libraries
+        run: >
+          vp run
+          --filter "./libs/*"
+          --filter "!@neodx/autobuild"
+          --filter "!@neodx/internal"
+          test
+
+      - name: Verify @neodx/internal is inlined in dist
+        working-directory: libs/svg
+        run: vp test src/__tests__/internal-inline.test.ts
+
+      - name: Save Vite Task cache
+        if: success()
+        uses: actions/cache/save@v4
+        with:
+          path: node_modules/.vite/task-cache
+          key: ${{ steps.vite-task-cache.outputs.cache-primary-key }}
+
+  e2e-svg:
+    runs-on: ubuntu-latest
+    needs: []
+    strategy:
+      matrix:
+        node-version: [26.x]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: voidzero-dev/setup-vp@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: true
+          run-install: true
+
+      - name: Install Playwright Chromium
+        run: yarn workspace @neodx/e2e-svg exec playwright install --with-deps chromium
+
+      - name: Pack publishable libs (e2e needs packed svg + workspace deps)
+        # Do not use `vp run -t @neodx/svg#pack` — `-t` self-cycles vfs pack on
+        # vite-plus 0.2.7. Packing only svg leaves `@neodx/std` dist missing when
+        # the packed svg unplugin resolves workspace deps to dist.
+        run: yarn pack:libs
+
+      - name: Build svg e2e app
+        working-directory: apps/e2e/svg
+        run: vp build
+
+      - name: Run Playwright e2e
+        run: yarn workspace @neodx/e2e-svg e2e
+        # Flakes must be quarantined with a named GitHub issue — do not silent-skip.
+
+      - name: Upload Playwright artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-svg-playwright
+          path: |
+            apps/e2e/svg/test-results/
+            apps/e2e/svg/tests/svg-e2e.test.ts-snapshots/
+          if-no-files-found: ignore
+          retention-days: 7

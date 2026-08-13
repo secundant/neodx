@@ -1,20 +1,19 @@
 {
   "name": "@neodx/figma",
   "version": "0.6.0",
-  "packageManager": "yarn@4.1.0",
-  "description": "No description",
-  "type": "module",
-  "main": "./dist/index.cjs",
-  "types": "./dist/index.d.ts",
-  "module": "./dist/index.mjs",
-  "source": [
-    "src/index.ts",
-    "src/core/index.ts",
-    "src/graph/index.ts",
-    "src/export/index.ts",
-    "src/cli.ts"
+  "description": "Typed Figma API client, graph helpers, and asset export for design-to-code workflows",
+  "keywords": [
+    "cli",
+    "design",
+    "export",
+    "figma",
+    "icons",
+    "svg",
+    "typescript"
   ],
-  "sideEffects": false,
+  "homepage": "https://github.com/secundant/neodx/tree/main/libs/figma",
+  "bugs": "https://github.com/secundant/neodx/issues",
+  "license": "MIT",
   "author": {
     "name": "Dmitry Remezov",
     "email": "mysecundant@gmail.com",
@@ -23,75 +22,86 @@
   "contributors": [
     "secundant"
   ],
-  "keywords": [
-    "figma",
-    "design",
-    "icons",
-    "svg",
-    "export",
-    "cli",
-    "typescript"
-  ],
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/secundant/neodx.git",
     "directory": "libs/figma"
   },
-  "homepage": "https://github.com/secundant/neodx/tree/main/libs/figma",
-  "bugs": "https://github.com/secundant/neodx/issues",
   "bin": "bin.mjs",
+  "source": [
+    "src/index.ts",
+    "src/core/index.ts",
+    "src/graph/index.ts",
+    "src/export/index.ts",
+    "src/cli.ts"
+  ],
   "files": [
     "bin.mjs",
     "dist",
     "README.md",
     "package.json"
   ],
-  "scripts": {
-    "typecheck": "tsc --noEmit",
-    "build": "autobuild",
-    "test": "vitest run",
-    "lint": "eslint src",
-    "nuke": "rm -rf dist"
-  },
-  "dependencies": {
-    "@neodx/log": "0.4.2",
-    "@neodx/std": "0.4.0",
-    "@neodx/vfs": "0.3.0",
-    "colord": "2.9.3",
-    "commander": "12.0.0",
-    "cosmiconfig": "9.0.0",
-    "pathe": "1.1.2",
-    "svgo": "3.3.2"
-  },
-  "devDependencies": {
-    "@neodx/autobuild": "*"
-  },
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "development": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
     "./core": {
+      "development": "./src/core/index.ts",
       "types": "./dist/core/index.d.ts",
       "import": "./dist/core/index.mjs",
       "require": "./dist/core/index.cjs"
     },
     "./graph": {
+      "development": "./src/graph/index.ts",
       "types": "./dist/graph/index.d.ts",
       "import": "./dist/graph/index.mjs",
       "require": "./dist/graph/index.cjs"
     },
     "./export": {
+      "development": "./src/export/index.ts",
       "types": "./dist/export/index.d.ts",
       "import": "./dist/export/index.mjs",
       "require": "./dist/export/index.cjs"
     },
     "./cli": {
+      "development": "./src/cli.ts",
       "types": "./dist/cli.d.ts",
       "import": "./dist/cli.mjs",
       "require": "./dist/cli.cjs"
     }
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "typecheck": "tsc -b tsconfig.build.json",
+    "build": "vp pack",
+    "test": "vp test",
+    "lint": "vp lint",
+    "nuke": "rm -rf dist",
+    "pack": "vp pack"
+  },
+  "dependencies": {
+    "@neodx/log": "workspace:^",
+    "@neodx/std": "workspace:^",
+    "@neodx/vfs": "workspace:^",
+    "colord": "2.9.3",
+    "commander": "12.0.0",
+    "cosmiconfig": "9.0.0",
+    "pathe": "1.1.2",
+    "svgo": "3.3.2",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@neodx/internal": "workspace:^"
+  },
+  "packageManager": "yarn@4.3.1"
 }

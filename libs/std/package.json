@@ -2,104 +2,124 @@
   "name": "@neodx/std",
   "version": "0.4.0",
   "description": "Standard language helpers",
-  "type": "module",
-  "main": "./dist/index.cjs",
-  "types": "./dist/index.d.ts",
-  "module": "./dist/index.mjs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secundant/neodx.git",
+    "directory": "libs/std"
+  },
   "source": [
     "src/index.ts",
     "src/*.ts",
     "src/*/index.ts"
   ],
-  "license": "MIT",
-  "sideEffects": false,
   "files": [
     "dist",
     "README.md",
     "package.json"
   ],
-  "scripts": {
-    "typecheck": "tsc --noEmit",
-    "clean": "yarn dlx rimraf dist",
-    "build": "autobuild",
-    "test": "vitest run",
-    "lint": "eslint src",
-    "dev": "autobuild --watch"
-  },
-  "devDependencies": {
-    "@neodx/autobuild": "*"
-  },
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "development": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
     "./debounce": {
+      "development": "./src/debounce.ts",
       "types": "./dist/debounce.d.ts",
       "import": "./dist/debounce.mjs",
       "require": "./dist/debounce.cjs"
     },
     "./invariant": {
+      "development": "./src/invariant.ts",
       "types": "./dist/invariant.d.ts",
       "import": "./dist/invariant.mjs",
       "require": "./dist/invariant.cjs"
     },
     "./math": {
+      "development": "./src/math.ts",
       "types": "./dist/math.d.ts",
       "import": "./dist/math.mjs",
       "require": "./dist/math.cjs"
     },
     "./memoize": {
+      "development": "./src/memoize.ts",
       "types": "./dist/memoize.d.ts",
       "import": "./dist/memoize.mjs",
       "require": "./dist/memoize.cjs"
     },
     "./merge": {
+      "development": "./src/merge.ts",
       "types": "./dist/merge.d.ts",
       "import": "./dist/merge.mjs",
       "require": "./dist/merge.cjs"
     },
     "./guards": {
+      "development": "./src/guards.ts",
       "types": "./dist/guards.d.ts",
       "import": "./dist/guards.mjs",
       "require": "./dist/guards.cjs"
     },
     "./string": {
+      "development": "./src/string.ts",
       "types": "./dist/string.d.ts",
       "import": "./dist/string.mjs",
       "require": "./dist/string.cjs"
     },
     "./to-case": {
+      "development": "./src/to-case.ts",
       "types": "./dist/to-case.d.ts",
       "import": "./dist/to-case.mjs",
       "require": "./dist/to-case.cjs"
     },
     "./url": {
+      "development": "./src/url.ts",
       "types": "./dist/url.d.ts",
       "import": "./dist/url.mjs",
       "require": "./dist/url.cjs"
     },
     "./shared": {
+      "development": "./src/shared.ts",
       "types": "./dist/shared.d.ts",
       "import": "./dist/shared.mjs",
       "require": "./dist/shared.cjs"
     },
     "./async": {
+      "development": "./src/async/index.ts",
       "types": "./dist/async/index.d.ts",
       "import": "./dist/async/index.mjs",
       "require": "./dist/async/index.cjs"
     },
     "./object": {
+      "development": "./src/object/index.ts",
       "types": "./dist/object/index.d.ts",
       "import": "./dist/object/index.mjs",
       "require": "./dist/object/index.cjs"
     },
     "./array": {
+      "development": "./src/array/index.ts",
       "types": "./dist/array/index.d.ts",
       "import": "./dist/array/index.mjs",
       "require": "./dist/array/index.cjs"
     }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "typecheck": "tsc -b tsconfig.build.json",
+    "clean": "yarn dlx rimraf dist",
+    "build": "vp pack",
+    "test": "vp test",
+    "lint": "vp lint",
+    "dev": "vp pack --watch",
+    "pack": "vp pack"
   },
   "dependencies": {
     "type-fest": "4.21.0"

@@ -95,12 +95,8 @@ export const createLogger = createLoggerFactory({
     level: 'world',
     name: 'my-app',
     transform: [],
-    target: [
-      /* ... */
-    ],
-    meta: {
-      /* ... */
-    }
+    target: [/* ... */],
+    meta: {/* ... */}
   },
   readArguments(...args) {
     // ... your own implementation

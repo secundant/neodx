@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { type DirResult, dirSync } from 'tmp';
-import { beforeEach, describe, expect, test } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vite-plus/test';
 import { ensureFile } from '../ensure';
 import { deepReadDir } from '../read';
 
@@ -26,7 +26,7 @@ describe('read', () => {
   });
 });
 
-// TODO Make shared util
+// TODO Make shared util — duplicated by the sort-then-compare pattern in scan.test.ts (#166).
 const expectArrayEq = <T>(left: T[], right: T[]) =>
   // eslint-disable-next-line @typescript-eslint/require-array-sort-compare
   expect(Array.from(left).sort()).toEqual(Array.from(right).sort());

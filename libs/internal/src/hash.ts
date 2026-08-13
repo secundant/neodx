@@ -4,8 +4,15 @@ import hashObject from 'object-hash';
 
 export const hashContent = (content: BinaryLike) =>
   createHash('sha256').update(content).digest('hex');
-export const hashUnknown = (value: unknown) =>
-  Buffer.isBuffer(value) || isTypeOfString(value) ? hashContent(value) : hashObject(value ?? '');
+export const hashUnknown = (value: unknown) => {
+  if (Buffer.isBuffer(value)) {
+    return hashContent(new Uint8Array(value));
+  }
+  if (isTypeOfString(value)) {
+    return hashContent(value);
+  }
+  return hashObject(value ?? '');
+};
 
 export const printHash = (pattern: string, hash: string, name = 'hash') =>
   pattern

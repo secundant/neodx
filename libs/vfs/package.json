@@ -2,15 +2,17 @@
   "name": "@neodx/vfs",
   "version": "0.3.0",
   "description": "Simple virtual file system - working dir context, lazy changes, different modes, integrations and moreover",
-  "type": "module",
-  "main": "./dist/cjs/index.cjs",
-  "types": "./dist/types/index.d.ts",
-  "module": "./dist/mjs/index.mjs",
-  "source": [
-    "src/index.ts",
-    "src/plugins/*.ts"
+  "keywords": [
+    "dry-run",
+    "file",
+    "fs",
+    "lazy",
+    "vfs",
+    "virtual"
   ],
-  "sideEffects": false,
+  "homepage": "https://github.com/secundant/neodx/tree/main/libs/vfs",
+  "bugs": "https://github.com/secundant/neodx/issues",
+  "license": "MIT",
   "author": {
     "name": "Dmitry Remezov",
     "email": "mysecundant@gmail.com",
@@ -19,89 +21,104 @@
   "contributors": [
     "secundant"
   ],
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/secundant/neodx.git",
     "directory": "libs/vfs"
   },
-  "homepage": "https://github.com/secundant/neodx/tree/main/libs/vfs",
-  "bugs": "https://github.com/secundant/neodx/issues",
+  "source": [
+    "src/index.ts",
+    "src/plugins/*.ts"
+  ],
   "files": [
     "dist",
     "README.md",
     "package.json"
   ],
-  "keywords": [
-    "vfs",
-    "virtual",
-    "file",
-    "fs",
-    "lazy",
-    "dry-run"
-  ],
-  "scripts": {
-    "typecheck": "tsc --noEmit",
-    "bench": "vitest bench",
-    "build": "autobuild",
-    "test": "vitest run",
-    "lint": "eslint src"
-  },
-  "devDependencies": {
-    "@neodx/autobuild": "*",
-    "@types/tmp": "0.2.6",
-    "tmp": "0.2.3",
-    "tsx": "4.16.2"
-  },
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/mjs/index.mjs",
+  "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
+      "development": "./src/index.ts",
       "types": "./dist/types/index.d.ts",
       "import": "./dist/mjs/index.mjs",
       "require": "./dist/cjs/index.cjs"
     },
     "./plugins/eslint": {
+      "development": "./src/plugins/eslint.ts",
       "types": "./dist/types/plugins/eslint.d.ts",
       "import": "./dist/mjs/plugins/eslint.mjs",
       "require": "./dist/cjs/plugins/eslint.cjs"
     },
     "./plugins/glob": {
+      "development": "./src/plugins/glob.ts",
       "types": "./dist/types/plugins/glob.d.ts",
       "import": "./dist/mjs/plugins/glob.mjs",
       "require": "./dist/cjs/plugins/glob.cjs"
     },
     "./plugins/package-json": {
+      "development": "./src/plugins/package-json.ts",
       "types": "./dist/types/plugins/package-json.d.ts",
       "import": "./dist/mjs/plugins/package-json.mjs",
       "require": "./dist/cjs/plugins/package-json.cjs"
     },
     "./plugins/json": {
+      "development": "./src/plugins/json.ts",
       "types": "./dist/types/plugins/json.d.ts",
       "import": "./dist/mjs/plugins/json.mjs",
       "require": "./dist/cjs/plugins/json.cjs"
     },
     "./plugins/prettier": {
+      "development": "./src/plugins/prettier.ts",
       "types": "./dist/types/plugins/prettier.d.ts",
       "import": "./dist/mjs/plugins/prettier.mjs",
       "require": "./dist/cjs/plugins/prettier.cjs"
     },
     "./plugins/scan": {
+      "development": "./src/plugins/scan.ts",
       "types": "./dist/types/plugins/scan.d.ts",
       "import": "./dist/mjs/plugins/scan.mjs",
       "require": "./dist/cjs/plugins/scan.cjs"
+    },
+    "./testing": {
+      "development": "./src/testing.ts",
+      "types": "./src/testing.ts",
+      "import": "./src/testing.ts",
+      "default": "./src/testing.ts"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "typecheck": "tsc -b tsconfig.build.json",
+    "bench": "vitest bench",
+    "build": "vp pack",
+    "test": "vp test",
+    "lint": "vp lint",
+    "pack": "vp pack"
+  },
   "dependencies": {
-    "@neodx/colors": "0.2.9",
-    "@neodx/fs": "0.0.13",
-    "@neodx/glob": "0.1.2",
-    "@neodx/log": "0.4.2",
-    "@neodx/pkg-misc": "0.0.11",
-    "@neodx/std": "0.4.0",
+    "@neodx/colors": "workspace:^",
+    "@neodx/fs": "workspace:^",
+    "@neodx/glob": "workspace:^",
+    "@neodx/log": "workspace:^",
+    "@neodx/pkg-misc": "workspace:^",
+    "@neodx/std": "workspace:^",
     "@types/eslint": "8.56.9",
     "grammex": "3.1.3",
     "pathe": "1.1.2",
     "pkg-types": "1.0.3",
     "ts-pattern": "5.2.0"
+  },
+  "devDependencies": {
+    "@neodx/internal": "workspace:^",
+    "@types/tmp": "0.2.6",
+    "tmp": "0.2.7",
+    "tsx": "4.23.12"
   },
   "peerDependencies": {
     "eslint": "*",

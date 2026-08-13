@@ -1,8 +1,19 @@
-/// <reference types="vitest" />
-import { defineConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
+import { defineConfig } from 'vite-plus';
 
+// Pack-only S2: Vite+ pack for @neodx/colors.
+// Single-entry flat dist; outExtensions preserve .mjs/.cjs/.d.ts.
+// Terminal/process APIs → platform node.
 export default defineConfig({
-  test: { typecheck: { ignoreSourceErrors: true }, passWithNoTests: true },
-  plugins: [tsconfigPaths()]
+  pack: {
+    entry: {
+      index: 'src/index.ts'
+    },
+    platform: 'node',
+    format: ['esm', 'cjs'],
+    dts: { eager: true },
+    sourcemap: true,
+    clean: true,
+    outExtensions: ({ format }) => ({ dts: '.d.ts', js: format === 'cjs' ? '.cjs' : '.mjs' })
+  },
+  test: { passWithNoTests: true }
 });

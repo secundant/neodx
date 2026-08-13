@@ -1,5 +1,5 @@
 import type { PackageJson } from 'pkg-types';
-import { describe, expectTypeOf, test } from 'vitest';
+import { describe, expectTypeOf, test } from 'vite-plus/test';
 import { createInMemoryBackend } from '../backend';
 import { createVfsContext } from '../core/context';
 import { createBaseVfs } from '../core/create-base-vfs';

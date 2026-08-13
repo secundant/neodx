@@ -1,32 +1,22 @@
 {
   "name": "@neodx/log",
-  "packageManager": "yarn@4.1.0",
-  "description": "A lightweight universal logging framework",
   "version": "0.4.2",
-  "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "browser": "./dist/index.mjs",
-  "source": [
-    "src/*/index.ts",
-    "src/*.ts"
-  ],
+  "description": "A lightweight universal logging framework",
   "keywords": [
-    "log",
     "cli",
-    "logger",
-    "logging",
-    "hackable",
     "colorful",
     "console",
+    "hackable",
+    "isomorphic",
     "json",
-    "tiny",
-    "isomorphic"
+    "log",
+    "logger",
+    "logging",
+    "tiny"
   ],
-  "files": [
-    "dist",
-    "package.json"
-  ],
+  "homepage": "https://github.com/secundant/neodx/tree/main/libs/log",
+  "bugs": "https://github.com/secundant/neodx/issues",
+  "license": "MIT",
   "author": {
     "name": "Dmitry Remezov",
     "email": "mysecundant@gmail.com",
@@ -35,44 +25,109 @@
   "contributors": [
     "secundant"
   ],
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/secundant/neodx.git",
     "directory": "libs/log"
   },
-  "homepage": "https://github.com/secundant/neodx/tree/main/libs/log",
-  "bugs": "https://github.com/secundant/neodx/issues",
+  "source": [
+    "src/*/index.ts",
+    "src/*.ts"
+  ],
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
+  "type": "module",
   "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "browser": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "development": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "node": {
+        "import": "./dist/node/index.mjs",
+        "require": "./dist/node/index.cjs"
+      },
+      "browser": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.cjs"
+      },
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./node": {
+      "development": "./src/node/index.ts",
+      "types": "./dist/node/index.d.ts",
+      "browser": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.cjs"
+      },
+      "import": "./dist/node/index.mjs",
+      "require": "./dist/node/index.cjs"
+    },
+    "./utils": {
+      "development": "./src/utils/index.ts",
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.mjs",
+      "require": "./dist/utils/index.cjs"
+    },
+    "./express": {
+      "development": "./src/express.ts",
+      "types": "./dist/express.d.ts",
+      "import": "./dist/express.mjs",
+      "require": "./dist/express.cjs"
+    },
+    "./koa": {
+      "development": "./src/koa.ts",
+      "types": "./dist/koa.d.ts",
+      "import": "./dist/koa.mjs",
+      "require": "./dist/koa.cjs"
+    },
+    "./http": {
+      "development": "./src/http/index.ts",
+      "types": "./dist/http/index.d.ts",
+      "import": "./dist/http/index.mjs",
+      "require": "./dist/http/index.cjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "compare-bundle": "tsx bench/compare-bundle.ts",
     "compare-output": "tsx bench/compare-output.ts",
     "show-output": "tsx examples/big-list-of-logs.ts",
     "bench": "vitest bench",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -b tsconfig.build.json",
     "clean": "yarn dlx rimraf dist",
-    "build": "autobuild",
-    "test": "vitest run",
-    "lint": "eslint"
+    "build": "vp pack",
+    "test": "vp test",
+    "lint": "vp lint",
+    "pack": "vp pack"
   },
   "dependencies": {
-    "@neodx/colors": "0.2.9",
+    "@neodx/colors": "workspace:^",
+    "@neodx/std": "workspace:^",
     "pathe": "1.1.2"
   },
   "devDependencies": {
-    "@neodx/autobuild": "*",
     "@types/bunyan": "1.8.11",
-    "@types/express": "4.17.21",
-    "@types/koa": "2.15.0",
+    "@types/express": "4.17.25",
+    "@types/koa": "2.15.2",
     "@types/tmp": "0.2.6",
     "bunyan": "1.8.15",
     "cli-truncate": "4.0.0",
-    "express": "4.19.2",
-    "koa": "2.15.3",
+    "express": "4.22.2",
+    "koa": "2.16.4",
     "loglevel": "1.9.1",
     "pino": "8.20.0",
-    "tmp": "0.2.3",
-    "tsx": "4.16.2",
+    "tmp": "0.2.7",
+    "tsx": "4.23.12",
     "winston": "3.13.0"
   },
   "peerDependencies": {
@@ -95,49 +150,5 @@
       "optional": true
     }
   },
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "node": {
-        "import": "./dist/node/index.mjs",
-        "require": "./dist/node/index.cjs"
-      },
-      "browser": {
-        "import": "./dist/index.mjs",
-        "require": "./dist/index.cjs"
-      },
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    },
-    "./node": {
-      "types": "./dist/node/index.d.ts",
-      "browser": {
-        "import": "./dist/index.mjs",
-        "require": "./dist/index.cjs"
-      },
-      "import": "./dist/node/index.mjs",
-      "require": "./dist/node/index.cjs"
-    },
-    "./utils": {
-      "types": "./dist/utils/index.d.ts",
-      "import": "./dist/utils/index.mjs",
-      "require": "./dist/utils/index.cjs"
-    },
-    "./express": {
-      "types": "./dist/express.d.ts",
-      "import": "./dist/express.mjs",
-      "require": "./dist/express.cjs"
-    },
-    "./koa": {
-      "types": "./dist/koa.d.ts",
-      "import": "./dist/koa.mjs",
-      "require": "./dist/koa.cjs"
-    },
-    "./http": {
-      "types": "./dist/http/index.d.ts",
-      "import": "./dist/http/index.mjs",
-      "require": "./dist/http/index.cjs"
-    }
-  }
+  "packageManager": "yarn@4.3.1"
 }

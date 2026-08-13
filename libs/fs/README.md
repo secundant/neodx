@@ -1,21 +1,48 @@
 # @neodx/fs
 
-File system enhancements and common stuff.
+Thin Node.js file system helpers — glob scanning, recursive read, safe checks, idempotent
+`ensure`, JSON/JSONC parsing, and content hashing — plus a re-export of `node:fs/promises` so a
+single import covers both the helpers and the native promise API.
 
-API`s overview:
+`@neodx/fs` is a **foundation** package: it backs the product packages (`svg`, `figma`, `log`,
+`vfs`, …) and is also published for direct use. The surface is intentionally small and stable.
 
-- `scan(path, ['*.js', '*.module.ts', '!*.test.{ts,js}'])` - glob reader with multiple inputs support
-- `ensureDir(path)`, `ensureFile(path)` - Safe file/dir creation with all required ancestors
-- `exists(path)`, `isFile(path)`, `isDirectory(path)` - Safe path checks
-- `deepReadDir(path)` - Deep version of `readdir`
-- `parseJson(input)`, `serializeJson(input)` - Safe JSON parser and serializer with [JSONC](https://www.npmjs.com/package/jsonc-parser) support
-- `getFileHash(path)`, `getHash(content)` - Returns file hash based on its content (HEX)
+> For a deferred-write / virtual file system with lazy changes, formatting, and JSON/dependency
+> helpers, use [`@neodx/vfs`](../vfs) instead. `@neodx/fs` operates directly on the real file
+> system.
 
-## API
+## Installation
 
-### scan
+```bash
+npm install @neodx/fs
+# yarn
+yarn add @neodx/fs
+# pnpm
+pnpm add @neodx/fs
+```
 
-Glob-based (via [tiny-glob](https://www.npmjs.com/package/tiny-glob)) multiple patterns scanner with exclusion support
+## API overview
+
+- `scan(cwd, ...patterns)` — glob reader (via [tiny-glob](https://www.npmjs.com/package/tiny-glob))
+  with multiple patterns and `!` exclusion support
+- `deepReadDir(path, { absolute = true })` — recursive flat listing of all descendant paths
+- `exists(path)`, `isFile(path)`, `isDirectory(path)` — safe boolean checks
+- `assertFile(path)`, `assertDir(path)` — throw when a path is not the expected type
+- `ensureDir(path)`, `ensureFile(path)` — idempotent dir/file creation with all ancestors
+- `parseJson(input, options?)`, `serializeJson(input, params?)` — JSON/JSONC parser and serializer
+- `getHash(content)`, `getFileHash(path)` — SHA-256 hex hash of content or a file
+- `node:fs/promises` — re-exported (`access`, `readFile`, `writeFile`, `mkdir`, `readdir`, `rm`, …)
+
+Everything is available from the root entry:
+
+```typescript
+import { scan, ensureDir, isFile, readFile } from '@neodx/fs';
+```
+
+### `scan(cwd, ...patterns)`
+
+Glob-based scanner over the native file system. Accepts variadic patterns (strings or string
+arrays); patterns starting with `!` are exclusions.
 
 ```typescript
 import { scan } from '@neodx/fs';
@@ -24,36 +51,22 @@ await scan(process.cwd(), ['*.js', '!*.config.js']);
 await scan(process.cwd(), '**/*.ts', '**/*.js');
 ```
 
-### `ensureFile(path)` and `ensureDir(path)`
-
-Recursively creates missed file or dir with all required ancestors if one of them is not exists.
-
-Automatically avoid duplicated calls:
+An object form is also supported:
 
 ```typescript
-import { ensureFile, ensureDir } from '@neodx/fs';
+import type { ScanParams } from '@neodx/fs';
 
-// Everything works as expected
-await Promise.all([
-  ensureDir('foo/baz'),
-  ensureFile('foo/bar/2.ts'),
-  ensureDir('foo/bar'),
-  ensureFile('foo/bar/1.ts'),
-  ensureDir('foo')
-]);
+const params: ScanParams = { include: ['*.ts'], exclude: ['*.test.ts'] };
+await scan(process.cwd(), params);
 ```
 
-### `isFile`, `isDirectory`, `exists`
+`scan.parsePatterns(patterns)` splits a flat pattern list into `{ include, exclude }` and is
+exposed as a static method for callers that build their own scan params.
 
-The following APIs are useful for safe paths checking.
+### `deepReadDir(path, { absolute = true })`
 
-- `exists(path)` - Returns `true` if the path exists
-- `isFile(path)` - Returns `true` if the path exists, and it's a file
-- `isDirectory(path)` - Returns `true` if the path exists, and it's a directory
-
-### `deepReadDir(path, { absolute = false })`
-
-Returns flat list with all children's paths. Paths are relative by default.
+Returns a flat list of all descendant paths under `path`. Paths are **absolute by default**;
+pass `{ absolute: false }` for paths relative to `path`.
 
 ```typescript
 import { deepReadDir, isFile } from '@neodx/fs';
@@ -67,27 +80,89 @@ for (const file of files) {
 }
 ```
 
+### `exists`, `isFile`, `isDirectory`
+
+Safe boolean checks that resolve to `false` instead of throwing on missing paths.
+
+- `exists(path)` — `true` if the path exists
+- `isFile(path)` — `true` if the path exists and is a file
+- `isDirectory(path)` — `true` if the path exists and is a directory
+
+### `assertFile` and `assertDir`
+
+Throw when a path does not match the expected type; useful for precondition checks.
+
+```typescript
+import { assertFile } from '@neodx/fs';
+
+await assertFile(configPath); // throws if missing or not a file
+```
+
+`isValidStats(path, predicate)` is the lower-level building block behind the checks: it resolves
+the path's `Stats` and applies a predicate, returning `false` when the path is missing.
+
+### `ensureFile` and `ensureDir`
+
+Recursively create a file or directory with all missing ancestors. Concurrent calls for the same
+path are deduplicated, so racing `Promise.all` calls are safe.
+
+```typescript
+import { ensureFile, ensureDir } from '@neodx/fs';
+
+await Promise.all([
+  ensureDir('foo/baz'),
+  ensureFile('foo/bar/2.ts'),
+  ensureDir('foo/bar'),
+  ensureFile('foo/bar/1.ts'),
+  ensureDir('foo')
+]);
+```
+
 ### `parseJson` and `serializeJson`
+
+`parseJson` first tries `JSON.parse`; on failure it falls back to a JSONC parser
+([jsonc-parser](https://www.npmjs.com/package/jsonc-parser)), so it accepts standard JSON as well
+as JSON-with-comments (e.g. `tsconfig.json`). `serializeJson` stringifies with a trailing newline.
 
 ```typescript
 import { parseJson, serializeJson } from '@neodx/fs';
-import { writeFile, readFile } from 'fs/promises';
+import { readFile, writeFile } from '@neodx/fs';
 
 const json = parseJson(await readFile('tsconfig.json', 'utf-8'));
 
-await writeFile(
-  'tsconfig.json',
-  serializeJson({
-    ...json,
-    compilerOptions: {
-      ...json.compilerOptions,
-      target: 'esnext'
-    }
-  }),
-  'utf-8'
-);
+await writeFile('tsconfig.json', serializeJson(json, { spaces: 2 }), 'utf-8');
+```
+
+`SerializeJsonParams`:
+
+- `spaces` — indent width in spaces (default `2`)
+- `replacer` — `JSON.stringify` replacer (default `null`)
+
+`ParseJsonParams` mirrors jsonc-parser's `ParseOptions`.
+
+### `getHash` and `getFileHash`
+
+`getHash(content)` returns the SHA-256 hash of a string or `Buffer` as a lowercase hex string.
+`getFileHash(path)` reads a file and returns its content hash.
+
+```typescript
+import { getHash, getFileHash } from '@neodx/fs';
+
+getHash('foo-bar'); // '7d89c4f517e3bd4b5e8e76687937005b602ea00c5cba3e25ef1fc6575a55103e'
+await getFileHash('package.json');
+```
+
+### `node:fs/promises` re-export
+
+The root entry re-exports the promise-based Node file system API, so callers do not need a second
+import for native operations. The re-exported surface includes: `access`, `appendFile`, `chmod`,
+`chown`, `copyFile`, `cp`, `lstat`, `mkdir`, `mkdtemp`, `opendir`, `readdir`, `readFile`,
+`rename`, `rm`, `stat`, `unlink`, `watch`, `writeFile`.
+
+```typescript
+import { readFile, writeFile, mkdir } from '@neodx/fs';
 ```
 
 ---
 
-Inspired by fs-extra and others.
+Inspired by `fs-extra` and others.

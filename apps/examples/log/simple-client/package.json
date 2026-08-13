@@ -2,7 +2,6 @@
   "name": "@neodx/example-log-simple-client",
   "version": "0.0.1",
   "private": true,
-  "packageManager": "yarn@4.1.0",
   "type": "module",
   "sideEffects": false,
   "publishConfig": {
@@ -19,20 +18,5 @@
   "dependencies": {
     "@neodx/log": "*"
   },
-  "nx": {
-    "targets": {
-      "lint": {
-        "dependsOn": [
-          "^build",
-          "^lint"
-        ]
-      },
-      "typecheck": {
-        "dependsOn": [
-          "^build",
-          "^typecheck"
-        ]
-      }
-    }
-  }
+  "packageManager": "yarn@4.3.1"
 }

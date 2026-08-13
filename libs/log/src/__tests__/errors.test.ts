@@ -1,6 +1,6 @@
 import { createColors } from '@neodx/colors';
 import { fromLength } from '@neodx/std';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { printCodeFrame, printPrettyError } from '../node/error';
 
 describe('errors', () => {

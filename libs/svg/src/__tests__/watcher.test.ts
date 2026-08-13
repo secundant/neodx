@@ -2,7 +2,7 @@ import { mapToObject, sleep } from '@neodx/std';
 import type { Vfs, VirtualInitializer } from '@neodx/vfs';
 import { rename } from 'node:fs/promises';
 import { basename } from 'pathe';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { createSvgSpriteBuilder, type CreateSvgSpriteBuilderParams } from '../core/builder.ts';
 import { parseSvg } from '../core/parser.ts';
 import { getChildNodes } from '../core/shared.ts';
@@ -41,6 +41,23 @@ describe.concurrent('watcher', async () => {
     const svg = parseSvg(await vfs.read(path, 'utf-8'));
 
     return getChildNodes(svg).map(child => child.props.id!);
+  };
+  /** Poll until sprite rebuild lands — CI fs events can lag past a fixed sleep. */
+  const waitForSymbols = async (vfs: Vfs, path: string, expected: string[], attempts = 20) => {
+    let lastError: unknown;
+
+    for (let i = 0; i < attempts; i++) {
+      try {
+        const names = await extractSymbolNames(vfs, path);
+
+        expect(names).toEqual(expected);
+        return names;
+      } catch (error) {
+        lastError = error;
+        await sleep(250);
+      }
+    }
+    throw lastError;
   };
 
   test('should support directory renaming', async () => {
@@ -85,8 +102,7 @@ describe.concurrent('watcher', async () => {
 
     // rename with one letter case change, in the opposite to the previous test, the case is not forced to kamel-case
     await rename(vfs.resolve('assets/common/add.svg'), vfs.resolve('assets/common/Add.svg'));
-    await sleep(500);
-    expect(await extractSymbolNames(vfs, 'public/sprites/common.svg')).toEqual(['Add', 'close']);
+    await waitForSymbols(vfs, 'public/sprites/common.svg', ['Add', 'close']);
     await watcher.close();
   });
 

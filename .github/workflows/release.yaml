@@ -7,34 +7,38 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
+permissions:
+  contents: write
+  pull-requests: write
+  # Required for npm provenance / trusted publishing (OIDC).
+  id-token: write
+
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: nrwl/nx-set-shas@v3
-
-      - uses: actions/setup-node@v3
+      - uses: voidzero-dev/setup-vp@v1
         with:
-          node-version: 20.x
-          cache: yarn
+          node-version: 26.x
+          cache: true
+          run-install: true
 
-      - name: Install dependencies
-        run: yarn install --immutable
+      - name: Ensure modern npm for provenance
+        run: npm install -g npm@11
 
       - name: Create Release Pull Request or Publish to npm
-        # https://github.com/changesets/action
         uses: changesets/action@v1
         with:
-          # this expects you to have a script called release which does a build for your packages and calls changeset publish
           publish: yarn release-publish
           version: yarn release-version
-
         env:
-          AUTOBUILD_FORCE_FLATTEN: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Keep token auth until each @neodx/* package has a trusted publisher on npmjs.com.
+          # Provenance attestations still generate when NPM_CONFIG_PROVENANCE=true.
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
