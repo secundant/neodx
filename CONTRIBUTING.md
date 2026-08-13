@@ -52,6 +52,7 @@ yarn changeset
 
 Pick the affected package(s), choose `patch` / `minor` / `major`, and write a concise summary.
 Never sneak a silent API break into a patch — describe it and add migration notes.
+Workspace versioning policy: [`SEMVER.md`](./SEMVER.md).
 
 ## Commit conventions
 

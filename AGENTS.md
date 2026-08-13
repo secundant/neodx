@@ -66,7 +66,7 @@ git-affected selection. That difference is accepted.
   its `index` entry. Tests and stubs are not API.
 - Multi-entry exports are first-class; keep `package.json` `exports` in sync with pack entries.
 - No silent API breaks in patches. Use a Changeset (`yarn changeset`) with migration notes for any
-  caller-visible change.
+  caller-visible change. Policy: [`SEMVER.md`](./SEMVER.md).
 
 ## Issues and PRs
 
