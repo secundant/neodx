@@ -117,8 +117,8 @@
   "devDependencies": {
     "@neodx/internal": "workspace:^",
     "@types/tmp": "0.2.6",
-    "tmp": "0.2.3",
-    "tsx": "4.16.2"
+    "tmp": "0.2.7",
+    "tsx": "4.23.12"
   },
   "peerDependencies": {
     "eslint": "*",

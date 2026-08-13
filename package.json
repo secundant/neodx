@@ -54,7 +54,7 @@
     "picomatch": "4.0.2",
     "prettier": "3.3.2",
     "publint": "0.3.12",
-    "tsx": "4.16.2",
+    "tsx": "4.23.12",
     "type-fest": "4.21.0",
     "typescript": "5.9.3",
     "vite": "8.2.0",
@@ -69,6 +69,9 @@
     "core-js-pure": {
       "built": false
     }
+  },
+  "resolutions": {
+    "express": "4.22.2"
   },
   "engines": {
     "node": ">=26.0.0",
