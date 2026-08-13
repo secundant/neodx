@@ -1,6 +1,6 @@
 {
   "name": "@neodx/pkg-misc",
-  "version": "0.0.11",
+  "version": "1.0.0",
   "description": "Collection of utilities for common cases in package development - smart dependencies updates, simple formatting with auto-detection of prettier config, etc.",
   "license": "MIT",
   "repository": {

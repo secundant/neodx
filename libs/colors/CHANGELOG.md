@@ -1,5 +1,37 @@
 # @neodx/colors
 
+## 1.0.0
+
+### Major Changes
+
+- [#160](https://github.com/secundant/neodx/pull/160) [`d639c4b`](https://github.com/secundant/neodx/commit/d639c4bd763a67deb146d190c70da11378b87a2e) Thanks [@secundant](https://github.com/secundant)! - `@neodx/colors` 1.0.0 — Intention freeze and Public API honesty.
+
+  Promotes `@neodx/colors` to a stable foundation: it is publicly published
+  (`access: public`), dependency-light (`@neodx/std` only), used across the
+  namespace, and documented for direct use.
+
+  This release makes the package's documented Intention match reality:
+
+  - The README now frames the package as a stable, publicly published terminal
+    colors utility (not an unpublished internal helper).
+  - The README API section documents the full Public API from `src/index.ts`:
+    the pre-built `colors` instance, the `createColors` factory, and the exported
+    types `Colors`, `ColorName`, and `ColorFormatter`.
+  - The color / modifier list in the README now matches `colorsMap` in source,
+    including previously undocumented `black`, `bgBlack`, and `overline`.
+
+  **No breaking Public API change.** All existing exports and behavior are
+  preserved; the 1.0 major signals stability of the documented surface, not a
+  removal.
+
+  Residual (not blocking 1.0): `createColors(isTTY?, disabled?, force?)` still
+  uses a positional options signature. Reworking that API is tracked in #165.
+
+### Patch Changes
+
+- Updated dependencies [[`523574a`](https://github.com/secundant/neodx/commit/523574ab76cb405ef00b41478436bc39d2c92e39)]:
+  - @neodx/std@1.0.0
+
 ## 0.2.9
 
 ### Patch Changes

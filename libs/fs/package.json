@@ -1,6 +1,6 @@
 {
   "name": "@neodx/fs",
-  "version": "0.0.13",
+  "version": "1.0.0",
   "description": "File system helpers",
   "license": "MIT",
   "repository": {
