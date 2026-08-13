@@ -18,9 +18,10 @@ This folder holds neodx-local status, evidence pointers, and future neodx-origin
 
 Critical path on `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160)).
 
-**Split-brain:** local tip **`32959fd`** is **24 commits ahead** of `origin/improve/neodx` **`508458b`**
-(R2-a BLOCK commit still on GitHub). Re-read `git rev-parse --short HEAD` and
-`git rev-parse --short origin/improve/neodx` before citing SHAs. GitHub blob URLs lag until push.
+**Soaked:** local = origin **`7538cd7`**. Required CI green on run
+[31703518513](https://github.com/secundant/neodx/actions/runs/31703518513)
+(`check` 1m51s, `e2e-svg` 1m37s). Cloudflare Pages and Snyk still fail (non-gating).
+Re-read `git rev-parse --short HEAD` before citing SHAs.
 
 | Stream                   | Status                                                                                        | Evidence                                                                                                                                                                               |
 | ------------------------ | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -42,18 +43,18 @@ Critical path on `improve/neodx` (PR [#160](https://github.com/secundant/neodx/p
 | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | std, colors, fs, glob, pkg-misc, log, vfs, svg, figma | #165 colors · #166 fs · #167 pkg-misc · #168 log · #169 figma; P-F not folded; P-K landed (top-level Zod) |
 
-### Next sessions (after this actualization)
+### Next sessions (after soak)
 
-| #   | Session                                                   | Gate                                               |
-| --- | --------------------------------------------------------- | -------------------------------------------------- |
-| 0   | **Push 24 commits + soak** `check` + `e2e-svg` on 26.x    | Hard blocker; CI-in-scope                          |
-| 1   | Publish workspace 1.0 (Changesets → npm)                  | After soak; do **not** mix R2-e                    |
-| 2   | Nubis catalog smoke                                       | After publish                                      |
-| 3   | Hygiene: `SEMVER.md`, Cloudflare Pages (P-D), Renovate C8 | Parallel-safe after push                           |
-| 4   | S5-R2-e paired dts → R2-d ATTW (#164)                     | After 1.0 publish (1.1), not inside honesty majors |
-| 5   | S5-R2-f test tsconfig matrix, then `typeCheck`            | Solo vs pack churn                                 |
-| 6   | #162 autobuild / #163 codegen retire                      | Async after 1.0                                    |
-| 7   | Polygon promote/defer/reject + close Nubis ledger         | After soak; better after catalog smoke             |
+| #   | Session                                                   | Gate                                   |
+| --- | --------------------------------------------------------- | -------------------------------------- |
+| 0   | Push + soak                                               | **Done** @ `7538cd7` / run 31703518513 |
+| 1   | Publish workspace 1.0 (Changesets → npm)                  | **Now**; do **not** mix R2-e           |
+| 2   | Nubis catalog smoke                                       | After publish                          |
+| 3   | Hygiene: `SEMVER.md`, Cloudflare Pages (P-D), Renovate C8 | Parallel-safe with 1                   |
+| 4   | S5-R2-e paired dts → R2-d ATTW (#164)                     | After 1.0 publish (1.1)                |
+| 5   | S5-R2-f test tsconfig matrix, then `typeCheck`            | Solo vs pack churn                     |
+| 6   | #162 autobuild / #163 codegen retire                      | Async after 1.0                        |
+| 7   | Polygon promote/defer/reject + close Nubis ledger         | After catalog smoke                    |
 
 Do not flip `typeCheck` before R2-f. Do not pair R2-e with a product 1.0 version bump. Do not
 force-push. Do not declare Nubis adopts Vite+ or TS refs.

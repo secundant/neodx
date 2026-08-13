@@ -3,7 +3,7 @@
 Authoritative before / during / after dossiers for toolchain experiments on neodx.
 Live guidance for everyday commands stays in [`../../AGENTS.md`](../../AGENTS.md) and
 [`../../CONTRIBUTING.md`](../../CONTRIBUTING.md). Program status:
-[`../plans/AGENTS.md`](../plans/AGENTS.md) (local tip `32959fd`; origin `508458b` until push).
+[`../plans/AGENTS.md`](../plans/AGENTS.md) (tip `7538cd7`; required CI soaked).
 
 | Report                                                                               | Status                      | Notes                                                       |
 | ------------------------------------------------------------------------------------ | --------------------------- | ----------------------------------------------------------- |
@@ -20,4 +20,4 @@ fs 1.0 handoff: [`../sessions/fs-1.0-handoff.md`](../sessions/fs-1.0-handoff.md)
 
 Treat Vite+ and TypeScript project references as **experiments** until an after-report recommends
 promote, defer, or reject for downstream consumers. Do not assume another monorepo adopts them.
-Current Nubis recommendation remains **defer** both until a CI soak of the unpushed tip.
+Current Nubis recommendation remains **defer** both until an explicit Session 7 disposition (soak is done).

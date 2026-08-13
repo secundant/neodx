@@ -7,7 +7,7 @@
 | Branch      | `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160))                         |
 | Base tip    | `1579d67`                                                                                        |
 | Cutover tip | `0dc4a98` (build) + `7e0ec17` (docs)                                                             |
-| Status tip  | **local `32959fd`** (origin/PR head still `508458b` until the 24-commit push)                    |
+| Status tip  | **`7538cd7`** (origin matches; required CI soaked 2026-08-13)                                    |
 | R2-a tip    | `b000233` (paths) + `643d1c0` (Vite) + `4c35fb4` (report actualization)                          |
 | Research    | [ts-project-references-research.md](./ts-project-references-research.md)                         |
 | Before      | [ts-project-references-before.md](./ts-project-references-before.md)                             |
@@ -184,11 +184,11 @@ Before R2-f closes, its dedicated non-emitting projects must pass from a clean d
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | **S5 cutover (this report)** | All `libs/*` in one `tsc -b` solution; honesty deps; CI typecheck-before-pack; dual-run documented          |
 | **S5-R2 honesty end-state**  | Base `paths`/`baseUrl` gone; `vite-tsconfig-paths` removed; typeAware on (#161 closed); ATTW tracked (#164) |
-| **Nubis promote**            | Separate owner decision after CI soak of local tip `32959fd` — **not** implied by this cutover              |
+| **Nubis promote**            | Separate owner decision after soaked tip `7538cd7` — **not** implied by this cutover                        |
 
 ## Nubis encapsulation
 
-**Recommendation: proceed-with-guards** (neodx); **R2-a and R2-b are landed** — Nubis adoption remains a separate owner decision after a CI soak of the unpushed tip (`32959fd` vs origin `508458b`).
+**Recommendation: proceed-with-guards** (neodx); **R2-a and R2-b are landed** — Nubis adoption remains a separate owner decision. Required CI is green on `7538cd7`.
 
 **Copy:** honesty-first deps; `development` exports; build vs pack tsconfig split; pack-leaf `customConditions:["development"]` + `dts.eager`; soft cycle handling; typecheck-before-pack; drift gate; dep-cruiser with `preserveSymlinks`; unified private+publishable solution with soft edges for source cycles; frozen diagnostic and file-coverage baselines before config repartitioning; separate production-build, runtime-test, type-test, and tool-config ownership.
 
