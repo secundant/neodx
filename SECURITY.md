@@ -29,5 +29,6 @@ Include: affected package + version, impact, reproduction steps, and any known m
 ## Supply chain notes
 
 - Releases go through Changesets on GitHub Actions (`.github/workflows/release.yaml`).
-- Prefer npm provenance / trusted publishing when configured on the npm side (see CONTRIBUTING /
-  release workflow). Treat a missing provenance attestation as a process gap, not silence.
+- Prefer npm provenance / trusted publishing. Configure it with `npm trust` and recover a failed
+  Release: [`MAINTENANCE.md`](./MAINTENANCE.md). Treat a missing provenance attestation as a
+  process gap, not silence.

@@ -18,6 +18,7 @@ stability, not removal.
 
 Any caller-visible change needs a Changeset (`yarn changeset`). Never sneak a
 break into a patch. Contributor path: [`CONTRIBUTING.md`](./CONTRIBUTING.md).
+How Changesets reach npm: [`MAINTENANCE.md`](./MAINTENANCE.md).
 
 Private packages (`autobuild`, `codegen`, `internal`, `scripts`) are unpublished.
 Changesets ignores them.

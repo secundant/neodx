@@ -234,6 +234,7 @@ root `vp test` can pick up Playwright noise from `apps/e2e`.
 
 Full contributor path: [CONTRIBUTING.md](./CONTRIBUTING.md).
 Repo layout, command table, and AI routing: [AGENTS.md](./AGENTS.md).
+Releases and npm publish auth: [MAINTENANCE.md](./MAINTENANCE.md).
 Security / advisories: [SECURITY.md](./SECURITY.md).
 
 ### Scaffolding
