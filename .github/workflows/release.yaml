@@ -29,7 +29,7 @@ jobs:
           run-install: true
 
       - name: Ensure modern npm for provenance
-        run: npm install -g npm@11
+        run: npm install -g npm@^11.15.0
 
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@v1
@@ -38,7 +38,7 @@ jobs:
           version: yarn release-version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Keep token auth until each @neodx/* package has a trusted publisher on npmjs.com.
-          # Provenance attestations still generate when NPM_CONFIG_PROVENANCE=true.
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # OIDC trusted publishers are configured on all nine @neodx packages.
+          # Do not set NPM_TOKEN here — changesets/action would write it to .npmrc
+          # and npm would use the 2FA token path instead of OIDC.
           NPM_CONFIG_PROVENANCE: true

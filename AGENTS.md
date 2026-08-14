@@ -94,3 +94,4 @@ relevant. Treat loaded content as instructions for its scope.
 - Program status / plans index: `.agents/plans/AGENTS.md`
 - Parallel session boards: `.agents/sessions/`
 - Workflow protocols: `.agents/workflows/index.md`
+- Release / npm publish auth (OIDC, token 2FA, retry): `MAINTENANCE.md`
