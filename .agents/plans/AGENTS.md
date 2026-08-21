@@ -23,19 +23,20 @@ Critical path on `improve/neodx` (PR [#160](https://github.com/secundant/neodx/p
 (`check` 1m51s, `e2e-svg` 1m37s). Cloudflare Pages and Snyk still fail (non-gating).
 Re-read `git rev-parse --short HEAD` before citing SHAs.
 
-| Stream                   | Status                                                                                        | Evidence                                                                                                                                                                               |
-| ------------------------ | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| S0 Honesty + graph       | Done                                                                                          | PR #160 history                                                                                                                                                                        |
-| S1 Dep chunks C1–C3      | Done                                                                                          | C8 Renovate still open                                                                                                                                                                 |
-| S2 Vite+ migrate (WP-V2) | Done                                                                                          | [Vite+ report](../reports/vite-plus-migration.md), [Oxlint delta](../reports/oxlint-eslint-kit-delta.md)                                                                               |
-| S3 Solidify              | `PASS_WITH_DEBT`                                                                              | verify-exports, publint, SECURITY, provenance-ready release; #162/#163; OIDC per-package open                                                                                          |
-| S4 AI meta               | AGENTS/CONTRIBUTING/workflows remain; imported skills **withdrawn**                           | [workflows/index.md](../workflows/index.md)                                                                                                                                            |
-| S5 TS project references | Honesty end-state + typeAware                                                                 | [before](../reports/ts-project-references-before.md) · [research](../reports/ts-project-references-research.md) · [implementation](../reports/ts-project-references-implementation.md) |
-| S6 Workflows             | Bootstrapped                                                                                  | [workflows index](../workflows/index.md)                                                                                                                                               |
-| S7 Docs / tests / 1.0    | **All nine publishable 1.0 Changesets queued; unpublished**                                   | `.changeset/*-1.0.0.md`; versions still 0.x                                                                                                                                            |
-| S5-R2-a                  | **Done** — base `paths`/`baseUrl` deleted; pack exports-native; `vite-tsconfig-paths` removed | [implementation](../reports/ts-project-references-implementation.md) § S5-R2-a                                                                                                         |
-| S5-R2-b                  | **LANDED_WITH_DEBT** — `typeAware` on; `typeCheck` off (→ R2-f); #161 closed                  | [implementation](../reports/ts-project-references-implementation.md) § S5-R2-b                                                                                                         |
-| S5-R2-c                  | **Landed** (`594a2f4`); paths-free reconfig; R2-d deferred                                    | [s5-r2-ci-gates.md](../reports/s5-r2-ci-gates.md) · [#164](https://github.com/secundant/neodx/issues/164)                                                                              |
+| Stream                   | Status                                                                                                                                                          | Evidence                                                                                                                                                                               |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S0 Honesty + graph       | Done                                                                                                                                                            | PR #160 history                                                                                                                                                                        |
+| S1 Dep chunks C1–C3      | Done                                                                                                                                                            | C8 Renovate still open                                                                                                                                                                 |
+| S2 Vite+ migrate (WP-V2) | Done                                                                                                                                                            | [Vite+ report](../reports/vite-plus-migration.md), [Oxlint delta](../reports/oxlint-eslint-kit-delta.md)                                                                               |
+| S3 Solidify              | `PASS_WITH_DEBT`                                                                                                                                                | verify-exports, publint, SECURITY, provenance-ready release; #162/#163; OIDC per-package open                                                                                          |
+| S4 AI meta               | AGENTS/CONTRIBUTING/workflows remain; imported skills **withdrawn**                                                                                             | [workflows/index.md](../workflows/index.md)                                                                                                                                            |
+| S5 TS project references | Honesty end-state + typeAware                                                                                                                                   | [before](../reports/ts-project-references-before.md) · [research](../reports/ts-project-references-research.md) · [implementation](../reports/ts-project-references-implementation.md) |
+| S6 Workflows             | Bootstrapped                                                                                                                                                    | [workflows index](../workflows/index.md)                                                                                                                                               |
+| S7 Docs / tests / 1.0    | **All nine publishable 1.0 Changesets queued; unpublished**                                                                                                     | `.changeset/*-1.0.0.md`; versions still 0.x                                                                                                                                            |
+| S5-R2-a                  | **Done** — base `paths`/`baseUrl` deleted; pack exports-native; `vite-tsconfig-paths` removed                                                                   | [implementation](../reports/ts-project-references-implementation.md) § S5-R2-a                                                                                                         |
+| S5-R2-b                  | **LANDED_WITH_DEBT** — `typeAware` on; `typeCheck` off (→ R2-f); #161 closed                                                                                    | [implementation](../reports/ts-project-references-implementation.md) § S5-R2-b                                                                                                         |
+| S5-R2-c                  | **Landed** (`594a2f4`); paths-free reconfig; R2-d deferred                                                                                                      | [s5-r2-ci-gates.md](../reports/s5-r2-ci-gates.md) · [#164](https://github.com/secundant/neodx/issues/164)                                                                              |
+| S5-R2-e/d                | **Done in PR [#172](https://github.com/secundant/neodx/pull/172)** — paired `.d.mts`/`.d.cts`, types-first `exports`, `yarn attw` CI gate; #164 closes on merge | PR [#172](https://github.com/secundant/neodx/pull/172); changeset `paired-dts-pack-contract`                                                                                           |
 
 ### S7 1.0 Changesets (queued)
 
@@ -45,16 +46,16 @@ Re-read `git rev-parse --short HEAD` before citing SHAs.
 
 ### Next sessions (after soak)
 
-| #   | Session                                                   | Gate                                   |
-| --- | --------------------------------------------------------- | -------------------------------------- |
-| 0   | Push + soak                                               | **Done** @ `7538cd7` / run 31703518513 |
-| 1   | Publish workspace 1.0 (Changesets → npm)                  | **Now**; do **not** mix R2-e           |
-| 2   | Nubis catalog smoke                                       | After publish                          |
-| 3   | Hygiene: `SEMVER.md`, Cloudflare Pages (P-D), Renovate C8 | Parallel-safe with 1                   |
-| 4   | S5-R2-e paired dts → R2-d ATTW (#164)                     | After 1.0 publish (1.1)                |
-| 5   | S5-R2-f test tsconfig matrix, then `typeCheck`            | Solo vs pack churn                     |
-| 6   | #162 autobuild / #163 codegen retire                      | Async after 1.0                        |
-| 7   | Polygon promote/defer/reject + close Nubis ledger         | After catalog smoke                    |
+| #   | Session                                                   | Gate                                                                        |
+| --- | --------------------------------------------------------- | --------------------------------------------------------------------------- |
+| 0   | Push + soak                                               | **Done** @ `7538cd7` / run 31703518513                                      |
+| 1   | Publish workspace 1.0 (Changesets → npm)                  | **Now**; do **not** mix R2-e                                                |
+| 2   | Nubis catalog smoke                                       | After publish                                                               |
+| 3   | Hygiene: `SEMVER.md`, Cloudflare Pages (P-D), Renovate C8 | Parallel-safe with 1                                                        |
+| 4   | S5-R2-e paired dts → R2-d ATTW (#164)                     | **Done** — PR [#172](https://github.com/secundant/neodx/pull/172), unmerged |
+| 5   | S5-R2-f test tsconfig matrix, then `typeCheck`            | Solo vs pack churn                                                          |
+| 6   | #162 autobuild / #163 codegen retire                      | Async after 1.0                                                             |
+| 7   | Polygon promote/defer/reject + close Nubis ledger         | After catalog smoke                                                         |
 
 Do not flip `typeCheck` before R2-f. Do not pair R2-e with a product 1.0 version bump. Do not
 force-push. Do not declare Nubis adopts Vite+ or TS refs.
@@ -72,16 +73,16 @@ Later fs 1.0 ran in parallel with R2-b: [sessions/fs-1.0-handoff.md](../sessions
 
 ### Residual debt (named issues)
 
-| Issue                                                 | Topic                                        |
-| ----------------------------------------------------- | -------------------------------------------- |
-| [#162](https://github.com/secundant/neodx/issues/162) | Delete `@neodx/autobuild` tree               |
-| [#163](https://github.com/secundant/neodx/issues/163) | Absorb or delete `@neodx/codegen` Tree       |
-| [#164](https://github.com/secundant/neodx/issues/164) | ATTW gate with R2-e paired dts               |
-| [#165](https://github.com/secundant/neodx/issues/165) | `@neodx/colors` residual options             |
-| [#166](https://github.com/secundant/neodx/issues/166) | `@neodx/fs` post-1.0 debt                    |
-| [#167](https://github.com/secundant/neodx/issues/167) | pkg-misc prettierignore cache + semver tests |
-| [#168](https://github.com/secundant/neodx/issues/168) | log serializers / target levels              |
-| [#169](https://github.com/secundant/neodx/issues/169) | figma deep Zod predicates                    |
+| Issue                                                 | Topic                                                                                                   |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| [#162](https://github.com/secundant/neodx/issues/162) | Delete `@neodx/autobuild` tree                                                                          |
+| [#163](https://github.com/secundant/neodx/issues/163) | Absorb or delete `@neodx/codegen` Tree                                                                  |
+| [#164](https://github.com/secundant/neodx/issues/164) | ATTW gate with R2-e paired dts — **closing via PR [#172](https://github.com/secundant/neodx/pull/172)** |
+| [#165](https://github.com/secundant/neodx/issues/165) | `@neodx/colors` residual options                                                                        |
+| [#166](https://github.com/secundant/neodx/issues/166) | `@neodx/fs` post-1.0 debt                                                                               |
+| [#167](https://github.com/secundant/neodx/issues/167) | pkg-misc prettierignore cache + semver tests                                                            |
+| [#168](https://github.com/secundant/neodx/issues/168) | log serializers / target levels                                                                         |
+| [#169](https://github.com/secundant/neodx/issues/169) | figma deep Zod predicates                                                                               |
 
 #161 (typeAware) is **CLOSED**.
 
