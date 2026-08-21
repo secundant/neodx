@@ -45,37 +45,62 @@
   "sideEffects": false,
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
       "development": "./src/index.ts",
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./core": {
       "development": "./src/core/index.ts",
-      "types": "./dist/core/index.d.ts",
-      "import": "./dist/core/index.mjs",
-      "require": "./dist/core/index.cjs"
+      "import": {
+        "types": "./dist/core/index.d.mts",
+        "default": "./dist/core/index.mjs"
+      },
+      "require": {
+        "types": "./dist/core/index.d.cts",
+        "default": "./dist/core/index.cjs"
+      }
     },
     "./graph": {
       "development": "./src/graph/index.ts",
-      "types": "./dist/graph/index.d.ts",
-      "import": "./dist/graph/index.mjs",
-      "require": "./dist/graph/index.cjs"
+      "import": {
+        "types": "./dist/graph/index.d.mts",
+        "default": "./dist/graph/index.mjs"
+      },
+      "require": {
+        "types": "./dist/graph/index.d.cts",
+        "default": "./dist/graph/index.cjs"
+      }
     },
     "./export": {
       "development": "./src/export/index.ts",
-      "types": "./dist/export/index.d.ts",
-      "import": "./dist/export/index.mjs",
-      "require": "./dist/export/index.cjs"
+      "import": {
+        "types": "./dist/export/index.d.mts",
+        "default": "./dist/export/index.mjs"
+      },
+      "require": {
+        "types": "./dist/export/index.d.cts",
+        "default": "./dist/export/index.cjs"
+      }
     },
     "./cli": {
       "development": "./src/cli.ts",
-      "types": "./dist/cli.d.ts",
-      "import": "./dist/cli.mjs",
-      "require": "./dist/cli.cjs"
+      "import": {
+        "types": "./dist/cli.d.mts",
+        "default": "./dist/cli.mjs"
+      },
+      "require": {
+        "types": "./dist/cli.d.cts",
+        "default": "./dist/cli.cjs"
+      }
     }
   },
   "publishConfig": {

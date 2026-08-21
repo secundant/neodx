@@ -33,6 +33,7 @@
     "fmt": "vp fmt",
     "verify-exports": "node tools/scripts/verify-exports.mjs",
     "publint": "node tools/scripts/publint-libs.mjs",
+    "attw": "node tools/scripts/attw-libs.mjs",
     "verify-packed-manifest": "node tools/scripts/verify-packed-manifest.mjs",
     "verify-publish-manifest": "node tools/scripts/verify-publish-manifest.mjs",
     "check-references": "node tools/scripts/check-references.mjs --check",

@@ -22,91 +22,161 @@
   "sideEffects": false,
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
       "development": "./src/index.ts",
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./debounce": {
       "development": "./src/debounce.ts",
-      "types": "./dist/debounce.d.ts",
-      "import": "./dist/debounce.mjs",
-      "require": "./dist/debounce.cjs"
+      "import": {
+        "types": "./dist/debounce.d.mts",
+        "default": "./dist/debounce.mjs"
+      },
+      "require": {
+        "types": "./dist/debounce.d.cts",
+        "default": "./dist/debounce.cjs"
+      }
     },
     "./invariant": {
       "development": "./src/invariant.ts",
-      "types": "./dist/invariant.d.ts",
-      "import": "./dist/invariant.mjs",
-      "require": "./dist/invariant.cjs"
+      "import": {
+        "types": "./dist/invariant.d.mts",
+        "default": "./dist/invariant.mjs"
+      },
+      "require": {
+        "types": "./dist/invariant.d.cts",
+        "default": "./dist/invariant.cjs"
+      }
     },
     "./math": {
       "development": "./src/math.ts",
-      "types": "./dist/math.d.ts",
-      "import": "./dist/math.mjs",
-      "require": "./dist/math.cjs"
+      "import": {
+        "types": "./dist/math.d.mts",
+        "default": "./dist/math.mjs"
+      },
+      "require": {
+        "types": "./dist/math.d.cts",
+        "default": "./dist/math.cjs"
+      }
     },
     "./memoize": {
       "development": "./src/memoize.ts",
-      "types": "./dist/memoize.d.ts",
-      "import": "./dist/memoize.mjs",
-      "require": "./dist/memoize.cjs"
+      "import": {
+        "types": "./dist/memoize.d.mts",
+        "default": "./dist/memoize.mjs"
+      },
+      "require": {
+        "types": "./dist/memoize.d.cts",
+        "default": "./dist/memoize.cjs"
+      }
     },
     "./merge": {
       "development": "./src/merge.ts",
-      "types": "./dist/merge.d.ts",
-      "import": "./dist/merge.mjs",
-      "require": "./dist/merge.cjs"
+      "import": {
+        "types": "./dist/merge.d.mts",
+        "default": "./dist/merge.mjs"
+      },
+      "require": {
+        "types": "./dist/merge.d.cts",
+        "default": "./dist/merge.cjs"
+      }
     },
     "./guards": {
       "development": "./src/guards.ts",
-      "types": "./dist/guards.d.ts",
-      "import": "./dist/guards.mjs",
-      "require": "./dist/guards.cjs"
+      "import": {
+        "types": "./dist/guards.d.mts",
+        "default": "./dist/guards.mjs"
+      },
+      "require": {
+        "types": "./dist/guards.d.cts",
+        "default": "./dist/guards.cjs"
+      }
     },
     "./string": {
       "development": "./src/string.ts",
-      "types": "./dist/string.d.ts",
-      "import": "./dist/string.mjs",
-      "require": "./dist/string.cjs"
+      "import": {
+        "types": "./dist/string.d.mts",
+        "default": "./dist/string.mjs"
+      },
+      "require": {
+        "types": "./dist/string.d.cts",
+        "default": "./dist/string.cjs"
+      }
     },
     "./to-case": {
       "development": "./src/to-case.ts",
-      "types": "./dist/to-case.d.ts",
-      "import": "./dist/to-case.mjs",
-      "require": "./dist/to-case.cjs"
+      "import": {
+        "types": "./dist/to-case.d.mts",
+        "default": "./dist/to-case.mjs"
+      },
+      "require": {
+        "types": "./dist/to-case.d.cts",
+        "default": "./dist/to-case.cjs"
+      }
     },
     "./url": {
       "development": "./src/url.ts",
-      "types": "./dist/url.d.ts",
-      "import": "./dist/url.mjs",
-      "require": "./dist/url.cjs"
+      "import": {
+        "types": "./dist/url.d.mts",
+        "default": "./dist/url.mjs"
+      },
+      "require": {
+        "types": "./dist/url.d.cts",
+        "default": "./dist/url.cjs"
+      }
     },
     "./shared": {
       "development": "./src/shared.ts",
-      "types": "./dist/shared.d.ts",
-      "import": "./dist/shared.mjs",
-      "require": "./dist/shared.cjs"
+      "import": {
+        "types": "./dist/shared.d.mts",
+        "default": "./dist/shared.mjs"
+      },
+      "require": {
+        "types": "./dist/shared.d.cts",
+        "default": "./dist/shared.cjs"
+      }
     },
     "./async": {
       "development": "./src/async/index.ts",
-      "types": "./dist/async/index.d.ts",
-      "import": "./dist/async/index.mjs",
-      "require": "./dist/async/index.cjs"
+      "import": {
+        "types": "./dist/async/index.d.mts",
+        "default": "./dist/async/index.mjs"
+      },
+      "require": {
+        "types": "./dist/async/index.d.cts",
+        "default": "./dist/async/index.cjs"
+      }
     },
     "./object": {
       "development": "./src/object/index.ts",
-      "types": "./dist/object/index.d.ts",
-      "import": "./dist/object/index.mjs",
-      "require": "./dist/object/index.cjs"
+      "import": {
+        "types": "./dist/object/index.d.mts",
+        "default": "./dist/object/index.mjs"
+      },
+      "require": {
+        "types": "./dist/object/index.d.cts",
+        "default": "./dist/object/index.cjs"
+      }
     },
     "./array": {
       "development": "./src/array/index.ts",
-      "types": "./dist/array/index.d.ts",
-      "import": "./dist/array/index.mjs",
-      "require": "./dist/array/index.cjs"
+      "import": {
+        "types": "./dist/array/index.d.mts",
+        "default": "./dist/array/index.mjs"
+      },
+      "require": {
+        "types": "./dist/array/index.d.cts",
+        "default": "./dist/array/index.cjs"
+      }
     }
   },
   "publishConfig": {

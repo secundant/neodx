@@ -18,13 +18,18 @@
   "sideEffects": false,
   "main": "./dist/cjs/index.cjs",
   "module": "./dist/mjs/index.mjs",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/cjs/index.d.cts",
   "exports": {
     ".": {
       "development": "./src/index.ts",
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/mjs/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "import": {
+        "types": "./dist/mjs/index.d.mts",
+        "default": "./dist/mjs/index.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
     }
   },
   "publishConfig": {

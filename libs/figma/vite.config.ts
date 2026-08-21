@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite-plus';
 
 // Pack-only S2: Vite+ pack for @neodx/figma.
-// Multi-entry flat dist mirrors published exports.
+// Multi-entry flat dist mirrors published exports; dts pair with each format (`.d.mts`/`.d.cts`).
 // CLI + Node tooling → platform node.
 // @neodx/internal must be inlined.
 export default defineConfig({
@@ -17,8 +17,7 @@ export default defineConfig({
     format: ['esm', 'cjs'],
     dts: { eager: true },
     sourcemap: true,
-    clean: true,
-    outExtensions: ({ format }) => ({ dts: '.d.ts', js: format === 'cjs' ? '.cjs' : '.mjs' })
+    clean: true
   },
   test: { passWithNoTests: true }
 });
