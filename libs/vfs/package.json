@@ -1,6 +1,6 @@
 {
   "name": "@neodx/vfs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple virtual file system - working dir context, lazy changes, different modes, integrations and moreover",
   "keywords": [
     "dry-run",
