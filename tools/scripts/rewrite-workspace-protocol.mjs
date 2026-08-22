@@ -3,8 +3,9 @@
  * Rewrite Yarn `workspace:` ranges to registry versions for npm pack/publish.
  *
  * Source manifests keep `workspace:^`. `yarn pack` already rewrites them;
- * `changeset publish` uses npm, which does not. prepack/postpack close that gap
- * without leaving the worktree rewritten.
+ * `changeset publish` uses npm, which does not. Two npm surfaces diverge:
+ * prepack rewrites the tarball; `--apply-all` must run before publish so the
+ * registry packument matches (npm install reads packument, not the tarball).
  */
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -87,8 +88,19 @@ const isNpmPackPublish = () => {
   return command === 'pack' || command === 'publish';
 };
 
-const prepack = pkgDir => {
-  if (!isNpmPackPublish()) return;
+const SKIP = new Set(['@neodx/autobuild', '@neodx/codegen', '@neodx/internal']);
+
+const publishableDirs = () =>
+  readdirSync(join(root, 'libs'), { withFileTypes: true })
+    .filter(d => d.isDirectory())
+    .map(d => join(root, 'libs', d.name))
+    .filter(dir => existsSync(join(dir, 'package.json')))
+    .filter(dir => {
+      const pkg = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
+      return !pkg.private && !SKIP.has(pkg.name);
+    });
+
+const rewriteOnDisk = pkgDir => {
   const pkgPath = join(pkgDir, 'package.json');
   const original = readFileSync(pkgPath, 'utf8');
   const { next, changed } = rewriteManifest(JSON.parse(original), collectWorkspaceVersions());
@@ -97,11 +109,24 @@ const prepack = pkgDir => {
   writeFileSync(pkgPath, `${JSON.stringify(next, null, 2)}\n`);
 };
 
-const postpack = pkgDir => {
+const restoreOnDisk = pkgDir => {
   const backup = backupPathFor(pkgDir);
   if (!existsSync(backup)) return;
   writeFileSync(join(pkgDir, 'package.json'), readFileSync(backup, 'utf8'));
   rmSync(backup);
+};
+
+const prepack = pkgDir => {
+  if (!isNpmPackPublish()) return;
+  rewriteOnDisk(pkgDir);
+};
+
+const applyAll = () => {
+  for (const dir of publishableDirs()) rewriteOnDisk(dir);
+};
+
+const restoreAll = () => {
+  for (const dir of publishableDirs()) restoreOnDisk(dir);
 };
 
 const flag = process.argv[2];
@@ -110,8 +135,14 @@ const pkgDir = process.cwd();
 if (flag === '--prepack') {
   prepack(pkgDir);
 } else if (flag === '--postpack') {
-  postpack(pkgDir);
+  restoreOnDisk(pkgDir);
+} else if (flag === '--apply-all') {
+  applyAll();
+} else if (flag === '--restore-all') {
+  restoreAll();
 } else {
-  console.error('usage: rewrite-workspace-protocol.mjs --prepack|--postpack');
+  console.error(
+    'usage: rewrite-workspace-protocol.mjs --prepack|--postpack|--apply-all|--restore-all'
+  );
   process.exit(1);
 }
