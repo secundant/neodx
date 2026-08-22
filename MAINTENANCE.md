@@ -23,10 +23,11 @@ Private packages stay unpublished.
 `prepack` rewrites the **tarball**; npm still copies the on-disk `package.json`
 into the registry packument, and `npm install` / `pnpm add` read that metadata.
 Release therefore runs `--apply-all` before publish and restores after.
+`postpack` restores only after `npm pack`, not during `npm publish` — npm
+reads `package.json` for the packument after postpack (1.0.1–1.0.2 leaked).
 `yarn verify-packed-manifest` (tarball) and `yarn verify-publish-manifest`
-(on-disk packument shape) both fail on leftover `workspace:`. Do not treat
-`yarn pack` as either gate — Yarn already rewrites. 1.0.1 shipped an honest
-tarball with a leaking packument; 1.0.2 is the installable republish.
+(on-disk packument shape, including publish-postpack) both fail on leftover
+`workspace:`. Do not treat `yarn pack` as either gate — Yarn already rewrites.
 
 ## npm publish auth
 

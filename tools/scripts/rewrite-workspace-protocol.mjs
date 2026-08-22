@@ -6,6 +6,8 @@
  * `changeset publish` uses npm, which does not. Two npm surfaces diverge:
  * prepack rewrites the tarball; `--apply-all` must run before publish so the
  * registry packument matches (npm install reads packument, not the tarball).
+ * `postpack` must not restore during `npm publish` — npm reads package.json
+ * for the packument after postpack (1.0.1–1.0.2 leaked that way).
  */
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -135,7 +137,9 @@ const pkgDir = process.cwd();
 if (flag === '--prepack') {
   prepack(pkgDir);
 } else if (flag === '--postpack') {
-  restoreOnDisk(pkgDir);
+  // `npm pack` should leave source as workspace:^. `npm publish` must keep
+  // the rewritten file until the release wrapper restores after upload.
+  if (process.env.npm_command !== 'publish') restoreOnDisk(pkgDir);
 } else if (flag === '--apply-all') {
   applyAll();
 } else if (flag === '--restore-all') {
