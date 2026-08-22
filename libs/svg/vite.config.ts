@@ -6,12 +6,8 @@ import { defineConfig } from 'vite-plus';
 //   2) bundler adapters with deps.neverBundle for bundler peers — without that,
 //      dts walks vite/webpack type graphs and fails (MISSING_EXPORT / CJS dts).
 // ./plugins export removed with the plugin system (cf368d9); keep entries aligned
-// with real sources. @neodx/internal must be inlined.
-const outExtensions = ({ format }: { format: string }) => ({
-  dts: '.d.ts',
-  js: format === 'cjs' ? '.cjs' : '.mjs'
-});
-
+// with real sources. dts pair with each format (`.d.mts`/`.d.cts`).
+// @neodx/internal must be inlined.
 export default defineConfig({
   pack: [
     {
@@ -23,8 +19,7 @@ export default defineConfig({
       format: ['esm', 'cjs'],
       dts: { eager: true },
       sourcemap: true,
-      clean: true,
-      outExtensions
+      clean: true
     },
     {
       entry: {
@@ -39,7 +34,6 @@ export default defineConfig({
       dts: { eager: true },
       sourcemap: true,
       clean: false,
-      outExtensions,
       deps: {
         neverBundle: ['vite', 'webpack', 'rollup', 'esbuild', '@rspack/core', 'unplugin']
       }

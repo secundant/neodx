@@ -39,49 +39,84 @@
   "sideEffects": false,
   "main": "./dist/cjs/index.cjs",
   "module": "./dist/mjs/index.mjs",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/cjs/index.d.cts",
   "exports": {
     ".": {
       "development": "./src/index.ts",
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/mjs/index.mjs",
-      "require": "./dist/cjs/index.cjs"
+      "import": {
+        "types": "./dist/mjs/index.d.mts",
+        "default": "./dist/mjs/index.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
     },
     "./plugins/eslint": {
       "development": "./src/plugins/eslint.ts",
-      "types": "./dist/types/plugins/eslint.d.ts",
-      "import": "./dist/mjs/plugins/eslint.mjs",
-      "require": "./dist/cjs/plugins/eslint.cjs"
+      "import": {
+        "types": "./dist/mjs/plugins/eslint.d.mts",
+        "default": "./dist/mjs/plugins/eslint.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/plugins/eslint.d.cts",
+        "default": "./dist/cjs/plugins/eslint.cjs"
+      }
     },
     "./plugins/glob": {
       "development": "./src/plugins/glob.ts",
-      "types": "./dist/types/plugins/glob.d.ts",
-      "import": "./dist/mjs/plugins/glob.mjs",
-      "require": "./dist/cjs/plugins/glob.cjs"
+      "import": {
+        "types": "./dist/mjs/plugins/glob.d.mts",
+        "default": "./dist/mjs/plugins/glob.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/plugins/glob.d.cts",
+        "default": "./dist/cjs/plugins/glob.cjs"
+      }
     },
     "./plugins/package-json": {
       "development": "./src/plugins/package-json.ts",
-      "types": "./dist/types/plugins/package-json.d.ts",
-      "import": "./dist/mjs/plugins/package-json.mjs",
-      "require": "./dist/cjs/plugins/package-json.cjs"
+      "import": {
+        "types": "./dist/mjs/plugins/package-json.d.mts",
+        "default": "./dist/mjs/plugins/package-json.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/plugins/package-json.d.cts",
+        "default": "./dist/cjs/plugins/package-json.cjs"
+      }
     },
     "./plugins/json": {
       "development": "./src/plugins/json.ts",
-      "types": "./dist/types/plugins/json.d.ts",
-      "import": "./dist/mjs/plugins/json.mjs",
-      "require": "./dist/cjs/plugins/json.cjs"
+      "import": {
+        "types": "./dist/mjs/plugins/json.d.mts",
+        "default": "./dist/mjs/plugins/json.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/plugins/json.d.cts",
+        "default": "./dist/cjs/plugins/json.cjs"
+      }
     },
     "./plugins/prettier": {
       "development": "./src/plugins/prettier.ts",
-      "types": "./dist/types/plugins/prettier.d.ts",
-      "import": "./dist/mjs/plugins/prettier.mjs",
-      "require": "./dist/cjs/plugins/prettier.cjs"
+      "import": {
+        "types": "./dist/mjs/plugins/prettier.d.mts",
+        "default": "./dist/mjs/plugins/prettier.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/plugins/prettier.d.cts",
+        "default": "./dist/cjs/plugins/prettier.cjs"
+      }
     },
     "./plugins/scan": {
       "development": "./src/plugins/scan.ts",
-      "types": "./dist/types/plugins/scan.d.ts",
-      "import": "./dist/mjs/plugins/scan.mjs",
-      "require": "./dist/cjs/plugins/scan.cjs"
+      "import": {
+        "types": "./dist/mjs/plugins/scan.d.mts",
+        "default": "./dist/mjs/plugins/scan.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/plugins/scan.d.cts",
+        "default": "./dist/cjs/plugins/scan.cjs"
+      }
     },
     "./testing": {
       "development": "./src/testing.ts",

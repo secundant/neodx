@@ -1,10 +1,8 @@
 import { defineConfig } from 'vite-plus';
 
 // WP-V1 spike: Vite+ pack for @neodx/std.
-// Entry map mirrors the published `exports` field (multi-entry CJS+ESM+dts).
-// `outExtensions` preserves the existing autobuild extension convention
-// (`.mjs`/`.cjs`/`.d.ts`) so the published exports map stays valid without
-// a breaking metadata change during the spike.
+// Entry map mirrors the published `exports` field (multi-entry CJS+ESM+dts);
+// dts pair with each format (`.d.mts`/`.d.cts`) as the exports map requires.
 // `@neodx/internal` is a build-time devDependency only — it must be inlined,
 // never emitted as a runtime import (verified by the internal-inline check).
 export default defineConfig({
@@ -28,8 +26,7 @@ export default defineConfig({
     format: ['esm', 'cjs'],
     dts: { eager: true },
     sourcemap: true,
-    clean: true,
-    outExtensions: ({ format }) => ({ dts: '.d.ts', js: format === 'cjs' ? '.cjs' : '.mjs' })
+    clean: true
   },
   test: { passWithNoTests: true }
 });

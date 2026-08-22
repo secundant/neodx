@@ -65,6 +65,11 @@ jobs:
       - name: Publint publishable libraries
         run: yarn publint
 
+      # S5-R2-d (#164): packed-layout type resolution gate. Requires the R2-e
+      # paired .d.mts/.d.cts layout; runs against the packed tarball.
+      - name: Are the types wrong (packed libraries)
+        run: yarn attw
+
       # changeset publish uses npm, which does not rewrite workspace: ranges.
       # Fail if a tarball still leaks the protocol (yarn pack is not this gate).
       - name: Packed manifests rewrite workspace protocol

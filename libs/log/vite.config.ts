@@ -5,14 +5,10 @@ import { defineConfig } from 'vite-plus';
 //   - isomorphic: `.` + `./utils` (platform-neutral / browser-safe)
 //   - Node: `./node` + `./http` + `./express` + `./koa`
 //     (http/express/koa import createLogger from ../node by design)
-// `outExtensions` preserves the existing .mjs/.cjs/.d.ts convention so the
-// published exports map stays valid without a metadata change.
+// dts pair with each format (`.d.mts`/`.d.cts`) as the exports map requires.
+// Neutral platform defaults ESM to `.js` — force `.mjs` to keep the published
+// file contract; dts still pair with each format.
 // `@neodx/internal` is build-time only — must be inlined, never a runtime import.
-const outExtensions = ({ format }: { format: string }) => ({
-  dts: '.d.ts',
-  js: format === 'cjs' ? '.cjs' : '.mjs'
-});
-
 export default defineConfig({
   pack: [
     {
@@ -25,7 +21,7 @@ export default defineConfig({
       dts: { eager: true },
       sourcemap: true,
       clean: true,
-      outExtensions
+      outExtensions: ({ format }) => ({ js: format === 'cjs' ? '.cjs' : '.mjs' })
     },
     {
       entry: {
@@ -38,8 +34,7 @@ export default defineConfig({
       format: ['esm', 'cjs'],
       dts: { eager: true },
       sourcemap: true,
-      clean: false,
-      outExtensions
+      clean: false
     }
   ]
 });

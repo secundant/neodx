@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite-plus';
 
 // Pack-only S2: Vite+ pack for @neodx/pkg-misc.
-// Published exports use nested dist/{mjs,cjs,types} (autobuild layout).
-// Preserve that map via per-format outDir; outExtensions keep .mjs/.cjs/.d.ts.
+// Published exports use nested dist/{mjs,cjs}; each format emits its own dts
+// (`.d.mts` with `.mjs`, `.d.cts` with `.cjs`) so every JS file has exactly one
+// matching declaration file, as the exports map requires.
 const entry = { index: 'src/index.ts' };
 
 export default defineConfig({
@@ -12,31 +13,18 @@ export default defineConfig({
       platform: 'node',
       format: ['esm'],
       outDir: 'dist/mjs',
-      dts: false,
+      dts: { eager: true },
       sourcemap: true,
-      clean: true,
-      outExtensions: () => ({ js: '.mjs' })
+      clean: true
     },
     {
       entry,
       platform: 'node',
       format: ['cjs'],
       outDir: 'dist/cjs',
-      dts: false,
+      dts: { eager: true },
       sourcemap: true,
-      clean: false,
-      outExtensions: () => ({ js: '.cjs' })
-    },
-    {
-      entry,
-      platform: 'node',
-      format: ['esm'],
-      outDir: 'dist/types',
-      // @ts-expect-error Vite+ pack dts typings lag tsdown `{ only: true }`
-      dts: { only: true, eager: true },
-      sourcemap: false,
-      clean: false,
-      outExtensions: () => ({ dts: '.d.ts', js: '.mjs' })
+      clean: false
     }
   ],
   test: { passWithNoTests: true }
