@@ -3,8 +3,9 @@
 Decision-ready improvement programs for neodx. A plan here is the source of truth for what a
 multi-step effort intends, what is locked, and where it stopped.
 
-The full S0–S7 program ledger and Nubis polygon notes live in the Nubis checkout:
-`/Users/host/WebstormProjects/nubis/.agents/plans/2026-08-04-neodx-improvements-proposal.md`.
+The full S0–S7 program ledger lived in the Nubis checkout while the polygon was open; it closed
+2026-08-22 (Vite+ and TS references **deferred**). Remaining cross-repo state lives in the Nubis
+plans index (`/Users/host/WebstormProjects/nubis/.agents/plans/AGENTS.md`) and named GitHub issues.
 This folder holds neodx-local status, evidence pointers, and future neodx-originated plans.
 
 ## How to use
@@ -14,51 +15,56 @@ This folder holds neodx-local status, evidence pointers, and future neodx-origin
 - Keep the **decision table** and **progress ledger** inside the plan.
 - Close a plan (delete, or keep with a reason) only when slices are verified and debt is recorded.
 
-## Program status (2026-08-13)
+## Program status (2026-08-22)
 
-Critical path on `improve/neodx` (PR [#160](https://github.com/secundant/neodx/pull/160)).
+Critical path is **`main` `e86679b`** (Version Packages, PR [#181](https://github.com/secundant/neodx/pull/181)).
+All nine publishable packages are on npm **1.1.0** with OIDC provenance:
 
-**Soaked:** local = origin **`7538cd7`**. Required CI green on run
-[31703518513](https://github.com/secundant/neodx/actions/runs/31703518513)
-(`check` 1m51s, `e2e-svg` 1m37s). Cloudflare Pages and Snyk still fail (non-gating).
-Re-read `git rev-parse --short HEAD` before citing SHAs.
+- **1.0.0** honesty freeze (run [31811688371](https://github.com/secundant/neodx/actions/runs/31811688371));
+- **1.0.1–1.0.3** packaging fixes — workspace-protocol rewrite in published manifests
+  (PRs [#173](https://github.com/secundant/neodx/pull/173)/[#175](https://github.com/secundant/neodx/pull/175)/[#177](https://github.com/secundant/neodx/pull/177));
+- **1.1.0** paired-dts pack contract (PR [#172](https://github.com/secundant/neodx/pull/172), merged `50c6b50`):
+  paired `.d.mts`/`.d.cts`, types-first `exports`, required `attw` CI gate after pack —
+  [#164](https://github.com/secundant/neodx/issues/164) closed. Registry-verified:
+  `attw --from-npm --profile node16 @neodx/std@1.1.0` is green.
 
-| Stream                   | Status                                                                                                                                                          | Evidence                                                                                                                                                                               |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| S0 Honesty + graph       | Done                                                                                                                                                            | PR #160 history                                                                                                                                                                        |
-| S1 Dep chunks C1–C3      | Done                                                                                                                                                            | C8 Renovate still open                                                                                                                                                                 |
-| S2 Vite+ migrate (WP-V2) | Done                                                                                                                                                            | [Vite+ report](../reports/vite-plus-migration.md), [Oxlint delta](../reports/oxlint-eslint-kit-delta.md)                                                                               |
-| S3 Solidify              | `PASS_WITH_DEBT`                                                                                                                                                | verify-exports, publint, SECURITY, provenance-ready release; #162/#163; OIDC per-package open                                                                                          |
-| S4 AI meta               | AGENTS/CONTRIBUTING/workflows remain; imported skills **withdrawn**                                                                                             | [workflows/index.md](../workflows/index.md)                                                                                                                                            |
-| S5 TS project references | Honesty end-state + typeAware                                                                                                                                   | [before](../reports/ts-project-references-before.md) · [research](../reports/ts-project-references-research.md) · [implementation](../reports/ts-project-references-implementation.md) |
-| S6 Workflows             | Bootstrapped                                                                                                                                                    | [workflows index](../workflows/index.md)                                                                                                                                               |
-| S7 Docs / tests / 1.0    | **All nine publishable 1.0 Changesets queued; unpublished**                                                                                                     | `.changeset/*-1.0.0.md`; versions still 0.x                                                                                                                                            |
-| S5-R2-a                  | **Done** — base `paths`/`baseUrl` deleted; pack exports-native; `vite-tsconfig-paths` removed                                                                   | [implementation](../reports/ts-project-references-implementation.md) § S5-R2-a                                                                                                         |
-| S5-R2-b                  | **LANDED_WITH_DEBT** — `typeAware` on; `typeCheck` off (→ R2-f); #161 closed                                                                                    | [implementation](../reports/ts-project-references-implementation.md) § S5-R2-b                                                                                                         |
-| S5-R2-c                  | **Landed** (`594a2f4`); paths-free reconfig; R2-d deferred                                                                                                      | [s5-r2-ci-gates.md](../reports/s5-r2-ci-gates.md) · [#164](https://github.com/secundant/neodx/issues/164)                                                                              |
-| S5-R2-e/d                | **Done in PR [#172](https://github.com/secundant/neodx/pull/172)** — paired `.d.mts`/`.d.cts`, types-first `exports`, `yarn attw` CI gate; #164 closes on merge | PR [#172](https://github.com/secundant/neodx/pull/172); changeset `paired-dts-pack-contract`                                                                                           |
+The S0–S7 program is closed. Re-read `git rev-parse --short origin/main` before citing SHAs.
 
-### S7 1.0 Changesets (queued)
+| Stream                   | Final status                                                                                                      | Evidence                                                                                                                                                                               |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S0 Honesty + graph       | Done                                                                                                              | PR #160 history                                                                                                                                                                        |
+| S1 Dep chunks C1–C3      | Done                                                                                                              | C8 Renovate still open                                                                                                                                                                 |
+| S2 Vite+ migrate (WP-V2) | Done                                                                                                              | [Vite+ report](../reports/vite-plus-migration.md), [Oxlint delta](../reports/oxlint-eslint-kit-delta.md)                                                                               |
+| S3 Solidify              | `PASS_WITH_DEBT` — verify-exports, publint, attw, SECURITY, OIDC provenance shipped; #162/#163 + C8 open          | [#162](https://github.com/secundant/neodx/issues/162)/[#163](https://github.com/secundant/neodx/issues/163)                                                                            |
+| S4 AI meta               | AGENTS/CONTRIBUTING/workflows remain; imported skills **withdrawn**                                               | [workflows/index.md](../workflows/index.md)                                                                                                                                            |
+| S5 TS project references | Honesty end-state + typeAware; `typeCheck` stays off until R2-f                                                   | [before](../reports/ts-project-references-before.md) · [research](../reports/ts-project-references-research.md) · [implementation](../reports/ts-project-references-implementation.md) |
+| S6 Workflows             | Bootstrapped                                                                                                      | [workflows index](../workflows/index.md)                                                                                                                                               |
+| S7 Docs / tests / 1.0    | **Published 1.0 → 1.1** — honesty freeze, packaging fixes, paired-dts pack contract                               | npm tags `@neodx/<pkg>@1.0.0`…`1.1.0`; OIDC provenance; #164 closed                                                                                                                    |
+| S5-R2-a                  | **Done** — base `paths`/`baseUrl` deleted; pack exports-native; `vite-tsconfig-paths` removed                     | [implementation](../reports/ts-project-references-implementation.md) § S5-R2-a                                                                                                         |
+| S5-R2-b                  | **LANDED_WITH_DEBT** — `typeAware` on; `typeCheck` off (→ R2-f); #161 closed                                      | [implementation](../reports/ts-project-references-implementation.md) § S5-R2-b                                                                                                         |
+| S5-R2-c                  | **Landed** (`594a2f4`) — dependency-cruiser gate, paths-free reconfig                                             | [s5-r2-ci-gates.md](../reports/s5-r2-ci-gates.md)                                                                                                                                      |
+| S5-R2-e/d                | **Done** — merged `50c6b50` (PR [#172](https://github.com/secundant/neodx/pull/172)), released 1.1.0, #164 closed | PR [#172](https://github.com/secundant/neodx/pull/172); changeset `paired-dts-pack-contract`                                                                                           |
 
-| Package                                               | Residual                                                                                                  |
-| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| std, colors, fs, glob, pkg-misc, log, vfs, svg, figma | #165 colors · #166 fs · #167 pkg-misc · #168 log · #169 figma; P-F not folded; P-K landed (top-level Zod) |
+### Published releases
 
-### Next sessions (after soak)
+| Version     | Contract                                                           | Residual                                                                                          |
+| ----------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| 1.0.0       | Honesty freeze                                                     | #165 colors · #166 fs · #167 pkg-misc · #168 log · #169 figma                                     |
+| 1.0.1–1.0.3 | Workspace-protocol rewrite in published manifests (#173/#175/#177) | [#180](https://github.com/secundant/neodx/issues/180) published `development` → unpublished `src` |
+| 1.1.0       | Paired `.d.mts`/`.d.cts` pack contract; `attw` CI gate             | [#164](https://github.com/secundant/neodx/issues/164) closed                                      |
 
-| #   | Session                                                   | Gate                                                                        |
-| --- | --------------------------------------------------------- | --------------------------------------------------------------------------- |
-| 0   | Push + soak                                               | **Done** @ `7538cd7` / run 31703518513                                      |
-| 1   | Publish workspace 1.0 (Changesets → npm)                  | **Now**; do **not** mix R2-e                                                |
-| 2   | Nubis catalog smoke                                       | After publish                                                               |
-| 3   | Hygiene: `SEMVER.md`, Cloudflare Pages (P-D), Renovate C8 | Parallel-safe with 1                                                        |
-| 4   | S5-R2-e paired dts → R2-d ATTW (#164)                     | **Done** — PR [#172](https://github.com/secundant/neodx/pull/172), unmerged |
-| 5   | S5-R2-f test tsconfig matrix, then `typeCheck`            | Solo vs pack churn                                                          |
-| 6   | #162 autobuild / #163 codegen retire                      | Async after 1.0                                                             |
-| 7   | Polygon promote/defer/reject + close Nubis ledger         | After catalog smoke                                                         |
+### Remaining work
 
-Do not flip `typeCheck` before R2-f. Do not pair R2-e with a product 1.0 version bump. Do not
-force-push. Do not declare Nubis adopts Vite+ or TS refs.
+| #   | Work                                              | Status                                                                     |
+| --- | ------------------------------------------------- | -------------------------------------------------------------------------- |
+| 2   | Nubis catalog smoke                               | **Done 2026-08-22** — catalog pins `1.0.3` (consumption, not adoption)     |
+| 3   | Hygiene: `SEMVER.md`, Pages, Renovate             | Pages/SEMVER done; **C8 Renovate open**                                    |
+| 5   | S5-R2-f test tsconfig matrix, then `typeCheck`    | Open — [#179](https://github.com/secundant/neodx/issues/179) owns the flip |
+| 6   | #162 autobuild / #163 codegen retire              | Open — dated 2026-08-22                                                    |
+| 7   | Polygon promote/defer/reject + close Nubis ledger | **Done 2026-08-22** — Vite+ and TS refs deferred; ledger closed            |
+
+Do not flip `typeCheck` before R2-f (#179). Do not force-push. Nubis defers Vite+ and TS project
+references (polygon decision 2026-08-22); its catalog pins are consumption, not toolchain adoption.
 
 ### Closed parallel session
 
@@ -73,18 +79,19 @@ Later fs 1.0 ran in parallel with R2-b: [sessions/fs-1.0-handoff.md](../sessions
 
 ### Residual debt (named issues)
 
-| Issue                                                 | Topic                                                                                                   |
-| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| [#162](https://github.com/secundant/neodx/issues/162) | Delete `@neodx/autobuild` tree                                                                          |
-| [#163](https://github.com/secundant/neodx/issues/163) | Absorb or delete `@neodx/codegen` Tree                                                                  |
-| [#164](https://github.com/secundant/neodx/issues/164) | ATTW gate with R2-e paired dts — **closing via PR [#172](https://github.com/secundant/neodx/pull/172)** |
-| [#165](https://github.com/secundant/neodx/issues/165) | `@neodx/colors` residual options                                                                        |
-| [#166](https://github.com/secundant/neodx/issues/166) | `@neodx/fs` post-1.0 debt                                                                               |
-| [#167](https://github.com/secundant/neodx/issues/167) | pkg-misc prettierignore cache + semver tests                                                            |
-| [#168](https://github.com/secundant/neodx/issues/168) | log serializers / target levels                                                                         |
-| [#169](https://github.com/secundant/neodx/issues/169) | figma deep Zod predicates                                                                               |
+| Issue                                                 | Topic                                                      |
+| ----------------------------------------------------- | ---------------------------------------------------------- |
+| [#162](https://github.com/secundant/neodx/issues/162) | Delete `@neodx/autobuild` tree (dated 2026-08-22)          |
+| [#163](https://github.com/secundant/neodx/issues/163) | Absorb or delete `@neodx/codegen` Tree (dated 2026-08-22)  |
+| [#179](https://github.com/secundant/neodx/issues/179) | S5-R2-f: test tsconfig matrix, then Oxlint `typeCheck`     |
+| [#180](https://github.com/secundant/neodx/issues/180) | Published `development` exports point at unpublished `src` |
+| [#165](https://github.com/secundant/neodx/issues/165) | `@neodx/colors` residual options                           |
+| [#166](https://github.com/secundant/neodx/issues/166) | `@neodx/fs` post-1.0 debt                                  |
+| [#167](https://github.com/secundant/neodx/issues/167) | pkg-misc prettierignore cache + semver tests               |
+| [#168](https://github.com/secundant/neodx/issues/168) | log serializers / target levels                            |
+| [#169](https://github.com/secundant/neodx/issues/169) | figma deep Zod predicates                                  |
 
-#161 (typeAware) is **CLOSED**.
+#161 (typeAware) and #164 (ATTW gate + paired dts) are **CLOSED**.
 
 ## Historical spike evidence (WP-V1)
 
