@@ -25,9 +25,13 @@ into the registry packument, and `npm install` / `pnpm add` read that metadata.
 Release therefore runs `--apply-all` before publish and restores after.
 `postpack` restores only after `npm pack`, not during `npm publish` — npm
 reads `package.json` for the packument after postpack (1.0.1–1.0.2 leaked).
-`yarn verify-packed-manifest` (tarball) and `yarn verify-publish-manifest`
+The same rewrite strips source-bridge exports (#180): npm does not apply
+`publishConfig.exports` either, and `files` ships `dist` only, so the
+`development` condition and all-`src` subpaths (`vfs/testing`) stay workspace
+bridges. `yarn verify-packed-manifest` (tarball) and `yarn verify-publish-manifest`
 (on-disk packument shape, including publish-postpack) both fail on leftover
-`workspace:`. Do not treat `yarn pack` as either gate — Yarn already rewrites.
+`workspace:`, source-bridge conditions, and export targets missing from the
+tarball. Do not treat `yarn pack` as either gate — Yarn already rewrites.
 
 ## npm publish auth
 

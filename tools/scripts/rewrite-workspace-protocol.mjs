@@ -8,6 +8,11 @@
  * registry packument matches (npm install reads packument, not the tarball).
  * `postpack` must not restore during `npm publish` — npm reads package.json
  * for the packument after postpack (1.0.1–1.0.2 leaked that way).
+ *
+ * The same rewrite strips source-bridge exports (#180): `files` ships `dist`
+ * only, so the `development` condition and all-`src` subpaths (`vfs/testing`)
+ * would point at files consumers cannot have. npm does not apply
+ * `publishConfig.exports`, so the strip must ride this on-disk path too.
  */
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -51,6 +56,38 @@ const registryRange = (spec, version) => {
   return spec;
 };
 
+// Subpath keys always start with `.` or `#`, so a `development` key is a
+// condition at any depth, never a subpath name.
+const stripSourceBridges = value => {
+  if (Array.isArray(value)) return value.map(stripSourceBridges);
+  if (!value || typeof value !== 'object') return value;
+  const next = {};
+  for (const [key, entry] of Object.entries(value)) {
+    if (key === 'development') continue;
+    next[key] = stripSourceBridges(entry);
+  }
+  return next;
+};
+
+const isSourceBridge = value => {
+  if (typeof value === 'string') return value.startsWith('./src/');
+  if (Array.isArray(value)) return value.every(isSourceBridge);
+  if (value && typeof value === 'object') return Object.values(value).every(isSourceBridge);
+  return false;
+};
+
+const stripExportSourceBridges = exportsField => {
+  if (!exportsField || typeof exportsField !== 'object' || Array.isArray(exportsField)) {
+    return exportsField;
+  }
+  const next = {};
+  for (const [subpath, entry] of Object.entries(exportsField)) {
+    if (isSourceBridge(entry)) continue;
+    next[subpath] = stripSourceBridges(entry);
+  }
+  return next;
+};
+
 const rewriteManifest = (pkg, versions) => {
   let changed = false;
   const next = { ...pkg };
@@ -70,6 +107,13 @@ const rewriteManifest = (pkg, versions) => {
     }
     if (fieldChanged) {
       next[field] = rewritten;
+      changed = true;
+    }
+  }
+  if (pkg.exports) {
+    const stripped = stripExportSourceBridges(pkg.exports);
+    if (JSON.stringify(stripped) !== JSON.stringify(pkg.exports)) {
+      next.exports = stripped;
       changed = true;
     }
   }
