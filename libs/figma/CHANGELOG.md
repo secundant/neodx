@@ -1,5 +1,19 @@
 # @neodx/figma
 
+## 1.0.3
+
+### Patch Changes
+
+- [#177](https://github.com/secundant/neodx/pull/177) [`5b59e02`](https://github.com/secundant/neodx/commit/5b59e02e4900bd96cf95accb75dd1939f95d8cf1) Thanks [@secundant](https://github.com/secundant)! - Keep rewritten dependency versions through `npm publish` postpack.
+
+  1.0.1–1.0.2 tarballs were installable on paper, but `postpack` restored
+  `workspace:^` before npm wrote packument metadata, so `npm install` still
+  failed. postpack now restores only after `npm pack`.
+
+- Updated dependencies [[`5b59e02`](https://github.com/secundant/neodx/commit/5b59e02e4900bd96cf95accb75dd1939f95d8cf1)]:
+  - @neodx/log@1.0.3
+  - @neodx/vfs@1.0.3
+
 ## 1.0.2
 
 ### Patch Changes
