@@ -1,5 +1,29 @@
 # @neodx/colors
 
+## 1.1.0
+
+### Minor Changes
+
+- [#172](https://github.com/secundant/neodx/pull/172) [`3a90b12`](https://github.com/secundant/neodx/commit/3a90b12ce7c79f7b2bf058bbdaaadbf46c76354e) Thanks [@secundant](https://github.com/secundant)! - Pack-contract 1.1: paired `.d.mts`/`.d.cts` declarations.
+
+  Each JavaScript file now has exactly one matching declaration file — `.d.mts`
+  next to `.mjs`, `.d.cts` next to `.cjs` — replacing the single `.d.ts` shipped
+  in 1.0. The `exports` map is types-first under both `import` and `require`
+  (nested condition objects), and top-level `types` points at the `.d.cts`
+  paired with `main`. `@neodx/vfs` and `@neodx/pkg-misc` drop their separate
+  `dist/types` directory: each format's declarations are emitted next to its
+  JavaScript.
+
+  No runtime or Public API changes — JavaScript entry files and behavior are
+  unchanged. This removes the `FalseCJS`-style ambiguity `nodenext` consumers
+  hit when one `.d.ts` described both module formats, and unblocks the
+  `attw --pack` CI gate (#164).
+
+### Patch Changes
+
+- Updated dependencies [[`3a90b12`](https://github.com/secundant/neodx/commit/3a90b12ce7c79f7b2bf058bbdaaadbf46c76354e)]:
+  - @neodx/std@1.1.0
+
 ## 1.0.3
 
 ### Patch Changes
