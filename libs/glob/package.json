@@ -1,6 +1,6 @@
 {
   "name": "@neodx/glob",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Fast glob matching and path walking helpers",
   "homepage": "https://github.com/secundant/neodx/tree/main/libs/glob",
   "bugs": "https://github.com/secundant/neodx/issues",
