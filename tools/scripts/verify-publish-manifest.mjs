@@ -2,8 +2,8 @@
 /**
  * Assert the on-disk publishable manifests have no `workspace:` after apply-all.
  *
- * That is the package.json npm copies into the registry packument. The tarball
- * gate (`verify-packed-manifest`) can be green while install still fails.
+ * That is the package.json npm copies into the registry packument after
+ * postpack. `npm publish` must not restore `workspace:^` in postpack.
  */
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
@@ -42,14 +42,24 @@ if (apply.status !== 0) process.exit(apply.status ?? 1);
 let failures = 0;
 try {
   for (const { pkgPath, pkg } of publishable) {
+    const postpack = spawnSync(process.execPath, [rewrite, '--postpack'], {
+      cwd: dirname(pkgPath),
+      env: { ...process.env, npm_command: 'publish' },
+      stdio: 'inherit'
+    });
+    if (postpack.status !== 0) {
+      console.error(`✗ ${pkg.name}: postpack --publish exited ${postpack.status}`);
+      failures++;
+      continue;
+    }
     const manifest = JSON.parse(readFileSync(pkgPath, 'utf8'));
     const leaks = leakedRanges(manifest);
     if (leaks.length) {
-      console.error(`✗ ${pkg.name}: apply-all left workspace: protocol`);
+      console.error(`✗ ${pkg.name}: publish postpack restored workspace: protocol`);
       for (const leak of leaks) console.error(`    ${leak}`);
       failures++;
     } else {
-      console.log(`✓ ${pkg.name}: publish manifest has no workspace: protocol`);
+      console.log(`✓ ${pkg.name}: publish manifest survives postpack`);
     }
   }
 } finally {
