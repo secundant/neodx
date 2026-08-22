@@ -1,6 +1,6 @@
 {
   "name": "@neodx/internal",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "description": "Collection of shared internal utilities and common patterns for neodx",
   "homepage": "https://github.com/secundant/neodx/tree/main/libs/internal",

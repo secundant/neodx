@@ -1,5 +1,19 @@
 # @neodx/log
 
+## 1.0.1
+
+### Patch Changes
+
+- [#173](https://github.com/secundant/neodx/pull/173) [`65f0850`](https://github.com/secundant/neodx/commit/65f0850d7473303d098d909951045827613a9295) Thanks [@secundant](https://github.com/secundant)! - Rewrite `workspace:^` to registry versions in the published manifest.
+
+  1.0.0 tarballs leaked the Yarn workspace protocol (`changeset publish` uses npm,
+  which does not rewrite it), so the packages were uninstallable outside this
+  repo. Source `package.json` files still use `workspace:^`; only the packed
+  tarball changes.
+
+- Updated dependencies [[`65f0850`](https://github.com/secundant/neodx/commit/65f0850d7473303d098d909951045827613a9295)]:
+  - @neodx/colors@1.0.1
+
 ## 1.0.0
 
 ### Major Changes

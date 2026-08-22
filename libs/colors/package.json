@@ -1,6 +1,6 @@
 {
   "name": "@neodx/colors",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Formatting and color utils for the terminal",
   "keywords": [
     "cli",

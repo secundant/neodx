@@ -1,5 +1,20 @@
 # @neodx/figma
 
+## 1.0.1
+
+### Patch Changes
+
+- [#173](https://github.com/secundant/neodx/pull/173) [`65f0850`](https://github.com/secundant/neodx/commit/65f0850d7473303d098d909951045827613a9295) Thanks [@secundant](https://github.com/secundant)! - Rewrite `workspace:^` to registry versions in the published manifest.
+
+  1.0.0 tarballs leaked the Yarn workspace protocol (`changeset publish` uses npm,
+  which does not rewrite it), so the packages were uninstallable outside this
+  repo. Source `package.json` files still use `workspace:^`; only the packed
+  tarball changes.
+
+- Updated dependencies [[`65f0850`](https://github.com/secundant/neodx/commit/65f0850d7473303d098d909951045827613a9295)]:
+  - @neodx/log@1.0.1
+  - @neodx/vfs@1.0.1
+
 ## 1.0.0
 
 ### Major Changes
@@ -19,17 +34,14 @@
 'published-components'`), and the required `fileId`/`output` fields — is now
     parsed with Zod. This replaces the ad-hoc `invariant(...)` checks, the
     `item.fileId!` non-null assertion, and the
-    `as NormalizedExportFileConfigurationItem[]` cast in `resolveNormalizedConfiguration`.
-    - Behavior is preserved for valid configs: the token-resolution precedence
-      (`--token` > config file > `FIGMA_TOKEN`) and the `parseFileIdFromLink`
-      URL normalization are unchanged.
-    - **Minor, documented behavior change for invalid input:** a malformed
-      `figma.config.*` (missing token, missing `output`/`fileId`, unknown export
-      `type`) now throws a Zod error (`Wrong value for "Figma configuration":
-…`) instead of an `invariant` string. No previously-valid config breaks.
-    - Deep `collect`/`target`/`filter`/`resolve`/`download`/`write` predicate
-      validation is intentionally deferred (#169); those fields pass through as
-      opaque values, preserving current behavior.
+    `as NormalizedExportFileConfigurationItem[]` cast in `resolveNormalizedConfiguration`. - Behavior is preserved for valid configs: the token-resolution precedence
+    (`--token` > config file > `FIGMA_TOKEN`) and the `parseFileIdFromLink`
+    URL normalization are unchanged. - **Minor, documented behavior change for invalid input:** a malformed
+    `figma.config.*` (missing token, missing `output`/`fileId`, unknown export
+    `type`) now throws a Zod error (`Wrong value for "Figma configuration":
+…`) instead of an `invariant` string. No previously-valid config breaks. - Deep `collect`/`target`/`filter`/`resolve`/`download`/`write` predicate
+    validation is intentionally deferred (#169); those fields pass through as
+    opaque values, preserving current behavior.
   - **README honesty:** fixed the npm badge anchor (it pointed at `@neodx/log`
     by copy-paste), replaced the "under 0.x.x breaking changes" framing with a
     1.0 stability statement, rewrote the Motivation bullet that boasted "no
