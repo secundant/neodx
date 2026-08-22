@@ -8,7 +8,7 @@ Do not put tokens, OTPs, or secret values in git, issues, or this file.
 ## Release flow
 
 Push to `main` runs [`.github/workflows/release.yaml`](./.github/workflows/release.yaml)
-(`changesets/action` → `yarn pack:libs && yarn changeset publish`).
+(`changesets/action` → `yarn release-publish`).
 
 1. Merge a PR that includes Changesets.
 2. Release opens a **Version Packages** PR, or publishes if git is already ahead of npm.
@@ -19,11 +19,14 @@ Version Packages PRs opened by `GITHUB_TOKEN` often have no `check` / `e2e-svg` 
 Publishable: `@neodx/std`, `colors`, `fs`, `glob`, `pkg-misc`, `log`, `vfs`, `svg`, `figma`.
 Private packages stay unpublished.
 
-`changeset publish` uses npm, which does not rewrite Yarn `workspace:` ranges. Each
-publishable package runs `prepack` to substitute registry versions (`^x.y.z`) and
-`postpack` to restore source. `yarn verify-packed-manifest` packs with npm and
-fails if a tarball still contains `workspace:`. Do not treat `yarn pack` as that
-gate — Yarn already rewrites.
+`changeset publish` uses npm, which does not rewrite Yarn `workspace:` ranges.
+`prepack` rewrites the **tarball**; npm still copies the on-disk `package.json`
+into the registry packument, and `npm install` / `pnpm add` read that metadata.
+Release therefore runs `--apply-all` before publish and restores after.
+`yarn verify-packed-manifest` (tarball) and `yarn verify-publish-manifest`
+(on-disk packument shape) both fail on leftover `workspace:`. Do not treat
+`yarn pack` as either gate — Yarn already rewrites. 1.0.1 shipped an honest
+tarball with a leaking packument; 1.0.2 is the installable republish.
 
 ## npm publish auth
 
