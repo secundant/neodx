@@ -1,5 +1,19 @@
 # @neodx/figma
 
+## 1.0.2
+
+### Patch Changes
+
+- [#175](https://github.com/secundant/neodx/pull/175) [`ee1aa5c`](https://github.com/secundant/neodx/commit/ee1aa5cdb8782566d0c3521465264ea0d2ed198d) Thanks [@secundant](https://github.com/secundant)! - Rewrite `workspace:^` in the registry packument before publish.
+
+  1.0.1 tarballs already had registry versions, but npm recorded the on-disk
+  `workspace:^` ranges in packument metadata, so `npm install` / `pnpm add` still
+  failed. Release now applies the rewrite before `changeset publish`.
+
+- Updated dependencies [[`ee1aa5c`](https://github.com/secundant/neodx/commit/ee1aa5cdb8782566d0c3521465264ea0d2ed198d)]:
+  - @neodx/log@1.0.2
+  - @neodx/vfs@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes
