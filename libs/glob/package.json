@@ -47,7 +47,9 @@
     "test": "vp test",
     "lint": "vp lint",
     "nuke": "rm -rf dist",
-    "pack": "vp pack"
+    "pack": "vp pack",
+    "prepack": "node ../../tools/scripts/rewrite-workspace-protocol.mjs --prepack",
+    "postpack": "node ../../tools/scripts/rewrite-workspace-protocol.mjs --postpack"
   },
   "dependencies": {
     "@neodx/log": "workspace:^",

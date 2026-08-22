@@ -119,7 +119,9 @@
     "test": "vp test",
     "lint": "vp lint",
     "dev": "vp pack --watch",
-    "pack": "vp pack"
+    "pack": "vp pack",
+    "prepack": "node ../../tools/scripts/rewrite-workspace-protocol.mjs --prepack",
+    "postpack": "node ../../tools/scripts/rewrite-workspace-protocol.mjs --postpack"
   },
   "dependencies": {
     "type-fest": "4.21.0"

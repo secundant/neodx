@@ -37,8 +37,8 @@ yarn pack:libs           # vp pack all publishable libs
 ```
 
 Also useful: `yarn constraints`, `yarn depcruise` (dependency structure), `yarn verify-exports` /
-`yarn publint` (after pack), and Playwright via `apps/e2e/svg/README.md`. Prefer package cwd for
-tests; root `vp test` can pick up Playwright noise.
+`yarn publint` / `yarn verify-packed-manifest` (after pack), and Playwright via
+`apps/e2e/svg/README.md`. Prefer package cwd for tests; root `vp test` can pick up Playwright noise.
 
 See [`SECURITY.md`](./SECURITY.md) for vulnerability reporting.
 

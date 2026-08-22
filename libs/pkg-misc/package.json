@@ -35,7 +35,9 @@
     "build": "vp pack",
     "test": "vp test",
     "lint": "vp lint",
-    "pack": "vp pack"
+    "pack": "vp pack",
+    "prepack": "node ../../tools/scripts/rewrite-workspace-protocol.mjs --prepack",
+    "postpack": "node ../../tools/scripts/rewrite-workspace-protocol.mjs --postpack"
   },
   "dependencies": {
     "@neodx/fs": "workspace:^",

@@ -19,6 +19,12 @@ Version Packages PRs opened by `GITHUB_TOKEN` often have no `check` / `e2e-svg` 
 Publishable: `@neodx/std`, `colors`, `fs`, `glob`, `pkg-misc`, `log`, `vfs`, `svg`, `figma`.
 Private packages stay unpublished.
 
+`changeset publish` uses npm, which does not rewrite Yarn `workspace:` ranges. Each
+publishable package runs `prepack` to substitute registry versions (`^x.y.z`) and
+`postpack` to restore source. `yarn verify-packed-manifest` packs with npm and
+fails if a tarball still contains `workspace:`. Do not treat `yarn pack` as that
+gate — Yarn already rewrites.
+
 ## npm publish auth
 
 Release already has `id-token: write`, installs npm ≥ 11.15, and sets
