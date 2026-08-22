@@ -4,8 +4,8 @@ Workspace 1.0 means every publishable `@neodx/*` package has a documented, stabl
 Public API. Source under `libs/<pkg>/src` is the only source of truth for that
 surface — see [`AGENTS.md`](./AGENTS.md).
 
-The queued 1.0 majors are honesty freezes, not API rewrites. Documented Intention
-matches source; existing exports, signatures, and behavior stay. The major signals
+The 1.0 majors were honesty freezes, not API rewrites. Documented Intention
+matches source; existing exports, signatures, and behavior stayed. The major signals
 stability, not removal.
 
 ## Bumps
@@ -25,6 +25,9 @@ Changesets ignores them.
 
 ## After 1.0
 
-Pack-contract work (paired `.d.mts`/`.d.cts`, ATTW) is a later bump, not part of
-this freeze. Named product residuals (#165–#169 and older issues such as #148)
-do not reopen it.
+Pack-contract work shipped as **1.1.0** (paired `.d.mts`/`.d.cts`, types-first `exports`, required
+`attw` gate — [#164](https://github.com/secundant/neodx/issues/164)). It changed pack metadata
+only: JavaScript entry files, behavior, and Public API were untouched, so consumers took it as a
+minor. Future pack-contract changes follow the same rule — metadata-only is a minor, anything a
+caller can observe resolving differently is a major. Named product residuals (#165–#169 and older
+issues such as #148) do not reopen the freeze.
