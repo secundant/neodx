@@ -3,7 +3,7 @@
 Authoritative before / during / after dossiers for toolchain experiments on neodx.
 Live guidance for everyday commands stays in [`../../AGENTS.md`](../../AGENTS.md) and
 [`../../CONTRIBUTING.md`](../../CONTRIBUTING.md). Program status:
-[`../plans/AGENTS.md`](../plans/AGENTS.md) (closed 2026-08-22; npm 1.1.0; `strip-source-bridges` #180 implemented unpublished).
+[`../plans/AGENTS.md`](../plans/AGENTS.md) (closed 2026-08-22; npm 1.1.0; `strip-source-bridges` #180 on `main` unpublished).
 
 | Report                                                                               | Status                        | Notes                                                                                         |
 | ------------------------------------------------------------------------------------ | ----------------------------- | --------------------------------------------------------------------------------------------- |
