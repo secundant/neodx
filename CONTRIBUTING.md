@@ -12,8 +12,8 @@ guidance and architecture, see [`AGENTS.md`](./AGENTS.md).
   (`engines` `^22||^24||>=26`).
 - **Yarn 4** — pinned via `packageManager: yarn@4.3.1` in `package.json`. Run `corepack enable` if
   your Node did not enable it. `vp install` delegates to Yarn.
-- **[GitHub CLI (`gh`)](https://github.com/cli/cli)** — install (`brew install gh` on macOS) and run
-  `gh auth login`. PRs, checks, and issue quarantines go through `gh`.
+- **[GitHub CLI (`gh`)](https://github.com/cli/cli):** install (`brew install gh` on macOS) and run
+  `gh auth login`. Issues, quarantines, and owner-asked PRs go through `gh`.
 
 ## Setup
 
@@ -45,15 +45,20 @@ See [`SECURITY.md`](./SECURITY.md) for vulnerability reporting.
 
 ## Adding a changeset
 
-Any caller-visible change needs a Changeset so the release flow and CHANGELOG stay honest:
+Caller-visible work gets a Changeset. That file is the changelog. It is not a request to publish.
 
 ```shell
-yarn changeset
+yarn changeset add
 ```
 
-Pick the affected package(s), choose `patch` / `minor` / `major`, and write a concise summary.
-Never sneak a silent API break into a patch — describe it and add migration notes.
-Workspace versioning policy: [`SEMVER.md`](./SEMVER.md). How those Changesets reach npm:
+Interactive: pick packages, pick `patch` / `minor` / `major`, write a short summary. CLI reference:
+[Changesets CLI](https://changesets.dev/guide/cli). This repo pins `@changesets/cli` 2.27.1, so
+`add` supports `--empty` and `--open` only (no v3 `--patch` / `-m` flags). `yarn changeset` with no
+subcommand is the same as `add`.
+
+Do not run `yarn changeset version` or `yarn changeset publish` unless the owner says npm must
+change. Never sneak a silent API break into a patch: describe it and add migration notes.
+Policy: [`SEMVER.md`](./SEMVER.md). How a Changeset reaches npm, and why that step is rare:
 [`MAINTENANCE.md`](./MAINTENANCE.md).
 
 ## Commit conventions
@@ -74,15 +79,15 @@ yarn neodx lib new-lib-name           # new library under libs
 
 Entry point: [`tools/scripts/bin.mjs`](./tools/scripts/bin.mjs).
 
-## Opening a PR
+## Working branch
 
-```shell
-gh pr create --base main
-gh pr checks
-```
+Everyday work stays on the standing branch `work`. Do not open PRs, merge to `main`, or create extra
+branches unless the owner asks. Close the session with the gate in [`AGENTS.md`](./AGENTS.md)
+(session-close gate): fmt/lint, references, depcruise, typecheck, pack, export/publint/attw/manifest
+verifies, library tests, and e2e-svg when svg/pack/CI moved.
 
-CI must be green on the `check` and `e2e-svg` jobs. If a test is flaky, quarantine it behind a named
-issue (`gh issue create`) — do not silent-skip.
+If a test is flaky, quarantine it behind a named issue (`gh issue create`). Do not silent-skip.
+Title the issue with a readable slug first (`oxlint-typecheck: …`), not a program code.
 
 ## License
 

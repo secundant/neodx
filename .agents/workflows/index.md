@@ -8,7 +8,8 @@ workflow system.
 
 Load a protocol when a change is larger than a single session and needs deliberate sequencing,
 evidence, or disposition discipline. For a one-off change, root [`AGENTS.md`](../../AGENTS.md) is
-enough.
+enough. Everyday session rules (standing branch `work`, Changesets CLI, no publish unless asked,
+session-close gate, slug-first names) also live there.
 
 ## Protocols
 
@@ -55,13 +56,13 @@ imported skill files:
 
 ## Experiment reports
 
-| Experiment            | Live owner                                                                                                                                                                                                               |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Vite+ migrate         | [`../reports/vite-plus-migration.md`](../reports/vite-plus-migration.md)                                                                                                                                                 |
-| Oxlint vs eslint-kit  | [`../reports/oxlint-eslint-kit-delta.md`](../reports/oxlint-eslint-kit-delta.md)                                                                                                                                         |
-| TS project references | [before](../reports/ts-project-references-before.md) · [research](../reports/ts-project-references-research.md) · [implementation](../reports/ts-project-references-implementation.md) (R2-a/b landed; typeCheck → R2-f) |
-| Parallel sessions     | [`../sessions/`](../sessions/)                                                                                                                                                                                           |
-| WP-V1 spike (archive) | [`../reports/archive/`](../reports/archive/)                                                                                                                                                                             |
+| Experiment            | Live owner                                                                                                                                                                                                                                               |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Vite+ migrate         | [`../reports/vite-plus-migration.md`](../reports/vite-plus-migration.md)                                                                                                                                                                                 |
+| Oxlint vs eslint-kit  | [`../reports/oxlint-eslint-kit-delta.md`](../reports/oxlint-eslint-kit-delta.md)                                                                                                                                                                         |
+| TS project references | [before](../reports/ts-project-references-before.md) · [research](../reports/ts-project-references-research.md) · [implementation](../reports/ts-project-references-implementation.md) (paths/typeAware landed; `typeCheck` waits on `oxlint-typecheck`) |
+| Parallel sessions     | [`../sessions/`](../sessions/)                                                                                                                                                                                                                           |
+| WP-V1 spike (archive) | [`../reports/archive/`](../reports/archive/)                                                                                                                                                                                                             |
 
 ## What stays out
 
