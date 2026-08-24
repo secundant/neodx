@@ -1,5 +1,20 @@
 # @neodx/log
 
+## 1.1.1
+
+### Patch Changes
+
+- [#183](https://github.com/secundant/neodx/pull/183) [`7d0104a`](https://github.com/secundant/neodx/commit/7d0104ac2473cf9c189fda08121bdf675d1350ea) Thanks [@secundant](https://github.com/secundant)! - Stop publishing source-bridge exports: packed manifests no longer expose the
+  `development` condition or the all-`src` `@neodx/vfs/testing` subpath, which
+  pointed at `./src` files that `files: dist` never ships. Vite 8 / Vitest pass
+  the `development` condition to Node, so consumers resolved `./src/index.ts`
+  and failed with `ERR_MODULE_NOT_FOUND` on every nested `@neodx/*` import
+  (#180). The workspace source bridge stays intact for in-repo `tsc -b` and
+  tests; only the published manifests change.
+- Updated dependencies [[`7d0104a`](https://github.com/secundant/neodx/commit/7d0104ac2473cf9c189fda08121bdf675d1350ea)]:
+  - @neodx/std@1.1.1
+  - @neodx/colors@1.1.1
+
 ## 1.1.0
 
 ### Minor Changes
