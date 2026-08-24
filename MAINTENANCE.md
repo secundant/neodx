@@ -7,10 +7,16 @@ Do not put tokens, OTPs, or secret values in git, issues, or this file.
 
 ## Release flow
 
-Push to `main` runs [`.github/workflows/release.yaml`](./.github/workflows/release.yaml)
-(`changesets/action` → `yarn release-publish`).
+Do not publish unless the owner says npm must change for consumers. Everyday work records a
+Changeset with `yarn changeset add` ([CLI](https://changesets.dev/guide/cli)) and stays on `work`.
+Do not merge a **Version Packages** PR, run `yarn changeset publish`, or push changelog-only
+branches to `main` as a shortcut to npm.
 
-1. Merge a PR that includes Changesets.
+When the owner does ask to publish, push to `main` runs
+[`.github/workflows/release.yaml`](./.github/workflows/release.yaml)
+(`changesets/action` → `yarn release-publish`):
+
+1. Land the Changeset on `main` (owner-asked merge).
 2. Release opens a **Version Packages** PR, or publishes if git is already ahead of npm.
 3. Merge that PR (merge commit unless the owner names squash). That second push publishes.
 
@@ -25,9 +31,13 @@ into the registry packument, and `npm install` / `pnpm add` read that metadata.
 Release therefore runs `--apply-all` before publish and restores after.
 `postpack` restores only after `npm pack`, not during `npm publish` — npm
 reads `package.json` for the packument after postpack (1.0.1–1.0.2 leaked).
-`yarn verify-packed-manifest` (tarball) and `yarn verify-publish-manifest`
+The same rewrite strips source-bridge exports (#180): npm does not apply
+`publishConfig.exports` either, and `files` ships `dist` only, so the
+`development` condition and all-`src` subpaths (`vfs/testing`) stay workspace
+bridges. `yarn verify-packed-manifest` (tarball) and `yarn verify-publish-manifest`
 (on-disk packument shape, including publish-postpack) both fail on leftover
-`workspace:`. Do not treat `yarn pack` as either gate — Yarn already rewrites.
+`workspace:`, source-bridge conditions, and export targets missing from the
+tarball. Do not treat `yarn pack` as either gate — Yarn already rewrites.
 
 ## npm publish auth
 

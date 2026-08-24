@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 /**
- * After pack, assert publishable tarball manifests have no `workspace:` protocol.
+ * After pack, assert publishable tarball manifests have no `workspace:` protocol
+ * and no source-bridge exports (#180): `files` ships `dist` only, so a
+ * `development` condition or all-`src` subpath would point at files consumers
+ * cannot have, and every remaining export target must exist in the tarball.
  *
  * `changeset publish` uses npm, which does not rewrite Yarn workspace ranges.
  * `yarn pack` already does — this gate uses `npm pack` so it matches publish.
@@ -40,6 +43,33 @@ const leakedRanges = manifest => {
   return hits;
 };
 
+const developmentConditions = (exportsField, hits = []) => {
+  if (Array.isArray(exportsField)) {
+    exportsField.forEach(value => developmentConditions(value, hits));
+  } else if (exportsField && typeof exportsField === 'object') {
+    for (const [key, value] of Object.entries(exportsField)) {
+      if (key === 'development') hits.push(key);
+      else developmentConditions(value, hits);
+    }
+  }
+  return hits;
+};
+
+const exportTargets = (exportsField, acc = []) => {
+  if (typeof exportsField === 'string') {
+    acc.push(exportsField);
+  } else if (Array.isArray(exportsField)) {
+    exportsField.forEach(value => exportTargets(value, acc));
+  } else if (exportsField && typeof exportsField === 'object') {
+    for (const [key, value] of Object.entries(exportsField)) {
+      // `#imports` are internal package specifiers, not packed paths.
+      if (key.startsWith('#')) continue;
+      exportTargets(value, acc);
+    }
+  }
+  return acc;
+};
+
 const packManifest = dir => {
   const dest = mkdtempSync(join(tmpdir(), 'neodx-packed-manifest-'));
   try {
@@ -52,7 +82,10 @@ const packManifest = dir => {
     const json = execFileSync('tar', ['-xOf', join(dest, tgz), 'package/package.json'], {
       encoding: 'utf8'
     });
-    return JSON.parse(json);
+    const files = execFileSync('tar', ['-tzf', join(dest, tgz)], { encoding: 'utf8' })
+      .split('\n')
+      .filter(Boolean);
+    return { manifest: JSON.parse(json), files };
   } finally {
     rmSync(dest, { recursive: true, force: true });
   }
@@ -62,14 +95,24 @@ let failures = 0;
 
 for (const { dir, pkg } of packages) {
   try {
-    const manifest = packManifest(dir);
+    const { manifest, files } = packManifest(dir);
     const leaks = leakedRanges(manifest);
-    if (leaks.length) {
-      console.error(`✗ ${pkg.name}: tarball still has workspace: protocol`);
-      for (const leak of leaks) console.error(`    ${leak}`);
+    const bridges = developmentConditions(manifest.exports);
+    // `?query` fragments and `*` patterns are not literal packed paths.
+    const missing = [...new Set(exportTargets(manifest.exports))].filter(
+      target =>
+        target.startsWith('./') &&
+        !target.includes('*') &&
+        !files.includes(`package/${target.slice(2).split('?')[0]}`)
+    );
+    if (leaks.length || bridges.length || missing.length) {
+      console.error(`✗ ${pkg.name}: tarball manifest is not publish-shaped`);
+      for (const leak of leaks) console.error(`    workspace: ${leak}`);
+      for (const bridge of bridges) console.error(`    source bridge: exports ... ${bridge}`);
+      for (const target of missing) console.error(`    target missing from tarball: ${target}`);
       failures++;
     } else {
-      console.log(`✓ ${pkg.name}: packed manifest has no workspace: protocol`);
+      console.log(`✓ ${pkg.name}: packed manifest has no workspace: or source bridges`);
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);

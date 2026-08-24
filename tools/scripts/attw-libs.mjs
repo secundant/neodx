@@ -19,14 +19,6 @@ const libsDir = join(root, 'libs');
 const attwBin = join(root, 'node_modules', '.bin', 'attw');
 const SKIP = new Set(['@neodx/autobuild', '@neodx/codegen', '@neodx/internal']);
 
-// `./testing` is a workspace source bridge shipped in 1.0: every condition
-// points at `src/testing.ts`, which is not in `files`. Unresolvable for npm
-// consumers by design until a product decision moves or ships it (#164 scope
-// is pack metadata only).
-const EXCLUDE_ENTRYPOINTS = {
-  '@neodx/vfs': ['./testing']
-};
-
 const packages = readdirSync(libsDir, { withFileTypes: true })
   .filter(d => d.isDirectory())
   .map(d => join(libsDir, d.name))
@@ -47,13 +39,10 @@ for (const { dir, pkg } of packages) {
   }
 
   const args = ['--pack', '--profile', 'node16', '--no-emoji'];
-  const excluded = EXCLUDE_ENTRYPOINTS[pkg.name];
-  if (excluded) args.push('--exclude-entrypoints', ...excluded);
-
   const result = spawnSync(attwBin, args, { cwd: dir, encoding: 'utf8' });
 
   if (result.status === 0) {
-    console.log(`✓ ${pkg.name}${excluded ? ` (excluding ${excluded.join(', ')})` : ''}`);
+    console.log(`✓ ${pkg.name}`);
   } else {
     console.error(`✗ ${pkg.name}: attw failed (exit ${result.status})`);
     console.error(result.stdout?.trim());

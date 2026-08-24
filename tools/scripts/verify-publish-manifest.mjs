@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 /**
- * Assert the on-disk publishable manifests have no `workspace:` after apply-all.
+ * Assert the on-disk publishable manifests have no `workspace:` after apply-all,
+ * and no source-bridge exports (#180): the `development` condition and any
+ * `./src/` target would reach the registry packument, where `files` cannot
+ * back them. On-disk `src/` exists in the workspace, so this is a shape check —
+ * `verify-packed-manifest` owns packed-file existence.
  *
  * That is the package.json npm copies into the registry packument after
  * postpack. `npm publish` must not restore `workspace:^` in postpack.
@@ -24,6 +28,20 @@ const leakedRanges = pkg => {
       if (typeof range === 'string' && range.startsWith('workspace:')) {
         hits.push(`${field}.${name}=${range}`);
       }
+    }
+  }
+  return hits;
+};
+
+const sourceBridges = (exportsField, hits = []) => {
+  if (typeof exportsField === 'string') {
+    if (exportsField.startsWith('./src/')) hits.push(exportsField);
+  } else if (Array.isArray(exportsField)) {
+    exportsField.forEach(value => sourceBridges(value, hits));
+  } else if (exportsField && typeof exportsField === 'object') {
+    for (const [key, value] of Object.entries(exportsField)) {
+      if (key === 'development') hits.push(key);
+      else sourceBridges(value, hits);
     }
   }
   return hits;
@@ -54,9 +72,11 @@ try {
     }
     const manifest = JSON.parse(readFileSync(pkgPath, 'utf8'));
     const leaks = leakedRanges(manifest);
-    if (leaks.length) {
-      console.error(`✗ ${pkg.name}: publish postpack restored workspace: protocol`);
-      for (const leak of leaks) console.error(`    ${leak}`);
+    const bridges = sourceBridges(manifest.exports);
+    if (leaks.length || bridges.length) {
+      console.error(`✗ ${pkg.name}: publish postpack restored workspace: or source bridges`);
+      for (const leak of leaks) console.error(`    workspace: ${leak}`);
+      for (const bridge of bridges) console.error(`    source bridge: ${bridge}`);
       failures++;
     } else {
       console.log(`✓ ${pkg.name}: publish manifest survives postpack`);
