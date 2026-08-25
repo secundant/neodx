@@ -82,7 +82,10 @@ Entry point: [`tools/scripts/bin.mjs`](./tools/scripts/bin.mjs).
 ## Working branch
 
 Everyday work stays on the standing branch `work`. Do not open PRs, merge to `main`, or create extra
-branches unless the owner asks. Close the session with the gate in [`AGENTS.md`](./AGENTS.md)
+branches unless the owner asks. After `strip-source-bridges` on npm **1.1.1**, do not publish again
+until the owner names a consolidated release: keep using `yarn changeset add`. After the assigned
+slice is green, apply **tighten what you touch** from [`AGENTS.md`](./AGENTS.md) (session rules) to
+files and tools this session opened. Close the session with the gate in [`AGENTS.md`](./AGENTS.md)
 (session-close gate): fmt/lint, references, depcruise, typecheck, pack, export/publint/attw/manifest
 verifies, library tests, and e2e-svg when svg/pack/CI moved.
 

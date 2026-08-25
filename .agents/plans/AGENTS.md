@@ -9,8 +9,8 @@ plans index (`/Users/host/WebstormProjects/nubis/.agents/plans/AGENTS.md`) and n
 This folder holds neodx-local status, evidence pointers, and future neodx-originated plans.
 
 Session rules live in [`../../AGENTS.md`](../../AGENTS.md): standing branch `work`,
-`yarn changeset add` for changelogs, no npm publish unless asked, session-close gate,
-slug-first names for live work.
+`yarn changeset add` for changelogs, **publish freeze until a consolidated-release command**
+after the #180 land, session-close gate, slug-first names, and **tighten what you touch**.
 
 ## How to use
 
@@ -19,15 +19,15 @@ slug-first names for live work.
 - Keep the **decision table** and **progress ledger** inside the plan.
 - Close a plan (delete, or keep with a reason) only when slices are verified and debt is recorded.
 
-## Program status (revalidated 2026-08-24)
+## Program status (revalidated 2026-08-25)
 
-Canonical `origin/main` is **`172f1a6`** ([#182](https://github.com/secundant/neodx/pull/182);
-1.1.0 publish was [#181](https://github.com/secundant/neodx/pull/181) @ `e86679b`).
-Local **`pack/strip-development-exports` `7d0104a`** implements [#180](https://github.com/secundant/neodx/issues/180)
-(one commit ahead of `main`; no PR yet). npm is still **1.1.0**. Re-read
-`git rev-parse --short origin/main` before citing SHAs.
+Canonical `origin/main` is **`cf60915`** (Version Packages [#185](https://github.com/secundant/neodx/pull/185)).
+`strip-source-bridges` ([#180](https://github.com/secundant/neodx/issues/180)) is **closed**: npm
+**1.1.1**, packuments have no `development` / `./src` bridges. Further publishes wait for a
+**consolidated-release** command. Oxlint `typeCheck` and later leftovers stay on `work`; they were
+not part of this npm land. Re-read `git rev-parse --short origin/main` before citing SHAs.
 
-All nine publishable packages are on npm **1.1.0** with OIDC provenance:
+All nine publishable packages are on npm **1.1.1** with OIDC provenance:
 
 - **1.0.0** honesty freeze (run [31811688371](https://github.com/secundant/neodx/actions/runs/31811688371));
 - **1.0.1–1.0.3** packaging fixes — workspace-protocol rewrite in published manifests
@@ -35,7 +35,7 @@ All nine publishable packages are on npm **1.1.0** with OIDC provenance:
 - **1.1.0** paired-dts pack contract (PR [#172](https://github.com/secundant/neodx/pull/172), merged `50c6b50`):
   paired `.d.mts`/`.d.cts`, types-first `exports`, required `attw` CI gate after pack —
   [#164](https://github.com/secundant/neodx/issues/164) closed. Registry-verified:
-  `attw --from-npm --profile node16 @neodx/std@1.1.0` is green.
+  `attw --from-npm --profile node16 @neodx/std@1.1.1` is green.
 
 The S0–S7 program is closed.
 
@@ -56,32 +56,32 @@ The S0–S7 program is closed.
 
 ### Published releases
 
-| Version      | Contract                                                           | Residual                                                                                                                                                                                 |
-| ------------ | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.0.0        | Honesty freeze                                                     | #165–#169 product residuals                                                                                                                                                              |
-| 1.0.1–1.0.3  | Workspace-protocol rewrite in published manifests (#173/#175/#177) | —                                                                                                                                                                                        |
-| 1.1.0        | Paired `.d.mts`/`.d.cts` pack contract; `attw` CI gate             | [#164](https://github.com/secundant/neodx/issues/164) closed; `strip-source-bridges` still on the registry                                                                               |
-| 1.1.1 queued | Strip published `development` / all-src subpaths (`7d0104a`)       | Changeset `strip-development-exports` on this branch; do not publish unless asked; `strip-source-bridges` [#180](https://github.com/secundant/neodx/issues/180) stays **OPEN** until npm |
+| Version     | Contract                                                           | Residual                                                                                                                                                                            |
+| ----------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.0.0       | Honesty freeze                                                     | #165–#169 product residuals                                                                                                                                                         |
+| 1.0.1–1.0.3 | Workspace-protocol rewrite in published manifests (#173/#175/#177) | —                                                                                                                                                                                   |
+| 1.1.0       | Paired `.d.mts`/`.d.cts` pack contract; `attw` CI gate             | [#164](https://github.com/secundant/neodx/issues/164) closed                                                                                                                        |
+| 1.1.1       | Strip published `development` / all-src subpaths (`7d0104a`)       | [#180](https://github.com/secundant/neodx/issues/180) **closed**; Version Packages [#185](https://github.com/secundant/neodx/pull/185); publish freeze until a consolidated release |
 
 ### Remaining work
 
 Live leftovers use a slug first, then the GitHub number. Closed S0–S7 rows above keep old stream
 codes as history.
 
-| Slug                   | Issue                                                 | Status                                                                                                                                                                                               |
-| ---------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `strip-source-bridges` | [#180](https://github.com/secundant/neodx/issues/180) | Implemented `7d0104a`. Lands on `main` with this branch. Changeset queued. Do not merge Version Packages or publish unless the owner asks. Issue stays open until npm.                               |
-| `nubis-catalog-smoke`  | —                                                     | **Done 2026-08-22** at catalog `1.0.3`. Keep `omitPublishedDevelopmentExports` until a published strip-source-bridges patch. Bumping catalog to 1.1.x is a separate Nubis decision after that patch. |
-| `renovate`             | (no issue; no `renovate.json`)                        | Open hygiene leftover                                                                                                                                                                                |
-| `oxlint-typecheck`     | [#179](https://github.com/secundant/neodx/issues/179) | Open: freeze the test tsconfig matrix, then turn Oxlint `typeCheck` on                                                                                                                               |
-| `retire-autobuild`     | [#162](https://github.com/secundant/neodx/issues/162) | Open, dated 2026-08-22                                                                                                                                                                               |
-| `retire-codegen`       | [#163](https://github.com/secundant/neodx/issues/163) | Open, dated 2026-08-22                                                                                                                                                                               |
-| `polygon-close`        | —                                                     | **Done 2026-08-22**: Vite+ and TS refs deferred; Nubis ledger closed                                                                                                                                 |
+| Slug                   | Issue                                                 | Status                                                                                                                                                                 |
+| ---------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `strip-source-bridges` | [#180](https://github.com/secundant/neodx/issues/180) | **Closed 2026-08-25.** npm **1.1.1**. Packument `exports` have no `development` condition and no `./src` targets. Publish freeze until a consolidated-release command. |
+| `nubis-catalog-smoke`  | —                                                     | Catalog consumption of **1.1.1** is the Nubis #180 closeout (drop `omitPublishedDevelopmentExports`). Vite+ and TS refs stay deferred.                                 |
+| `renovate`             | (no issue; no `renovate.json`)                        | Open hygiene leftover                                                                                                                                                  |
+| `oxlint-typecheck`     | [#179](https://github.com/secundant/neodx/issues/179) | Open: freeze the test tsconfig matrix, then turn Oxlint `typeCheck` on                                                                                                 |
+| `retire-autobuild`     | [#162](https://github.com/secundant/neodx/issues/162) | Open, dated 2026-08-22                                                                                                                                                 |
+| `retire-codegen`       | [#163](https://github.com/secundant/neodx/issues/163) | Open, dated 2026-08-22                                                                                                                                                 |
+| `polygon-close`        | —                                                     | **Done 2026-08-22**: Vite+ and TS refs deferred; Nubis ledger closed                                                                                                   |
 
-`strip-source-bridges` uses the same on-disk publish rewrite as the `workspace:^` packument fix
-(`npm` does not apply `publishConfig.exports`). Workspace manifests keep `development` → `./src`
-for `tsc -b`. Do not turn `typeCheck` on before `oxlint-typecheck`. Do not force-push. Nubis defers
-Vite+ and TS project references; catalog pins are consumption, not toolchain adoption.
+Published 1.1.1 used the same on-disk publish rewrite as the `workspace:^` packument fix
+(`npm` does not apply `publishConfig.exports`). Workspace manifests still keep `development` → `./src`
+for `tsc -b`. Do not force-push. Nubis defers Vite+ and TS project references; catalog pins are
+consumption, not toolchain adoption. `oxlint-typecheck` and later leftovers stay on `work`.
 
 ### Closed parallel session
 

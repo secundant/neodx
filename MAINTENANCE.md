@@ -7,12 +7,15 @@ Do not put tokens, OTPs, or secret values in git, issues, or this file.
 
 ## Release flow
 
-Do not publish unless the owner says npm must change for consumers. Everyday work records a
-Changeset with `yarn changeset add` ([CLI](https://changesets.dev/guide/cli)) and stays on `work`.
-Do not merge a **Version Packages** PR, run `yarn changeset publish`, or push changelog-only
-branches to `main` as a shortcut to npm.
+Everyday work records a Changeset with `yarn changeset add` ([CLI](https://changesets.dev/guide/cli))
+and stays on `work`.
 
-When the owner does ask to publish, push to `main` runs
+`strip-source-bridges` ([#180](https://github.com/secundant/neodx/issues/180)) is on npm **1.1.1**.
+Further publishes wait for an explicit owner command that names a **consolidated release**. Until
+then do not merge a **Version Packages** PR, run `yarn changeset publish`, re-run Release to
+publish, or push to `main` as a shortcut to npm.
+
+When a publish **is** authorized, push to `main` runs
 [`.github/workflows/release.yaml`](./.github/workflows/release.yaml)
 (`changesets/action` → `yarn release-publish`):
 

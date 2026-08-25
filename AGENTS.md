@@ -23,9 +23,12 @@ yarn changeset add
 
 Docs: [Changesets CLI](https://changesets.dev/guide/cli). This repo pins `@changesets/cli` **2.27.1**,
 so `add` takes `--empty` and `--open`. It does not take the v3 `--patch` / `--minor` / `-m` flags.
-Do not run `yarn changeset version`, `yarn changeset publish`, or merge a **Version Packages** PR
-unless the owner says npm must change for consumers. A queued `.changeset/*.md` is the changelog.
-Leave packages at the last published version until that ask.
+
+**Publish freeze.** `strip-source-bridges` ([#180](https://github.com/secundant/neodx/issues/180)) is
+on npm **1.1.1** and closed. Do not publish again until the owner names a **consolidated release**.
+Queue later leftovers as Changesets on `work`. Do not run `yarn changeset version`,
+`yarn changeset publish`, merge a **Version Packages** PR, recreate a closed Version Packages PR, or
+re-run Release to push npm. The freeze exists so later work can share one release.
 
 **Session close.** End every session with the [session-close gate](#session-close-gate). Name any
 skipped check and why. Local green is not optional at close, even when CI is otherwise opt-in.
@@ -33,6 +36,13 @@ skipped check and why. Local green is not optional at close, even when CI is oth
 **Task names.** In issues, ledgers, and chat, lead with a readable slug, then the GitHub number:
 `oxlint-typecheck` ([#179](https://github.com/secundant/neodx/issues/179)), not `R2-f`. Closed
 program rows may keep old stream codes as history. Live work must not.
+
+**Tighten what you touch.** Config, tools, and comments have gone vague in places (stale program
+codes, duplicated tsconfig, dishonest overrides, dead paths, names that no longer match meaning).
+Every session, after the assigned slice is green, make a bounded pass over files and tools this
+session already opened: clarify ownership, delete dead config, collapse duplicates, and make names
+match meaning. Do not start a repo-wide cleanup. Do not mix this pass with pack-contract or publish
+work. Record leftover debt with a slug, not a silent skip. This rule outlives any one leftover.
 
 ## Package layers
 
@@ -67,7 +77,7 @@ Critical path is **Vite+** (`vp`). Yarn remains the package manager (`packageMan
 | Pack one lib          | `vp run @neodx/<pkg>#pack`                                                     | Emits CJS/ESM/dts per pack config; avoid `vp run -t …#pack` (self-cycle on vp 0.2.7)                                                                                                   |
 | Pack publishable libs | `yarn pack:libs`                                                               | Alias for filtered `vp run … pack`                                                                                                                                                     |
 | Export / publint      | `yarn verify-exports` / `yarn publint`                                         | After pack (CI runs both)                                                                                                                                                              |
-| ATTW                  | `yarn attw`                                                                    | After pack (#164): `attw --pack --profile node16` per publishable lib; node10 ignored (exports-map subpaths cannot resolve there); vfs `./testing` excluded (1.0 source bridge)        |
+| ATTW                  | `yarn attw`                                                                    | After pack (#164): `attw --pack --profile node16` per publishable lib; node10 ignored (exports-map subpaths cannot resolve there)                                                      |
 | Packed manifest       | `yarn verify-packed-manifest`                                                  | After pack; `npm pack` tarball must not contain `workspace:` (`yarn pack` already rewrites and is not this gate)                                                                       |
 | Publish manifest      | `yarn verify-publish-manifest`                                                 | apply-all on-disk `package.json` (registry packument shape); required because npm install does not read the tarball deps                                                               |
 | Dependency structure  | `yarn depcruise`                                                               | CI gate; Node **26** default (cruiser also accepts 22/24; not 25); baseline ignores known vfs cycles                                                                                   |
