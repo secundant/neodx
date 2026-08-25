@@ -1,6 +1,6 @@
 {
   "name": "@neodx/log",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A lightweight universal logging framework",
   "keywords": [
     "cli",

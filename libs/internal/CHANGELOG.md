@@ -1,5 +1,15 @@
 # @neodx/internal
 
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies [[`7d0104a`](https://github.com/secundant/neodx/commit/7d0104ac2473cf9c189fda08121bdf675d1350ea)]:
+  - @neodx/std@1.1.1
+  - @neodx/colors@1.1.1
+  - @neodx/log@1.1.1
+  - @neodx/vfs@1.1.1
+
 ## 0.0.6
 
 ### Patch Changes
